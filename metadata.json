@@ -1,0 +1,6 @@
+{
+  "name": "elev - Meeting Scheduling Software and AI Meeting Tools",
+  "description": "elev connects and simplifies all of the work around meetings, from scheduling, payments, and meeting prep to notetaking, contact management, and follow-up.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
