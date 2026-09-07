@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import NoticeBanner from './components/NoticeBanner';
 import Navbar from './components/Navbar';
 import MultiProductHero from './components/MultiProductHero';
 import LogoTicker from './components/LogoTicker';
 import TimelineFeatureDeck from './components/TimelineFeatureDeck';
 import StickyAccordionScheduling from './components/StickyAccordionScheduling';
-import MeetCallieSection from './components/MeetCallieSection';
+import MeetVelieSection from './components/MeetCallieSection';
 import NotetakerSection from './components/NotetakerSection';
 import PaymentsSection from './components/PaymentsSection';
 import GooeyElevShowcase from './components/GooeyElevShowcase';
+import StatsBento from './components/StatsBento';
 import CustomerStoriesCarousel from './components/CustomerStoriesCarousel';
 import IntegrationsSection from './components/IntegrationsSection';
 import RoiCalculator from './components/RoiCalculator';
@@ -45,67 +45,45 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-950 relative">
-      {/* Global SVG Gooey Filter Definitions */}
+      {/* Global SVG Filter Definitions */}
       <GooeySvgDefs />
 
-      {/* 1. Top Announcement Notice Banner */}
-      <NoticeBanner onOpenDemo={handleOpenDemo} />
-
-      {/* 2. Primary Navigation Header */}
+      {/* Primary Navigation Header */}
       <Navbar onOpenDemo={handleOpenDemo} onOpenAuth={handleOpenAuth} />
 
-      {/* Main Landing Sections */}
+      {/* 
+        ========================================================================
+        EXACT 7 MASTER SECTIONS (aligned with elev-ai-landing-page-master-spec.md)
+        ========================================================================
+      */}
       <main className="flex-1">
-        {/* 3. Hero Section with 4-Product Squircle Stage (Scheduling, Callie, Notetaker, Payments) */}
+        {/* SECTION 01: Hero Section (Conversion Form, Trust Metrics & Product UI) */}
         <MultiProductHero onOpenAuth={handleOpenAuth} onOpenDemo={handleOpenDemo} />
 
-        {/* 4. Enterprise Social Proof Logo Ticker */}
+        {/* SECTION 02: Enterprise Social Proof & Logo Ticker */}
         <LogoTicker />
 
-        {/* 5. Timeline Feature Deck: "Built for people whose work runs on meetings" (Book, Prep, Capture, Follow up) */}
+        {/* SECTION 03: Meeting Lifecycle Deck (01 Before, 02 During, 03 After, 04 Revenue) */}
         <TimelineFeatureDeck onOpenAuth={handleOpenAuth} />
 
-        {/* 6. Sticky Switchback: "A better way to book your meetings" (6 Core Powers) */}
-        <StickyAccordionScheduling onOpenDemo={handleOpenDemo} />
-
-        {/* 7. Deep Dive: "Meet Callie, your AI assistant" */}
-        <MeetCallieSection onOpenDemo={handleOpenDemo} />
-
-        {/* 8. Deep Dive: "Actionable recaps for every meeting" (Notetaker) */}
-        <NotetakerSection onOpenDemo={handleOpenDemo} />
-
-        {/* 9. Deep Dive: "Flexible payment options that fit your business" (Payments) */}
-        <PaymentsSection onOpenAuth={handleOpenAuth} />
-
-        {/* 10. Interactive Gooey Intelligence Showcase: Liquid Metaball Workflow Fusion */}
-        <GooeyElevShowcase onOpenDemo={handleOpenDemo} onOpenAuth={handleOpenAuth} />
-
-        {/* 11. Customer Stories & Verified Metric Proof: "Real customers. Real results." */}
-        <CustomerStoriesCarousel />
-
-        {/* 12. Integrations Ecosystem (150+ integrations, Google & Microsoft Suite Cards) */}
+        {/* SECTION 04: Integrations & Ecosystem (150+ Native Integrations & Tech Stack) */}
         <IntegrationsSection onOpenDemo={handleOpenDemo} />
 
-        {/* 13. Interactive Team Productivity & ROI Calculator */}
-        <RoiCalculator onOpenAuth={handleOpenAuth} />
-
-        {/* 14. Transparent Pricing Matrix */}
+        {/* SECTION 05: Transparent 4-Plan Pricing Matrix */}
         <PricingSection onOpenAuth={handleOpenAuth} onOpenDemo={handleOpenDemo} />
 
-        {/* 15. Expandable FAQ Accordion */}
+        {/* SECTION 06: Expandable FAQ Accordion */}
         <FaqSection />
 
-        {/* 16. Bottom Conversion Marquee Panel: "From the first meeting to the follow-up" */}
+        {/* SECTION 07: Final CTA Banner ("Ready to elevate your meetings?") */}
         <ConversionMarquee onOpenAuth={handleOpenAuth} />
       </main>
 
-      {/* 17. Luxury Midnight Global Footer: "Make space for what matters." */}
+      {/* Global Footer & Dock */}
       <Footer />
-
-      {/* Floating Interactive elev Gooey Action Dock */}
       <GooeyElevDock onOpenDemo={handleOpenDemo} onOpenAuth={handleOpenAuth} />
 
-      {/* Interactive Modals */}
+      {/* Modals */}
       <DemoModal isOpen={demoModalOpen} onClose={handleCloseDemo} />
       <AuthModal
         isOpen={authModal.isOpen}

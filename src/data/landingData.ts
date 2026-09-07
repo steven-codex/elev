@@ -14,37 +14,39 @@ export const NAV_MENU_SECTIONS: NavMenuSection[] = [
     dropdown: {
       items: [
         {
-          title: 'Routing Forms',
-          description: 'Qualify, route, and book leads directly from website forms.',
-          icon: 'GitFork',
-          badge: 'New'
-        },
-        {
-          title: 'Availability & Buffers',
-          description: 'Set custom working hours, time zones, and buffer times.',
+          title: 'Scheduling Engine',
+          description: 'Smart booking links, custom availability buffers, and routing forms.',
           icon: 'Clock'
         },
         {
-          title: 'Automated Workflows',
-          description: 'Send custom email and SMS reminders, follow-ups, and surveys.',
-          icon: 'Zap'
+          title: 'Velie AI Assistant',
+          description: '24/7 AI scheduling copilot that negotiates times via email CC.',
+          icon: 'Zap',
+          badge: 'Beta'
         },
         {
-          title: 'Team Scheduling',
-          description: 'Round-robin distribution, collective, and group meeting pools.',
-          icon: 'Users'
+          title: 'Notetaker 2.0',
+          description: 'Autonomous recording, 99.4% transcription, and CRM auto-sync.',
+          icon: 'BookOpen',
+          badge: 'New'
         },
         {
-          title: 'Integrations & Webhooks',
-          description: 'Sync seamlessly with Google, Outlook, Salesforce, and Zoom.',
+          title: 'Payments & Checkout',
+          description: 'Upfront meeting deposits, session bundles, and Stripe billing.',
+          icon: 'Lock',
+          badge: 'New'
+        },
+        {
+          title: 'Platform & Integrations',
+          description: '150+ native apps with Google, Microsoft 365, Zoom, and Salesforce.',
           icon: 'Layers'
         }
       ],
       featured: {
-        tag: 'Product Highlight',
-        title: 'Instant Lead Routing 2.0',
-        description: 'Match inbound prospects to the exact right account executive in under 1.2 seconds.',
-        linkText: 'Explore Routing Forms →'
+        tag: 'Introducing elev 2.4',
+        title: 'Built for all of meetings',
+        description: 'Connects and simplifies scheduling, AI copilot coordination, notetaking, and upfront payments.',
+        linkText: 'Explore Product Suite →'
       }
     }
   },
@@ -81,39 +83,8 @@ export const NAV_MENU_SECTIONS: NavMenuSection[] = [
     }
   },
   {
-    label: 'Enterprise',
-    href: '#pricing'
-  },
-  {
     label: 'Pricing',
     href: '#pricing'
-  },
-  {
-    label: 'Resources',
-    dropdown: {
-      items: [
-        {
-          title: 'Customer Stories',
-          description: 'See how 100k+ global teams scale meetings with elev.',
-          icon: 'BookOpen'
-        },
-        {
-          title: 'Help Center & Docs',
-          description: 'Guides, tutorials, and setup documentation.',
-          icon: 'HelpCircle'
-        },
-        {
-          title: 'ROI Calculator',
-          description: 'Calculate hours and money saved by automating scheduling.',
-          icon: 'Calculator'
-        },
-        {
-          title: 'Security & Compliance',
-          description: 'SOC 2 Type II, HIPAA, and GDPR compliance details.',
-          icon: 'Lock'
-        }
-      ]
-    }
   }
 ];
 

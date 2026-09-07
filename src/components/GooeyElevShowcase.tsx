@@ -21,7 +21,7 @@ interface GooeyElevShowcaseProps {
 export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps) {
   const [isMerged, setIsMerged] = useState(false);
   const [viscosity, setViscosity] = useState<number>(9);
-  const [activePillar, setActivePillar] = useState<'all' | 'scheduling' | 'callie' | 'notetaker' | 'payments'>('all');
+  const [activePillar, setActivePillar] = useState<'all' | 'scheduling' | 'velie' | 'notetaker' | 'payments'>('all');
   const [fusionState, setFusionState] = useState<'idle' | 'fusing' | 'fused'>('idle');
 
   const pillars = [
@@ -36,8 +36,8 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
       desc: 'Smart availability, calendar conflict guards & routing rules'
     },
     {
-      id: 'callie',
-      name: 'elev Callie',
+      id: 'velie',
+      name: 'elev Velie',
       label: 'AI Executive Copilot',
       color: 'bg-amber-500',
       glow: 'shadow-amber-500/50',
@@ -90,48 +90,48 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-[#FAF7F2] border-t border-stone-200/80 relative overflow-hidden">
+    <section className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       {/* Background ambient radial aura */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-blue-200/30 via-purple-200/20 to-amber-100/40 blur-3xl pointer-events-none rounded-full -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-blue-200/20 via-purple-200/15 to-amber-100/20 blur-3xl pointer-events-none rounded-full -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Block */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-stone-300/80 shadow-2xs mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#E2E8F0] shadow-2xs mb-4">
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0055FF]"></span>
             </span>
-            <span className="text-xs font-extrabold uppercase tracking-widest text-slate-800 font-bricolage">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#0A0D14]">
               Liquid Intelligence Engine
             </span>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-sm bg-blue-100 text-blue-800">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EFF6FF] text-[#0055FF] border border-[#BFDBFE]">
               SVG Gooey Physics
             </span>
           </div>
 
-          <h2 className="font-editorial text-3xl sm:text-5xl lg:text-[3.25rem] text-[#071A31] font-normal leading-tight tracking-tight">
+          <h2 className="font-editorial text-3xl sm:text-5xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-tight tracking-tight">
             Meetings used to require four different apps. <br className="hidden sm:inline" />
             <span className="italic text-blue-600 font-medium">elev</span> dissolves them into one.
           </h2>
 
-          <p className="font-heading text-base sm:text-lg text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
             Test the live liquid metaball engine below. Watch how scheduling, AI intelligence, voice transcription, and payments melt together with zero friction.
           </p>
         </div>
 
         {/* Interactive Gooey Stage Card */}
-        <div className="bg-white rounded-[32px] p-6 sm:p-10 border border-stone-200/80 shadow-xl shadow-stone-200/50 max-w-5xl mx-auto">
+        <div className="bg-white rounded-[32px] p-6 sm:p-10 border border-[#E2E8F0] shadow-xl shadow-stone-200/50 max-w-5xl mx-auto">
           
           {/* Controls Header */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-100">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#071A31] flex items-center justify-center text-white shadow-sm">
+              <div className="w-10 h-10 rounded-2xl bg-[#0B1222] flex items-center justify-center text-white shadow-sm">
                 <Zap className="w-5 h-5 text-amber-400" />
               </div>
               <div>
-                <h3 className="font-bricolage font-bold text-slate-900 text-base">
+                <h3 className="font-bold text-slate-900 text-base">
                   Interactive Workflow Fusion
                 </h3>
                 <p className="text-xs text-slate-500">
@@ -297,7 +297,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                 <span className="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 font-mono">
                   THE ELEV ADVANTAGE
                 </span>
-                <h4 className="font-bricolage text-xl sm:text-2xl font-bold text-slate-900">
+                <h4 className="text-xl sm:text-2xl font-bold text-slate-900">
                   {isMerged
                     ? 'One platform. No context switching.'
                     : 'Four fragmented tasks, unified.'}
@@ -326,7 +326,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <span className="font-bricolage font-bold text-xs text-slate-900">
+                          <span className="font-bold text-xs text-slate-900">
                             {pillar.name}
                           </span>
                           <span className="text-[10px] text-slate-400 font-medium">

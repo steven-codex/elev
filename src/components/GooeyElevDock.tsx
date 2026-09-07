@@ -45,7 +45,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
               exit={{ x: 0, y: 0, scale: 0.2, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 450, damping: 24 }}
               onClick={onOpenDemo}
-              className="absolute w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg cursor-pointer"
+              className="absolute w-12 h-12 rounded-full bg-[#0055FF] hover:bg-[#0047D6] text-white flex items-center justify-center shadow-lg cursor-pointer"
               title="Interactive elev Demo"
             >
               <Play className="w-5 h-5 fill-white ml-0.5" />
@@ -53,18 +53,18 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
           )}
         </AnimatePresence>
 
-        {/* Child Bubble 2: Callie AI Copilot */}
+        {/* Child Bubble 2: Velie AI Copilot */}
         <AnimatePresence>
           {isOpen && (
             <motion.button
-              key="dock-callie"
+              key="dock-velie"
               initial={{ x: 0, y: 0, scale: 0.2, opacity: 0 }}
               animate={{ x: -68, y: -44, scale: 1, opacity: 1 }}
               exit={{ x: 0, y: 0, scale: 0.2, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 450, damping: 24, delay: 0.03 }}
               onClick={() => onOpenAuth('signup')}
               className="absolute w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center shadow-lg cursor-pointer"
-              title="Try Callie AI Free"
+              title="Try Velie AI Free"
             >
               <Sparkles className="w-5 h-5" />
             </motion.button>
@@ -113,7 +113,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
           whileTap={{ scale: 0.94 }}
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle elev Gooey Menu"
-          className="relative z-10 w-14 h-14 rounded-full bg-[#071A31] text-white flex items-center justify-center shadow-2xl ring-2 ring-white/80 cursor-pointer overflow-hidden group"
+          className="relative z-10 w-14 h-14 rounded-full bg-[#0B1222] text-white flex items-center justify-center shadow-2xl ring-2 ring-white/80 cursor-pointer overflow-hidden group"
         >
           {/* Animated liquid gradient sheen */}
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 via-indigo-600 to-amber-400 opacity-85 group-hover:opacity-100 transition-opacity" />
@@ -124,7 +124,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
               <X className="w-6 h-6 text-white" />
             ) : (
               <div className="flex flex-col items-center">
-                <span className="font-extrabold text-sm tracking-tight text-white font-bricolage">
+                <span className="font-extrabold text-sm tracking-tight text-white">
                   elev
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-0.5 animate-pulse" />

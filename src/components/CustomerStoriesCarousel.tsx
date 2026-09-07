@@ -63,33 +63,36 @@ export default function CustomerStoriesCarousel() {
   const current = stories[currentIndex];
 
   return (
-    <section className="py-24 bg-[#071A31] text-white relative overflow-hidden">
-      {/* Subtle organic background mesh */}
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#6BB1FF_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none" />
-
+    <section className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#6BB1FF] mb-3 block">
-            Customer stories
-          </span>
-          <h2 className="font-editorial text-3xl sm:text-5xl lg:text-[3.5rem] font-normal tracking-tight text-white leading-tight">
-            Real customers. Real results.
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E2E8F0] shadow-2xs mb-4">
+            <span className="w-2 h-2 rounded-full bg-[#0055FF] animate-pulse" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#0A0D14]">
+              Customer Stories
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-bold leading-tight tracking-tight text-[#0A0D14] text-balance">
+            Real customers. <span className="font-editorial italic font-normal text-[#0055FF]">Real results.</span>
           </h2>
+          <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed max-w-xl mx-auto text-pretty">
+            Discover how modern teams use elev to eliminate scheduling friction and protect productive time.
+          </p>
         </div>
 
         {/* Big Highlighted Story Card */}
-        <div className="max-w-4xl mx-auto bg-white rounded-3xl p-8 sm:p-12 text-slate-900 shadow-2xl relative">
+        <div className="max-w-4xl mx-auto bg-[#F8FAFC] rounded-2xl p-8 sm:p-12 text-slate-900 border border-[#E2E8F0] shadow-xs relative">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <div className="lg:col-span-8 space-y-5 text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
-                <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
-                <span>Verified Metric: {current.impact}</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0055FF]" />
+                <span className="tabular-nums">Verified Metric: {current.impact}</span>
               </div>
 
-              <h3 className="font-editorial text-3xl sm:text-4xl text-[#071A31] font-normal leading-tight">
+              <h3 className="font-editorial text-3xl sm:text-4xl text-[#0A0D14] font-normal leading-tight tabular-nums">
                 {current.metric}
               </h3>
 
@@ -97,8 +100,8 @@ export default function CustomerStoriesCarousel() {
                 {current.quote}
               </p>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#071A31] text-white flex items-center justify-center font-bold text-sm shrink-0">
+              <div className="pt-2 border-t border-slate-200/80 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#0055FF] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
                   {current.author.charAt(0)}
                 </div>
                 <div>
@@ -108,18 +111,25 @@ export default function CustomerStoriesCarousel() {
               </div>
             </div>
 
-            <div className="lg:col-span-4 bg-slate-50 rounded-2xl p-6 border border-slate-200 text-center space-y-4">
-              <div className="flex items-center justify-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400" />
-                ))}
+            <div className="lg:col-span-4 bg-white rounded-xl p-6 sm:p-7 border border-[#E2E8F0] text-center space-y-4 relative overflow-hidden shadow-2xs">
+              <div className="w-12 h-12 mx-auto rounded-full bg-amber-50 text-amber-500 border border-amber-200/80 flex items-center justify-center shadow-2xs font-semibold text-2xl">
+                <span className="leading-none select-none">★</span>
               </div>
+
               <div>
-                <span className="text-3xl font-extrabold text-[#071A31] block">5.0 / 5.0</span>
-                <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">User Satisfaction</span>
+                <span className="text-3xl sm:text-4xl font-editorial font-normal text-[#0A0D14] block tabular-nums tracking-tight">
+                  5.0 / 5.0
+                </span>
+                <span className="text-[11px] text-slate-500 uppercase tracking-widest font-mono font-bold mt-1 block">
+                  User Satisfaction
+                </span>
               </div>
-              <div className="pt-2 border-t border-slate-200 text-xs text-slate-600 font-medium">
-                Category: <strong className="text-slate-900">{current.category}</strong>
+
+              <div className="pt-3 border-t border-slate-200/80 text-xs text-slate-600 font-medium flex items-center justify-center gap-1.5">
+                <span className="text-slate-400">Category:</span>
+                <span className="font-semibold text-slate-900 bg-white px-2.5 py-0.5 rounded-full border border-slate-200/60 shadow-2xs">
+                  {current.category}
+                </span>
               </div>
             </div>
 
@@ -133,7 +143,7 @@ export default function CustomerStoriesCarousel() {
                   key={i}
                   onClick={() => setCurrentIndex(i)}
                   className={`h-2 rounded-full transition-all cursor-pointer ${
-                    currentIndex === i ? 'w-8 bg-[#071A31]' : 'w-2 bg-slate-200 hover:bg-slate-300'
+                    currentIndex === i ? 'w-8 bg-[#0055FF]' : 'w-2 bg-slate-200 hover:bg-slate-300'
                   }`}
                   aria-label={`Go to slide ${i + 1}`}
                 />

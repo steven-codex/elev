@@ -51,20 +51,23 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
   };
 
   return (
-    <section className="py-20 bg-[#FAF7F2] border-t border-stone-200">
+    <section className="py-24 lg:py-32 bg-[#F8FAFC] border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="max-w-3xl mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#5DDFD7]/20 text-teal-950 font-bold text-xs mb-3 border border-teal-200">
-            <CreditCard className="w-3.5 h-3.5 text-teal-700" />
-            <span>elev Payments</span>
-            <span className="text-[10px] uppercase tracking-wider bg-teal-100 text-teal-900 px-1.5 py-0.2 rounded-full font-extrabold">New</span>
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs mb-4">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center p-1 shrink-0">
+              <img src="/icon-payments-3d.png" alt="Payments" className="w-full h-full object-contain" />
+            </div>
+            <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+              Payments
+            </span>
           </div>
-          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#071A31] font-normal leading-tight tracking-tight">
+          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
             Flexible payment options that fit your business
           </h2>
-          <p className="font-heading text-base sm:text-lg text-slate-600 mt-3 max-w-2xl leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed">
             Eliminate awkward invoice follow-ups. Collect payment at booking, bundle sessions, or generate custom Stripe-backed payment links with one click.
           </p>
         </div>
@@ -83,17 +86,17 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
                   className={`rounded-2xl p-5 transition-all duration-200 cursor-pointer border ${
                     isSelected
                       ? 'bg-white border-teal-300 shadow-md ring-1 ring-teal-200'
-                      : 'bg-white/60 border-stone-200/80 hover:bg-white'
+                      : 'bg-white/60 border-[#E2E8F0] hover:bg-white'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3.5">
                       <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                        isSelected ? 'bg-[#5DDFD7] text-[#071A31]' : 'bg-slate-100 text-slate-500'
+                        isSelected ? 'bg-[#5DDFD7] text-[#0A0D14]' : 'bg-slate-100 text-slate-500'
                       }`}>
                         {item.icon}
                       </div>
-                      <h3 className="font-bold text-base text-[#071A31]">
+                      <h3 className="font-bold text-base text-[#0A0D14]">
                         {item.title}
                       </h3>
                     </div>
@@ -111,7 +114,7 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
 
           {/* Right Column: Interactive Payments Widget */}
           <div className="lg:col-span-6">
-            <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-md border border-stone-200 space-y-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-md border border-[#E2E8F0] space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Integrated Checkout</span>
@@ -189,7 +192,7 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
 
                   <button
                     onClick={handleSimulatePayment}
-                    className="w-full bg-[#071A31] hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-full shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                    className="w-full bg-[#0B1222] hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-full shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <span>Authorize & Book Slot</span>
                     <ArrowRight className="w-3.5 h-3.5" />

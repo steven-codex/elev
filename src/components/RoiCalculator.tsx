@@ -20,34 +20,32 @@ export default function RoiCalculator({ onOpenAuth }: RoiCalculatorProps) {
   const hoursSavedPerRepMonthly = Math.round((meetingsPerWeek * hoursSavedPerMeeting * 50) / 12);
 
   return (
-    <section id="roi" className="py-20 lg:py-28 bg-slate-900 text-white relative overflow-hidden">
-      {/* Subtle background glow */}
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
+    <section id="roi" className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Sliders */}
-          <div className="lg:col-span-6 space-y-8">
+          <div className="lg:col-span-6 space-y-6">
             <div>
-              <div className="inline-flex items-center gap-2 text-xs font-bold text-blue-400 bg-blue-950/80 px-3 py-1.5 rounded-full border border-blue-800 mb-3">
-                <Calculator className="w-3.5 h-3.5" />
-                <span>Interactive Productivity ROI Estimator</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E2E8F0] shadow-2xs mb-4">
+                <span className="w-2 h-2 rounded-full bg-[#0055FF] animate-pulse" />
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#0A0D14]">
+                  Productivity ROI Estimator
+                </span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+              <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
                 Calculate the real value of automated scheduling
               </h2>
-              <p className="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
-                See how much focused productive time your sales, recruiting, and customer success teams reclaim when email ping-pong is removed.
+              <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl">
+                See how much focused productive time your sales, recruiting, and customer success teams reclaim when email ping-pong is eliminated.
               </p>
             </div>
 
             {/* Slider 1: Team Size */}
-            <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 space-y-3">
+            <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-semibold text-slate-200">How many team members book meetings?</span>
-                <span className="font-extrabold text-blue-400 text-lg bg-blue-950 px-3 py-1 rounded-xl border border-blue-800">
+                <span className="font-semibold text-slate-700">Team members booking meetings:</span>
+                <span className="font-bold text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
                   {teamSize} people
                 </span>
               </div>
@@ -57,9 +55,9 @@ export default function RoiCalculator({ onOpenAuth }: RoiCalculatorProps) {
                 max="100"
                 value={teamSize}
                 onChange={(e) => setTeamSize(Number(e.target.value))}
-                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
               />
-              <div className="flex justify-between text-[11px] text-slate-500">
+              <div className="flex justify-between text-[11px] text-slate-400 font-mono">
                 <span>1 member</span>
                 <span>50 members</span>
                 <span>100+ members</span>
@@ -67,10 +65,10 @@ export default function RoiCalculator({ onOpenAuth }: RoiCalculatorProps) {
             </div>
 
             {/* Slider 2: Meetings Per Week */}
-            <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 space-y-3">
+            <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-semibold text-slate-200">Average meetings booked per person/week:</span>
-                <span className="font-extrabold text-blue-400 text-lg bg-blue-950 px-3 py-1 rounded-xl border border-blue-800">
+                <span className="font-semibold text-slate-700">Average weekly meetings per person:</span>
+                <span className="font-bold text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
                   {meetingsPerWeek} meetings
                 </span>
               </div>
@@ -80,9 +78,9 @@ export default function RoiCalculator({ onOpenAuth }: RoiCalculatorProps) {
                 max="30"
                 value={meetingsPerWeek}
                 onChange={(e) => setMeetingsPerWeek(Number(e.target.value))}
-                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
               />
-              <div className="flex justify-between text-[11px] text-slate-500">
+              <div className="flex justify-between text-[11px] text-slate-400 font-mono">
                 <span>2 meetings</span>
                 <span>15 meetings</span>
                 <span>30 meetings</span>
@@ -91,53 +89,53 @@ export default function RoiCalculator({ onOpenAuth }: RoiCalculatorProps) {
           </div>
 
           {/* Right Column: Calculated Results Display */}
-          <div className="lg:col-span-6 bg-slate-800/90 rounded-3xl p-8 sm:p-10 border border-slate-700 shadow-2xl relative">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6 flex items-center justify-between">
-              <span>Your Estimated Annual Returns</span>
-              <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5" />
+          <div className="lg:col-span-6 bg-[#F8FAFC] rounded-2xl p-8 sm:p-10 border border-[#E2E8F0] shadow-sm relative">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-6 flex items-center justify-between">
+              <span>Estimated Annual Impact</span>
+              <span className="text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full font-semibold text-[11px] flex items-center gap-1">
+                <TrendingUp className="w-3 h-3 text-emerald-600" />
                 High ROI Impact
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-              <div className="bg-slate-900/90 p-5 rounded-2xl border border-slate-700">
-                <div className="flex items-center gap-2 text-slate-400 text-xs mb-2">
-                  <Clock className="w-4 h-4 text-blue-400" />
-                  <span>Annual Team Time Saved</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
+              <div className="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-2xs">
+                <div className="flex items-center gap-2 text-slate-500 text-xs mb-2">
+                  <Clock className="w-4 h-4 text-[#0055FF]" />
+                  <span>Annual Time Saved</span>
                 </div>
-                <div className="text-3xl sm:text-4xl font-black text-white">
-                  {annualHoursSaved.toLocaleString()} <span className="text-sm font-semibold text-slate-400">hours</span>
+                <div className="text-3xl sm:text-4xl font-bold text-[#0A0D14] tracking-tight tabular-nums">
+                  {annualHoursSaved.toLocaleString()} <span className="text-sm font-normal text-slate-500">hrs</span>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1">
-                  ~{hoursSavedPerRepMonthly} hours saved per employee every month
+                  ~{hoursSavedPerRepMonthly} hrs saved / employee / month
                 </p>
               </div>
 
-              <div className="bg-slate-900/90 p-5 rounded-2xl border border-slate-700">
-                <div className="flex items-center gap-2 text-slate-400 text-xs mb-2">
-                  <DollarSign className="w-4 h-4 text-emerald-400" />
-                  <span>Productivity Value Reclaimed</span>
+              <div className="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-2xs">
+                <div className="flex items-center gap-2 text-slate-500 text-xs mb-2">
+                  <DollarSign className="w-4 h-4 text-emerald-600" />
+                  <span>Value Reclaimed</span>
                 </div>
-                <div className="text-3xl sm:text-4xl font-black text-emerald-400">
+                <div className="text-3xl sm:text-4xl font-bold text-emerald-600 tracking-tight tabular-nums">
                   ${estimatedAnnualSavings.toLocaleString()}
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1">
-                  Based on $60/hr average loaded salary benchmark
+                  Based on $60/hr industry benchmark
                 </p>
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-blue-950/60 border border-blue-900/80 mb-6 text-xs text-blue-200 flex items-center justify-between">
-              <span>Average inbound lead conversion acceleration:</span>
-              <span className="font-extrabold text-white text-sm">+320% faster</span>
+            <div className="p-3.5 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] mb-6 text-xs text-blue-900 flex items-center justify-between">
+              <span className="font-medium">Average lead conversion acceleration:</span>
+              <span className="font-bold text-[#0055FF]">+320% faster</span>
             </div>
 
             <button
               onClick={() => onOpenAuth('signup')}
-              className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold text-sm py-4 px-6 rounded-full shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-[#0055FF] hover:bg-[#0047D6] active:scale-[0.96] text-white font-semibold text-sm py-3.5 px-6 rounded-full shadow-xs hover:shadow-md transition-[background-color,box-shadow,transform] duration-150 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Unlock these savings with elev free trial</span>
+              <span>Unlock these savings with elev</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

@@ -64,7 +64,7 @@ const bentoItemVariants = {
     scale: 1,
     transition: {
       duration: 0.55,
-      ease: [0.16, 1, 0.3, 1],
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 };
@@ -244,33 +244,30 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
     <section
       ref={sectionRef}
       id="notetaker"
-      className="py-20 lg:py-32 bg-[#FFFFFF] border-t border-slate-100 selection:bg-purple-100 selection:text-purple-950 relative overflow-hidden"
+      className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden"
     >
-      {/* Subtle Dot Grid Background for Depth (Frontend Design Skill) */}
-      <div className="absolute inset-0 bg-dot-grid opacity-60 pointer-events-none" />
+      {/* Subtle Dot Grid Background for Depth */}
+      <div className="absolute inset-0 bg-dot-grid opacity-40 pointer-events-none" />
 
       {/* Top Ambient Light Flare */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-purple-100/40 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-blue-100/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         
-        {/* ================= SECTION HEADER (Landing Page Copywriter & UI/UX Pro Max) ================= */}
+        {/* ================= SECTION HEADER ================= */}
         <div className="max-w-3xl mb-12 sm:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2 mb-4"
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs mb-4"
           >
-            <div className="w-6 h-6 rounded-lg bg-[#F3E8FF] flex items-center justify-center text-[#7E22CE] shadow-xs">
-              <FileText className="w-3.5 h-3.5" />
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center p-1 shrink-0">
+              <img src="/icon-notetaker-3d.png" alt="Notetaker" className="w-full h-full object-contain" />
             </div>
-            <span className="font-bold text-xs uppercase tracking-widest text-[#071A31] font-bricolage">
-              elev Notetaker 2.0
-            </span>
-            <span className="text-[10px] font-bold text-[#7E22CE] bg-[#FAF5FF] px-2.5 py-0.5 rounded-full border border-purple-200/80">
-              New Release
+            <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+              Notetaker
             </span>
           </motion.div>
 
@@ -279,7 +276,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="font-editorial text-4xl sm:text-5xl lg:text-[3.5rem] text-[#071A31] font-normal leading-[1.06] tracking-tight"
+            className="font-editorial text-4xl sm:text-5xl lg:text-[3.5rem] text-[#0A0D14] font-normal leading-[1.06] tracking-tight"
           >
             Actionable recaps for every meeting. <br className="hidden sm:inline" />
             <span className="italic text-purple-900/90">Zero manual note-taking.</span>
@@ -310,7 +307,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               { stat: '0 drops', label: 'In lost meeting action items' }
             ].map((metric, i) => (
               <div key={i} className="space-y-0.5">
-                <div className="font-bricolage font-extrabold text-xl sm:text-2xl text-[#071A31] tracking-tight">
+                <div className="font-bold text-xl sm:text-2xl text-[#0A0D14] tracking-tight">
                   {metric.stat}
                 </div>
                 <div className="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight">
@@ -338,11 +335,11 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Top Card Info Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2 font-bricolage">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
                   <ListOrdered className="w-3.5 h-3.5" />
                   <span>Call Intelligence</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-normal text-[#071A31] font-editorial tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-normal text-[#0A0D14] font-editorial tracking-tight">
                   Clear summaries with next steps
                 </h3>
                 <p className="text-sm text-slate-600 font-sans mt-1.5 max-w-xl">
@@ -404,7 +401,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Card Header matching signature layout */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-bold text-sm text-[#071A31] leading-snug font-bricolage">
+                      <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
                         Video Call Stream
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium">Emily Watson (Host) + 2 guests</p>
@@ -514,7 +511,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 <div className="w-full sm:w-[270px] bg-white rounded-[20px] p-4 sm:p-5 shadow-2xl border border-white/95 ring-1 ring-slate-900/5 space-y-3.5 transition-all">
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-bold text-sm text-[#071A31] leading-snug font-bricolage">
+                      <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
                         Product Demo Recap
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium">Jessica Barnes (VP) + 2 guests</p>
@@ -600,11 +597,11 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Top Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2 font-bricolage">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
                   <Mail className="w-3.5 h-3.5" />
                   <span>Zero-Delay Follow-Up</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-normal text-[#071A31] font-editorial tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-normal text-[#0A0D14] font-editorial tracking-tight">
                   Pre-drafted follow-up emails
                 </h3>
                 <p className="text-sm text-slate-600 font-sans mt-1.5">
@@ -629,7 +626,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-bold text-sm text-[#071A31] leading-snug font-bricolage">
+                  <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
                     Pre-Drafted Follow-Up
                   </h4>
                   <p className="text-[11px] text-slate-500 font-medium">To: Jessica Barnes (VP) + 2 attendees</p>
@@ -764,11 +761,11 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2 font-bricolage">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
                   <Zap className="w-3.5 h-3.5" />
                   <span>Two-Way CRM Sync</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-normal text-[#071A31] font-editorial tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-normal text-[#0A0D14] font-editorial tracking-tight">
                   Works with your tools
                 </h3>
                 <p className="text-sm text-slate-600 font-sans mt-1.5">
@@ -795,7 +792,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {/* Header */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-bold text-sm text-[#071A31] leading-snug font-bricolage">
+                    <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
                       Salesforce Deal Record
                     </h4>
                     <p className="text-[11px] text-slate-500 font-medium">Acme Global Enterprise</p>
@@ -871,7 +868,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {/* Header */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h5 className="font-bold text-sm text-[#071A31] leading-snug font-bricolage">
+                    <h5 className="font-bold text-sm text-[#0A0D14] leading-snug">
                       Integrations
                     </h5>
                     <p className="text-[11px] text-slate-500 font-medium">Active Webhook Relays</p>
@@ -981,15 +978,15 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2 font-bricolage">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Company Memory & Semantic Recall</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-normal text-[#071A31] font-editorial tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-normal text-[#0A0D14] font-editorial tracking-tight">
                   Instant cross-meeting recall
                 </h3>
                 <p className="text-sm text-slate-600 font-sans mt-1.5 max-w-xl">
-                  Ask Callie anything across your company's entire call archive. Get instant verified answers linked directly to the exact audio second.
+                  Ask Velie anything across your company's entire call archive. Get instant verified answers linked directly to the exact audio second.
                 </p>
               </div>
 
@@ -1040,7 +1037,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   whileTap={{ scale: 0.92 }}
                   onClick={() => {
                     addToast({
-                      title: 'Query Verified by Callie',
+                      title: 'Query Verified by Velie',
                       description: 'Exact citation matched with 99.8% confidence.',
                       icon: 'sparkles'
                     });
@@ -1052,7 +1049,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 </motion.button>
               </div>
 
-              {/* Callie Answer Pop-up Card with BorderBeam */}
+              {/* Velie Answer Pop-up Card with BorderBeam */}
               <BorderBeam
                 size="sm"
                 colorVariant="sunset"
@@ -1071,7 +1068,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Header */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-bold text-sm text-[#071A31] leading-snug font-bricolage">
+                      <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
                         Semantic Memory Citation
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium">Cited from {recallPrompts[activePromptIndex].context}</p>
@@ -1167,7 +1164,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-              className="pointer-events-auto bg-[#071A31] text-white rounded-2xl p-4 shadow-2xl border border-white/10 flex items-start gap-3 backdrop-blur-md"
+              className="pointer-events-auto bg-[#0B1222] text-white rounded-2xl p-4 shadow-2xl border border-white/10 flex items-start gap-3 backdrop-blur-md"
             >
               <div className="w-6 h-6 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center shrink-0 mt-0.5">
                 {t.icon === 'check' && <Check className="w-3.5 h-3.5 text-emerald-400" />}
@@ -1175,7 +1172,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {(!t.icon || t.icon === 'sparkles') && <Sparkles className="w-3.5 h-3.5 text-purple-300" />}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-bold text-white leading-tight font-bricolage">
+                <div className="text-xs font-bold text-white leading-tight">
                   {t.title}
                 </div>
                 {t.description && (

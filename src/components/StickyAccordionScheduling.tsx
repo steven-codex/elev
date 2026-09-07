@@ -202,18 +202,25 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
   ];
 
   return (
-    <section id="scheduling" className="py-20 lg:py-24 bg-white border-t border-slate-100">
+    <section id="scheduling" className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
-        <div className="max-w-3xl mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-bold text-xs mb-3 border border-blue-200/60">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>Scheduling Platform</span>
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs mb-4">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center p-1 shrink-0">
+              <img src="/icon-scheduling-3d.png" alt="Scheduling" className="w-full h-full object-contain" />
+            </div>
+            <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+              Scheduling
+            </span>
           </div>
-          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#071A31] font-normal leading-tight tracking-tight">
+          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
             A better way to book your meetings
           </h2>
+          <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed max-w-2xl">
+            Connect your calendars, protect focus time with automated buffer guards, and let clients self-schedule in seconds without back-and-forth emails.
+          </p>
         </div>
 
         {/* Side-by-side interactive accordion & sticky visual */}
@@ -240,7 +247,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
                       }`}>
                         {feature.icon}
                       </div>
-                      <h3 className="font-bold text-base text-[#071A31]">
+                      <h3 className="font-bold text-base text-[#0A0D14]">
                         {feature.title}
                       </h3>
                     </div>
@@ -273,7 +280,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
 
           {/* Right Column: Sticky Live Interactive Preview on desktop */}
           <div className="hidden lg:block lg:col-span-5 sticky top-28">
-            <div className="bg-[#FAF8F5] rounded-3xl p-6 border border-stone-200 shadow-sm transition-all duration-300">
+            <div className="bg-[#F8FAFC] rounded-3xl p-6 border border-[#E2E8F0] shadow-sm transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                   Live Capability Preview
@@ -285,7 +292,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
 
               {features[activeIndex].interactivePreview}
 
-              <div className="mt-5 pt-4 border-t border-stone-200/80 flex items-center justify-between text-xs text-slate-500">
+              <div className="mt-5 pt-4 border-t border-[#E2E8F0] flex items-center justify-between text-xs text-slate-500">
                 <span>Part of elev Enterprise & Teams</span>
                 <button
                   onClick={onOpenDemo}

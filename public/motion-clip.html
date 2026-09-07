@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elev — Transparent Motion UI Video (HyperFrames)</title>
+    <!-- Modern Typography & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&display=swap" rel="stylesheet" />
+    <!-- GSAP for seekable timeline runtime -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* TRANSPARENT BACKGROUND FOR ALPHA RENDER / OVERLAY */
+      html, body {
+        background: transparent !important;
+        color: #0f172a;
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        user-select: none;
+      }
+
+      /* Preview Background States (Toggleable in player) */
+      body.bg-checkerboard {
+        background-color: #0f172a !important;
+        background-image: 
+          linear-gradient(45deg, #1e293b 25%, transparent 25%), 
+          linear-gradient(-45deg, #1e293b 25%, transparent 25%), 
+          linear-gradient(45deg, transparent 75%, #1e293b 75%), 
+          linear-gradient(-45deg, transparent 75%, #1e293b 75%) !important;
+        background-size: 24px 24px !important;
+        background-position: 0 0, 0 12px, 12px -12px, -12px 0px !important;
+      }
+      body.bg-dark {
+        background-color: #030712 !important;
+      }
+      body.bg-light {
+        background-color: #f8fafc !important;
+      }
+
+      /* Viewport Stage Scaling */
+      #viewport-wrapper {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        transform-origin: center center;
+        background: transparent !important;
+      }
+
+      /* HyperFrames Root Composition Container (100% Transparent) */
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background: transparent !important;
+        overflow: hidden;
+      }
+
+      /* HyperFrames Clip Layout */
+      .clip {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: transparent !important;
+        pointer-events: none;
+      }
+
+      /* Typography */
+      .font-display {
+        font-family: 'Bricolage Grotesque', sans-serif;
+      }
+
+      /* Authentic Elev UI Component Surface Styles with Rich Drop Shadows */
+      .elev-ui-card {
+        border-radius: 28px;
+        box-shadow: 
+          0 30px 60px -15px rgba(15, 23, 42, 0.35),
+          0 10px 25px -5px rgba(15, 23, 42, 0.2),
+          0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .elev-card-light {
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        color: #0f172a;
+      }
+
+      .elev-card-dark {
+        background: rgba(15, 23, 42, 0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #f8fafc;
+        box-shadow: 
+          0 35px 70px -15px rgba(0, 0, 0, 0.7),
+          0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+      }
+
+      /* Virtual Cursor */
+      #virtual-cursor {
+        position: absolute;
+        pointer-events: none;
+        z-index: 999;
+        transition: transform 0.08s ease;
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+      }
+
+      .cursor-click-ring {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        top: -14px;
+        left: -14px;
+        border-radius: 50%;
+        border: 2.5px solid #0284c7;
+        opacity: 0;
+        transform: scale(0.4);
+      }
+
+      /* Waveform Bars */
+      .wave-bar {
+        width: 4px;
+        border-radius: 99px;
+        background: #8b5cf6;
+        transition: height 0.15s ease;
+      }
+
+      /* Floating HyperFrames Preview Bar */
+      #player-controls {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.88);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 40px;
+        padding: 10px 22px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        z-index: 1000;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+        font-size: 13px;
+        color: white;
+      }
+      .ctrl-btn {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: white;
+        padding: 7px 13px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        transition: all 0.18s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .ctrl-btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-1px);
+      }
+      .ctrl-btn:active {
+        transform: scale(0.96);
+      }
+      #scrubber {
+        width: 280px;
+        height: 6px;
+        accent-color: #38bdf8;
+        cursor: pointer;
+      }
+      #timecode {
+        font-variant-numeric: tabular-nums;
+        color: #94a3b8;
+        font-size: 12px;
+        min-width: 90px;
+      }
+    </style>
+  </head>
+  <body class="bg-checkerboard">
+    
+    <!-- Viewport Wrapper scaled to window -->
+    <div id="viewport-wrapper">
+      
+      <!-- HyperFrames Core Composition (Fully Transparent Canvas) -->
+      <div
+        id="root"
+        data-composition-id="main"
+        data-width="1920"
+        data-height="1080"
+        data-duration="12"
+        data-fps="60"
+      >
+        <!-- VIRTUAL ANIMATED CURSOR (Floats above components in 3D) -->
+        <div id="virtual-cursor" style="left: 960px; top: 540px;">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="#0284c7" stroke="#ffffff" stroke-width="1.8">
+            <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
+          </svg>
+          <div id="cursor-ring" class="cursor-click-ring"></div>
+        </div>
+
+        <!-- Floating Brand Pill (Transparent Overlay) -->
+        <div style="position: absolute; top: 60px; left: 80px; display: flex; align-items: center; gap: 12px; z-index: 10;">
+          <div style="width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #06b6d4); display: grid; place-items: center; box-shadow: 0 8px 20px rgba(37,99,235,0.4);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+              <line x1="16" x2="16" y1="2" y2="6"/>
+              <line x1="8" x2="8" y1="2" y2="6"/>
+              <line x1="3" x2="21" y1="10" y2="10"/>
+            </svg>
+          </div>
+          <span class="font-display" style="font-weight: 800; font-size: 24px; letter-spacing: -0.03em; color: #f8fafc; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">elev</span>
+          <span style="background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.05em; backdrop-filter: blur(8px);">Transparent Motion UI</span>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- COMPONENT 1: SMART SCHEDULING (0.0s - 3.2s)              -->
+        <!-- ========================================================= -->
+        <section id="clip-scheduling" class="clip" data-start="0" data-duration="3.2" data-track-index="0">
+          <div id="card-scheduling-ui" class="elev-ui-card elev-card-light" style="width: 900px; padding: 44px;">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 24px; margin-bottom: 28px; border-bottom: 1px solid #f1f5f9;">
+              <div>
+                <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: #2563eb; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                  <span>Interactive elev Calendar</span>
+                </div>
+                <h3 class="font-display" style="font-size: 28px; font-weight: 800; color: #0f172a; letter-spacing: -0.03em;">Executive Strategy Session</h3>
+                <p style="font-size: 14px; color: #64748b; margin-top: 4px;">30 min • Google Meet • Auto-timezones (GMT+7)</p>
+              </div>
+              <div style="width: 48px; height: 48px; border-radius: 16px; background: #eff6ff; color: #2563eb; font-weight: 800; display: grid; place-items: center; font-size: 16px; border: 1px solid #dbeafe;">
+                SC
+              </div>
+            </div>
+
+            <!-- Date & Slots Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+              <div>
+                <span style="font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px;">Select Date:</span>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                  <div class="date-box" style="padding: 14px 10px; border-radius: 14px; text-align: center; font-size: 13px; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; color: #64748b;">Oct 12</div>
+                  <div class="date-box" style="padding: 14px 10px; border-radius: 14px; text-align: center; font-size: 13px; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; color: #64748b;">Oct 13</div>
+                  <div id="date-oct-14" class="date-box" style="padding: 14px 10px; border-radius: 14px; text-align: center; font-size: 13px; font-weight: 800; background: #f8fafc; border: 1px solid #e2e8f0; color: #0f172a; transition: all 0.25s ease;">Oct 14</div>
+                  <div class="date-box" style="padding: 14px 10px; border-radius: 14px; text-align: center; font-size: 13px; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; color: #64748b;">Oct 15</div>
+                </div>
+              </div>
+
+              <div>
+                <span style="font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px;">Available Slots:</span>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div class="slot-box" style="padding: 12px 18px; border-radius: 14px; font-size: 14px; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; display: flex; justify-content: space-between;">
+                    <span>10:30 AM</span>
+                    <span style="font-size: 12px; color: #94a3b8; font-weight: 500;">30m</span>
+                  </div>
+                  <div id="slot-2pm" class="slot-box" style="padding: 12px 18px; border-radius: 14px; font-size: 14px; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; display: flex; justify-content: space-between; transition: all 0.25s ease;">
+                    <span>02:00 PM</span>
+                    <span style="font-size: 12px; color: #94a3b8; font-weight: 500;">30m</span>
+                  </div>
+                  <div class="slot-box" style="padding: 12px 18px; border-radius: 14px; font-size: 14px; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; display: flex; justify-content: space-between;">
+                    <span>04:30 PM</span>
+                    <span style="font-size: 12px; color: #94a3b8; font-weight: 500;">30m</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Action Button -->
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-size: 13px; color: #64748b; font-weight: 500;">⚡ Instant confirmation without email tag</span>
+              <div id="btn-confirm-booking" style="background: #0f172a; color: white; padding: 14px 28px; border-radius: 16px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: all 0.25s ease; box-shadow: 0 4px 14px rgba(15,23,42,0.2);">
+                <span id="label-confirm-booking">Confirm Booking</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- COMPONENT 2: CALLIE AI COPILOT (3.0s - 6.2s)             -->
+        <!-- ========================================================= -->
+        <section id="clip-callie" class="clip" data-start="3.0" data-duration="3.2" data-track-index="1">
+          <div id="card-callie-ui" class="elev-ui-card elev-card-dark" style="width: 860px; padding: 42px; border-color: rgba(245, 158, 11, 0.3);">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 44px; height: 44px; border-radius: 14px; background: rgba(245, 158, 11, 0.2); color: #fbbf24; display: grid; place-items: center; border: 1px solid rgba(245,158,11,0.35);">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-display" style="font-size: 24px; font-weight: 800; color: white;">Callie Executive AI</h3>
+                  <p style="font-size: 13px; color: #94a3b8;">Autonomous calendar negotiation via callie@elev.io</p>
+                </div>
+              </div>
+              <span style="font-size: 12px; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); padding: 4px 12px; border-radius: 99px;">AI COPILOT</span>
+            </div>
+
+            <!-- Chat History Area -->
+            <div style="min-height: 180px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+              <!-- User Message -->
+              <div id="callie-user-msg" style="align-self: flex-end; background: #2563eb; color: white; padding: 14px 20px; border-radius: 20px 20px 4px 20px; font-size: 15px; font-weight: 500; max-width: 80%; box-shadow: 0 4px 15px rgba(37,99,235,0.3); opacity: 0;">
+                <span id="callie-typing-target"></span>
+              </div>
+
+              <!-- AI Status / Thinking Indicator -->
+              <div id="callie-thinking-pill" style="align-self: flex-start; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fbbf24; font-family: monospace; opacity: 0;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #fbbf24; box-shadow: 0 0 10px #fbbf24;"></span>
+                <span>Callie analyzing mutual availability & timezones...</span>
+              </div>
+
+              <!-- Callie Smart Resolution Card -->
+              <div id="callie-reply-card" style="align-self: flex-start; background: rgba(30, 41, 59, 0.9); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px 20px 20px 4px; padding: 18px 22px; max-width: 90%; opacity: 0; transform: translateY(15px);">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: #fbbf24; margin-bottom: 6px;">
+                  <span>✓ Conflict Solved Automatically</span>
+                </div>
+                <p style="font-size: 14px; color: #e2e8f0; line-height: 1.5;">
+                  Found an opening without breaking Steven's focus time. Calendar invite dispatched to both parties for <strong style="color: white; text-decoration: underline;">Thursday at 2:00 PM</strong>.
+                </p>
+              </div>
+            </div>
+
+            <!-- Input Bar -->
+            <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-size: 13px; color: #64748b;">Type a message or CC callie@elev.io...</span>
+              <div id="btn-callie-send" style="width: 36px; height: 36px; border-radius: 10px; background: #4f46e5; display: grid; place-items: center; color: white;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- COMPONENT 3: MEETING NOTETAKER 2.0 (6.0s - 9.2s)          -->
+        <!-- ========================================================= -->
+        <section id="clip-notetaker" class="clip" data-start="6.0" data-duration="3.2" data-track-index="2">
+          <div id="card-notetaker-ui" class="elev-ui-card elev-card-light" style="width: 920px; padding: 44px; border-color: rgba(139, 92, 246, 0.3);">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 22px; margin-bottom: 24px; border-bottom: 1px solid #f1f5f9;">
+              <div>
+                <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: #8b5cf6; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span>elev Notetaker 2.0</span>
+                </div>
+                <h3 class="font-display" style="font-size: 28px; font-weight: 800; color: #0f172a;">Q3 Growth & Roadmap Sync</h3>
+                <p style="font-size: 14px; color: #64748b; margin-top: 4px;">4 participants • Audio & Transcripts recorded automatically</p>
+              </div>
+
+              <!-- Audio Player Bar -->
+              <div style="display: flex; align-items: center; gap: 14px; background: #f5f3ff; border: 1px solid #ddd6fe; padding: 10px 18px; border-radius: 99px;">
+                <div id="btn-audio-play" style="width: 34px; height: 34px; border-radius: 50%; background: #7c3aed; color: white; display: grid; place-items: center; cursor: pointer;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+                <!-- Animated Equalizer Bars -->
+                <div style="display: flex; align-items: center; gap: 4px; height: 28px;">
+                  <div class="wave-bar" id="wb-1" style="height: 12px;"></div>
+                  <div class="wave-bar" id="wb-2" style="height: 20px;"></div>
+                  <div class="wave-bar" id="wb-3" style="height: 16px;"></div>
+                  <div class="wave-bar" id="wb-4" style="height: 26px;"></div>
+                  <div class="wave-bar" id="wb-5" style="height: 14px;"></div>
+                  <div class="wave-bar" id="wb-6" style="height: 22px;"></div>
+                </div>
+                <span id="audio-timecode" style="font-size: 13px; font-weight: 700; color: #6d28d9; font-family: monospace;">08:42</span>
+              </div>
+            </div>
+
+            <!-- Content Grid: Transcript & Action Items -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px;">
+              <!-- Transcript Block -->
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px;">
+                <span style="font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px;">Live Transcript</span>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 1.5;">
+                  <p style="color: #64748b;"><strong>Sarah (VP Sales):</strong> Let's accelerate the partner rollout by next Monday.</p>
+                  <p id="transcript-active-line" style="color: #475569; padding: 8px 12px; border-radius: 10px; transition: all 0.25s ease;">
+                    <strong style="color: #0f172a;">Steven (Lead Dev):</strong> Confirmed. I'll sync the action items directly to Slack and CRM.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Action Items Block -->
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px;">
+                <span style="font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px;">Extracted Action Items</span>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div id="notetaker-check-1" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 12px; background: white; border: 1px solid #e2e8f0; font-size: 13px; color: #1e293b; font-weight: 600; transition: all 0.2s ease;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span id="check-box-1" style="width: 18px; height: 18px; border-radius: 6px; border: 1.5px solid #cbd5e1; display: grid; place-items: center; font-size: 11px; font-weight: 800; transition: all 0.2s ease;"></span>
+                      <span>Finalize partner contracts</span>
+                    </div>
+                    <span style="font-size: 11px; color: #94a3b8; font-weight: normal;">Sarah</span>
+                  </div>
+
+                  <div id="notetaker-check-2" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 12px; background: white; border: 1px solid #e2e8f0; font-size: 13px; color: #1e293b; font-weight: 600; transition: all 0.2s ease;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span id="check-box-2" style="width: 18px; height: 18px; border-radius: 6px; border: 1.5px solid #cbd5e1; display: grid; place-items: center; font-size: 11px; font-weight: 800; transition: all 0.2s ease;"></span>
+                      <span>Push release to production</span>
+                    </div>
+                    <span style="font-size: 11px; color: #94a3b8; font-weight: normal;">Steven</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- COMPONENT 4: INSTANT PAYMENTS & BILLING (9.0s - 12.0s)    -->
+        <!-- ========================================================= -->
+        <section id="clip-payments" class="clip" data-start="9.0" data-duration="3.0" data-track-index="3">
+          <div id="card-payments-ui" class="elev-ui-card elev-card-light" style="width: 860px; padding: 44px; border-color: rgba(16, 185, 129, 0.3);">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 22px; margin-bottom: 24px; border-bottom: 1px solid #f1f5f9;">
+              <div>
+                <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: #059669; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                  <span>elev Pay • Integrated Checkout</span>
+                </div>
+                <h3 class="font-display" style="font-size: 28px; font-weight: 800; color: #0f172a;">Executive Advisory Retainer</h3>
+                <p style="font-size: 14px; color: #64748b; margin-top: 4px;">Collect client payments automatically prior to meeting start</p>
+              </div>
+              <div style="text-align: right;">
+                <span id="pay-price-tag" class="font-display" style="font-size: 36px; font-weight: 800; color: #0f172a; letter-spacing: -0.04em;">$150</span>
+                <span style="font-size: 12px; color: #64748b; display: block;">USD</span>
+              </div>
+            </div>
+
+            <!-- Tier Selector -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+              <div id="tier-single" style="padding: 16px 20px; border-radius: 16px; border: 2px solid #10b981; background: #ecfdf5; transition: all 0.25s ease;">
+                <span style="font-size: 13px; font-weight: 700; color: #065f46;">Single Session (60m)</span>
+                <span style="font-size: 18px; font-weight: 800; color: #0f172a; display: block; margin-top: 4px;">$150</span>
+              </div>
+              <div id="tier-bundle" style="padding: 16px 20px; border-radius: 16px; border: 1.5px solid #e2e8f0; background: #f8fafc; transition: all 0.25s ease;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 13px; font-weight: 700; color: #475569;">Quarterly 3-Pack</span>
+                  <span style="font-size: 10px; font-weight: 800; background: #10b981; color: white; padding: 2px 8px; border-radius: 6px;">SAVE 20%</span>
+                </div>
+                <span style="font-size: 18px; font-weight: 800; color: #0f172a; display: block; margin-top: 4px;">$360</span>
+              </div>
+            </div>
+
+            <!-- Checkout Action Bar -->
+            <div style="background: #0f172a; border-radius: 18px; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; color: white;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 44px; height: 30px; border-radius: 8px; background: #1e293b; border: 1px solid #334155; display: grid; place-items: center; font-family: monospace; font-size: 11px; font-weight: 700;">
+                  •••• 4242
+                </div>
+                <span style="font-size: 13px; color: #94a3b8;">Stripe 256-bit Encrypted</span>
+              </div>
+              <div id="btn-pay-action" style="background: #10b981; color: white; padding: 12px 26px; border-radius: 14px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: all 0.25s ease;">
+                <span id="label-pay-action">Pay & Confirm</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Floating HyperFrames Video Controls -->
+    <div id="player-controls">
+      <button id="btn-play" class="ctrl-btn">
+        <svg id="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span id="label-play">Play</span>
+      </button>
+      <button id="btn-reset" class="ctrl-btn" title="Replay from start">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+      </button>
+      <input type="range" id="scrubber" min="0" max="12" step="0.02" value="0" />
+      <span id="timecode">0.00s / 12.00s</span>
+      <button id="btn-bg" class="ctrl-btn" title="Toggle background to verify alpha transparency">
+        <span>BG: Checker</span>
+      </button>
+      <button id="btn-speed" class="ctrl-btn">1.0x</button>
+      <button id="btn-loop" class="ctrl-btn" style="color: #38bdf8;">Loop: ON</button>
+      <button id="btn-fullscreen" class="ctrl-btn">Fullscreen</button>
+    </div>
+
+    <!-- HyperFrames Timeline Choreography Engine -->
+    <script>
+      // Automatic Resolution Scaling to maintain 1920x1080 stage
+      function handleResize() {
+        const wrapper = document.getElementById('viewport-wrapper');
+        const scaleX = window.innerWidth / 1920;
+        const scaleY = window.innerHeight / 1080;
+        const scale = Math.min(scaleX, scaleY) * 0.95;
+        wrapper.style.transform = `scale(${scale})`;
+      }
+      window.addEventListener('resize', handleResize);
+      handleResize();
+
+      // Master HyperFrames Timeline
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true, repeat: -1 });
+
+      // ========================================================
+      // SCENE 1: SCHEDULING UI (0.0s - 3.2s)
+      // ========================================================
+      tl.set("#clip-scheduling", { opacity: 1, pointerEvents: "auto" });
+      tl.set("#clip-callie", { opacity: 0 });
+      tl.set("#clip-notetaker", { opacity: 0 });
+      tl.set("#clip-payments", { opacity: 0 });
+
+      // Card entrance (spring upward)
+      tl.from("#card-scheduling-ui", { y: 60, opacity: 0, scale: 0.95, duration: 0.7, ease: "power3.out" }, 0.1);
+
+      // Cursor moves to 'Oct 14' date
+      tl.to("#virtual-cursor", { x: -160, y: -40, duration: 0.6, ease: "power2.out" }, 0.5);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 1.1);
+      tl.to("#date-oct-14", { backgroundColor: "#2563eb", color: "#ffffff", borderColor: "#2563eb", boxShadow: "0 6px 18px rgba(37,99,235,0.4)", duration: 0.15 }, 1.15);
+
+      // Cursor moves to '02:00 PM' time slot
+      tl.to("#virtual-cursor", { x: 220, y: 15, duration: 0.6, ease: "power2.out" }, 1.4);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 2.0);
+      tl.to("#slot-2pm", { backgroundColor: "#2563eb", color: "#ffffff", borderColor: "#2563eb", boxShadow: "0 6px 18px rgba(37,99,235,0.4)", duration: 0.15 }, 2.05);
+
+      // Cursor moves to 'Confirm Booking' button
+      tl.to("#virtual-cursor", { x: 320, y: 190, duration: 0.5, ease: "power2.out" }, 2.3);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 2.8);
+      tl.to("#btn-confirm-booking", { backgroundColor: "#10b981", scale: 0.96, duration: 0.1, yoyo: true, repeat: 1 }, 2.85);
+      tl.call(() => {
+        document.getElementById("label-confirm-booking").textContent = "✓ Invite Dispatched!";
+      }, null, 2.9);
+
+      // Scene 1 Exit (clean morph out)
+      tl.to("#card-scheduling-ui", { y: -40, opacity: 0, scale: 0.94, duration: 0.5, ease: "power2.in" }, 3.1);
+      tl.set("#clip-scheduling", { opacity: 0 }, 3.6);
+
+      // ========================================================
+      // SCENE 2: CALLIE AI COPILOT (3.2s - 6.2s)
+      // ========================================================
+      tl.to("#clip-callie", { opacity: 1 }, 3.2);
+      tl.from("#card-callie-ui", { y: 60, opacity: 0, scale: 0.95, duration: 0.7, ease: "power3.out" }, 3.3);
+
+      // Virtual cursor moves to input bar
+      tl.to("#virtual-cursor", { x: 0, y: 195, duration: 0.5, ease: "power2.out" }, 3.5);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 4.0);
+
+      // Type text into chat
+      const promptText = "Callie, coordinate 30m with Steven this Thursday.";
+      tl.call(() => {
+        const target = document.getElementById("callie-typing-target");
+        const userMsg = document.getElementById("callie-user-msg");
+        userMsg.style.opacity = "1";
+        let idx = 0;
+        const interval = setInterval(() => {
+          idx++;
+          target.textContent = promptText.slice(0, idx);
+          if (idx >= promptText.length) clearInterval(interval);
+        }, 22);
+      }, null, 4.1);
+
+      // Cursor moves to Send button
+      tl.to("#virtual-cursor", { x: 380, y: 195, duration: 0.6, ease: "power2.out" }, 4.9);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 5.2);
+      tl.to("#btn-callie-send", { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1 }, 5.25);
+
+      // Thinking indicator appears
+      tl.to("#callie-thinking-pill", { opacity: 1, duration: 0.2 }, 5.3);
+
+      // Callie reply animates in
+      tl.to("#callie-thinking-pill", { opacity: 0, duration: 0.2 }, 5.8);
+      tl.to("#callie-reply-card", { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.6)" }, 5.85);
+
+      // Scene 2 Exit
+      tl.to("#card-callie-ui", { y: -40, opacity: 0, scale: 0.94, duration: 0.5, ease: "power2.in" }, 6.1);
+      tl.set("#clip-callie", { opacity: 0 }, 6.6);
+
+      // ========================================================
+      // SCENE 3: NOTETAKER 2.0 (6.2s - 9.2s)
+      // ========================================================
+      tl.to("#clip-notetaker", { opacity: 1 }, 6.2);
+      tl.from("#card-notetaker-ui", { y: 60, opacity: 0, scale: 0.95, duration: 0.7, ease: "power3.out" }, 6.3);
+
+      // Cursor moves to Play button on audio bar
+      tl.to("#virtual-cursor", { x: 260, y: -190, duration: 0.6, ease: "power2.out" }, 6.5);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 7.1);
+      tl.to("#btn-audio-play", { scale: 0.9, backgroundColor: "#6d28d9", duration: 0.1, yoyo: true, repeat: 1 }, 7.15);
+
+      // Start waveform animation
+      tl.to("#wb-1", { height: 26, duration: 0.2, repeat: 5, yoyo: true }, 7.2);
+      tl.to("#wb-2", { height: 12, duration: 0.25, repeat: 5, yoyo: true }, 7.2);
+      tl.to("#wb-3", { height: 28, duration: 0.18, repeat: 6, yoyo: true }, 7.2);
+      tl.to("#wb-4", { height: 14, duration: 0.22, repeat: 5, yoyo: true }, 7.2);
+      tl.to("#wb-5", { height: 26, duration: 0.19, repeat: 6, yoyo: true }, 7.2);
+      tl.to("#transcript-active-line", { backgroundColor: "#ede9fe", color: "#5b21b6", duration: 0.3 }, 7.3);
+
+      // Cursor moves to Checkbox 1
+      tl.to("#virtual-cursor", { x: 80, y: 70, duration: 0.5, ease: "power2.out" }, 7.6);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 8.1);
+      tl.call(() => {
+        const box = document.getElementById("check-box-1");
+        box.textContent = "✓";
+        box.style.backgroundColor = "#10b981";
+        box.style.color = "white";
+        box.style.borderColor = "#10b981";
+        document.getElementById("notetaker-check-1").style.borderColor = "#10b981";
+      }, null, 8.15);
+
+      // Cursor moves to Checkbox 2
+      tl.to("#virtual-cursor", { x: 80, y: 120, duration: 0.4, ease: "power2.out" }, 8.4);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 8.8);
+      tl.call(() => {
+        const box = document.getElementById("check-box-2");
+        box.textContent = "✓";
+        box.style.backgroundColor = "#10b981";
+        box.style.color = "white";
+        box.style.borderColor = "#10b981";
+        document.getElementById("notetaker-check-2").style.borderColor = "#10b981";
+      }, null, 8.85);
+
+      // Scene 3 Exit
+      tl.to("#card-notetaker-ui", { y: -40, opacity: 0, scale: 0.94, duration: 0.5, ease: "power2.in" }, 9.0);
+      tl.set("#clip-notetaker", { opacity: 0 }, 9.4);
+
+      // ========================================================
+      // SCENE 4: PAYMENTS & CHECKOUT (9.2s - 12.0s)
+      // ========================================================
+      tl.to("#clip-payments", { opacity: 1 }, 9.2);
+      tl.from("#card-payments-ui", { y: 60, opacity: 0, scale: 0.95, duration: 0.7, ease: "power3.out" }, 9.3);
+
+      // Cursor moves to Bundle Tier
+      tl.to("#virtual-cursor", { x: 190, y: 20, duration: 0.6, ease: "power2.out" }, 9.6);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 10.2);
+      tl.call(() => {
+        document.getElementById("tier-single").style.border = "1.5px solid #e2e8f0";
+        document.getElementById("tier-single").style.background = "#f8fafc";
+        document.getElementById("tier-bundle").style.border = "2px solid #10b981";
+        document.getElementById("tier-bundle").style.background = "#ecfdf5";
+        document.getElementById("pay-price-tag").textContent = "$360";
+        document.getElementById("label-pay-action").textContent = "Pay $360";
+      }, null, 10.25);
+
+      // Cursor moves to Pay button
+      tl.to("#virtual-cursor", { x: 300, y: 155, duration: 0.6, ease: "power2.out" }, 10.6);
+      tl.to("#cursor-ring", { opacity: 1, scale: 1.2, duration: 0.15, yoyo: true, repeat: 1 }, 11.2);
+      tl.to("#btn-pay-action", { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 }, 11.25);
+      tl.call(() => {
+        document.getElementById("label-pay-action").textContent = "✓ Paid & Verified!";
+        document.getElementById("btn-pay-action").style.backgroundColor = "#059669";
+      }, null, 11.3);
+
+      // Scene 4 Exit
+      tl.to("#card-payments-ui", { y: -40, opacity: 0, scale: 0.94, duration: 0.5, ease: "power2.in" }, 11.6);
+
+      // Register timeline with HyperFrames
+      window.__timelines["main"] = tl;
+
+      // ========================================================
+      // CONTROLLER LOGIC FOR PREVIEW & ALPHA VERIFICATION
+      // ========================================================
+      const btnPlay = document.getElementById("btn-play");
+      const labelPlay = document.getElementById("label-play");
+      const scrubber = document.getElementById("scrubber");
+      const timecode = document.getElementById("timecode");
+      const btnLoop = document.getElementById("btn-loop");
+      const btnSpeed = document.getElementById("btn-speed");
+      const btnReset = document.getElementById("btn-reset");
+      const btnBg = document.getElementById("btn-bg");
+      const btnFullscreen = document.getElementById("btn-fullscreen");
+
+      let isLooping = true;
+      const speeds = [0.5, 1.0, 1.5, 2.0];
+      let speedIndex = 1;
+
+      // Check URL param ?controls=false for pure clean motion embed
+      const urlParams = new URLSearchParams(window.location.search);
+      const playerControlsEl = document.getElementById("player-controls");
+      if (urlParams.get('controls') === 'false' || urlParams.get('hideControls') === 'true') {
+        if (playerControlsEl) playerControlsEl.style.display = 'none';
+      }
+
+      // Background Toggle Modes to verify alpha transparency
+      const bgModes = ['checkerboard', 'dark', 'light', 'transparent'];
+      let bgIndex = 0;
+      if (urlParams.get('bg')) {
+        const reqBg = urlParams.get('bg');
+        if (bgModes.includes(reqBg)) {
+          document.body.className = `bg-${reqBg}`;
+          bgIndex = bgModes.indexOf(reqBg);
+        }
+      }
+
+      btnBg.addEventListener("click", () => {
+        bgIndex = (bgIndex + 1) % bgModes.length;
+        const mode = bgModes[bgIndex];
+        document.body.className = `bg-${mode}`;
+        btnBg.textContent = `BG: ${mode.charAt(0).toUpperCase() + mode.slice(1)}`;
+      });
+
+      // Update scrubber on frame
+      gsap.ticker.add(() => {
+        if (!scrubber.matches(":active")) {
+          const current = tl.time();
+          scrubber.value = current;
+          timecode.textContent = `${current.toFixed(2)}s / 12.00s`;
+        }
+      });
+
+      function togglePlay() {
+        if (tl.paused()) {
+          tl.play();
+          labelPlay.textContent = "Pause";
+        } else {
+          tl.pause();
+          labelPlay.textContent = "Play";
+        }
+      }
+
+      btnPlay.addEventListener("click", togglePlay);
+
+      btnReset.addEventListener("click", () => {
+        tl.pause();
+        tl.time(0);
+        labelPlay.textContent = "Play";
+      });
+
+      scrubber.addEventListener("input", (e) => {
+        tl.pause();
+        labelPlay.textContent = "Play";
+        tl.time(parseFloat(e.target.value));
+      });
+
+      btnLoop.addEventListener("click", () => {
+        isLooping = !isLooping;
+        tl.repeat(isLooping ? -1 : 0);
+        btnLoop.textContent = `Loop: ${isLooping ? "ON" : "OFF"}`;
+        btnLoop.style.color = isLooping ? "#38bdf8" : "#94a3b8";
+      });
+
+      btnSpeed.addEventListener("click", () => {
+        speedIndex = (speedIndex + 1) % speeds.length;
+        const s = speeds[speedIndex];
+        tl.timeScale(s);
+        btnSpeed.textContent = `${s.toFixed(1)}x`;
+      });
+
+      btnFullscreen.addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      });
+
+      // Spacebar to toggle play
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "Space") {
+          e.preventDefault();
+          togglePlay();
+        }
+      });
+
+      // Start playback automatically
+      tl.play();
+      labelPlay.textContent = "Pause";
+    </script>
+  </body>
+</html>

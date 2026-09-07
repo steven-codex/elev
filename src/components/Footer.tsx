@@ -5,11 +5,11 @@ export default function Footer() {
   const [lang, setLang] = useState('English');
 
   return (
-    <footer className="bg-[#071A31] text-white pt-20 pb-12 text-xs border-t border-slate-900 selection:bg-blue-500 selection:text-white">
+    <footer className="bg-[#0B1222] text-white pt-20 pb-12 text-xs border-t border-slate-900 selection:bg-blue-500 selection:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Header Block */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-14 border-b border-slate-800/80">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-14 border-b border-[#1E293B]">
           <div className="space-y-3">
             {/* elev Brand Emblem */}
             <div className="flex items-center gap-3">
@@ -21,19 +21,19 @@ export default function Footer() {
                 </svg>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-2xl tracking-tight text-white font-bricolage">
+                <span className="font-extrabold text-2xl tracking-tight text-white">
                   elev
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-900/60 text-blue-300 border border-blue-700/60 font-mono">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-900/60 text-blue-300 border border-blue-700/60 font-sans">
                   Enterprise Suite
                 </span>
               </div>
             </div>
 
-            <h2 className="font-editorial text-3xl sm:text-5xl text-white font-normal tracking-tight">
-              Make space for what matters.
+            <h2 className="text-3xl sm:text-4xl text-white font-bold tracking-tight text-balance">
+              Make space for <span className="font-editorial italic font-normal text-[#0055FF]">what matters.</span>
             </h2>
-            <p className="text-slate-400 text-sm max-w-md">
+            <p className="text-slate-400 text-sm max-w-md text-pretty">
               The scheduling and AI meeting platform engineered to eliminate busywork and keep team momentum high.
             </p>
           </div>
@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
 
         {/* 7-Column Nav Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 py-14 border-b border-slate-800/80">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 py-14 border-b border-[#1E293B]">
           
           {/* Column 1: Products */}
           <div className="space-y-3">
@@ -60,7 +60,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-slate-400">
               <li><a href="#scheduling" className="hover:text-white transition-colors">Scheduling</a></li>
-              <li><a href="#callie" className="hover:text-white transition-colors flex items-center gap-1.5">Callie AI <span className="bg-amber-400/20 text-amber-300 text-[9px] font-bold px-1 rounded-sm">Beta</span></a></li>
+              <li><a href="#velie" className="hover:text-white transition-colors flex items-center gap-1.5">Velie AI <span className="bg-amber-400/20 text-amber-300 text-[9px] font-bold px-1 rounded-sm">Beta</span></a></li>
               <li><a href="#notetaker" className="hover:text-white transition-colors flex items-center gap-1.5">Notetaker <span className="bg-purple-400/20 text-purple-300 text-[9px] font-bold px-1 rounded-sm">New</span></a></li>
               <li><a href="#contacts" className="hover:text-white transition-colors">Contacts</a></li>
               <li><a href="#payments" className="hover:text-white transition-colors flex items-center gap-1.5">Payments <span className="bg-emerald-400/20 text-emerald-300 text-[9px] font-bold px-1 rounded-sm">New</span></a></li>
@@ -158,7 +158,7 @@ export default function Footer() {
         </div>
 
         {/* Apps Downloads & Social Row */}
-        <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-6 border-b border-slate-800/80">
+        <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#1E293B]">
           <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
             <span className="text-slate-400 font-medium">Download apps & extensions:</span>
             <div className="flex items-center gap-2 flex-wrap justify-center">
@@ -198,11 +198,11 @@ export default function Footer() {
               onChange={(e) => setLang(e.target.value)}
               className="bg-transparent border-0 text-slate-300 font-semibold focus:outline-hidden cursor-pointer text-xs"
             >
-              <option value="English" className="bg-[#071A31] text-white">English (United States)</option>
-              <option value="Español" className="bg-[#071A31] text-white">Español</option>
-              <option value="Français" className="bg-[#071A31] text-white">Français</option>
-              <option value="Deutsch" className="bg-[#071A31] text-white">Deutsch</option>
-              <option value="Português" className="bg-[#071A31] text-white">Português</option>
+              <option value="English" className="bg-[#0B1222] text-white">English (United States)</option>
+              <option value="Español" className="bg-[#0B1222] text-white">Español</option>
+              <option value="Français" className="bg-[#0B1222] text-white">Français</option>
+              <option value="Deutsch" className="bg-[#0B1222] text-white">Deutsch</option>
+              <option value="Português" className="bg-[#0B1222] text-white">Português</option>
             </select>
           </div>
         </div>

@@ -1,41 +1,89 @@
 @import "tailwindcss";
 
+/* ===================================================================
+   ELEV DESIGN SYSTEM — Unified Tokens
+   =================================================================== */
+
 @layer base {
+  :root {
+    /* ── Easing ── */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* ── Color: Ink ── */
+    --color-ink: #0A0D14;
+    --color-ink-secondary: #475569;
+    --color-ink-tertiary: #94A3B8;
+
+    /* ── Color: Surface ── */
+    --color-surface: #FFFFFF;
+    --color-surface-raised: #F8FAFC;
+    --color-surface-sunken: #F1F5F9;
+
+    /* ── Color: Border ── */
+    --color-border: #E2E8F0;
+    --color-border-subtle: #F1F5F9;
+
+    /* ── Color: Accent (Electric Blue) ── */
+    --color-accent: #0055FF;
+    --color-accent-hover: #0047D6;
+    --color-accent-surface: #EFF6FF;
+    --color-accent-border: #BFDBFE;
+    --color-accent-text: #1D4ED8;
+
+    /* ── Color: Dark ── */
+    --color-dark: #0B1222;
+    --color-dark-raised: #162032;
+    --color-dark-border: #1E293B;
+
+    /* ── Color: Semantic ── */
+    --color-success: #059669;
+    --color-success-surface: #ECFDF5;
+    --color-warning: #D97706;
+    --color-warning-surface: #FFFBEB;
+
+    /* ── Shadows ── */
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+    --shadow-card-hover: 0 8px 25px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03);
+    --shadow-elevated: 0 20px 40px rgba(0,0,0,0.08);
+    --shadow-glow: 0 0 40px rgba(0,85,255,0.12);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #0b0d0f;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--color-ink);
+    font-feature-settings: "cv11", "ss01";
+    font-variation-settings: "opsz" 20;
   }
 }
 
+/* ── Typography Utilities ── */
 .font-editorial {
-  font-family: 'Instrument Serif', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-}
-
-.font-instrument {
   font-family: 'Instrument Serif', Georgia, serif;
 }
 
-.font-cormorant {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+.text-balance {
+  text-wrap: balance;
 }
 
-.font-playfair {
-  font-family: 'Playfair Display', Georgia, serif;
+.text-pretty {
+  text-wrap: pretty;
 }
 
-.font-bricolage {
-  font-family: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
-.font-heading {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
-  letter-spacing: -0.025em;
-}
-
-/* Authentic squircle and subtle shadows */
-.squircle {
-  corner-shape: squircle;
-}
+/* ===================================================================
+   ANIMATIONS
+   =================================================================== */
 
 @keyframes marquee {
   0% { transform: translateX(0); }
@@ -43,28 +91,30 @@
 }
 
 .animate-marquee {
-  animation: marquee 35s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
 }
 
-/* Transitions.dev & Emil Design Engineering Keyframes */
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 25s linear infinite;
+}
+
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
 @keyframes border-beam {
   100% {
     offset-distance: 100%;
   }
-}
-
-.bg-dot-grid {
-  background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-.bg-dot-grid-dark {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-  background-size: 20px 20px;
 }
 
 @keyframes float-subtle {
@@ -76,7 +126,51 @@
   animation: float-subtle 4s ease-in-out infinite;
 }
 
-/* ================= GOOEY ANIMATION & METABALL FILTERS ================= */
+/* ── Dot Grid Backgrounds & Faded Looping Animations ── */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-dot-grid-dark {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@keyframes dotPatternPulseLight {
+  0%, 100% {
+    opacity: 0.22;
+    transform: scale(1) translate(0px, 0px);
+  }
+  50% {
+    opacity: 0.40;
+    transform: scale(1.02) translate(1px, -1px);
+  }
+}
+
+.animate-dot-pulse-light {
+  animation: dotPatternPulseLight 7s ease-in-out infinite;
+}
+
+@keyframes dotPatternPulseDark {
+  0%, 100% {
+    opacity: 0.08;
+    transform: scale(1) translate(0px, 0px);
+  }
+  50% {
+    opacity: 0.18;
+    transform: scale(1.02) translate(1px, -1px);
+  }
+}
+
+.animate-dot-pulse-dark {
+  animation: dotPatternPulseDark 7s ease-in-out infinite;
+}
+
+/* ===================================================================
+   GOOEY FILTERS & METABALL ANIMATIONS
+   =================================================================== */
+
 .filter-gooey {
   filter: url('#gooey-effect');
   -webkit-filter: url('#gooey-effect');
@@ -112,12 +206,8 @@
 }
 
 @keyframes gooey-orbit {
-  0% {
-    transform: rotate(0deg) translateX(38px) rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg) translateX(38px) rotate(-360deg);
-  }
+  0% { transform: rotate(0deg) translateX(38px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(38px) rotate(-360deg); }
 }
 
 .animate-gooey-orbit {
@@ -125,14 +215,123 @@
 }
 
 @keyframes gooey-orbit-reverse {
-  0% {
-    transform: rotate(360deg) translateX(48px) rotate(-360deg);
-  }
-  100% {
-    transform: rotate(0deg) translateX(48px) rotate(0deg);
-  }
+  0% { transform: rotate(360deg) translateX(48px) rotate(-360deg); }
+  100% { transform: rotate(0deg) translateX(48px) rotate(0deg); }
 }
 
 .animate-gooey-orbit-reverse {
   animation: gooey-orbit-reverse 11s linear infinite;
 }
+
+@keyframes liquid-gooey-border {
+  0%, 100% {
+    border-radius: 24px 18px 24px 18px / 18px 24px 18px 24px;
+    transform: translateY(0px) scale(1);
+  }
+  33% {
+    border-radius: 16px 26px 18px 26px / 26px 16px 26px 16px;
+    transform: translateY(-2.5px) scale(1.01, 0.99);
+  }
+  66% {
+    border-radius: 26px 16px 24px 16px / 16px 26px 16px 26px;
+    transform: translateY(1.5px) scale(0.99, 1.01);
+  }
+}
+
+.animate-gooey-border {
+  animation: liquid-gooey-border 5.5s ease-in-out infinite;
+}
+
+/* ── Squircle (CSS Level 5 experimental) ── */
+.squircle {
+  corner-shape: squircle;
+}
+
+/* ================= ORBITAL MOTION SYSTEM (HYPERFRAMES & EMIL DESIGN ENG) ================= */
+@keyframes orbital-cw {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes orbital-ccw {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes arc-spin-cw {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes arc-spin-counter {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-orbital-cw {
+  animation: orbital-cw 28s linear infinite;
+  transform-origin: center center;
+}
+
+.animate-orbital-ccw {
+  animation: orbital-ccw 28s linear infinite;
+  transform-origin: center center;
+}
+
+.animate-arc-coral {
+  animation: arc-spin-cw 26s linear infinite;
+  transform-origin: 430px 430px;
+}
+
+.animate-arc-purple {
+  animation: arc-spin-counter 22s linear infinite;
+  transform-origin: 430px 430px;
+}
+
+/* Pause orbital motion when inspecting elements */
+.group-orbit-pause:hover .animate-orbital-cw,
+.group-orbit-pause:hover .animate-orbital-ccw,
+.group-orbit-pause:hover .animate-arc-coral,
+.group-orbit-pause:hover .animate-arc-purple {
+  animation-play-state: paused;
+}
+
+/* ================= IRIDESCENT ANIMATED GRADIENT AURA (IMAGE 2 & IMAGE 3) ================= */
+@keyframes iridescent-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-iridescent-spin {
+  animation: iridescent-spin 12s linear infinite;
+  transform-origin: center center;
+}
+
+.animate-border-beam-spin {
+  animation: iridescent-spin 3.5s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes iridescent-pulse {
+  0%, 100% {
+    opacity: 0.85;
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(1px);
+  }
+}
+
+.animate-iridescent-pulse {
+  animation: iridescent-pulse 4s ease-in-out infinite;
+}
+
+
+
+
+
