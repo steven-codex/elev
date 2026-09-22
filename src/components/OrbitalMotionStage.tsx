@@ -197,14 +197,14 @@ export default function OrbitalMotionStage() {
                         alt={card.title}
                         className="w-8 h-8 sm:w-8.5 sm:h-8.5 object-contain drop-shadow-xs group-hover/card:scale-110 transition-transform duration-200 shrink-0 pointer-events-none"
                       />
-                      <span className="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider text-slate-600 bg-slate-100/90 px-2 py-0.5 rounded-full border border-slate-200/70">
+                      <span className="text-[8px] sm:text-[9px] font-normal uppercase tracking-wider text-slate-600 bg-slate-100/90 px-2 py-0.5 rounded-full border border-slate-200/70">
                         {card.tagText}
                       </span>
                     </div>
 
                     {/* Main Title & Subtitle */}
                     <div className="space-y-0 mb-1">
-                      <span className="text-xs sm:text-sm font-bold text-[#0A0D14] block leading-tight">
+                      <span className="text-xs sm:text-sm font-normal text-[#0A0D14] block leading-tight">
                         {card.title}
                       </span>
                       <span className="font-editorial italic text-base sm:text-lg text-[#0A0D14] block leading-tight">
@@ -219,7 +219,7 @@ export default function OrbitalMotionStage() {
                   </div>
 
                   {/* Footer Automation Tag */}
-                  <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center gap-1 text-[9px] font-bold text-emerald-700">
+                  <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center gap-1 text-[9px] font-normal text-emerald-700">
                     <Check className="w-3 h-3 stroke-[2.5]" />
                     <span>Automated by elev</span>
                   </div>

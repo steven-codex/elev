@@ -34,10 +34,10 @@ export default function HowItWorks({ onOpenDemo }: HowItWorksProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 border border-blue-100 px-3.5 py-1.5 rounded-full inline-block mb-3">
+          <span className="text-xs font-normal text-blue-600 uppercase tracking-wider bg-blue-50 border border-blue-100 px-3.5 py-1.5 rounded-full inline-block mb-3">
             How It Works
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-normal text-slate-900 tracking-tight">
             Effortless scheduling in three simple steps
           </h2>
           <p className="mt-3.5 text-base sm:text-lg text-slate-600">
@@ -56,16 +56,16 @@ export default function HowItWorks({ onOpenDemo }: HowItWorksProps) {
                   <div className="w-12 h-12 rounded-2xl bg-white shadow-xs border border-slate-200/80 flex items-center justify-center group-hover:scale-105 group-hover:border-blue-200 transition-all">
                     {step.icon}
                   </div>
-                  <span className="text-2xl font-black text-slate-300 group-hover:text-blue-600 transition-colors">
+                  <span className="text-2xl font-normal text-slate-300 group-hover:text-blue-600 transition-colors">
                     {step.step}
                   </span>
                 </div>
 
-                <div className="inline-block text-[11px] font-bold text-blue-700 bg-blue-100/60 px-2.5 py-0.5 rounded-full mb-3">
+                <div className="inline-block text-[11px] font-normal text-blue-700 bg-blue-100/60 px-2.5 py-0.5 rounded-full mb-3">
                   {step.tag}
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-900 mb-2.5">
+                <h3 className="text-xl font-normal text-slate-900 mb-2.5">
                   {step.title}
                 </h3>
 
@@ -86,7 +86,7 @@ export default function HowItWorks({ onOpenDemo }: HowItWorksProps) {
         <div className="mt-12 text-center">
           <button
             onClick={onOpenDemo}
-            className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 underline underline-offset-4 cursor-pointer"
+            className="inline-flex items-center gap-2 text-sm font-normal text-blue-600 hover:text-blue-700 underline underline-offset-4 cursor-pointer"
           >
             <span>See live video walkthrough and setup guide</span>
             <ArrowRight className="w-4 h-4" />

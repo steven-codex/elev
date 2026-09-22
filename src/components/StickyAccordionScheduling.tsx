@@ -32,9 +32,9 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <Sliders className="w-4 h-4 text-blue-600" />
-              <span className="font-bold text-slate-800">Custom Working Hours & Buffers</span>
+              <span className="font-normal text-slate-800">Custom Working Hours & Buffers</span>
             </div>
-            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Conflict Guard</span>
+            <span className="text-[10px] font-normal text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Conflict Guard</span>
           </div>
 
           <div className="space-y-2">
@@ -44,17 +44,17 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
               { day: 'Saturday – Sunday', hours: 'Unavailable (Protected)', active: false }
             ].map((schedule, idx) => (
               <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
-                <span className="font-semibold text-slate-700">{schedule.day}</span>
-                <span className={`text-xs font-mono font-bold ${schedule.active ? 'text-slate-900' : 'text-slate-400'}`}>
+                <span className="font-normal text-slate-700">{schedule.day}</span>
+                <span className={`text-xs font-mono font-normal ${schedule.active ? 'text-slate-900' : 'text-slate-400'}`}>
                   {schedule.hours}
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="bg-blue-50/70 p-3 rounded-xl border border-blue-100 flex items-center justify-between text-[11px] text-blue-900 font-medium">
+          <div className="bg-blue-50/70 p-3 rounded-xl border border-blue-100 flex items-center justify-between text-[11px] text-blue-900 font-normal">
             <span>Automatic Buffer Time:</span>
-            <span className="font-bold bg-white px-2 py-0.5 rounded-md border border-blue-200">15 min after each call</span>
+            <span className="font-normal bg-white px-2 py-0.5 rounded-md border border-blue-200">15 min after each call</span>
           </div>
         </div>
       )
@@ -66,7 +66,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
       icon: <Layers className="w-5 h-5 text-blue-600" />,
       interactivePreview: (
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-3 text-xs">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Pre-configured Event Types</span>
+          <span className="text-[11px] font-normal uppercase tracking-wider text-slate-400 block mb-1">Pre-configured Event Types</span>
           <div className="space-y-2">
             {[
               { title: '15 Min Quick Connect', type: '1-on-1', color: 'bg-blue-100 text-blue-800' },
@@ -75,10 +75,10 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
             ].map((tmpl, idx) => (
               <div key={idx} className="p-3 rounded-xl border border-slate-200 hover:border-blue-400 bg-white flex items-center justify-between transition-colors">
                 <div>
-                  <h5 className="font-bold text-slate-900 text-xs">{tmpl.title}</h5>
+                  <h5 className="font-normal text-slate-900 text-xs">{tmpl.title}</h5>
                   <span className="text-[11px] text-slate-400">Includes video conferencing link</span>
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${tmpl.color}`}>
+                <span className={`text-[10px] font-normal px-2 py-0.5 rounded-full ${tmpl.color}`}>
                   {tmpl.type}
                 </span>
               </div>
@@ -94,7 +94,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
       icon: <Wind className="w-5 h-5 text-blue-600" />,
       interactivePreview: (
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-3 text-xs">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Active Automated Sequence</span>
+          <span className="text-[11px] font-normal uppercase tracking-wider text-slate-400 block mb-1">Active Automated Sequence</span>
           <div className="space-y-2 relative before:absolute before:left-3.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-blue-100">
             {[
               { step: 'Immediate', desc: 'Calendar invitation + Confirmation email sent' },
@@ -102,11 +102,11 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
               { step: '1 Hour Before', desc: 'Agenda checklist & Meet room URL push' }
             ].map((step, idx) => (
               <div key={idx} className="flex items-start gap-3 relative pl-1">
-                <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 text-[10px] font-bold z-10">
+                <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 text-[10px] font-normal z-10">
                   {idx + 1}
                 </div>
                 <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 flex-1">
-                  <span className="font-bold text-slate-900 block text-[11px]">{step.step}</span>
+                  <span className="font-normal text-slate-900 block text-[11px]">{step.step}</span>
                   <span className="text-slate-600 text-[11px]">{step.desc}</span>
                 </div>
               </div>
@@ -123,16 +123,16 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
       interactivePreview: (
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-3 text-xs">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <span className="font-bold text-slate-800">Interactive Lead Routing Form</span>
-            <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Live Route</span>
+            <span className="font-normal text-slate-800">Interactive Lead Routing Form</span>
+            <span className="text-[10px] font-normal text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Live Route</span>
           </div>
           <div className="space-y-2">
             <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-              <label className="text-[10px] font-bold uppercase text-slate-400 block mb-1">Company Size</label>
-              <div className="text-xs font-bold text-slate-800">50 – 250 Employees (Enterprise Tier)</div>
+              <label className="text-[10px] font-normal uppercase text-slate-400 block mb-1">Company Size</label>
+              <div className="text-xs font-normal text-slate-800">50 – 250 Employees (Enterprise Tier)</div>
             </div>
             <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-emerald-900">
-              <span className="font-bold text-xs block mb-0.5">Matched Account Executive:</span>
+              <span className="font-normal text-xs block mb-0.5">Matched Account Executive:</span>
               <span className="text-xs">Rachel Vance (Assigned via Round-Robin Pool)</span>
             </div>
           </div>
@@ -146,22 +146,22 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
       icon: <Smartphone className="w-5 h-5 text-blue-600" />,
       interactivePreview: (
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-3 text-xs">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Available Everywhere You Work</span>
+          <span className="text-[11px] font-normal uppercase tracking-wider text-slate-400 block mb-1">Available Everywhere You Work</span>
           <div className="grid grid-cols-2 gap-2">
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
-              <span className="font-bold text-slate-800 block text-xs">Chrome Extension</span>
+              <span className="font-normal text-slate-800 block text-xs">Chrome Extension</span>
               <span className="text-[10px] text-slate-500">Insert available times directly inside Gmail</span>
             </div>
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
-              <span className="font-bold text-slate-800 block text-xs">iOS & Android App</span>
+              <span className="font-normal text-slate-800 block text-xs">iOS & Android App</span>
               <span className="text-[10px] text-slate-500">Share single-use links on the go</span>
             </div>
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
-              <span className="font-bold text-slate-800 block text-xs">Outlook Add-In</span>
+              <span className="font-normal text-slate-800 block text-xs">Outlook Add-In</span>
               <span className="text-[10px] text-slate-500">One-click calendar scheduling</span>
             </div>
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
-              <span className="font-bold text-slate-800 block text-xs">AI & API Webhooks</span>
+              <span className="font-normal text-slate-800 block text-xs">AI & API Webhooks</span>
               <span className="text-[10px] text-slate-500">Trigger Zapier & CRM workflows</span>
             </div>
           </div>
@@ -176,8 +176,8 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
       interactivePreview: (
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-3 text-xs">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <span className="font-bold text-slate-800">Team Admin & Governance</span>
-            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">SCIM / SSO Active</span>
+            <span className="font-normal text-slate-800">Team Admin & Governance</span>
+            <span className="text-[10px] font-normal text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">SCIM / SSO Active</span>
           </div>
           <div className="space-y-1.5">
             {[
@@ -186,10 +186,10 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
               { role: 'Talent Acquisition', members: '5 Seats', status: 'Managed' }
             ].map((group, idx) => (
               <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
-                <span className="font-bold text-slate-800">{group.role}</span>
+                <span className="font-normal text-slate-800">{group.role}</span>
                 <div className="flex items-center gap-2">
                   <span className="text-slate-500 text-[11px]">{group.members}</span>
-                  <span className="text-[10px] bg-slate-200 text-slate-700 font-bold px-1.5 py-0.2 rounded-xs">
+                  <span className="text-[10px] bg-slate-200 text-slate-700 font-normal px-1.5 py-0.2 rounded-xs">
                     {group.status}
                   </span>
                 </div>
@@ -211,12 +211,12 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center p-1 shrink-0">
               <img src="/icon-scheduling-3d.png" alt="Scheduling" className="w-full h-full object-contain" />
             </div>
-            <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+            <span className="text-sm sm:text-base font-normal text-[#0A0D14] tracking-tight">
               Scheduling
             </span>
           </div>
-          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
-            A better way to book your meetings
+          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
+            A better way to <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">book your meetings</span>
           </h2>
           <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed max-w-2xl">
             Connect your calendars, protect focus time with automated buffer guards, and let clients self-schedule in seconds without back-and-forth emails.
@@ -247,7 +247,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
                       }`}>
                         {feature.icon}
                       </div>
-                      <h3 className="font-bold text-base text-[#0A0D14]">
+                      <h3 className="font-normal text-base text-[#0A0D14]">
                         {feature.title}
                       </h3>
                     </div>
@@ -282,10 +282,10 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
           <div className="hidden lg:block lg:col-span-5 sticky top-28">
             <div className="bg-[#F8FAFC] rounded-3xl p-6 border border-[#E2E8F0] shadow-sm transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                <span className="text-[11px] font-normal uppercase tracking-wider text-slate-400">
                   Live Capability Preview
                 </span>
-                <span className="text-xs font-bold text-blue-600">
+                <span className="text-xs font-normal text-blue-600">
                   {features[activeIndex].title}
                 </span>
               </div>
@@ -296,7 +296,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
                 <span>Part of elev Enterprise & Teams</span>
                 <button
                   onClick={onOpenDemo}
-                  className="font-bold text-blue-600 hover:underline cursor-pointer"
+                  className="font-normal text-blue-600 hover:underline cursor-pointer"
                 >
                   Request guided tour →
                 </button>

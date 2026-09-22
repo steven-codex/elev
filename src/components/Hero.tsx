@@ -37,12 +37,12 @@ export default function Hero({ onOpenAuth }: HeroProps) {
           
           {/* Left Column: Value Prop & Conversion Form */}
           <div className="lg:col-span-6 space-y-6 text-left">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3.5 py-1.5 rounded-full text-xs font-bold border border-blue-200/70 shadow-2xs">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3.5 py-1.5 rounded-full text-xs font-normal border border-blue-200/70 shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
               <span>THE SCHEDULING AUTOMATION PLATFORM</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-normal text-slate-900 tracking-tight leading-[1.12]">
               Easy scheduling <br />
               <span className="text-blue-600">ahead.</span>
             </h1>
@@ -60,11 +60,11 @@ export default function Hero({ onOpenAuth }: HeroProps) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your work email"
-                  className="flex-1 px-4 py-3.5 rounded-full border border-slate-300 text-slate-800 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white shadow-2xs placeholder:text-slate-400 font-medium"
+                  className="flex-1 px-4 py-3.5 rounded-full border border-slate-300 text-slate-800 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white shadow-2xs placeholder:text-slate-400 font-normal"
                 />
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold text-sm px-7 py-3.5 rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                  className="bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-normal text-sm px-7 py-3.5 rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
                 >
                   <span>Sign up free</span>
                   <ArrowRight className="w-4 h-4" />
@@ -78,7 +78,7 @@ export default function Hero({ onOpenAuth }: HeroProps) {
             </form>
 
             {/* Micro proof badges */}
-            <div className="pt-6 border-t border-slate-200/80 flex flex-wrap items-center gap-6 text-xs text-slate-500 font-medium">
+            <div className="pt-6 border-t border-slate-200/80 flex flex-wrap items-center gap-6 text-xs text-slate-500 font-normal">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-1.5">
                   <img className="w-6 h-6 rounded-full border border-white" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80" alt="User" />
@@ -101,7 +101,7 @@ export default function Hero({ onOpenAuth }: HeroProps) {
             <div className="absolute -top-10 -right-10 w-72 h-72 bg-blue-100/60 rounded-full blur-3xl pointer-events-none -z-10" />
 
             {/* Floating micro-badge 1: Top Right */}
-            <div className="hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-lg border border-slate-200/80 text-xs text-slate-700 font-semibold absolute -top-4 -right-4 z-20 animate-bounce duration-1000">
+            <div className="hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-lg border border-slate-200/80 text-xs text-slate-700 font-normal absolute -top-4 -right-4 z-20 animate-bounce duration-1000">
               <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
               <span>Lead routed to Sarah based on territory</span>
             </div>
@@ -112,13 +112,13 @@ export default function Hero({ onOpenAuth }: HeroProps) {
             </div>
 
             {/* Floating micro-badge 2: Bottom Left */}
-            <div className="hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-lg border border-slate-200/80 text-xs text-slate-700 font-semibold absolute -bottom-5 -left-4 z-20">
+            <div className="hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-lg border border-slate-200/80 text-xs text-slate-700 font-normal absolute -bottom-5 -left-4 z-20">
               <Bell className="w-3.5 h-3.5 text-blue-600" />
               <span>Auto SMS reminder queued for 24h before</span>
             </div>
 
             {/* Floating micro-badge 3: Bottom Right */}
-            <div className="hidden sm:flex items-center gap-2 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 text-[11px] text-emerald-800 font-semibold absolute -bottom-3 right-8 z-20 shadow-xs">
+            <div className="hidden sm:flex items-center gap-2 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 text-[11px] text-emerald-800 font-normal absolute -bottom-3 right-8 z-20 shadow-xs">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
               <span>0 double-bookings guaranteed</span>
             </div>

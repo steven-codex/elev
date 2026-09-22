@@ -108,17 +108,17 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-slate-900 text-sm tracking-tight">Sarah Jenkins</h3>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-[#0055FF] px-2.5 py-0.5 rounded-full border border-blue-200/70">
+                <h3 className="font-normal text-slate-900 text-sm tracking-tight">Sarah Jenkins</h3>
+                <span className="inline-flex items-center gap-1 text-[10px] font-normal uppercase tracking-wider bg-blue-50 text-[#0055FF] px-2.5 py-0.5 rounded-full border border-blue-200/70">
                   <ShieldCheck className="w-3 h-3" />
                   Verified Host
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium">Principal Solutions Consultant at elev</p>
+              <p className="text-xs text-slate-500 font-normal">Principal Solutions Consultant at elev</p>
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-600 font-medium bg-white px-3.5 py-1.5 rounded-full border border-slate-200/80 shadow-2xs shrink-0">
+          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-600 font-normal bg-white px-3.5 py-1.5 rounded-full border border-slate-200/80 shadow-2xs shrink-0">
             <Globe className="w-3.5 h-3.5 text-[#0055FF]" />
             <span>Pacific Time (US & Canada)</span>
           </div>
@@ -130,17 +130,17 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
             <div>
               {/* Event Description */}
               <div className="mb-6 pb-5 border-b border-slate-100">
-                <h4 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                <h4 className="text-xl sm:text-2xl font-normal text-slate-900 tracking-tight">
                   30 Min Discovery & <span className="font-editorial italic font-normal text-[#0055FF]">Platform Tour</span>
                 </h4>
-                <div className="flex flex-wrap items-center gap-4 mt-2.5 text-xs text-slate-600 font-medium">
+                <div className="flex flex-wrap items-center gap-4 mt-2.5 text-xs text-slate-600 font-normal">
                   <div className="flex items-center gap-1.5 bg-blue-50 text-[#0055FF] px-2.5 py-1 rounded-md border border-blue-100">
                     <Clock className="w-3.5 h-3.5 text-[#0055FF]" />
-                    <span className="font-bold">30 mins</span>
+                    <span className="font-normal">30 mins</span>
                   </div>
                   <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-md border border-emerald-100">
                     <Video className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="font-semibold">Google Meet web conferencing</span>
+                    <span className="font-normal">Google Meet web conferencing</span>
                   </div>
                 </div>
                 <p className="text-xs text-slate-500 mt-2.5 leading-relaxed">
@@ -153,7 +153,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                 {/* Calendar Column (Left 7-span) */}
                 <div className="md:col-span-7">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-bold text-sm text-slate-900 font-sans">September 2026</span>
+                    <span className="font-normal text-sm text-slate-900 font-sans">September 2026</span>
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
@@ -174,7 +174,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                   </div>
 
                   {/* Day Headers */}
-                  <div className="grid grid-cols-7 text-center text-[11px] font-mono font-bold text-slate-400 mb-2.5 uppercase tracking-wider">
+                  <div className="grid grid-cols-7 text-center text-[11px] font-mono font-normal text-slate-400 mb-2.5 uppercase tracking-wider">
                     <span>Sun</span>
                     <span>Mon</span>
                     <span>Tue</span>
@@ -211,10 +211,10 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                           key={d}
                           type="button"
                           onClick={() => handleDayClick(d)}
-                          className={`p-2 rounded-xl font-bold transition-all relative cursor-pointer active:scale-[0.95] ${
+                          className={`p-2 rounded-xl font-normal transition-all relative cursor-pointer active:scale-[0.95] ${
                             isSelected
                               ? 'bg-[#0055FF] text-white shadow-md scale-[1.04]'
-                              : 'bg-blue-50/80 text-blue-900 hover:bg-blue-100 hover:text-blue-950 font-semibold'
+                              : 'bg-blue-50/80 text-blue-900 hover:bg-blue-100 hover:text-blue-950 font-normal'
                           }`}
                         >
                           {d}
@@ -236,10 +236,10 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                           key={d}
                           type="button"
                           onClick={() => handleDayClick(d)}
-                          className={`p-2 rounded-xl font-bold transition-all relative cursor-pointer active:scale-[0.95] ${
+                          className={`p-2 rounded-xl font-normal transition-all relative cursor-pointer active:scale-[0.95] ${
                             isSelected
                               ? 'bg-[#0055FF] text-white shadow-md scale-[1.04]'
-                              : 'bg-blue-50/80 text-blue-900 hover:bg-blue-100 hover:text-blue-950 font-semibold'
+                              : 'bg-blue-50/80 text-blue-900 hover:bg-blue-100 hover:text-blue-950 font-normal'
                           }`}
                         >
                           {d}
@@ -256,10 +256,10 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                           key={d}
                           type="button"
                           onClick={() => handleDayClick(d)}
-                          className={`p-2 rounded-xl font-bold transition-all relative cursor-pointer active:scale-[0.95] ${
+                          className={`p-2 rounded-xl font-normal transition-all relative cursor-pointer active:scale-[0.95] ${
                             isSelected
                               ? 'bg-[#0055FF] text-white shadow-md scale-[1.04]'
-                              : 'bg-blue-50/80 text-blue-900 hover:bg-blue-100 font-semibold'
+                              : 'bg-blue-50/80 text-blue-900 hover:bg-blue-100 font-normal'
                           }`}
                         >
                           {d}
@@ -273,9 +273,9 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                 {/* Time Slots Column (Right 5-span) */}
                 <div className="md:col-span-5 md:border-l md:border-slate-100 md:pl-6 flex flex-col justify-between">
                   <div>
-                    <div className="text-xs font-bold text-slate-900 mb-3 flex items-center justify-between">
+                    <div className="text-xs font-normal text-slate-900 mb-3 flex items-center justify-between">
                       <span>Thursday, Sep {selectedDay}</span>
-                      <span className="text-[11px] font-mono text-[#0055FF] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 font-semibold">
+                      <span className="text-[11px] font-mono text-[#0055FF] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 font-normal">
                         6 available
                       </span>
                     </div>
@@ -290,7 +290,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                             key={time}
                             type="button"
                             onClick={() => handleSelectTime(time)}
-                            className={`w-full py-2.5 px-3.5 rounded-xl text-xs font-bold transition-all border cursor-pointer active:scale-[0.97] flex items-center justify-between ${
+                            className={`w-full py-2.5 px-3.5 rounded-xl text-xs font-normal transition-all border cursor-pointer active:scale-[0.97] flex items-center justify-between ${
                               isChosen
                                 ? 'bg-[#0055FF] text-white border-[#0055FF] shadow-xs'
                                 : 'bg-slate-50/80 text-slate-800 border-slate-200 hover:border-blue-300 hover:bg-blue-50/60'
@@ -310,7 +310,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                       <button
                         type="button"
                         onClick={handleProceedToForm}
-                        className="w-full mt-3 py-3 px-4 bg-[#0055FF] hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.96] group/btn"
+                        className="w-full mt-3 py-3 px-4 bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white text-xs font-normal rounded-xl transition-all shadow-md hover:shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.96] group/btn"
                       >
                         <span>Next Step ({selectedTime})</span>
                         <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -320,7 +320,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
 
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-mono">
                     <span>Powered by elev</span>
-                    <span className="text-emerald-600 font-semibold flex items-center gap-1">
+                    <span className="text-emerald-600 font-normal flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       Real-time sync
                     </span>
@@ -335,20 +335,20 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
             <form onSubmit={handleSubmitBooking} className="space-y-4 animate-in fade-in duration-200">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div>
-                  <span className="text-[11px] font-mono text-[#0055FF] font-bold uppercase tracking-wider">Step 2 of 2</span>
-                  <h4 className="text-lg font-bold text-slate-900">Enter your details</h4>
+                  <span className="text-[11px] font-mono text-[#0055FF] font-normal uppercase tracking-wider">Step 2 of 2</span>
+                  <h4 className="text-lg font-normal text-slate-900">Enter your details</h4>
                 </div>
                 <button
                   type="button"
                   onClick={() => setStep('pick-time')}
-                  className="text-xs text-slate-500 hover:text-slate-800 font-semibold flex items-center gap-1 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 transition-colors"
+                  className="text-xs text-slate-500 hover:text-slate-800 font-normal flex items-center gap-1 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 transition-colors"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
                   Change time
                 </button>
               </div>
 
-              <div className="bg-blue-50/70 p-3.5 rounded-2xl border border-blue-100 flex items-center gap-3 text-xs text-blue-950 font-medium">
+              <div className="bg-blue-50/70 p-3.5 rounded-2xl border border-blue-100 flex items-center gap-3 text-xs text-blue-950 font-normal">
                 <CalendarIcon className="w-4 h-4 text-[#0055FF] shrink-0" />
                 <span>
                   <strong>30 Min Discovery</strong> on <strong>Thursday, Sep {selectedDay}, 2026</strong> at <strong>{selectedTime}</strong>
@@ -357,35 +357,35 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5">Your Name *</label>
+                  <label className="block text-xs font-normal text-slate-700 mb-1.5">Your Name *</label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] focus:border-transparent bg-white shadow-2xs font-medium"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] focus:border-transparent bg-white shadow-2xs font-normal"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5">Work Email *</label>
+                  <label className="block text-xs font-normal text-slate-700 mb-1.5">Work Email *</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] focus:border-transparent bg-white shadow-2xs font-medium"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] focus:border-transparent bg-white shadow-2xs font-normal"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-xs font-normal text-slate-700 mb-1.5">
                   What is your primary scheduling goal?
                 </label>
                 <select
                   value={goal}
                   onChange={(e) => setGoal(e.target.value)}
-                  className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] focus:border-transparent bg-white text-slate-800 font-medium"
+                  className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] focus:border-transparent bg-white text-slate-800 font-normal"
                 >
                   <option>Shorten inbound sales cycle & speed to lead</option>
                   <option>Automate recruiting panel interviews</option>
@@ -401,7 +401,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-[#0055FF] hover:bg-blue-700 text-white text-xs font-bold px-6 py-3 rounded-full shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:opacity-70 active:scale-[0.96]"
+                  className="bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white text-xs font-normal px-6 py-3 rounded-full shadow-md hover:shadow-blue-500/20 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-70 active:scale-[0.96]"
                 >
                   {isSubmitting ? (
                     <span>Scheduling...</span>
@@ -423,7 +423,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                 <CheckCircle2 className="w-7 h-7 stroke-[2.5]" />
               </div>
 
-              <h4 className="text-xl font-bold text-slate-900 tracking-tight">You are scheduled!</h4>
+              <h4 className="text-xl font-normal text-slate-900 tracking-tight">You are scheduled!</h4>
               <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 leading-relaxed">
                 A calendar invitation with Google Meet details has been sent to <strong>{email}</strong>.
               </p>
@@ -431,8 +431,8 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
               {/* Meeting Summary Box */}
               <div className="my-5 p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 text-left max-w-md mx-auto space-y-3">
                 <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/80">
-                  <span className="text-xs font-bold text-slate-900">30 Min Discovery & Platform Tour</span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100/70 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                  <span className="text-xs font-normal text-slate-900">30 Min Discovery & Platform Tour</span>
+                  <span className="text-[10px] font-normal uppercase tracking-wider text-emerald-700 bg-emerald-100/70 px-2.5 py-0.5 rounded-full border border-emerald-200">
                     Confirmed
                   </span>
                 </div>
@@ -444,7 +444,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                   </div>
                   <div className="flex items-center gap-2">
                     <Video className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-[#0055FF] hover:underline flex items-center gap-1 cursor-pointer font-medium">
+                    <span className="text-[#0055FF] hover:underline flex items-center gap-1 cursor-pointer font-normal">
                       meet.google.com/elv-zpk-xrq
                       <ExternalLink className="w-3 h-3" />
                     </span>
@@ -453,14 +453,14 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
 
                 {/* Automated Workflows Trigger Indicator */}
                 <div className="mt-3 pt-2.5 border-t border-slate-200 space-y-1.5">
-                  <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                  <div className="text-[10px] font-mono font-normal uppercase tracking-wider text-slate-400">
                     Automated Workflows Triggered:
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-medium">
+                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-normal">
                     <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
                     <span>Salesforce Lead #8491 created & assigned</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-medium">
+                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-normal">
                     <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
                     <span>Calendar invite + SMS reminder queued (24h before)</span>
                   </div>
@@ -470,7 +470,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
               <button
                 type="button"
                 onClick={handleReset}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-[#0055FF] bg-slate-100 hover:bg-blue-50 px-4 py-2 rounded-full transition-colors cursor-pointer active:scale-[0.96]"
+                className="inline-flex items-center gap-1.5 text-xs font-normal text-slate-700 hover:text-[#0055FF] bg-slate-100 hover:bg-blue-50 px-4 py-2 rounded-full transition-colors cursor-pointer active:scale-[0.96]"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Test another booking flow</span>

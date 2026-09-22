@@ -63,25 +63,32 @@ const LOGOS = [
   }
 ];
 
+import { Reveal, StaggerGroup } from '../motion';
+
 export default function LogoTicker() {
   return (
     <section className="py-12 border-y border-slate-100 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-8">
-          Simplified scheduling for more than <span className="text-slate-900 font-bold">100,000</span> high-growth companies worldwide
-        </p>
+        <Reveal y={16}>
+          <p className="text-center text-xs sm:text-sm font-normal text-slate-500 uppercase tracking-wider mb-8">
+            Simplified scheduling for more than <span className="text-slate-900 font-normal">100,000</span> high-growth companies worldwide
+          </p>
+        </Reveal>
 
-        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 lg:gap-16 text-slate-400 opacity-80 hover:opacity-100 transition-opacity">
+        <StaggerGroup
+          stagger={0.06}
+          className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 lg:gap-16 text-slate-400 opacity-80 hover:opacity-100 transition-opacity"
+        >
           {LOGOS.map((logo) => (
             <div
               key={logo.name}
-              className="hover:text-slate-700 transition-colors cursor-default"
+              className="hover:text-slate-700 transition-colors cursor-default hover-lift"
               title={logo.name}
             >
               {logo.svg}
             </div>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

@@ -70,12 +70,12 @@ export default function CustomerStoriesCarousel() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E2E8F0] shadow-2xs mb-4">
             <span className="w-2 h-2 rounded-full bg-[#0055FF] animate-pulse" />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#0A0D14]">
+            <span className="text-[11px] font-normal uppercase tracking-widest text-[#0A0D14]">
               Customer Stories
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-bold leading-tight tracking-tight text-[#0A0D14] text-balance">
-            Real customers. <span className="font-editorial italic font-normal text-[#0055FF]">Real results.</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-normal leading-tight tracking-tight text-[#0A0D14] text-balance">
+            Real customers <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">Real results</span>
           </h2>
           <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed max-w-xl mx-auto text-pretty">
             Discover how modern teams use elev to eliminate scheduling friction and protect productive time.
@@ -87,7 +87,7 @@ export default function CustomerStoriesCarousel() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <div className="lg:col-span-8 space-y-5 text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-normal border border-blue-200">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#0055FF]" />
                 <span className="tabular-nums">Verified Metric: {current.impact}</span>
               </div>
@@ -101,18 +101,18 @@ export default function CustomerStoriesCarousel() {
               </p>
 
               <div className="pt-2 border-t border-slate-200/80 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#0055FF] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                <div className="w-10 h-10 rounded-full bg-[#0055FF] text-white flex items-center justify-center font-normal text-sm shrink-0 shadow-xs">
                   {current.author.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-slate-900">{current.author}</h4>
-                  <p className="text-xs text-slate-500">{current.role}, <span className="font-semibold text-slate-700">{current.company}</span></p>
+                  <h4 className="font-normal text-sm text-slate-900">{current.author}</h4>
+                  <p className="text-xs text-slate-500">{current.role}, <span className="font-normal text-slate-700">{current.company}</span></p>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-4 bg-white rounded-xl p-6 sm:p-7 border border-[#E2E8F0] text-center space-y-4 relative overflow-hidden shadow-2xs">
-              <div className="w-12 h-12 mx-auto rounded-full bg-amber-50 text-amber-500 border border-amber-200/80 flex items-center justify-center shadow-2xs font-semibold text-2xl">
+              <div className="w-12 h-12 mx-auto rounded-full bg-amber-50 text-amber-500 border border-amber-200/80 flex items-center justify-center shadow-2xs font-normal text-2xl">
                 <span className="leading-none select-none">★</span>
               </div>
 
@@ -120,14 +120,14 @@ export default function CustomerStoriesCarousel() {
                 <span className="text-3xl sm:text-4xl font-editorial font-normal text-[#0A0D14] block tabular-nums tracking-tight">
                   5.0 / 5.0
                 </span>
-                <span className="text-[11px] text-slate-500 uppercase tracking-widest font-mono font-bold mt-1 block">
+                <span className="text-[11px] text-slate-500 uppercase tracking-widest font-mono font-normal mt-1 block">
                   User Satisfaction
                 </span>
               </div>
 
-              <div className="pt-3 border-t border-slate-200/80 text-xs text-slate-600 font-medium flex items-center justify-center gap-1.5">
+              <div className="pt-3 border-t border-slate-200/80 text-xs text-slate-600 font-normal flex items-center justify-center gap-1.5">
                 <span className="text-slate-400">Category:</span>
-                <span className="font-semibold text-slate-900 bg-white px-2.5 py-0.5 rounded-full border border-slate-200/60 shadow-2xs">
+                <span className="font-normal text-slate-900 bg-white px-2.5 py-0.5 rounded-full border border-slate-200/60 shadow-2xs">
                   {current.category}
                 </span>
               </div>

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import GradientWaves from './GradientWaves';
 import ScrollExpand from './ScrollExpand';
+import { Reveal, ImageReveal } from '../motion';
 
 interface MultiProductHeroProps {
   onOpenAuth: (mode: 'signup' | 'login') => void;
@@ -22,7 +23,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
   const [taskChecked, setTaskChecked] = useState(true);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [workEmail, setWorkEmail] = useState('');
-  const [activeProductTab, setActiveProductTab] = useState<'scheduling' | 'velie' | 'notetaker' | 'payments'>('scheduling');
+  const [activeProductTab, setActiveProductTab] = useState<'scheduling' | 'velie' | 'notetaker' | 'payments'>('velie');
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,158 +124,195 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
   };
 
   return (
-    <section className="w-full bg-white pt-8 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 font-sans antialiased">
-      <div className="max-w-7xl mx-auto">
+    <section className="w-full bg-white pt-12 sm:pt-16 lg:pt-20 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-8 font-sans antialiased relative">
+      {/* Massive Background Fluid Wave Asset (Bleeding through header zone matching Frame 11) */}
+      <div 
+        className="absolute -top-24 sm:-top-36 lg:-top-52 xl:-top-60 left-1/2 -translate-x-1/2 w-full max-w-[2600px] pointer-events-none -z-0 overflow-visible flex flex-col items-center select-none"
+        aria-hidden="true"
+      >
+        {/* Atmospheric Blue Glow Clouds matching Frame 11 */}
+        <div 
+          className="absolute -top-20 sm:-top-32 lg:-top-44 -left-16 sm:-left-28 w-[600px] sm:w-[850px] h-[550px] sm:h-[750px] rounded-full bg-blue-400/22 blur-[130px] pointer-events-none" 
+        />
+        <div 
+          className="absolute -top-16 sm:-top-28 lg:-top-40 -right-16 sm:-right-28 w-[650px] sm:w-[900px] h-[600px] sm:h-[800px] rounded-full bg-sky-300/20 blur-[140px] pointer-events-none" 
+        />
+        <div 
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] sm:w-[1100px] h-[500px] sm:h-[700px] rounded-full bg-sky-200/22 blur-[150px] pointer-events-none" 
+        />
+
+        {/* Full-Scale Fluid Wave Asset (Foto 1 matched exactly to Frame 11 size & position) */}
+        <img
+          src="/hero-bg-fluid.png"
+          alt=""
+          className="relative z-0 w-[1400px] sm:w-[1850px] lg:w-[2250px] xl:w-[2500px] max-w-none h-auto object-contain select-none pointer-events-none mx-auto"
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* =========================================================================
-            CENTERED HERO HEADER & SIGNATURE CONVERSION ENGINE
+            CENTERED HERO HEADER & SIGNATURE CONVERSION ENGINE (EXPANDED SPACING)
            ========================================================================= */}
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12 sm:mb-16">
-          <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-bold tracking-tight text-[#0A0D14] leading-[1.08] text-balance">
-            Easy scheduling ahead. <br className="hidden sm:inline" />
-            <span className="font-editorial italic font-normal text-[#0055FF]">One platform for all of meetings</span>.
-          </h1>
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto mb-28 sm:mb-36 lg:mb-48">
+          <Reveal delay={0.1} y={24}>
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-normal tracking-tight text-[#0A0D14] leading-[1.08] text-balance">
+              Easy scheduling ahead <br className="hidden sm:inline" />
+              <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">One platform for all of meetings</span>
+            </h1>
+          </Reveal>
           
-          <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mt-5 leading-relaxed font-normal text-pretty mx-auto">
-            elev connects and simplifies all of the work around meetings — from scheduling, payments, and meeting prep to notetaking, contact intelligence, and follow-up.
-          </p>
+          <Reveal delay={0.25} y={16}>
+            <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mt-6 leading-relaxed font-normal text-pretty mx-auto">
+              elev connects and simplifies all of the work around meetings — from scheduling, payments, and meeting prep to notetaking, contact intelligence, and follow-up.
+            </p>
+          </Reveal>
 
           {/* Email Sign-up Form */}
-          <form onSubmit={handleEmailSubmit} className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg mx-auto">
-            <input
-              type="email"
-              value={workEmail}
-              onChange={(e) => setWorkEmail(e.target.value)}
-              placeholder="Enter your work email"
-              className="w-full sm:flex-1 h-13 px-6 rounded-full border border-[#E2E8F0] bg-white text-sm text-[#0A0D14] placeholder:text-slate-400 focus:outline-none focus:border-[#0055FF] focus:ring-4 focus:ring-[#0055FF]/10 shadow-2xs transition-[border-color,box-shadow] duration-150 ease-out font-medium"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full sm:w-auto h-13 px-8 rounded-full bg-[#0055FF] hover:bg-[#0047D6] active:scale-[0.96] text-white text-sm font-semibold whitespace-nowrap shadow-xs hover:shadow-md transition-[background-color,transform,box-shadow] duration-150 ease-out cursor-pointer flex items-center justify-center gap-2 shrink-0"
-            >
-              <span>Get started for free</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </form>
+          <Reveal delay={0.38} y={16} className="w-full">
+            <form onSubmit={handleEmailSubmit} className="mt-9 sm:mt-11 flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg mx-auto">
+              <input
+                type="email"
+                value={workEmail}
+                onChange={(e) => setWorkEmail(e.target.value)}
+                placeholder="Enter your work email"
+                className="w-full sm:flex-1 h-13 px-6 rounded-full border border-[#E2E8F0] bg-white text-sm text-[#0A0D14] placeholder:text-slate-400 focus:outline-none focus:border-[#0055FF] focus:ring-4 focus:ring-[#0055FF]/10 shadow-2xs transition-[border-color,box-shadow] duration-150 ease-out font-normal"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full sm:w-auto h-13 px-8 rounded-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 active:scale-[0.96] text-white text-sm font-normal whitespace-nowrap shadow-xs hover:shadow-md hover:shadow-blue-500/20 transition-[transform,box-shadow,filter] duration-150 ease-out cursor-pointer flex items-center justify-center gap-2 shrink-0"
+              >
+                <span>Get started for free</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
+          </Reveal>
 
           {/* Reassurance Micro-Copy */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-4 text-xs text-slate-500">
-            <span className="flex items-center gap-1.5 font-medium text-slate-700">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
-              Create your free account
-            </span>
-            <span className="text-slate-300">•</span>
-            <span>No credit card required</span>
-            <span className="text-slate-300">•</span>
-            <button
-              type="button"
-              onClick={onOpenDemo}
-              className="text-[#0055FF] font-semibold hover:underline active:scale-[0.96] transition-transform duration-150 ease-out cursor-pointer"
-            >
-              Talk to sales or view demo →
-            </button>
-          </div>
+          <Reveal delay={0.48} y={12}>
+            <div className="flex flex-wrap items-center justify-center gap-3.5 mt-5 sm:mt-6 text-xs text-slate-500">
+              <span className="flex items-center gap-1.5 font-normal text-slate-700">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
+                Create your free account
+              </span>
+              <span className="text-slate-300">•</span>
+              <span>No credit card required</span>
+              <span className="text-slate-300">•</span>
+              <button
+                type="button"
+                onClick={onOpenDemo}
+                className="text-[#0055FF] font-normal hover:underline active:scale-[0.96] transition-transform duration-150 ease-out cursor-pointer"
+              >
+                Talk to sales or view demo →
+              </button>
+            </div>
+          </Reveal>
         </div>
       </div>
 
       {/* Hero Interactive Stage Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="w-full relative rounded-[32px] bg-gradient-to-br from-[#93C5FD] via-[#60A5FA] to-[#3B82F6] overflow-hidden shadow-xl group flex flex-col justify-center items-center p-6 sm:p-12">
+      <ImageReveal delay={0.6} y={32} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
+        <div className="w-full relative rounded-[32px] sm:rounded-[36px] bg-[#1E60F2] bg-[url('/hero-fluid-wave-bg.png')] bg-cover bg-center overflow-hidden shadow-2xl group flex flex-col justify-center items-center p-6 sm:p-12 pt-8 sm:pt-12">
           
-          {/* React Bits WebGL GradientWaves Canvas Layer */}
-          <div className="absolute inset-0 pointer-events-none opacity-90 z-0">
-            <GradientWaves
-              horizonColor="#1D4ED8"
-              waveColor="#3B82F6"
-              crestColor="#FFFFFF"
-              speed={0.45}
-              amplitude={2.8}
-              waveScale={0.7}
-              waveRatio={0.9}
-              swell={32}
-              turbulence={22}
-              tilt={1.11}
-              zoom={1.0}
-              height={5.2}
-              fogDepth={16}
-              detail="medium"
-              brightness={1.2}
-              opacity={0.95}
-              mouseInteraction={true}
-              parallaxStrength={0.5}
-              grain={true}
-              grainIntensity={0.04}
-            />
-          </div>
-
-          {/* White Faded Diagonal Dot Pattern Overlay with Looping Animation */}
-          <div 
-            className="absolute inset-0 opacity-25 bg-[radial-gradient(#FFFFFF_1.5px,transparent_1.5px)] [background-size:18px_18px] pointer-events-none animate-dot-pulse-light group-hover:opacity-40 transition-opacity duration-500 z-0"
-            style={{
-              maskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0) 85%)',
-              WebkitMaskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0) 85%)'
-            }}
-          />
+          {/* Subtle Ambient Vignette / Glass Depth */}
+          <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay pointer-events-none z-0" />
           
           {/* Inner Content Wrapper */}
-          <div className="relative z-10 w-full max-w-[1140px] mx-auto flex flex-col items-center justify-center gap-5">
-            {/* Top Floating Product Pill Bar (Circular Gradient Border Beam) */}
-            <div className="flex items-center justify-center gap-2 relative z-20">
-              <div className="inline-flex items-center gap-3 sm:gap-4 p-2 sm:p-2.5 px-4 sm:px-5 rounded-full bg-white/95 backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.06),0_2px_6px_rgba(0,0,0,0.02)] border border-slate-200/80 ring-1 ring-black/[0.02]">
+          <div className="relative z-10 w-full max-w-[1140px] mx-auto flex flex-col items-center justify-center">
+            
+            {/* Top Floating Product Pill Bar with Organic Shaping Fillet Neck (Matched to Reference Photo 1) */}
+            <div className="flex flex-col items-center relative z-20 -mb-[2px]">
+              
+              {/* The Pill Dock Bar: Active Tab Elevated with Optical Proportions Centered on Icon */}
+              <div className="inline-flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full bg-white/95 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,35,102,0.12),0_2px_8px_rgba(0,0,0,0.04)] border border-slate-100/90 relative z-20">
                 {[
-                  { id: 'scheduling', icon3d: '/icon-scheduling-3d.png', label: 'Scheduling' },
-                  { id: 'velie', icon3d: '/icon-velie-3d.png', label: 'Velie AI' },
-                  { id: 'notetaker', icon3d: '/icon-notetaker-3d.png', label: 'Notetaker' },
-                  { id: 'payments', icon3d: '/icon-payments-3d.png', label: 'Payments' },
+                  { 
+                    id: 'scheduling', 
+                    icon3d: '/icon-scheduling-3d.png', 
+                    label: 'Scheduling',
+                    svgPath: "M64 12C75.283 12 82 23.0983 82 34.3813V77.6175C82 88.9007 75.2832 100 64 100C39.6995 100 20 80.3005 20 56C20 31.6995 39.6995 12 64 12Z"
+                  },
+                  { 
+                    id: 'velie', 
+                    icon3d: '/icon-velie-3d.png', 
+                    label: 'Velie AI',
+                    svgPath: "M44 12H58C71.255 12 82 22.745 82 36V76C82 89.255 71.255 100 58 100H44C30.745 100 20 89.255 20 76V36C20 22.745 30.745 12 44 12Z"
+                  },
+                  { 
+                    id: 'notetaker', 
+                    icon3d: '/icon-notetaker-3d.png', 
+                    label: 'Notetaker',
+                    svgPath: "M44 12H58C71.255 12 82 22.745 82 36V76C82 89.255 71.255 100 58 100H44C30.745 100 20 89.255 20 76V36C20 22.745 30.745 12 44 12Z"
+                  },
+                  { 
+                    id: 'payments', 
+                    icon3d: '/icon-payments-3d.png', 
+                    label: 'Payments',
+                    svgPath: "M38 12C26.717 12 20 23.0983 20 34.3813V77.6175C20 88.9007 26.7168 100 38 100C62.3005 100 82 80.3005 82 56C82 31.6995 62.3005 12 38 12Z"
+                  },
                 ].map((item) => {
                   const active = activeProductTab === item.id;
                   return (
-                    <div key={item.id} className="relative flex items-center justify-center p-1.5 group/tab">
-                      
-                      {/* OUTER FILLED IRIDESCENT HOLOGRAPHIC DISK (Persis Gambar Ref: Full Pastel Mesh Disk) */}
-                      <div
-                        className={`absolute inset-0 rounded-full overflow-hidden transition-all duration-300 pointer-events-none ${
-                          active
-                            ? 'opacity-100 scale-100 shadow-[0_8px_20px_rgba(244,114,182,0.25)]'
-                            : 'opacity-0 group-hover/tab:opacity-85 scale-95 group-hover/tab:scale-100'
-                        }`}
-                      >
-                        {/* Rotating Holographic Soft Pastel Gradient (Pink, Yellow, Mint, Sky Cyan, Lavender) */}
-                        <div
-                          className="w-[140%] h-[140%] -left-[20%] -top-[20%] absolute rounded-full animate-border-beam-spin origin-center"
-                          style={{
-                            background: 'conic-gradient(from 0deg, #FFB7B2 0%, #FFDAC1 18%, #E2F0CB 38%, #B5EAD7 58%, #C7CEEA 78%, #FFB7B2 100%)'
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setActiveProductTab(item.id as any)}
+                      className="relative w-[62px] sm:w-[70px] h-[82px] sm:h-[90px] flex items-center justify-center transition-transform duration-150 cursor-pointer active:scale-95 group select-none"
+                      title={item.label}
+                    >
+                      {/* EBN/TIMBUL OPTICALLY CENTERED FIGMA VECTOR SHAPE */}
+                      {active && (
+                        <motion.div
+                          layoutId="activeTabTimbul"
+                          className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center filter drop-shadow-[0_8px_16px_rgba(0,85,255,0.22)]"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 380,
+                            damping: 28,
+                            mass: 0.85
                           }}
-                        />
-                      </div>
+                        >
+                          <svg
+                            viewBox="20 12 62 88"
+                            className="w-full h-full"
+                            fill="none"
+                            preserveAspectRatio="none"
+                          >
+                            <path
+                              d={item.svgPath}
+                              fill="white"
+                            />
+                          </svg>
+                        </motion.div>
+                      )}
 
-                      {/* INNER CONCENTRIC FROSTED GLASS RING BUTTON (Semi-Transparent White Glass Disc Inset) */}
-                      <button
-                        type="button"
-                        onClick={() => setActiveProductTab(item.id as any)}
-                        className={`relative z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center p-2.5 transition-all duration-200 active:scale-[0.95] cursor-pointer ${
+                      {/* 3D Glassmorphic Icon */}
+                      <img
+                        src={item.icon3d}
+                        alt={item.label}
+                        className={`relative z-10 w-11 h-11 sm:w-12 sm:h-12 object-contain transition-all duration-200 pointer-events-none ${
                           active
-                            ? 'bg-white/45 backdrop-blur-lg border border-white/90 shadow-[inset_0_1.5px_3px_rgba(255,255,255,0.9),0_4px_16px_rgba(255,255,255,0.5)]'
-                            : 'bg-slate-100/70 hover:bg-white/45 backdrop-blur-md border border-slate-200/60 hover:border-white/90'
+                            ? 'scale-110 drop-shadow-md opacity-100'
+                            : 'opacity-60 group-hover:opacity-100 group-hover:scale-105'
                         }`}
-                        title={item.label}
-                      >
-                        {/* CENTER 3D GLASSMORPHIC ICON */}
-                        <img
-                          src={item.icon3d}
-                          alt={item.label}
-                          className={`w-full h-full object-contain transition-all duration-200 ${
-                            active
-                              ? 'scale-110 drop-shadow-md'
-                              : 'opacity-60 group-hover/tab:opacity-100 group-hover/tab:scale-105'
-                          }`}
-                        />
-                      </button>
-                    </div>
+                      />
+                    </button>
                   );
                 })}
               </div>
+
+              {/* Organic Shaping Fillet Neck / Speech-Bubble Notch Connecting Dock to White Card */}
+              <div className="w-28 h-5 -mt-1.5 relative z-10 flex justify-center pointer-events-none">
+                <svg
+                  viewBox="0 0 120 24"
+                  className="w-full h-full fill-white"
+                  preserveAspectRatio="none"
+                >
+                  <path d="M 0,24 C 28,24 34,0 46,0 L 74,0 C 86,0 92,24 120,24 Z" />
+                </svg>
+              </div>
+
             </div>
 
             {/* Inner White Stage Card */}
@@ -303,12 +341,12 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+                  <span className="text-sm sm:text-base font-normal text-[#0A0D14] tracking-tight">
                     {activeProductTab === 'velie' ? 'Velie AI' : activeProductTab === 'scheduling' ? 'Scheduling' : activeProductTab === 'notetaker' ? 'Notetaker' : 'Payments'}
                   </span>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A0D14] tracking-tight leading-snug">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-normal text-[#0A0D14] tracking-tight leading-snug">
                   {activeProductTab === 'scheduling' && "Book meetings with the world’s #1 scheduling tool"}
                   {activeProductTab === 'velie' && "Introducing your 24/7 AI scheduling assistant"}
                   {activeProductTab === 'notetaker' && "Actionable, shareable recaps for every meeting"}
@@ -324,7 +362,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
 
                 <a
                   href={`#${activeProductTab}`}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#0055FF] hover:text-[#0047D6] active:scale-[0.97] transition-transform duration-150 mt-6 group cursor-pointer"
+                  className="inline-flex items-center gap-2 text-sm font-normal text-[#0055FF] hover:text-[#0047D6] active:scale-[0.97] transition-transform duration-150 mt-6 group cursor-pointer"
                 >
                   <span>Learn more</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -377,13 +415,13 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                         
                         {/* Month Header */}
                         <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-100">
-                          <span className="text-xs font-semibold text-slate-400 select-none">‹</span>
-                          <span className="text-xs font-bold text-slate-800 tracking-wide font-sans tabular-nums">July 2026</span>
-                          <span className="text-xs font-semibold text-slate-400 select-none">›</span>
+                          <span className="text-xs font-normal text-slate-400 select-none">‹</span>
+                          <span className="text-xs font-normal text-slate-800 tracking-wide font-sans tabular-nums">July 2026</span>
+                          <span className="text-xs font-normal text-slate-400 select-none">›</span>
                         </div>
 
                         {/* Days of week */}
-                        <div className="grid grid-cols-7 gap-1 text-[10px] font-bold text-slate-400 text-center mb-1">
+                        <div className="grid grid-cols-7 gap-1 text-[10px] font-normal text-slate-400 text-center mb-1">
                           <span>SUN</span>
                           <span>MON</span>
                           <span>TUE</span>
@@ -394,7 +432,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                         </div>
 
                         {/* Days Grid (1..31) */}
-                        <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium text-slate-700 tabular-nums">
+                        <div className="grid grid-cols-7 gap-1 text-center text-xs font-normal text-slate-700 tabular-nums">
                           <span className="text-slate-200"></span>
                           <span className="text-slate-200"></span>
                           <span className="text-slate-200"></span>
@@ -406,11 +444,11 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                                 key={d}
                                 type="button"
                                 onClick={() => handleSelectDate(d)}
-                                className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-semibold transition-all duration-150 cursor-pointer active:scale-[0.94] ${
+                                className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-normal transition-all duration-150 cursor-pointer active:scale-[0.94] ${
                                   isSelected
                                     ? 'bg-[#0055FF] text-white shadow-xs scale-105'
                                     : isTarget
-                                    ? 'bg-blue-100 text-[#0055FF] font-bold ring-2 ring-[#0055FF]/40'
+                                    ? 'bg-blue-100 text-[#0055FF] font-normal ring-2 ring-[#0055FF]/40'
                                     : 'hover:bg-slate-100 text-slate-700'
                                 }`}
                               >
@@ -434,10 +472,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                             <div>
                               <div className="flex items-center justify-between gap-2 mb-3.5">
                                 <div>
-                                  <div className="text-xs font-bold text-slate-900 tracking-tight">Thursday</div>
-                                  <div className="text-[11px] font-medium text-slate-500 tabular-nums">July 14, 2026</div>
+                                  <div className="text-xs font-normal text-slate-900 tracking-tight">Thursday</div>
+                                  <div className="text-[11px] font-normal text-slate-500 tabular-nums">July 14, 2026</div>
                                 </div>
-                                <span className="text-[10px] font-semibold text-blue-600 bg-blue-50/90 px-2.5 py-0.5 rounded-full border border-blue-100/80 shrink-0 shadow-2xs tabular-nums">
+                                <span className="text-[10px] font-normal text-blue-600 bg-blue-50/90 px-2.5 py-0.5 rounded-full border border-blue-100/80 shrink-0 shadow-2xs tabular-nums">
                                   2 slots open
                                 </span>
                               </div>
@@ -445,7 +483,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                               <div className="space-y-2.5">
                                 <button
                                   type="button"
-                                  className="w-full py-2.5 px-3 rounded-xl border border-blue-100 bg-blue-50/40 text-[#0055FF] text-xs font-semibold text-center hover:bg-blue-100/70 hover:border-blue-200 active:scale-[0.97] transition-all duration-150 ease-out cursor-pointer flex items-center justify-center gap-1.5 tabular-nums"
+                                  className="w-full py-2.5 px-3 rounded-xl border border-blue-100 bg-blue-50/40 text-[#0055FF] text-xs font-normal text-center hover:bg-blue-100/70 hover:border-blue-200 active:scale-[0.97] transition-all duration-150 ease-out cursor-pointer flex items-center justify-center gap-1.5 tabular-nums"
                                 >
                                   <span>12:30 PM</span>
                                 </button>
@@ -453,7 +491,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                                 <button
                                   type="button"
                                   onClick={handleConfirmSlot}
-                                  className={`w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-center active:scale-[0.97] transition-all duration-150 ease-out flex items-center justify-center gap-2 cursor-pointer tabular-nums ${
+                                  className={`w-full py-2.5 px-3 rounded-xl text-xs font-normal text-center active:scale-[0.97] transition-all duration-150 ease-out flex items-center justify-center gap-2 cursor-pointer tabular-nums ${
                                     slotBooked
                                       ? 'bg-[#0055FF] text-white shadow-md shadow-blue-500/25'
                                       : 'border border-blue-100 bg-blue-50/40 text-[#0055FF] hover:bg-blue-100/70 hover:border-blue-200'
@@ -464,7 +502,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                                       initial={{ opacity: 0, scale: 0.85 }}
                                       animate={{ opacity: 1, scale: 1 }}
                                       transition={{ type: 'spring', stiffness: 450, damping: 25 }}
-                                      className="flex items-center gap-1.5 font-bold"
+                                      className="flex items-center gap-1.5 font-normal"
                                     >
                                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                                       <span>Booked</span>
@@ -483,13 +521,13 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                                   animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                                   exit={{ opacity: 0, y: 4, scale: 0.95, filter: 'blur(3px)' }}
                                   transition={{ type: 'spring', stiffness: 420, damping: 26 }}
-                                  className="mt-3 py-2.5 px-3 rounded-xl bg-slate-900 text-white text-[11px] font-medium flex items-center justify-center gap-2 shadow-lg shadow-slate-900/10 border border-slate-800/80 w-full"
+                                  className="mt-3 py-2.5 px-3 rounded-xl bg-slate-900 text-white text-[11px] font-normal flex items-center justify-center gap-2 shadow-lg shadow-slate-900/10 border border-slate-800/80 w-full"
                                 >
                                   <span className="relative flex h-2 w-2 shrink-0">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                                   </span>
-                                  <span className="tracking-tight font-semibold text-slate-100">Calendar hold sent</span>
+                                  <span className="tracking-tight font-normal text-slate-100">Calendar hold sent</span>
                                 </motion.div>
                               )}
                             </AnimatePresence>
@@ -517,7 +555,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
           </div>
         </div>
       </div>
-      </div>
+      </ImageReveal>
 
       {/* Bento Grid Section (Constrained inside max-w-7xl) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
@@ -533,7 +571,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               
               {/* Header */}
               <div className="text-left">
-                <h3 className="text-lg sm:text-[1.25rem] font-bold text-[#0A0D14] tracking-tight leading-snug">
+                <h3 className="text-lg sm:text-[1.25rem] font-normal text-[#0A0D14] tracking-tight leading-snug">
                   Meeting automation <span className="font-normal text-[#94A3B8]">that</span>
                 </h3>
                 <p className="text-lg sm:text-[1.25rem] font-normal text-[#94A3B8] tracking-tight leading-snug">
@@ -551,7 +589,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                     <span className="w-2 h-2 rounded-full bg-amber-400/80" />
                     <span className="w-2 h-2 rounded-full bg-emerald-400/80" />
                   </div>
-                  <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-medium text-slate-600 shadow-2xs">
+                  <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-normal text-slate-600 shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
                     <span>elev.ai/notetaker</span>
                   </div>
@@ -576,10 +614,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                       {taskChecked && <Check className="w-3 h-3 stroke-[3]" />}
                     </motion.div>
                     <div>
-                      <p className="font-semibold text-slate-800 text-xs leading-tight">
+                      <p className="font-normal text-slate-800 text-xs leading-tight">
                         Sync action items to Notion & Slack
                       </p>
-                      <p className="text-emerald-600 font-semibold text-[10px] mt-1 flex items-center gap-1">
+                      <p className="text-emerald-600 font-normal text-[10px] mt-1 flex items-center gap-1">
                         <span>Elena assigned • Due Friday</span>
                       </p>
                     </div>
@@ -591,10 +629,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                       <Clock className="w-2.5 h-2.5 text-slate-400" />
                     </div>
                     <div>
-                      <p className="font-medium text-slate-600 text-xs leading-tight">
+                      <p className="font-normal text-slate-600 text-xs leading-tight">
                         Send Google Meet recap with video timestamps
                       </p>
-                      <p className="text-blue-600 font-semibold text-[10px] mt-1">
+                      <p className="text-blue-600 font-normal text-[10px] mt-1">
                         Generated in 1.4s post-call
                       </p>
                     </div>
@@ -610,7 +648,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               
               {/* Header */}
               <div className="text-left mb-4">
-                <h3 className="text-lg sm:text-xl font-bold text-[#0A0D14] tracking-tight">
+                <h3 className="text-lg sm:text-xl font-normal text-[#0A0D14] tracking-tight">
                   VIP smart scheduling
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed text-pretty">
@@ -622,8 +660,8 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               <div className="bg-[#F8FAFC] rounded-2xl p-4 border border-[#E2E8F0]/80 shadow-2xs space-y-3">
                 {/* Match Header */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-600">Best match</span>
-                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-200/60 tabular-nums">
+                  <span className="text-xs font-normal text-slate-600">Best match</span>
+                  <span className="text-[11px] font-normal text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-200/60 tabular-nums">
                     90% fit
                   </span>
                 </div>
@@ -631,15 +669,15 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                 {/* Person Card */}
                 <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 text-white flex items-center justify-center font-bold text-xs shadow-2xs shrink-0 ring-2 ring-blue-100">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 text-white flex items-center justify-center font-normal text-xs shadow-2xs shrink-0 ring-2 ring-blue-100">
                       SC
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-slate-900 leading-tight">Sarah Chen</h4>
+                      <h4 className="text-xs font-normal text-slate-900 leading-tight">Sarah Chen</h4>
                       <p className="text-[11px] text-slate-500 leading-tight">Account Executive</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-xs font-bold text-blue-600 tabular-nums">
+                  <div className="flex items-center gap-1 text-xs font-normal text-blue-600 tabular-nums">
                     <span className="text-[10px]">▲</span>
                     <span>4.9</span>
                   </div>
@@ -647,9 +685,9 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
 
                 {/* Optimal Time Section */}
                 <div className="bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs space-y-2">
-                  <span className="text-[11px] font-bold text-slate-700 block">Optimal time</span>
+                  <span className="text-[11px] font-normal text-slate-700 block">Optimal time</span>
                   
-                  <div className="flex items-center justify-between text-xs font-semibold text-slate-800">
+                  <div className="flex items-center justify-between text-xs font-normal text-slate-800">
                     <div className="flex items-center gap-2">
                       <div className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                         <Calendar className="w-3 h-3" />
@@ -658,7 +696,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs font-medium text-slate-600">
+                  <div className="flex items-center justify-between text-xs font-normal text-slate-600">
                     <div className="flex items-center gap-2">
                       <div className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                         <Clock className="w-3 h-3" />
@@ -676,7 +714,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               
               {/* Header */}
               <div className="text-left mb-4 relative z-10">
-                <h3 className="text-lg sm:text-xl font-bold text-[#0A0D14] tracking-tight">
+                <h3 className="text-lg sm:text-xl font-normal text-[#0A0D14] tracking-tight">
                   Connected meeting stack
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed text-pretty">
@@ -800,7 +838,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                         <div className="w-5 h-5 rounded-md bg-slate-50 flex items-center justify-center shrink-0">
                           {pill.icon}
                         </div>
-                        <span className="text-xs font-semibold text-slate-800 tracking-tight whitespace-nowrap">
+                        <span className="text-xs font-normal text-slate-800 tracking-tight whitespace-nowrap">
                           {pill.name}
                         </span>
                       </div>
@@ -917,7 +955,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                         <div className="w-5 h-5 rounded-md bg-slate-50 flex items-center justify-center shrink-0">
                           {pill.icon}
                         </div>
-                        <span className="text-xs font-semibold text-slate-800 tracking-tight whitespace-nowrap">
+                        <span className="text-xs font-normal text-slate-800 tracking-tight whitespace-nowrap">
                           {pill.name}
                         </span>
                       </div>
@@ -930,10 +968,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                   style={{ animationDelay: '2.5s' }}
                   whileHover={{ scale: 1.02, y: -1 }}
                   whileTap={{ scale: 0.97 }}
-                  className="animate-gooey-border w-full py-2.5 px-4 bg-blue-50/80 hover:bg-blue-100/90 text-[#0055FF] text-xs font-semibold border border-blue-200/80 flex items-center justify-center gap-1.5 shadow-[0_4px_16px_rgba(0,85,255,0.06)] transition-colors duration-200 cursor-pointer mt-1"
+                  className="animate-gooey-border w-full py-2.5 px-4 bg-blue-50/80 hover:bg-blue-100/90 text-[#0055FF] text-xs font-normal border border-blue-200/80 flex items-center justify-center gap-1.5 shadow-[0_4px_16px_rgba(0,85,255,0.06)] transition-colors duration-200 cursor-pointer mt-1"
                 >
-                  <span className="text-sm leading-none font-bold">+</span>
-                  <span className="tabular-nums font-bold">50+ more integrations</span>
+                  <span className="text-sm leading-none font-normal">+</span>
+                  <span className="tabular-nums font-normal">50+ more integrations</span>
                 </motion.div>
 
               </div>
@@ -1028,11 +1066,11 @@ function LiveChatConversationAnimation() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <h3 className="text-xs font-bold text-[#0A0D14] tracking-tight">
+          <h3 className="text-xs font-normal text-[#0A0D14] tracking-tight">
             Clients worth your time
           </h3>
         </div>
-        <span className="text-[10px] font-semibold text-[#0055FF] bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200/60 tracking-wide uppercase">
+        <span className="text-[10px] font-normal text-[#0055FF] bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200/60 tracking-wide uppercase">
           Live Booking
         </span>
       </div>
@@ -1050,7 +1088,7 @@ function LiveChatConversationAnimation() {
           >
             {/* Tag Badge */}
             <div className="flex items-center justify-center">
-              <span className="text-[9px] font-bold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/60">
+              <span className="text-[9px] font-normal text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/60">
                 {current.tag}
               </span>
             </div>
@@ -1061,7 +1099,7 @@ function LiveChatConversationAnimation() {
                 initial={{ scale: 0.7, opacity: 0 }}
                 animate={{ scale: stageStep >= 1 ? 1 : 0.7, opacity: stageStep >= 1 ? 1 : 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                className={`w-7 h-7 rounded-full ${current.clientBg} text-white font-bold text-[11px] flex items-center justify-center shrink-0 shadow-2xs`}
+                className={`w-7 h-7 rounded-full ${current.clientBg} text-white font-normal text-[11px] flex items-center justify-center shrink-0 shadow-2xs`}
               >
                 {current.clientAvatar}
               </motion.div>
@@ -1074,7 +1112,7 @@ function LiveChatConversationAnimation() {
                   x: stageStep >= 1 ? 0 : -8
                 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-                className="bg-slate-100 text-slate-800 text-xs font-medium px-3.5 py-2 rounded-2xl rounded-bl-xs border border-slate-200/60 max-w-[82%]"
+                className="bg-slate-100 text-slate-800 text-xs font-normal px-3.5 py-2 rounded-2xl rounded-bl-xs border border-slate-200/60 max-w-[82%]"
               >
                 {current.clientText}
               </motion.div>
@@ -1090,7 +1128,7 @@ function LiveChatConversationAnimation() {
                   x: stageStep >= 2 ? 0 : 8
                 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-                className="bg-[#0055FF] text-white text-xs font-semibold px-3.5 py-2 rounded-2xl rounded-br-xs shadow-xs max-w-[82%]"
+                className="bg-[#0055FF] text-white text-xs font-normal px-3.5 py-2 rounded-2xl rounded-br-xs shadow-xs max-w-[82%]"
               >
                 {current.replyText}
               </motion.div>
@@ -1099,7 +1137,7 @@ function LiveChatConversationAnimation() {
                 initial={{ scale: 0.7, opacity: 0 }}
                 animate={{ scale: stageStep >= 2 ? 1 : 0.7, opacity: stageStep >= 2 ? 1 : 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                className="w-7 h-7 rounded-full bg-[#0055FF] text-white font-bold text-[11px] flex items-center justify-center shrink-0 shadow-2xs"
+                className="w-7 h-7 rounded-full bg-[#0055FF] text-white font-normal text-[11px] flex items-center justify-center shrink-0 shadow-2xs"
               >
                 E
               </motion.div>
@@ -1195,11 +1233,11 @@ function LiveNotetakerSoundwaveAnimation() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0055FF]"></span>
           </span>
-          <h3 className="text-xs font-bold text-[#0A0D14] tracking-tight">
+          <h3 className="text-xs font-normal text-[#0A0D14] tracking-tight">
             Live Meeting Transcript & Recap
           </h3>
         </div>
-        <span className="text-[10px] font-semibold text-[#0055FF] bg-blue-50/80 px-2.5 py-0.5 rounded-full border border-blue-100/80">
+        <span className="text-[10px] font-normal text-[#0055FF] bg-blue-50/80 px-2.5 py-0.5 rounded-full border border-blue-100/80">
           Auto-Sync
         </span>
       </div>
@@ -1207,7 +1245,7 @@ function LiveNotetakerSoundwaveAnimation() {
       {/* 2. ULTRA-CLEAN GOOEY SOUNDWAVE BAR */}
       <div className="mb-4 p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-semibold text-slate-700">
+          <span className="text-[11px] font-normal text-slate-700">
             Recording Audio...
           </span>
         </div>
@@ -1272,25 +1310,25 @@ function LiveNotetakerSoundwaveAnimation() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-[#0055FF] text-white flex items-center justify-center text-[9px] font-bold shadow-2xs">
+                  <div className="w-4 h-4 rounded-full bg-[#0055FF] text-white flex items-center justify-center text-[9px] font-normal shadow-2xs">
                     ✓
                   </div>
-                  <span className="text-xs font-bold text-[#0A0D14] tracking-tight">
+                  <span className="text-xs font-normal text-[#0A0D14] tracking-tight">
                     {card.title}
                   </span>
                 </div>
-                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${card.badgeStyle}`}>
+                <span className={`text-[9px] font-normal px-2 py-0.5 rounded-full border ${card.badgeStyle}`}>
                   {card.badge}
                 </span>
               </div>
 
-              <p className="text-xs text-slate-700 font-medium leading-snug">
+              <p className="text-xs text-slate-700 font-normal leading-snug">
                 {card.text}
               </p>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                 <span>{card.subtext}</span>
-                <span className="text-[#0055FF] font-semibold">Active Sync</span>
+                <span className="text-[#0055FF] font-normal">Active Sync</span>
               </div>
             </motion.div>
           );
@@ -1422,7 +1460,7 @@ function LivePaymentsConveyorAnimation() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span className="text-xs font-bold text-[#0A0D14] tracking-tight">Payments & Upfront Billing</span>
+          <span className="text-xs font-normal text-[#0A0D14] tracking-tight">Payments & Upfront Billing</span>
         </div>
       </div>
 
@@ -1444,14 +1482,14 @@ function LivePaymentsConveyorAnimation() {
           >
             <div className="space-y-4">
               <div>
-                <span className="text-[11px] font-semibold text-slate-500 block mb-1.5">
+                <span className="text-[11px] font-normal text-slate-500 block mb-1.5">
                   Amount to collect
                 </span>
 
                 {/* Nominal Input Box with Typing Cursor + Animated Counter */}
-                <div className="flex items-center gap-1.5 bg-slate-50 px-3.5 py-2.5 rounded-xl border border-blue-400/80 shadow-[0_0_12px_rgba(0,85,255,0.12)] ring-2 ring-blue-500/20 text-xs font-semibold text-slate-900 transition-all duration-300">
-                  <span className="text-slate-400 font-bold">$</span>
-                  <span className="text-slate-900 font-black text-base tabular-nums tracking-tight">
+                <div className="flex items-center gap-1.5 bg-slate-50 px-3.5 py-2.5 rounded-xl border border-blue-400/80 shadow-[0_0_12px_rgba(0,85,255,0.12)] ring-2 ring-blue-500/20 text-xs font-normal text-slate-900 transition-all duration-300">
+                  <span className="text-slate-400 font-normal">$</span>
+                  <span className="text-slate-900 font-normal text-base tabular-nums tracking-tight">
                     {paymentCounter}
                   </span>
                   {paymentCounter < 100 && (
@@ -1461,20 +1499,20 @@ function LivePaymentsConveyorAnimation() {
                     <motion.span
                       initial={{ scale: 0.7, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200/80 ml-1.5"
+                      className="text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200/80 ml-1.5"
                     >
                       ✓ Saved
                     </motion.span>
                   )}
-                  <span className="text-[10px] font-bold text-slate-400 ml-auto">USD ▼</span>
+                  <span className="text-[10px] font-normal text-slate-400 ml-auto">USD ▼</span>
                 </div>
               </div>
 
               <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                <span className="text-[11px] font-semibold text-slate-500">
+                <span className="text-[11px] font-normal text-slate-500">
                   Payment processor
                 </span>
-                <span className="text-xs font-bold text-slate-900 bg-slate-100/80 px-2.5 py-1 rounded-lg border border-slate-200/80 flex items-center gap-1.5">
+                <span className="text-xs font-normal text-slate-900 bg-slate-100/80 px-2.5 py-1 rounded-lg border border-slate-200/80 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   Stripe
                 </span>
@@ -1499,11 +1537,11 @@ function LivePaymentsConveyorAnimation() {
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[320px] bg-white rounded-2xl p-5 border border-slate-200/90 shadow-[0_16px_36px_rgba(0,0,0,0.06)] text-center z-10"
           >
             <div className="flex flex-col items-center">
-              <div className="w-9 h-9 rounded-full bg-[#0A0D14] text-white font-bold text-xs flex items-center justify-center mb-2 shadow-xs">
+              <div className="w-9 h-9 rounded-full bg-[#0A0D14] text-white font-normal text-xs flex items-center justify-center mb-2 shadow-xs">
                 D
               </div>
-              <p className="text-xs font-bold text-slate-700">Dominic Mills</p>
-              <h4 className="text-sm font-extrabold text-[#0A0D14] mt-0.5">Consultation</h4>
+              <p className="text-xs font-normal text-slate-700">Dominic Mills</p>
+              <h4 className="text-sm font-normal text-[#0A0D14] mt-0.5">Consultation</h4>
 
               {/* Solid Blue Focal Card with Bouncy Spring Finish & White Text */}
               <motion.div
@@ -1527,19 +1565,19 @@ function LivePaymentsConveyorAnimation() {
                 />
 
                 <div className="flex items-center justify-center relative z-10">
-                  <span className="text-3xl font-black text-white tracking-tight tabular-nums">
+                  <span className="text-3xl font-normal text-white tracking-tight tabular-nums">
                     ${consult1Counter}
                   </span>
                 </div>
-                <p className="text-[10px] font-semibold text-blue-100/90 mt-0.5 relative z-10">
+                <p className="text-[10px] font-normal text-blue-100/90 mt-0.5 relative z-10">
                   Powered by Stripe
                 </p>
               </motion.div>
 
-              <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500 pt-2 border-t border-slate-100 w-full justify-center">
+              <div className="flex items-center gap-2 text-[11px] font-normal text-slate-500 pt-2 border-t border-slate-100 w-full justify-center">
                 <span>45 min</span>
                 <span>•</span>
-                <span className="text-[#0055FF] font-bold">Zoom</span>
+                <span className="text-[#0055FF] font-normal">Zoom</span>
               </div>
             </div>
           </motion.div>
@@ -1563,7 +1601,7 @@ function LivePaymentsConveyorAnimation() {
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#0A0D14]">Require payment to book</span>
+              <span className="text-xs font-normal text-[#0A0D14]">Require payment to book</span>
               <button
                 type="button"
                 onClick={() => setToggleOn((prev) => !prev)}
@@ -1592,7 +1630,7 @@ function LivePaymentsConveyorAnimation() {
                   transition={{ duration: 0.2 }}
                   className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]"
                 >
-                  <span className="font-semibold text-emerald-600 flex items-center gap-1.5">
+                  <span className="font-normal text-emerald-600 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     Payment Guard Active
                   </span>
@@ -1620,13 +1658,13 @@ function LivePaymentsConveyorAnimation() {
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[320px] bg-white rounded-2xl p-5 border border-slate-200/90 shadow-[0_16px_36px_rgba(0,0,0,0.06)] text-center z-10"
           >
             <motion.div layout className="flex flex-col items-center">
-              <div className="w-9 h-9 rounded-full bg-[#0A0D14] text-white font-bold text-xs flex items-center justify-center mb-2 shadow-xs">
+              <div className="w-9 h-9 rounded-full bg-[#0A0D14] text-white font-normal text-xs flex items-center justify-center mb-2 shadow-xs">
                 D
               </div>
-              <motion.p layout className="text-xs font-bold text-slate-700">
+              <motion.p layout className="text-xs font-normal text-slate-700">
                 Dominic Mills
               </motion.p>
-              <motion.h4 layout className="text-sm font-extrabold text-[#0A0D14] mt-0.5">
+              <motion.h4 layout className="text-sm font-normal text-[#0A0D14] mt-0.5">
                 Consultation
               </motion.h4>
 
@@ -1646,21 +1684,21 @@ function LivePaymentsConveyorAnimation() {
                     className="my-3 py-2.5 px-6 rounded-2xl bg-[#0055FF] border border-blue-600/50 shadow-lg shadow-blue-500/25 inline-block text-center relative overflow-hidden"
                   >
                     <div className="flex items-center justify-center">
-                      <span className="text-3xl font-black text-white tracking-tight tabular-nums">
+                      <span className="text-3xl font-normal text-white tracking-tight tabular-nums">
                         ${consult2Counter}
                       </span>
                     </div>
-                    <p className="text-[10px] font-semibold text-blue-100/90 mt-0.5">
+                    <p className="text-[10px] font-normal text-blue-100/90 mt-0.5">
                       Powered by Stripe
                     </p>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              <motion.div layout className="flex items-center gap-2 text-[11px] font-semibold text-slate-500 pt-2 border-t border-slate-100 w-full justify-center mt-2">
+              <motion.div layout className="flex items-center gap-2 text-[11px] font-normal text-slate-500 pt-2 border-t border-slate-100 w-full justify-center mt-2">
                 <span>45 min</span>
                 <span>•</span>
-                <span className="text-[#0055FF] font-bold">Zoom</span>
+                <span className="text-[#0055FF] font-normal">Zoom</span>
               </motion.div>
             </motion.div>
           </motion.div>

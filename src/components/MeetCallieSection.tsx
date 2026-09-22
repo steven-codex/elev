@@ -73,12 +73,12 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center p-1 shrink-0">
               <img src="/icon-velie-3d.png" alt="Velie AI" className="w-full h-full object-contain" />
             </div>
-            <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+            <span className="text-sm sm:text-base font-normal text-[#0A0D14] tracking-tight">
               Velie AI
             </span>
           </div>
-          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
-            Meet Velie, your AI assistant
+          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
+            Meet Velie, <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">your AI assistant</span>
           </h2>
           <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed">
             Eliminate scheduling ping-pong completely. Put meeting coordination on autopilot with an assistant that honors your strict boundaries and buffers.
@@ -109,11 +109,11 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
                       }`}>
                         {item.icon}
                       </div>
-                      <h3 className="font-bold text-base text-[#0A0D14]">
+                      <h3 className="font-normal text-base text-[#0A0D14]">
                         {item.title}
                       </h3>
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-stone-100 text-slate-600 px-2 py-0.5 rounded-sm">
+                    <span className="text-[10px] font-normal uppercase tracking-wider bg-stone-100 text-slate-600 px-2 py-0.5 rounded-sm">
                       {item.tag}
                     </span>
                   </div>
@@ -133,12 +133,12 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
             <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-md border border-[#E2E8F0] space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-[#DBEE9F] flex items-center justify-center font-bold text-xs text-[#0A0D14]">
+                  <div className="w-7 h-7 rounded-full bg-[#DBEE9F] flex items-center justify-center font-normal text-xs text-[#0A0D14]">
                     V
                   </div>
                   <div>
-                    <h4 className="text-xs font-extrabold text-slate-900">Velie Copilot Console</h4>
-                    <span className="text-[10px] text-emerald-600 flex items-center gap-1 font-medium">
+                    <h4 className="text-xs font-normal text-slate-900">Velie Copilot Console</h4>
+                    <span className="text-[10px] text-emerald-600 flex items-center gap-1 font-normal">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       Listening on threads & calendars
                     </span>
@@ -146,7 +146,7 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
                 </div>
                 <button
                   onClick={onOpenDemo}
-                  className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-0.5 cursor-pointer"
+                  className="text-xs font-normal text-blue-600 hover:underline flex items-center gap-0.5 cursor-pointer"
                 >
                   Full Specs <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
@@ -155,17 +155,17 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
               {/* Sample conversation box */}
               <div className="bg-slate-50/80 rounded-2xl p-4 space-y-3 text-xs border border-slate-200/70">
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Try Asking Velie:</span>
+                  <span className="text-[10px] font-normal text-slate-400 uppercase tracking-wider">Try Asking Velie:</span>
                   <div className="flex flex-wrap gap-1.5">
                     <button
                       onClick={() => handleTestChat('Find 30m with Sarah and Mark next week')}
-                      className="text-[11px] font-semibold bg-white px-2.5 py-1 rounded-full border border-slate-200 hover:border-amber-300 text-slate-700 transition-colors cursor-pointer"
+                      className="text-[11px] font-normal bg-white px-2.5 py-1 rounded-full border border-slate-200 hover:border-amber-300 text-slate-700 transition-colors cursor-pointer"
                     >
                       "Find 30m with Sarah next week"
                     </button>
                     <button
                       onClick={() => handleTestChat('Prepare my executive briefing for David')}
-                      className="text-[11px] font-semibold bg-white px-2.5 py-1 rounded-full border border-slate-200 hover:border-amber-300 text-slate-700 transition-colors cursor-pointer"
+                      className="text-[11px] font-normal bg-white px-2.5 py-1 rounded-full border border-slate-200 hover:border-amber-300 text-slate-700 transition-colors cursor-pointer"
                     >
                       "Prepare brief for David"
                     </button>
@@ -182,13 +182,13 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
 
                 {simulatedReply && (
                   <div className="p-3.5 rounded-xl bg-amber-50/90 border border-amber-200 text-slate-800 text-xs space-y-2 animate-in fade-in">
-                    <div className="flex items-center gap-1.5 font-bold text-[#0A0D14] text-[11px]">
+                    <div className="flex items-center gap-1.5 font-normal text-[#0A0D14] text-[11px]">
                       <Sparkles className="w-3.5 h-3.5" />
                       <span>Velie's Recommendation</span>
                     </div>
                     <p className="text-xs leading-relaxed">{simulatedReply}</p>
                     <div className="flex items-center gap-2 pt-1">
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-emerald-200">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-normal text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-emerald-200">
                         <Check className="w-3 h-3 text-emerald-600" />
                         Zero Calendar Conflicts
                       </span>

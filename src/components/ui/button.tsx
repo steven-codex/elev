@@ -8,7 +8,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const variantStyles: Record<string, string> = {
-  default: "bg-[#0055FF] text-white hover:bg-[#0047D6] shadow-xs active:scale-[0.96]",
+  default: "bg-gradient-to-r from-[#418AC1] to-[#506DFD] text-white hover:brightness-105 shadow-xs hover:shadow-md hover:shadow-blue-500/20 active:scale-[0.96]",
   destructive: "bg-red-600 text-white hover:bg-red-700 shadow-xs active:scale-[0.96]",
   outline: "border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 shadow-2xs active:scale-[0.96]",
   secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200 active:scale-[0.96]",
@@ -17,9 +17,9 @@ const variantStyles: Record<string, string> = {
 };
 
 const sizeStyles: Record<string, string> = {
-  default: "h-10 px-4 py-2 text-sm font-semibold rounded-xl",
-  sm: "h-9 rounded-lg px-3.5 text-xs font-semibold",
-  lg: "h-11 rounded-2xl px-6 text-base font-bold",
+  default: "h-10 px-4 py-2 text-sm font-normal rounded-xl",
+  sm: "h-9 rounded-lg px-3.5 text-xs font-normal",
+  lg: "h-11 rounded-2xl px-6 text-base font-normal",
   icon: "h-10 w-10 rounded-xl"
 };
 

@@ -124,7 +124,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
               <X className="w-6 h-6 text-white" />
             ) : (
               <div className="flex flex-col items-center">
-                <span className="font-extrabold text-sm tracking-tight text-white">
+                <span className="font-normal text-sm tracking-tight text-white">
                   elev
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-0.5 animate-pulse" />
@@ -136,7 +136,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
 
       {/* Floating Tooltip Label when closed */}
       {!isOpen && (
-        <div className="absolute -top-7 right-0 pointer-events-none whitespace-nowrap bg-slate-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs border border-slate-700/80 backdrop-blur-xs">
+        <div className="absolute -top-7 right-0 pointer-events-none whitespace-nowrap bg-slate-900/90 text-white text-[10px] font-normal px-2 py-0.5 rounded-full shadow-xs border border-slate-700/80 backdrop-blur-xs">
           elev flow
         </div>
       )}

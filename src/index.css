@@ -1,8 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap');
 @import "tailwindcss";
 
-/* ===================================================================
-   ELEV DESIGN SYSTEM — Unified Tokens
-   =================================================================== */
+@theme {
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-weight-thin: 500;
+  --font-weight-extralight: 500;
+  --font-weight-light: 500;
+  --font-weight-normal: 500;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 500;
+  --font-weight-extrabold: 500;
+  --font-weight-black: 500;
+}
 
 @layer base {
   :root {
@@ -56,17 +67,51 @@
     text-rendering: optimizeLegibility;
   }
 
+  *, ::before, ::after {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
     color: var(--color-ink);
-    font-feature-settings: "cv11", "ss01";
-    font-variation-settings: "opsz" 20;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  p, span, a, label, button, input, textarea, select {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 500;
+  }
+
+  b, strong {
+    font-weight: 500;
   }
 }
 
-/* ── Typography Utilities ── */
-.font-editorial {
-  font-family: 'Instrument Serif', Georgia, serif;
+/* ── Universal Typography Overrides: Geist Medium 500 ── */
+.font-thin,
+.font-extralight,
+.font-light,
+.font-normal,
+.font-medium,
+.font-semibold,
+.font-bold,
+.font-extrabold,
+.font-black {
+  font-weight: 500 !important;
+}
+
+.font-editorial,
+.font-instrument,
+.font-serif {
+  font-family: 'Instrument Serif', Georgia, serif !important;
+  font-weight: 500 !important;
 }
 
 .text-balance {
@@ -329,6 +374,69 @@
 
 .animate-iridescent-pulse {
   animation: iridescent-pulse 4s ease-in-out infinite;
+}
+
+/* ===================================================================
+   LENIS SMOOTH SCROLL SYSTEM
+   =================================================================== */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ===================================================================
+   GLOBAL INTERACTION & HOVER SYSTEM (EMIL KOWALSKI CRAFT)
+   =================================================================== */
+.hover-lift {
+  transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 250ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+}
+
+.hover-lift:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.press-tactile {
+  transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.press-tactile:active {
+  transform: scale(0.96);
+}
+
+/* Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 

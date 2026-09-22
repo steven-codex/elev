@@ -16,12 +16,12 @@ export default function FaqSection() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E2E8F0] shadow-2xs mb-4">
             <span className="w-2 h-2 rounded-full bg-[#0055FF] animate-pulse" />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#0A0D14]">
+            <span className="text-[11px] font-normal uppercase tracking-widest text-[#0A0D14]">
               Frequently Asked Questions
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-bold leading-tight tracking-tight text-balance">
-            Everything you need to know <span className="font-editorial italic font-normal text-[#0055FF]">about elev</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-tight tracking-tight text-balance">
+            Everything you need to know <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">about elev</span>
           </h2>
           <p className="mt-3.5 text-base sm:text-lg text-slate-600 text-pretty">
             Have questions about calendar synchronization, security, or team routing? We have answers.
@@ -43,7 +43,7 @@ export default function FaqSection() {
                   className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 cursor-pointer hover:bg-white transition-colors"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-bold text-slate-900 text-sm sm:text-base">
+                  <span className="font-normal text-slate-900 text-sm sm:text-base">
                     {faq.question}
                   </span>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${
@@ -67,7 +67,7 @@ export default function FaqSection() {
         <div className="mt-12 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
           <HelpCircle className="w-4 h-4 text-blue-600" />
           <span>Have a question not listed here?</span>
-          <a href="#demo" className="font-bold text-blue-600 hover:underline">
+          <a href="#demo" className="font-normal text-blue-600 hover:underline">
             Contact our product team
           </a>
         </div>

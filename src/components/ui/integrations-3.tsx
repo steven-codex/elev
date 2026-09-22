@@ -84,12 +84,12 @@ export default function IntegrationsSection3({ onOpenExplorer }: IntegrationsSec
           {/* Right Column: Hero Copy & CTA */}
           <div className="mx-auto max-w-lg space-y-6 text-center sm:text-left">
             
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold tracking-wider uppercase">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-normal tracking-wider uppercase">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>NATIVE INTEGRATIONS ENGINE</span>
             </div>
 
-            <h2 className="text-balance text-3xl font-bold text-[#0A0D14] md:text-4xl lg:text-[2.6rem] tracking-tight leading-[1.12]">
+            <h2 className="text-balance text-3xl font-normal text-[#0A0D14] md:text-4xl lg:text-[2.6rem] tracking-tight leading-[1.12]">
               Integrate with your favorite tools.
             </h2>
 

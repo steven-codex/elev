@@ -23,10 +23,10 @@ export default function FeatureGrid({ onOpenDemo }: FeatureGridProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 border border-blue-100 px-3.5 py-1.5 rounded-full inline-block mb-3">
+          <span className="text-xs font-normal text-blue-600 uppercase tracking-wider bg-blue-50 border border-blue-100 px-3.5 py-1.5 rounded-full inline-block mb-3">
             Platform Capabilities
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-normal text-slate-900 tracking-tight">
             Designed for the rhythm of modern work
           </h2>
           <p className="mt-3.5 text-base sm:text-lg text-slate-600">
@@ -46,17 +46,17 @@ export default function FeatureGrid({ onOpenDemo }: FeatureGridProps) {
                     {getIcon(feature.icon)}
                   </div>
                   {feature.badge && (
-                    <span className="text-[11px] font-bold uppercase tracking-wider bg-blue-100/70 text-blue-700 px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-normal uppercase tracking-wider bg-blue-100/70 text-blue-700 px-2 py-0.5 rounded-full">
                       {feature.badge}
                     </span>
                   )}
                 </div>
 
-                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                <div className="text-[11px] font-normal text-slate-400 uppercase tracking-wider mb-1">
                   {feature.tag}
                 </div>
 
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                <h3 className="text-lg font-normal text-slate-900 mb-2">
                   {feature.title}
                 </h3>
 
@@ -66,12 +66,12 @@ export default function FeatureGrid({ onOpenDemo }: FeatureGridProps) {
               </div>
 
               <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-500 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200/60">
+                <span className="text-xs font-normal text-slate-500 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200/60">
                   {feature.visualHighlight}
                 </span>
                 <button
                   onClick={onOpenDemo}
-                  className="text-xs font-bold text-blue-600 group-hover:text-blue-700 flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-normal text-blue-600 group-hover:text-blue-700 flex items-center gap-1 cursor-pointer"
                 >
                   <span>Details</span>
                   <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />

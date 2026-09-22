@@ -7,10 +7,10 @@ export default function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 border border-blue-100 px-3.5 py-1.5 rounded-full inline-block mb-3">
+          <span className="text-xs font-normal text-blue-600 uppercase tracking-wider bg-blue-50 border border-blue-100 px-3.5 py-1.5 rounded-full inline-block mb-3">
             Customer Stories
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-normal text-slate-900 tracking-tight">
             Loved by revenue, recruiting, and operations leaders
           </h2>
           <p className="mt-3.5 text-base sm:text-lg text-slate-600">
@@ -28,10 +28,10 @@ export default function Testimonials() {
                 {/* Metric callout */}
                 <div className="mb-6 pb-6 border-b border-slate-200/80 flex items-baseline justify-between">
                   <div>
-                    <div className="text-3xl font-black text-blue-600 tracking-tight">
+                    <div className="text-3xl font-normal text-blue-600 tracking-tight">
                       {t.metric}
                     </div>
-                    <div className="text-xs font-semibold text-slate-600 mt-0.5">
+                    <div className="text-xs font-normal text-slate-600 mt-0.5">
                       {t.metricLabel}
                     </div>
                   </div>
@@ -57,7 +57,7 @@ export default function Testimonials() {
                   className="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-2xs"
                 />
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">
+                  <h4 className="text-xs font-normal text-slate-900">
                     {t.author}
                   </h4>
                   <p className="text-[11px] text-slate-500">

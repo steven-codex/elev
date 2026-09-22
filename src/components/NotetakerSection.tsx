@@ -266,7 +266,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center p-1 shrink-0">
               <img src="/icon-notetaker-3d.png" alt="Notetaker" className="w-full h-full object-contain" />
             </div>
-            <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+            <span className="text-sm sm:text-base font-normal text-[#0A0D14] tracking-tight">
               Notetaker
             </span>
           </motion.div>
@@ -276,10 +276,10 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="font-editorial text-4xl sm:text-5xl lg:text-[3.5rem] text-[#0A0D14] font-normal leading-[1.06] tracking-tight"
+            className="text-4xl sm:text-5xl lg:text-[3.5rem] text-[#0A0D14] font-normal leading-[1.06] tracking-tight"
           >
-            Actionable recaps for every meeting. <br className="hidden sm:inline" />
-            <span className="italic text-purple-900/90">Zero manual note-taking.</span>
+            Actionable recaps for every meeting <br className="hidden sm:inline" />
+            <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">Zero manual note-taking</span>
           </motion.h2>
 
           <motion.p
@@ -307,10 +307,10 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               { stat: '0 drops', label: 'In lost meeting action items' }
             ].map((metric, i) => (
               <div key={i} className="space-y-0.5">
-                <div className="font-bold text-xl sm:text-2xl text-[#0A0D14] tracking-tight">
+                <div className="font-normal text-xl sm:text-2xl text-[#0A0D14] tracking-tight">
                   {metric.stat}
                 </div>
-                <div className="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight">
+                <div className="text-[11px] sm:text-xs text-slate-500 font-normal leading-tight">
                   {metric.label}
                 </div>
               </div>
@@ -335,7 +335,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Top Card Info Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-normal text-purple-700 uppercase tracking-wider mb-2">
                   <ListOrdered className="w-3.5 h-3.5" />
                   <span>Call Intelligence</span>
                 </div>
@@ -401,12 +401,12 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Card Header matching signature layout */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
+                      <h4 className="font-normal text-sm text-[#0A0D14] leading-snug">
                         Video Call Stream
                       </h4>
-                      <p className="text-[11px] text-slate-500 font-medium">Emily Watson (Host) + 2 guests</p>
+                      <p className="text-[11px] text-slate-500 font-normal">Emily Watson (Host) + 2 guests</p>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 border border-emerald-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                    <span className="text-[10px] font-mono font-normal text-emerald-800 bg-emerald-50 border border-emerald-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       <span>1080p</span>
                     </span>
@@ -422,7 +422,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                     />
                     
                     {/* Speaker Badge */}
-                    <div className="absolute top-2 left-2 bg-black/50 backdrop-blur-md text-white text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1">
+                    <div className="absolute top-2 left-2 bg-black/50 backdrop-blur-md text-white text-[10px] font-normal px-2 py-0.5 rounded-md flex items-center gap-1">
                       <span>Emily (Host)</span>
                     </div>
 
@@ -478,7 +478,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                         {isVideoPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3 ml-0.5 fill-white" />}
                       </motion.button>
 
-                      <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded-md">
+                      <span className="text-[10px] font-normal text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded-md">
                         1x
                       </span>
                     </div>
@@ -501,9 +501,9 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   </div>
 
                   {/* Footer Timeline indicator */}
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                     <span>Audio Waveform</span>
-                    <span className="text-blue-600 font-bold">24:15 full length</span>
+                    <span className="text-blue-600 font-normal">24:15 full length</span>
                   </div>
                 </div>
 
@@ -511,12 +511,12 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 <div className="w-full sm:w-[270px] bg-white rounded-[20px] p-4 sm:p-5 shadow-2xl border border-white/95 ring-1 ring-slate-900/5 space-y-3.5 transition-all">
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
+                      <h4 className="font-normal text-sm text-[#0A0D14] leading-snug">
                         Product Demo Recap
                       </h4>
-                      <p className="text-[11px] text-slate-500 font-medium">Jessica Barnes (VP) + 2 guests</p>
+                      <p className="text-[11px] text-slate-500 font-normal">Jessica Barnes (VP) + 2 guests</p>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 border border-emerald-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                    <span className="text-[10px] font-mono font-normal text-emerald-800 bg-emerald-50 border border-emerald-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       <span>Live Call</span>
                     </span>
@@ -525,7 +525,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Summary Bullets */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-slate-800">Key Decisions</span>
+                      <span className="text-[11px] font-normal text-slate-800">Key Decisions</span>
                       <div className="w-14 h-1 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
                     </div>
                     <div className="space-y-1 text-[11px] text-slate-600 leading-tight">
@@ -543,8 +543,8 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Interactive Action Items Checklist */}
                   <div className="space-y-2 pt-2 border-t border-slate-100">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-slate-800">Next Steps</span>
-                      <span className="text-[10px] font-bold text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
+                      <span className="text-[11px] font-normal text-slate-800">Next Steps</span>
+                      <span className="text-[10px] font-normal text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
                         3 assigned
                       </span>
                     </div>
@@ -567,7 +567,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                             {checkedActions[i] && <Check className="w-2.5 h-2.5" />}
                           </div>
                           <span className={`truncate text-xs transition-colors ${
-                            checkedActions[i] ? 'line-through text-slate-400' : 'text-slate-700 font-medium'
+                            checkedActions[i] ? 'line-through text-slate-400' : 'text-slate-700 font-normal'
                           }`}>
                             {task}
                           </span>
@@ -577,9 +577,9 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   </div>
 
                   {/* Footer Timeline indicator */}
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                     <span>Timeline Markers</span>
-                    <span className="text-purple-600 font-bold">18 moments indexed</span>
+                    <span className="text-purple-600 font-normal">18 moments indexed</span>
                   </div>
                 </div>
 
@@ -597,7 +597,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Top Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-normal text-purple-700 uppercase tracking-wider mb-2">
                   <Mail className="w-3.5 h-3.5" />
                   <span>Zero-Delay Follow-Up</span>
                 </div>
@@ -626,12 +626,12 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
+                  <h4 className="font-normal text-sm text-[#0A0D14] leading-snug">
                     Pre-Drafted Follow-Up
                   </h4>
-                  <p className="text-[11px] text-slate-500 font-medium">To: Jessica Barnes (VP) + 2 attendees</p>
+                  <p className="text-[11px] text-slate-500 font-normal">To: Jessica Barnes (VP) + 2 attendees</p>
                 </div>
-                <span className="text-[10px] font-mono font-bold text-amber-800 bg-amber-50 border border-amber-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                <span className="text-[10px] font-mono font-normal text-amber-800 bg-amber-50 border border-amber-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   <span>Ready in 15s</span>
                 </span>
@@ -640,7 +640,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               {/* Formatted Content Section */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-slate-800">Executive Summary</span>
+                  <span className="text-[11px] font-normal text-slate-800">Executive Summary</span>
                   <div className="w-14 h-1 rounded-full bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500" />
                 </div>
                 <div className="space-y-1 text-[11px] text-slate-600 leading-tight">
@@ -658,8 +658,8 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               {/* Interactive Inclusions Checklist */}
               <div className="space-y-2 pt-2 border-t border-slate-100">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-slate-800">Included in Dispatch</span>
-                  <span className="text-[10px] font-bold text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
+                  <span className="text-[11px] font-normal text-slate-800">Included in Dispatch</span>
+                  <span className="text-[10px] font-normal text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
                     3 selected
                   </span>
                 </div>
@@ -675,7 +675,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                     }`}>
                       {includeVideo && <Check className="w-2.5 h-2.5" />}
                     </div>
-                    <span className="truncate text-xs font-medium text-slate-700">
+                    <span className="truncate text-xs font-normal text-slate-700">
                       Include 1080p recording & indexed transcript
                     </span>
                   </motion.div>
@@ -697,7 +697,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                       }`}>
                         {restrictPasscode && <Check className="w-2.5 h-2.5" />}
                       </div>
-                      <span className="truncate text-xs font-medium text-slate-700">
+                      <span className="truncate text-xs font-normal text-slate-700">
                         Restrict with passcode (AES-256)
                       </span>
                     </motion.div>
@@ -707,7 +707,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         onClick={handleCopyPasscode}
-                        className="text-[10px] font-mono bg-purple-50 hover:bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md border border-purple-200/60 font-semibold flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
+                        className="text-[10px] font-mono bg-purple-50 hover:bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md border border-purple-200/60 font-normal flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
                         title="Click to copy passcode"
                       >
                         <Lock className="w-2.5 h-2.5" />
@@ -724,7 +724,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleSendEmail}
-                className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer ${
+                className={`w-full py-2.5 px-4 rounded-xl font-normal text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer ${
                   emailSent
                     ? 'bg-emerald-600 text-white shadow-emerald-500/20'
                     : 'bg-gradient-to-r from-[#9B51E0] to-[#7952F5] hover:opacity-95 text-white shadow-purple-500/25'
@@ -744,9 +744,9 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               </motion.button>
 
               {/* Footer matching signature card layout */}
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                 <span>Delivery Pipeline</span>
-                <span className="text-purple-600 font-bold">Auto-BCC to Salesforce</span>
+                <span className="text-purple-600 font-normal">Auto-BCC to Salesforce</span>
               </div>
 
             </div>
@@ -761,7 +761,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-normal text-purple-700 uppercase tracking-wider mb-2">
                   <Zap className="w-3.5 h-3.5" />
                   <span>Two-Way CRM Sync</span>
                 </div>
@@ -792,12 +792,12 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {/* Header */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
+                    <h4 className="font-normal text-sm text-[#0A0D14] leading-snug">
                       Salesforce Deal Record
                     </h4>
-                    <p className="text-[11px] text-slate-500 font-medium">Acme Global Enterprise</p>
+                    <p className="text-[11px] text-slate-500 font-normal">Acme Global Enterprise</p>
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 border border-emerald-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                  <span className="text-[10px] font-mono font-normal text-emerald-800 bg-emerald-50 border border-emerald-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span>Auto-Synced</span>
                   </span>
@@ -806,7 +806,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {/* Section 1: Synced Deal Intelligence */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-slate-800">Synced Intelligence</span>
+                    <span className="text-[11px] font-normal text-slate-800">Synced Intelligence</span>
                     <div className="w-14 h-1 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
                   </div>
                   <div className="space-y-1 text-[11px] text-slate-600 leading-tight">
@@ -824,8 +824,8 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {/* Section 2: Meeting Recaps Checklist */}
                 <div className="space-y-2 pt-2 border-t border-slate-100">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-slate-800">Meeting Recaps</span>
-                    <span className="text-[10px] font-bold text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-normal text-slate-800">Meeting Recaps</span>
+                    <span className="text-[10px] font-normal text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
                       3 indexed
                     </span>
                   </div>
@@ -848,7 +848,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                           <Check className="w-2.5 h-2.5" />
                         </div>
                         <div className="overflow-hidden flex-1">
-                          <div className="font-bold text-xs text-slate-800 truncate">{item.title}</div>
+                          <div className="font-normal text-xs text-slate-800 truncate">{item.title}</div>
                           <div className="text-[10px] text-slate-400 font-mono">{item.time}</div>
                         </div>
                       </motion.div>
@@ -857,9 +857,9 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 </div>
 
                 {/* Footer */}
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                   <span>Sync Latency</span>
-                  <span className="text-emerald-600 font-bold">&lt; 0.4s real-time</span>
+                  <span className="text-emerald-600 font-normal">&lt; 0.4s real-time</span>
                 </div>
               </div>
 
@@ -868,12 +868,12 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {/* Header */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h5 className="font-bold text-sm text-[#0A0D14] leading-snug">
+                    <h5 className="font-normal text-sm text-[#0A0D14] leading-snug">
                       Integrations
                     </h5>
-                    <p className="text-[11px] text-slate-500 font-medium">Active Webhook Relays</p>
+                    <p className="text-[11px] text-slate-500 font-normal">Active Webhook Relays</p>
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-blue-800 bg-blue-50 border border-blue-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                  <span className="text-[10px] font-mono font-normal text-blue-800 bg-blue-50 border border-blue-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
                     <span>3 Active</span>
                   </span>
@@ -882,7 +882,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {/* Section 1: Spring Toggles */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-slate-800">Connected Hub</span>
+                    <span className="text-[11px] font-normal text-slate-800">Connected Hub</span>
                     <div className="w-14 h-1 rounded-full bg-gradient-to-r from-blue-500 via-cyan-500 to-emerald-500" />
                   </div>
 
@@ -891,7 +891,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                     <div className="flex items-center justify-between py-0.5">
                       <div className="flex items-center gap-2">
                         <img src="https://cdn.calendlycms.com/saleforce.svg" alt="Salesforce" className="w-4 h-4 object-contain" />
-                        <span className="text-xs font-semibold text-slate-700">Salesforce</span>
+                        <span className="text-xs font-normal text-slate-700">Salesforce</span>
                       </div>
                       <button
                         onClick={() => toggleSwitch('salesforce')}
@@ -914,7 +914,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                     <div className="flex items-center justify-between py-0.5">
                       <div className="flex items-center gap-2">
                         <img src="https://cdn.calendlycms.com/hubspot.svg" alt="HubSpot" className="w-4 h-4 object-contain" />
-                        <span className="text-xs font-semibold text-slate-700">HubSpot</span>
+                        <span className="text-xs font-normal text-slate-700">HubSpot</span>
                       </div>
                       <button
                         onClick={() => toggleSwitch('hubspot')}
@@ -937,7 +937,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                     <div className="flex items-center justify-between py-0.5">
                       <div className="flex items-center gap-2">
                         <img src="https://cdn.calendlycms.com/zapier-icon.svg" alt="Zapier" className="w-4 h-4 object-contain" />
-                        <span className="text-xs font-semibold text-slate-700">Zapier</span>
+                        <span className="text-xs font-normal text-slate-700">Zapier</span>
                       </div>
                       <button
                         onClick={() => toggleSwitch('zapier')}
@@ -959,9 +959,9 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 </div>
 
                 {/* Footer */}
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                   <span>Coverage</span>
-                  <span className="text-blue-600 font-bold">Zero Manual Entry</span>
+                  <span className="text-blue-600 font-normal">Zero Manual Entry</span>
                 </div>
 
               </div>
@@ -978,7 +978,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             {/* Header */}
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">
+                <div className="inline-flex items-center gap-1.5 text-xs font-normal text-purple-700 uppercase tracking-wider mb-2">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Company Memory & Semantic Recall</span>
                 </div>
@@ -1012,7 +1012,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleSelectPrompt(idx)}
-                    className={`text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all cursor-pointer font-sans ${
+                    className={`text-[11px] font-normal px-3 py-1.5 rounded-full transition-all cursor-pointer font-sans ${
                       activePromptIndex === idx
                         ? 'bg-purple-600 text-white shadow-xs'
                         : 'bg-white text-slate-600 border border-slate-200/90 hover:border-purple-300 hover:bg-purple-50/50'
@@ -1027,7 +1027,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
               <div className="bg-white rounded-full px-5 py-3 shadow-md border border-slate-200 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5 overflow-hidden flex-1">
                   <Search className="w-4 h-4 text-purple-600 shrink-0" />
-                  <span className="text-xs font-semibold text-slate-800 truncate font-mono">
+                  <span className="text-xs font-normal text-slate-800 truncate font-mono">
                     {typedQuery}
                     {isTyping && <span className="inline-block w-1.5 h-3.5 bg-purple-600 ml-0.5 animate-pulse align-middle" />}
                   </span>
@@ -1068,12 +1068,12 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Header */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-bold text-sm text-[#0A0D14] leading-snug">
+                      <h4 className="font-normal text-sm text-[#0A0D14] leading-snug">
                         Semantic Memory Citation
                       </h4>
-                      <p className="text-[11px] text-slate-500 font-medium">Cited from {recallPrompts[activePromptIndex].context}</p>
+                      <p className="text-[11px] text-slate-500 font-normal">Cited from {recallPrompts[activePromptIndex].context}</p>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-purple-800 bg-purple-50 border border-purple-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                    <span className="text-[10px] font-mono font-normal text-purple-800 bg-purple-50 border border-purple-300/70 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
                       <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
                       <span>99.8% Match</span>
                     </span>
@@ -1082,12 +1082,12 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Section 1: Verified Transcript */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-slate-800">Verified Audio Transcript</span>
+                      <span className="text-[11px] font-normal text-slate-800">Verified Audio Transcript</span>
                       <div className="w-14 h-1 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500" />
                     </div>
                     <div className="space-y-1 text-xs text-slate-700 leading-relaxed pl-3 border-l-2 border-purple-400 font-sans">
                       <p className="italic">"{recallPrompts[activePromptIndex].answer}"</p>
-                      <span className="text-[10px] font-bold text-purple-700 block">
+                      <span className="text-[10px] font-normal text-purple-700 block">
                         Speaker: {recallPrompts[activePromptIndex].speaker} • Timestamp {recallPrompts[activePromptIndex].time}
                       </span>
                     </div>
@@ -1096,8 +1096,8 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   {/* Section 2: Audio Stream & Evidence */}
                   <div className="space-y-2 pt-2 border-t border-slate-100">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-slate-800">Direct Audio Jump</span>
-                      <span className="text-[10px] font-bold text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
+                      <span className="text-[11px] font-normal text-slate-800">Direct Audio Jump</span>
+                      <span className="text-[10px] font-normal text-purple-700 bg-purple-100/90 border border-purple-200/60 px-2 py-0.5 rounded-full">
                         1 verified source
                       </span>
                     </div>
@@ -1116,7 +1116,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                             });
                           }
                         }}
-                        className="text-purple-600 hover:text-purple-800 font-bold text-xs flex items-center gap-1.5 cursor-pointer transition-colors bg-purple-50/80 hover:bg-purple-100/80 px-2.5 py-1.5 rounded-lg border border-purple-200/60 shadow-2xs"
+                        className="text-purple-600 hover:text-purple-800 font-normal text-xs flex items-center gap-1.5 cursor-pointer transition-colors bg-purple-50/80 hover:bg-purple-100/80 px-2.5 py-1.5 rounded-lg border border-purple-200/60 shadow-2xs"
                       >
                         {isPlayingAudioQuote ? (
                           <>
@@ -1131,7 +1131,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                         )}
                       </motion.button>
 
-                      <div className="flex items-center gap-1 text-[11px] text-slate-500 font-medium">
+                      <div className="flex items-center gap-1 text-[11px] text-slate-500 font-normal">
                         <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                         <span>SOC 2 Verified</span>
                       </div>
@@ -1139,9 +1139,9 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                   </div>
 
                   {/* Footer */}
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                     <span>Indexed Knowledge</span>
-                    <span className="text-purple-600 font-bold">Zero Model Retention</span>
+                    <span className="text-purple-600 font-normal">Zero Model Retention</span>
                   </div>
                 </motion.div>
               </BorderBeam>
@@ -1172,7 +1172,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
                 {(!t.icon || t.icon === 'sparkles') && <Sparkles className="w-3.5 h-3.5 text-purple-300" />}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-bold text-white leading-tight">
+                <div className="text-xs font-normal text-white leading-tight">
                   {t.title}
                 </div>
                 {t.description && (

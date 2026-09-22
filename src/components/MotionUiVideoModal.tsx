@@ -281,8 +281,8 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-white">elev Motion UI Showcase</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 font-bold uppercase tracking-wider">
+                <span className="text-sm font-normal text-white">elev Motion UI Showcase</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 font-normal uppercase tracking-wider">
                   Live Product Engine
                 </span>
               </div>
@@ -302,7 +302,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
 
         {/* Scene Navigation Ribbon */}
         <div className="px-6 py-2.5 bg-slate-950/60 border-b border-slate-800/60 flex items-center gap-2 overflow-x-auto scrollbar-none z-10">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mr-2 shrink-0">Scenes:</span>
+          <span className="text-[11px] font-normal uppercase tracking-wider text-slate-500 mr-2 shrink-0">Scenes:</span>
           {SCENES.map((scene) => {
             const Icon = scene.icon;
             const isActive = activeScene.id === scene.id;
@@ -310,7 +310,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
               <button
                 key={scene.id}
                 onClick={() => jumpToScene(scene.id)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer shrink-0 ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-normal transition-all cursor-pointer shrink-0 ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-xs shadow-blue-500/20'
                     : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border border-slate-800'
@@ -355,7 +355,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                 {cursorPos.clicking && (
                   <span className="absolute -inset-2 rounded-full border-2 border-cyan-400 animate-ping" />
                 )}
-                <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-900/90 text-cyan-300 border border-slate-700 shadow-md">
+                <span className="ml-2 text-[10px] font-normal px-2 py-0.5 rounded-full bg-slate-900/90 text-cyan-300 border border-slate-700 shadow-md">
                   elev cursor
                 </span>
               </div>
@@ -380,14 +380,14 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                 >
                   <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
                     <div>
-                      <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 mb-1">
+                      <div className="inline-flex items-center gap-1.5 text-xs font-normal text-blue-600 mb-1">
                         <Calendar className="w-3.5 h-3.5" />
                         <span>Interactive Booking Engine</span>
                       </div>
-                      <h3 className="text-xl font-bold text-slate-900">Product Strategy 1:1</h3>
+                      <h3 className="text-xl font-normal text-slate-900">Product Strategy 1:1</h3>
                       <p className="text-xs text-slate-500">30 min • Google Meet • Auto-timezones</p>
                     </div>
-                    <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm border border-blue-100">
+                    <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 font-normal flex items-center justify-center text-sm border border-blue-100">
                       SC
                     </div>
                   </div>
@@ -395,12 +395,12 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {/* Date Picker */}
                     <div>
-                      <span className="text-xs font-bold text-slate-700 block mb-3 uppercase tracking-wider">Select Day:</span>
+                      <span className="text-xs font-normal text-slate-700 block mb-3 uppercase tracking-wider">Select Day:</span>
                       <div className="grid grid-cols-4 gap-2">
                         {['Oct 12', 'Oct 13', 'Oct 14', 'Oct 15'].map((d) => (
                           <div
                             key={d}
-                            className={`p-3 rounded-xl text-center text-xs font-bold transition-all border ${
+                            className={`p-3 rounded-xl text-center text-xs font-normal transition-all border ${
                               d === 'Oct 14' && schedDateSelected
                                 ? 'bg-blue-600 text-white border-blue-600 shadow-md ring-2 ring-blue-300'
                                 : 'bg-slate-50 text-slate-700 border-slate-200'
@@ -414,12 +414,12 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
 
                     {/* Time Slot Picker */}
                     <div>
-                      <span className="text-xs font-bold text-slate-700 block mb-3 uppercase tracking-wider">Select Slot:</span>
+                      <span className="text-xs font-normal text-slate-700 block mb-3 uppercase tracking-wider">Select Slot:</span>
                       <div className="flex flex-col gap-2">
                         {['10:30 AM', '02:00 PM', '04:30 PM'].map((slot) => (
                           <div
                             key={slot}
-                            className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-between border transition-all ${
+                            className={`px-4 py-2.5 rounded-xl text-xs font-normal flex items-center justify-between border transition-all ${
                               slot === '02:00 PM' && schedTimeSelected
                                 ? 'bg-blue-600 text-white border-blue-600 shadow-md'
                                 : 'bg-slate-50 text-slate-700 border-slate-200'
@@ -437,7 +437,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                   <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
                     <span className="text-xs text-slate-500">Auto-synced with Google Calendar</span>
                     <div
-                      className={`px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all ${
+                      className={`px-5 py-2.5 rounded-xl font-normal text-xs flex items-center gap-2 transition-all ${
                         schedConfirmed
                           ? 'bg-emerald-600 text-white shadow-md'
                           : schedTimeSelected
@@ -472,13 +472,13 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                 >
                   <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold border border-amber-400/30">
+                      <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center font-normal border border-amber-400/30">
                         <Sparkles className="w-5 h-5" />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="text-lg font-bold text-white">Velie Executive AI</h3>
-                          <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300">
+                          <h3 className="text-lg font-normal text-white">Velie Executive AI</h3>
+                          <span className="text-[10px] uppercase font-normal px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300">
                             Autonomous
                           </span>
                         </div>
@@ -526,12 +526,12 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                         className="flex justify-start"
                       >
                         <div className="bg-slate-800/90 border border-indigo-500/40 text-slate-200 text-xs sm:text-sm p-4 rounded-2xl rounded-tl-xs max-w-[90%] shadow-lg space-y-2">
-                          <div className="flex items-center gap-2 text-amber-300 font-bold text-xs">
+                          <div className="flex items-center gap-2 text-amber-300 font-normal text-xs">
                             <Check className="w-3.5 h-3.5" />
                             <span>Conflict Resolved Automatically</span>
                           </div>
                           <p>
-                            I found a free 30-min opening without disrupting your deep work block. I've sent the calendar invite to both parties for <span className="text-white font-bold underline">Thursday at 2:00 PM</span>.
+                            I found a free 30-min opening without disrupting your deep work block. I've sent the calendar invite to both parties for <span className="text-white font-normal underline">Thursday at 2:00 PM</span>.
                           </p>
                         </div>
                       </motion.div>
@@ -568,11 +568,11 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                 >
                   <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
                     <div>
-                      <div className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-600 mb-1">
+                      <div className="inline-flex items-center gap-1.5 text-xs font-normal text-purple-600 mb-1">
                         <FileText className="w-3.5 h-3.5" />
                         <span>Intelligent Meeting Notetaker 2.0</span>
                       </div>
-                      <h3 className="text-xl font-bold text-slate-900">Q3 Growth & Pipeline Review</h3>
+                      <h3 className="text-xl font-normal text-slate-900">Q3 Growth & Pipeline Review</h3>
                       <p className="text-xs text-slate-500">4 participants • Recorded with Elev Notetaker</p>
                     </div>
 
@@ -592,7 +592,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                           />
                         ))}
                       </div>
-                      <span className="text-[11px] font-mono font-bold text-purple-900">
+                      <span className="text-[11px] font-mono font-normal text-purple-900">
                         {audioPlaying ? '08:42' : '00:00'}
                       </span>
                     </div>
@@ -601,12 +601,12 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {/* Live Transcript Snippet */}
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-3">
-                      <span className="text-xs font-bold text-slate-700 block uppercase tracking-wider">Live Transcript:</span>
+                      <span className="text-xs font-normal text-slate-700 block uppercase tracking-wider">Live Transcript:</span>
                       <div className="space-y-2 text-xs">
                         <p className="text-slate-600">
                           <strong className="text-slate-900">Sarah (VP Sales):</strong> Let's accelerate the partner rollout by next Monday.
                         </p>
-                        <p className={`p-2 rounded-lg transition-colors ${audioPlaying ? 'bg-purple-100 text-purple-900 font-medium' : 'text-slate-600'}`}>
+                        <p className={`p-2 rounded-lg transition-colors ${audioPlaying ? 'bg-purple-100 text-purple-900 font-normal' : 'text-slate-600'}`}>
                           <strong className="text-slate-900">Steven (Lead Dev):</strong> Agreed. I will sync the action items directly to Slack and CRM.
                         </p>
                       </div>
@@ -614,7 +614,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
 
                     {/* Action Items Auto-Checklist */}
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-3">
-                      <span className="text-xs font-bold text-slate-700 block uppercase tracking-wider">AI Extracted Action Items:</span>
+                      <span className="text-xs font-normal text-slate-700 block uppercase tracking-wider">AI Extracted Action Items:</span>
                       <div className="space-y-2.5">
                         <div
                           className={`p-2.5 rounded-lg border text-xs flex items-center justify-between transition-all ${
@@ -622,7 +622,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                           }`}
                         >
                           <div className="flex items-center gap-2">
-                            <span className={`w-4 h-4 rounded-md flex items-center justify-center text-[10px] font-bold ${checkedItem1 ? 'bg-emerald-600 text-white' : 'border border-slate-300'}`}>
+                            <span className={`w-4 h-4 rounded-md flex items-center justify-center text-[10px] font-normal ${checkedItem1 ? 'bg-emerald-600 text-white' : 'border border-slate-300'}`}>
                               {checkedItem1 && '✓'}
                             </span>
                             <span>Finalize partner agreements</span>
@@ -636,7 +636,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                           }`}
                         >
                           <div className="flex items-center gap-2">
-                            <span className={`w-4 h-4 rounded-md flex items-center justify-center text-[10px] font-bold ${checkedItem2 ? 'bg-emerald-600 text-white' : 'border border-slate-300'}`}>
+                            <span className={`w-4 h-4 rounded-md flex items-center justify-center text-[10px] font-normal ${checkedItem2 ? 'bg-emerald-600 text-white' : 'border border-slate-300'}`}>
                               {checkedItem2 && '✓'}
                             </span>
                             <span>Push release to production</span>
@@ -663,16 +663,16 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                 >
                   <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
                     <div>
-                      <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 mb-1">
+                      <div className="inline-flex items-center gap-1.5 text-xs font-normal text-emerald-600 mb-1">
                         <CreditCard className="w-3.5 h-3.5" />
                         <span>elev Pay • Integrated Checkout</span>
                       </div>
-                      <h3 className="text-xl font-bold text-slate-900">Executive Consulting Package</h3>
+                      <h3 className="text-xl font-normal text-slate-900">Executive Consulting Package</h3>
                       <p className="text-xs text-slate-500">Collect payments automatically before meetings</p>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-2xl font-extrabold text-slate-900">
+                      <span className="text-2xl font-normal text-slate-900">
                         {packageType === 'bundle' ? '$360' : '$150'}
                       </span>
                       <span className="text-xs text-slate-500 block">USD</span>
@@ -682,17 +682,17 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                   {/* Package Selector */}
                   <div className="grid grid-cols-2 gap-3 mb-6">
                     <div
-                      className={`p-3.5 rounded-xl border text-xs font-semibold cursor-pointer transition-all ${
+                      className={`p-3.5 rounded-xl border text-xs font-normal cursor-pointer transition-all ${
                         packageType === 'single'
                           ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-2 ring-emerald-200'
                           : 'bg-slate-50 border-slate-200 text-slate-600'
                       }`}
                     >
                       <span>Single Session (60m)</span>
-                      <span className="block font-bold text-slate-900 text-sm mt-1">$150</span>
+                      <span className="block font-normal text-slate-900 text-sm mt-1">$150</span>
                     </div>
                     <div
-                      className={`p-3.5 rounded-xl border text-xs font-semibold cursor-pointer transition-all ${
+                      className={`p-3.5 rounded-xl border text-xs font-normal cursor-pointer transition-all ${
                         packageType === 'bundle'
                           ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-2 ring-emerald-200'
                           : 'bg-slate-50 border-slate-200 text-slate-600'
@@ -700,23 +700,23 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                     >
                       <div className="flex justify-between items-center">
                         <span>Quarterly 3-Pack</span>
-                        <span className="text-[10px] bg-emerald-600 text-white font-bold px-1.5 py-0.2 rounded-sm">Save 20%</span>
+                        <span className="text-[10px] bg-emerald-600 text-white font-normal px-1.5 py-0.2 rounded-sm">Save 20%</span>
                       </div>
-                      <span className="block font-bold text-slate-900 text-sm mt-1">$360</span>
+                      <span className="block font-normal text-slate-900 text-sm mt-1">$360</span>
                     </div>
                   </div>
 
                   {/* Payment Button State */}
                   <div className="p-4 rounded-xl bg-slate-900 text-white flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-6 rounded-md bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-[10px] font-bold">
+                      <div className="w-9 h-6 rounded-md bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-[10px] font-normal">
                         •••• 4242
                       </div>
                       <span className="text-xs text-slate-300">Stripe Secured Instant Checkout</span>
                     </div>
 
                     <div
-                      className={`px-5 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${
+                      className={`px-5 py-2 rounded-xl text-xs font-normal flex items-center gap-2 transition-all ${
                         payConfirmed ? 'bg-emerald-500 text-white' : 'bg-blue-600 text-white'
                       }`}
                     >
@@ -777,7 +777,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
           {/* Speed switcher */}
           <button
             onClick={() => setSpeed((prev) => (prev === 1 ? 1.5 : prev === 1.5 ? 2 : 1))}
-            className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
+            className="text-xs font-mono font-normal px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
           >
             {speed}x
           </button>
@@ -785,7 +785,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
           {/* Loop toggle */}
           <button
             onClick={() => setIsLooping(!isLooping)}
-            className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors ${
+            className={`text-xs font-normal px-2.5 py-1 rounded-lg transition-colors ${
               isLooping ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-500'
             }`}
           >

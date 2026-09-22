@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import MinimalistMotionStage from './MinimalistMotionStage';
 import Folder from './Folder';
+import { Reveal, ImageReveal, StaggerGroup } from '../motion';
 
 function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => void }) {
   const [activeTab, setActiveTab] = useState<'pending' | 'completed' | 'declined'>('completed');
@@ -115,7 +116,7 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
         {/* Top Row: "Your earnings" & "This month ⌵" */}
         <div className="flex items-start justify-between">
           <div>
-            <span className="text-[13px] sm:text-[14px] font-medium text-slate-400">
+            <span className="text-[13px] sm:text-[14px] font-normal text-slate-400">
               Your earnings
             </span>
             
@@ -128,7 +129,7 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -5, filter: 'blur(2px)' }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-3xl sm:text-[2.6rem] font-bold text-[#0A0D14] tracking-tight tabular-nums leading-none whitespace-nowrap"
+                  className="text-3xl sm:text-[2.6rem] font-normal text-[#0A0D14] tracking-tight tabular-nums leading-none whitespace-nowrap"
                 >
                   {current.amount}
                 </motion.div>
@@ -138,7 +139,7 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
 
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-xs font-medium text-slate-600 hover:text-slate-900 hover:border-slate-300 active:scale-[0.97] transition-[border-color,color,transform] duration-150 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-xs font-normal text-slate-600 hover:text-slate-900 hover:border-slate-300 active:scale-[0.97] transition-[border-color,color,transform] duration-150 cursor-pointer"
           >
             <span>This month</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -154,8 +155,8 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-t-lg text-xs font-medium transition-colors duration-200 cursor-pointer active:scale-[0.97] z-10 ${
-                  active ? 'text-[#0055FF] font-semibold' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100/50'
+                className={`relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-t-lg text-xs font-normal transition-colors duration-200 cursor-pointer active:scale-[0.97] z-10 ${
+                  active ? 'text-[#0055FF] font-normal' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100/50'
                 }`}
               >
                 {active && (
@@ -211,7 +212,7 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 3, scale: 0.9 }}
                       transition={{ type: 'spring', stiffness: 450, damping: 25 }}
-                      className="absolute top-1.5 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-bold font-mono px-2 py-0.5 rounded-md shadow-lg z-30 whitespace-nowrap tabular-nums pointer-events-none"
+                      className="absolute top-1.5 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-normal font-mono px-2 py-0.5 rounded-md shadow-lg z-30 whitespace-nowrap tabular-nums pointer-events-none"
                     >
                       {current.values[index]}
                     </motion.div>
@@ -256,7 +257,7 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
       {/* Bottom Footer Description matching reference */}
       <div className="relative z-10 pt-4">
         <p className="text-[14px] sm:text-[15px] leading-relaxed text-slate-500 text-pretty">
-          <strong className="font-bold text-[#0A0D14]">Instant Payouts</strong>{' '}
+          <strong className="font-normal text-[#0A0D14]">Instant Payouts</strong>{' '}
           <span>– Get paid quickly for completed and approved jobs.</span>
         </p>
       </div>
@@ -309,12 +310,16 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
         
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-bold leading-[1.14] tracking-tight text-balance">
-            Built for teams whose work <span className="font-editorial italic font-normal text-[#0055FF]">runs on meetings</span>
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed text-pretty">
-            Meetings move you forward, but the work around them can slow you down. elev handles the tasks before, during, and after meetings, so you have more space for what matters.
-          </p>
+          <Reveal y={24}>
+            <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.14] tracking-tight text-balance">
+              Built for teams whose work <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">runs on meetings</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.12} y={16}>
+            <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed text-pretty">
+              elev automates the workflow before, during, and after every session — so your team can focus on high-impact execution.
+            </p>
+          </Reveal>
         </div>
 
         {/* ========================================================= */}
@@ -323,12 +328,12 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
         <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-8">
           
           {/* Main Bento Cell: Standalone Transparent Glassy Motion Stage (Span 8) */}
-          <div className="lg:col-span-8 group flex flex-col">
+          <ImageReveal delay={0.1} y={28} className="lg:col-span-8 group flex flex-col">
             <MinimalistMotionStage />
-          </div>
+          </ImageReveal>
 
           {/* Right Side Column: Standalone Transparent Glassy Companion Cards (Span 4) */}
-          <div className="lg:col-span-4 flex flex-col gap-6 justify-between">
+          <ImageReveal delay={0.25} y={28} className="lg:col-span-4 flex flex-col gap-6 justify-between">
             
             {/* Side Card 1: Meet Velie AI with Interactive Folder Component */}
             <div className={`bg-gradient-to-b from-white via-[#FAFBFD] to-[#F3F6FC] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(0,85,255,0.08)] hover:border-blue-300/80 transition-all duration-300 flex-1 relative group ${
@@ -349,17 +354,17 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                   <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-[#0055FF] border border-blue-200/60 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform duration-300">
                     <Sparkles className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-900 text-white px-3 py-1 rounded-full font-mono shadow-xs flex items-center gap-1.5">
+                  <span className="text-[10px] font-normal uppercase tracking-wider bg-slate-900 text-white px-3 py-1 rounded-full font-mono shadow-xs flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     24/7 AI Copilot
                   </span>
                 </div>
 
-                <h3 className="text-2xl font-bold text-[#0A0D14] tracking-tight mb-2">
+                <h3 className="text-2xl font-normal text-[#0A0D14] tracking-tight mb-2">
                   Meet <span className="font-editorial italic font-normal text-[#0055FF]">Velie</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed text-pretty">
-                  CC <span className="font-mono font-bold text-[#0055FF] bg-blue-50/80 border border-blue-200/80 px-2 py-0.5 rounded-md text-[11px] inline-flex items-center gap-1 shadow-2xs"><Mail className="w-3 h-3" />velie@elev.io</span> on any email. She opens smart workflows, weighs conflicts, and auto-books meetings.
+                  CC <span className="font-mono font-normal text-[#0055FF] bg-blue-50/80 border border-blue-200/80 px-2 py-0.5 rounded-md text-[11px] inline-flex items-center gap-1 shadow-2xs"><Mail className="w-3 h-3" />velie@elev.io</span> on any email. She opens smart workflows, weighs conflicts, and auto-books meetings.
                 </p>
               </div>
 
@@ -375,16 +380,16 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                     // Paper 1: Smart Email Sync
                     <div key="p1" className="flex flex-col h-full justify-between p-0.5 text-left font-sans">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-slate-900 font-bold text-[10px]">
+                        <div className="flex items-center gap-1.5 text-slate-900 font-normal text-[10px]">
                           <Mail className="w-3.5 h-3.5 text-[#0055FF]" />
                           <span>Thread Sync</span>
                         </div>
                         <span className="w-1.5 h-1.5 rounded-full bg-[#0055FF] shadow-[0_0_6px_rgba(0,85,255,0.6)]" />
                       </div>
-                      <p className="text-[9.5px] font-bold text-slate-800 leading-snug font-mono">
+                      <p className="text-[9.5px] font-normal text-slate-800 leading-snug font-mono">
                         velie@elev.io
                       </p>
-                      <div className="text-[8.5px] font-bold text-white bg-[#0055FF] px-2.5 py-0.5 rounded-full shadow-xs w-fit">
+                      <div className="text-[8.5px] font-normal text-white bg-[#0055FF] px-2.5 py-0.5 rounded-full shadow-xs w-fit">
                         Conflict Protection
                       </div>
                     </div>,
@@ -392,16 +397,16 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                     // Paper 2: Auto-Booked Slot
                     <div key="p2" className="flex flex-col h-full justify-between p-0.5 text-left font-sans">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-slate-900 font-bold text-[10px]">
+                        <div className="flex items-center gap-1.5 text-slate-900 font-normal text-[10px]">
                           <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                           <span>Auto-Booked</span>
                         </div>
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
                       </div>
-                      <p className="text-[10px] font-bold text-slate-900 tabular-nums leading-snug">
+                      <p className="text-[10px] font-normal text-slate-900 tabular-nums leading-snug">
                         Thu • 2:00 PM
                       </p>
-                      <div className="text-[8.5px] font-bold text-white bg-emerald-600 px-2.5 py-0.5 rounded-full shadow-xs w-fit">
+                      <div className="text-[8.5px] font-normal text-white bg-emerald-600 px-2.5 py-0.5 rounded-full shadow-xs w-fit">
                         Calendar Synced
                       </div>
                     </div>,
@@ -409,16 +414,16 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                     // Paper 3: Executive AI Briefing
                     <div key="p3" className="flex flex-col h-full justify-between p-0.5 text-left font-sans">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-slate-900 font-bold text-[10px]">
+                        <div className="flex items-center gap-1.5 text-slate-900 font-normal text-[10px]">
                           <FileText className="w-3.5 h-3.5 text-violet-600" />
                           <span>Velie Vault</span>
                         </div>
                         <span className="w-1.5 h-1.5 rounded-full bg-violet-500 shadow-[0_0_6px_rgba(139,92,246,0.6)]" />
                       </div>
-                      <p className="text-[9.5px] font-semibold text-slate-700 leading-snug line-clamp-1">
+                      <p className="text-[9.5px] font-normal text-slate-700 leading-snug line-clamp-1">
                         Executive Briefing
                       </p>
-                      <div className="text-[8.5px] font-bold text-white bg-violet-600 px-2.5 py-0.5 rounded-full shadow-xs w-fit">
+                      <div className="text-[8.5px] font-normal text-white bg-violet-600 px-2.5 py-0.5 rounded-full shadow-xs w-fit">
                         Velie AI Briefing
                       </div>
                     </div>
@@ -435,12 +440,12 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
             {/* Side Card 2: Instant Payouts Earnings & Stadium Chart */}
             <EarningsPayoutsCard onOpenAuth={onOpenAuth} />
 
-          </div>
+          </ImageReveal>
 
         </div>
 
         {/* 4 Step Bento Cards Below Main Stage (Transparent Glassy Texture with Animated Faded Dot Pattern) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <StaggerGroup stagger={0.08} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {steps.map((s) => (
             <div
               key={s.step}
@@ -457,7 +462,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
 
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono font-bold text-slate-400 bg-white/80 border border-slate-200/60 px-2 py-0.5 rounded-md">
+                  <span className="text-xs font-mono font-normal text-slate-400 bg-white/80 border border-slate-200/60 px-2 py-0.5 rounded-md">
                     {s.step}
                   </span>
                   <span
@@ -465,7 +470,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                     style={{ backgroundColor: s.color }}
                   />
                 </div>
-                <h4 className="text-lg font-bold text-[#0A0D14] tracking-tight group-hover:text-[#0055FF] transition-colors duration-150">
+                <h4 className="text-lg font-normal text-[#0A0D14] tracking-tight group-hover:text-[#0055FF] transition-colors duration-150">
                   {s.title}
                 </h4>
                 <p className="text-xs text-slate-500 leading-relaxed text-pretty mt-1">
@@ -473,12 +478,12 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                 </p>
               </div>
 
-              <div className="pt-2 flex items-center gap-1.5 text-[11px] font-bold text-[#0055FF] relative z-10">
+              <div className="pt-2 flex items-center gap-1.5 text-[11px] font-normal text-[#0055FF] relative z-10">
                 <span>{s.tag}</span>
               </div>
             </div>
           ))}
-        </div>
+        </StaggerGroup>
 
       </div>
     </section>

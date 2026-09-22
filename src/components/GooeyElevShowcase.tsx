@@ -103,17 +103,17 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0055FF]"></span>
             </span>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#0A0D14]">
+            <span className="text-[11px] font-normal uppercase tracking-widest text-[#0A0D14]">
               Liquid Intelligence Engine
             </span>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EFF6FF] text-[#0055FF] border border-[#BFDBFE]">
+            <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-[#EFF6FF] text-[#0055FF] border border-[#BFDBFE]">
               SVG Gooey Physics
             </span>
           </div>
 
-          <h2 className="font-editorial text-3xl sm:text-5xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-tight tracking-tight">
-            Meetings used to require four different apps. <br className="hidden sm:inline" />
-            <span className="italic text-blue-600 font-medium">elev</span> dissolves them into one.
+          <h2 className="text-3xl sm:text-5xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-tight tracking-tight">
+            Meetings used to require four different apps <br className="hidden sm:inline" />
+            <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">elev dissolves them into one</span>
           </h2>
 
           <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
@@ -131,7 +131,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                 <Zap className="w-5 h-5 text-amber-400" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base">
+                <h3 className="font-normal text-slate-900 text-base">
                   Interactive Workflow Fusion
                 </h3>
                 <p className="text-xs text-slate-500">
@@ -145,7 +145,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
               {!isMerged ? (
                 <button
                   onClick={handleTriggerFusion}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.97] text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.97] text-white text-xs sm:text-sm font-normal shadow-sm transition-all cursor-pointer"
                 >
                   <RefreshCw className="w-4 h-4 animate-spin" />
                   <span>Fuse Into elev Core</span>
@@ -153,7 +153,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
               ) : (
                 <button
                   onClick={handleSeparate}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-[0.97] text-slate-800 text-xs sm:text-sm font-bold transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-[0.97] text-slate-800 text-xs sm:text-sm font-normal transition-all cursor-pointer"
                 >
                   <Sliders className="w-4 h-4 text-slate-600" />
                   <span>Separate Workflows</span>
@@ -162,7 +162,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
 
               <button
                 onClick={onOpenDemo}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-normal transition-colors cursor-pointer"
               >
                 <span>Live Walkthrough</span>
                 <Play className="w-3 h-3 fill-slate-700" />
@@ -217,7 +217,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                   }`}
                   onClick={() => setIsMerged(!isMerged)}
                 >
-                  <div className="w-16 h-16 rounded-full bg-slate-950/20 flex items-center justify-center text-white font-extrabold text-xl tracking-tight">
+                  <div className="w-16 h-16 rounded-full bg-slate-950/20 flex items-center justify-center text-white font-normal text-xl tracking-tight">
                     elev
                   </div>
                 </motion.div>
@@ -283,7 +283,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
 
               {/* Bottom Instructions Badge */}
               <div className="mt-6 text-center z-20">
-                <span className="text-[11px] font-medium text-slate-300 bg-slate-900/90 px-3 py-1 rounded-full border border-slate-800 backdrop-blur-xs">
+                <span className="text-[11px] font-normal text-slate-300 bg-slate-900/90 px-3 py-1 rounded-full border border-slate-800 backdrop-blur-xs">
                   {isMerged
                     ? '✨ Unified State: All 4 tools operating in seamless liquid synchronization'
                     : '👆 Click or drag any satellite droplet toward the center to watch them fuse'}
@@ -294,10 +294,10 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
             {/* Context & Pillar Details (5 cols) */}
             <div className="lg:col-span-5 space-y-4 text-left">
               <div className="space-y-1.5">
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 font-mono">
+                <span className="text-[11px] font-normal uppercase tracking-wider text-blue-600 font-mono">
                   THE ELEV ADVANTAGE
                 </span>
-                <h4 className="text-xl sm:text-2xl font-bold text-slate-900">
+                <h4 className="text-xl sm:text-2xl font-normal text-slate-900">
                   {isMerged
                     ? 'One platform. No context switching.'
                     : 'Four fragmented tasks, unified.'}
@@ -326,10 +326,10 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs text-slate-900">
+                          <span className="font-normal text-xs text-slate-900">
                             {pillar.name}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-medium">
+                          <span className="text-[10px] text-slate-400 font-normal">
                             {pillar.label}
                           </span>
                         </div>
@@ -344,7 +344,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
 
               {/* Viscosity Slider */}
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold text-slate-700 flex items-center gap-1.5">
+                <span className="font-normal text-slate-700 flex items-center gap-1.5">
                   <Sliders className="w-3.5 h-3.5 text-slate-500" />
                   Liquid Surface Tension
                 </span>
@@ -365,7 +365,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
               {/* Live Metric Banner */}
               <div className="p-3 bg-blue-50/80 rounded-xl border border-blue-100 flex items-center gap-2.5 text-xs text-blue-900">
                 <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                <span className="font-medium">
+                <span className="font-normal">
                   Average team saves <strong>4.2 hours/week</strong> eliminating tool handoffs.
                 </span>
               </div>

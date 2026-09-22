@@ -65,7 +65,7 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                 <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center shadow-2xs">
                   <Check className="w-6 h-6 stroke-[3]" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900">
+                <h3 className="text-xl font-normal text-slate-900">
                   {mode === 'signup' ? 'Welcome to elev!' : 'Welcome back!'}
                 </h3>
                 <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
@@ -83,10 +83,10 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                       <path d="M12 9v3l2 2" />
                     </svg>
                   </div>
-                  <span className="font-extrabold text-xl text-slate-900 tracking-tight">elev</span>
+                  <span className="font-normal text-xl text-slate-900 tracking-tight">elev</span>
                 </div>
 
-                <h3 className="text-2xl font-bold text-slate-900 tracking-tight">
+                <h3 className="text-2xl font-normal text-slate-900 tracking-tight">
                   {mode === 'signup' ? 'Get started with elev free' : 'Log in to your elev account'}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 mb-6 leading-relaxed">
@@ -100,7 +100,7 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                   <button
                     type="button"
                     onClick={handleSubmit}
-                    className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 font-bold text-xs text-slate-700 flex items-center justify-center gap-2.5 transition-all duration-150 active:scale-[0.97] cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 font-normal text-xs text-slate-700 flex items-center justify-center gap-2.5 transition-all duration-150 active:scale-[0.97] cursor-pointer"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24">
                       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -114,7 +114,7 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                   <button
                     type="button"
                     onClick={handleSubmit}
-                    className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 font-bold text-xs text-slate-700 flex items-center justify-center gap-2.5 transition-all duration-150 active:scale-[0.97] cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 font-normal text-xs text-slate-700 flex items-center justify-center gap-2.5 transition-all duration-150 active:scale-[0.97] cursor-pointer"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24">
                       <path fill="#F25022" d="M1 1h10v10H1z" />
@@ -131,39 +131,39 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                     <div className="w-full border-t border-slate-200" />
                   </div>
                   <div className="relative flex justify-center text-[10px] uppercase font-mono">
-                    <span className="bg-white px-2.5 text-slate-400 font-bold tracking-wider">or with work email</span>
+                    <span className="bg-white px-2.5 text-slate-400 font-normal tracking-wider">or with work email</span>
                   </div>
                 </div>
 
                 {/* Email Form */}
                 <form onSubmit={handleSubmit} className="space-y-3.5">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Work Email</label>
+                    <label className="block text-xs font-normal text-slate-700 mb-1">Work Email</label>
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@company.com"
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] bg-white font-medium shadow-2xs"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] bg-white font-normal shadow-2xs"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                    <label className="block text-xs font-normal text-slate-700 mb-1">Password</label>
                     <input
                       type="password"
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] bg-white font-medium shadow-2xs"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-[#0055FF] bg-white font-normal shadow-2xs"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full mt-2 bg-[#0055FF] hover:bg-blue-700 active:scale-[0.96] text-white font-bold text-xs py-3 rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md group/btn"
+                    className="w-full mt-2 bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 active:scale-[0.96] text-white font-normal text-xs py-3 rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md hover:shadow-blue-500/20 group/btn"
                   >
                     <span>{mode === 'signup' ? 'Create Free Account' : 'Log In to Workspace'}</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
@@ -177,7 +177,7 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                       <button
                         type="button"
                         onClick={() => onSwitchMode('login')}
-                        className="font-bold text-[#0055FF] hover:underline cursor-pointer"
+                        className="font-normal text-[#0055FF] hover:underline cursor-pointer"
                       >
                         Log In
                       </button>
@@ -188,7 +188,7 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                       <button
                         type="button"
                         onClick={() => onSwitchMode('signup')}
-                        className="font-bold text-[#0055FF] hover:underline cursor-pointer"
+                        className="font-normal text-[#0055FF] hover:underline cursor-pointer"
                       >
                         Sign up free
                       </button>

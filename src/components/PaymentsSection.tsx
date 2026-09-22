@@ -60,12 +60,12 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center p-1 shrink-0">
               <img src="/icon-payments-3d.png" alt="Payments" className="w-full h-full object-contain" />
             </div>
-            <span className="text-sm sm:text-base font-semibold text-[#0A0D14] tracking-tight">
+            <span className="text-sm sm:text-base font-normal text-[#0A0D14] tracking-tight">
               Payments
             </span>
           </div>
-          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
-            Flexible payment options that fit your business
+          <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
+            Flexible payment options <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">that fit your business</span>
           </h2>
           <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed">
             Eliminate awkward invoice follow-ups. Collect payment at booking, bundle sessions, or generate custom Stripe-backed payment links with one click.
@@ -96,7 +96,7 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
                       }`}>
                         {item.icon}
                       </div>
-                      <h3 className="font-bold text-base text-[#0A0D14]">
+                      <h3 className="font-normal text-base text-[#0A0D14]">
                         {item.title}
                       </h3>
                     </div>
@@ -117,8 +117,8 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
             <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-md border border-[#E2E8F0] space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Integrated Checkout</span>
-                  <h4 className="text-xs font-bold text-slate-900">Dr. Maya Lin · 1:1 Advisory Session</h4>
+                  <span className="text-[10px] font-normal uppercase tracking-wider text-slate-400">Integrated Checkout</span>
+                  <h4 className="text-xs font-normal text-slate-900">Dr. Maya Lin · 1:1 Advisory Session</h4>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
                   <ShieldCheck className="w-3.5 h-3.5" />
@@ -131,13 +131,13 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
                   <div className="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto">
                     <Check className="w-5 h-5" />
                   </div>
-                  <h4 className="text-sm font-bold text-emerald-900">Receipt Dispatched & Booking Locked!</h4>
+                  <h4 className="text-sm font-normal text-emerald-900">Receipt Dispatched & Booking Locked!</h4>
                   <p className="text-xs text-emerald-700">
                     Your {packageType === 'single' ? '$200.00' : '$500.00'} deposit has been received. You can reschedule anytime up to 24h prior.
                   </p>
                   <button
                     onClick={() => setIsPaid(false)}
-                    className="text-xs font-bold text-emerald-800 underline cursor-pointer pt-2 block mx-auto"
+                    className="text-xs font-normal text-emerald-800 underline cursor-pointer pt-2 block mx-auto"
                   >
                     Reset simulator
                   </button>
@@ -154,8 +154,8 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
                           : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50'
                       }`}
                     >
-                      <span className="block text-xs font-bold text-slate-900">Single Session</span>
-                      <span className="text-sm font-extrabold text-teal-800">$200.00</span>
+                      <span className="block text-xs font-normal text-slate-900">Single Session</span>
+                      <span className="text-sm font-normal text-teal-800">$200.00</span>
                       <span className="block text-[10px] text-slate-500 mt-0.5">Pay upfront</span>
                     </div>
 
@@ -168,23 +168,23 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="block text-xs font-bold text-slate-900">3-Session Pack</span>
-                        <span className="text-[9px] bg-teal-100 text-teal-800 font-bold px-1.5 rounded-sm">Save $100</span>
+                        <span className="block text-xs font-normal text-slate-900">3-Session Pack</span>
+                        <span className="text-[9px] bg-teal-100 text-teal-800 font-normal px-1.5 rounded-sm">Save $100</span>
                       </div>
-                      <span className="text-sm font-extrabold text-teal-800">$500.00</span>
+                      <span className="text-sm font-normal text-teal-800">$500.00</span>
                       <span className="block text-[10px] text-slate-500 mt-0.5">3 credits issued</span>
                     </div>
                   </div>
 
                   {/* Payment method selector */}
                   <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2 text-xs">
-                    <div className="flex items-center justify-between text-slate-700 font-semibold text-[11px]">
+                    <div className="flex items-center justify-between text-slate-700 font-normal text-[11px]">
                       <span>Accepted Methods</span>
                       <span className="text-slate-400">Credit Card, Apple Pay, Google Pay</span>
                     </div>
-                    <div className="flex items-center justify-between text-slate-900 font-bold pt-1">
+                    <div className="flex items-center justify-between text-slate-900 font-normal pt-1">
                       <span>Total Amount:</span>
-                      <span className="text-base font-extrabold text-teal-800">
+                      <span className="text-base font-normal text-teal-800">
                         {packageType === 'single' ? '$200.00' : '$500.00'}
                       </span>
                     </div>
@@ -192,7 +192,7 @@ export default function PaymentsSection({ onOpenAuth }: PaymentsSectionProps) {
 
                   <button
                     onClick={handleSimulatePayment}
-                    className="w-full bg-[#0B1222] hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-full shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                    className="w-full bg-[#0B1222] hover:bg-slate-800 text-white font-normal text-xs py-3 rounded-full shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <span>Authorize & Book Slot</span>
                     <ArrowRight className="w-3.5 h-3.5" />
