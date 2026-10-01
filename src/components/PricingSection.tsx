@@ -33,7 +33,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
   ];
 
   return (
-    <section id="pricing" className="py-24 lg:py-36 bg-[#F8FAFC] border-t border-[#E2E8F0] relative overflow-hidden text-slate-900 select-none">
+    <section id="pricing" className="py-24 lg:py-36 bg-white border-t border-[#E2E8F0] relative overflow-hidden text-slate-900 select-none">
       {/* Ambient background glows */}
       <div 
         className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-[radial-gradient(ellipse_at_center,rgba(0,85,255,0.08)_0%,rgba(147,197,253,0.12)_45%,transparent_75%)] blur-3xl rounded-full" 

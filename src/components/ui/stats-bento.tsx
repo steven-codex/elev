@@ -128,7 +128,7 @@ export const StatsBento: React.FC<StatsBentoProps> = ({
   return (
     <section
       id="stats-bento"
-      className={`w-full py-20 lg:py-28 bg-[#F8FAFC] text-slate-900 relative overflow-hidden ${className}`}
+      className={`w-full py-20 lg:py-28 bg-white text-slate-900 relative overflow-hidden ${className}`}
     >
       {/* Subtle organic ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-blue-100/40 rounded-full blur-3xl pointer-events-none -z-10" />

@@ -108,11 +108,11 @@ export default function Folder({ color = '#0055FF', size = 1, items = [], classN
                 open
                   ? {
                       transform: `translate(calc(${
-                        i === 0 ? '-115%' : i === 1 ? '15%' : '-50%'
+                        i === 0 ? '-108%' : i === 1 ? '8%' : '-50%'
                       } + ${paperOffsets[i]?.x || 0}px), calc(${
-                        i === 0 ? '-65%' : i === 1 ? '-65%' : '-95%'
+                        i === 0 ? '-55%' : i === 1 ? '-55%' : '-115%'
                       } + ${paperOffsets[i]?.y || 0}px)) rotateZ(${
-                        i === 0 ? '-12deg' : i === 1 ? '12deg' : '2deg'
+                        i === 0 ? '-8deg' : i === 1 ? '8deg' : '1deg'
                       })`
                     }
                   : {}

@@ -64,7 +64,7 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
   };
 
   return (
-    <section className="py-24 lg:py-32 bg-[#F8FAFC] border-t border-[#E2E8F0]">
+    <section className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header with Velie Badge */}

@@ -7,7 +7,7 @@ interface ConversionMarqueeProps {
 
 export default function ConversionMarquee({ onOpenAuth }: ConversionMarqueeProps) {
   return (
-    <section className="py-24 lg:py-32 bg-[#F8FAFC] border-t border-[#E2E8F0] overflow-hidden">
+    <section className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E2E8F0] shadow-2xs mb-4">
           <span className="w-2 h-2 rounded-full bg-[#0055FF] animate-pulse" />

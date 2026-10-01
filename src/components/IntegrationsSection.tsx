@@ -70,7 +70,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
   };
 
   return (
-    <section id="integrations" className="py-20 sm:py-28 bg-[#F8FAFC] border-t border-[#E2E8F0]">
+    <section id="integrations" className="py-20 sm:py-28 bg-white border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Pristine White Hero Card Container */}

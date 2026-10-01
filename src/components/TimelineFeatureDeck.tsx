@@ -1,27 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Sparkles,
-  Calendar,
-  CreditCard,
-  UserCheck,
-  FileText,
   Mail,
-  ArrowRight,
-  CheckCircle2,
-  Clock,
-  Shield,
-  MessageSquare,
-  Zap,
-  TrendingUp,
   ChevronDown,
-  Check,
-  Circle,
-  XCircle
+  Check
 } from 'lucide-react';
 import MinimalistMotionStage from './MinimalistMotionStage';
-import Folder from './Folder';
-import { Reveal, ImageReveal, StaggerGroup } from '../motion';
+import LiquidOrb from './LiquidOrb';
+import { Reveal, ImageReveal } from '../motion';
 
 function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => void }) {
   const [activeTab, setActiveTab] = useState<'pending' | 'completed' | 'declined'>('completed');
@@ -271,41 +258,12 @@ interface TimelineFeatureDeckProps {
 }
 
 export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckProps) {
-  const [isFolderOpen, setIsFolderOpen] = useState(false);
+  const [orbState, setOrbState] = useState<'idle' | 'thinking'>('thinking');
 
-  const steps = [
-    {
-      step: '01',
-      title: 'Before the meeting',
-      desc: 'Smart booking links with conflict protection, custom buffer rules, and upfront deposits.',
-      color: '#0055FF',
-      tag: 'Scheduling & Prep'
-    },
-    {
-      step: '02',
-      title: 'During the meeting',
-      desc: 'Velie AI and Notetaker 2.0 join calls to capture high-fidelity transcripts and action items.',
-      color: '#F59E0B',
-      tag: 'Autonomous Copilot'
-    },
-    {
-      step: '03',
-      title: 'After the meeting',
-      desc: 'Instant post-call recaps sent to attendees, CRM auto-sync, and follow-up scheduling.',
-      color: '#8B5CF6',
-      tag: 'Notetaker Recaps'
-    },
-    {
-      step: '04',
-      title: 'Revenue & billing',
-      desc: 'Seamless Stripe payment checkout, multi-session packages, and client invoices.',
-      color: '#10B981',
-      tag: 'Payments'
-    }
-  ];
+
 
   return (
-    <section id="timeline-deck" className="w-full py-24 lg:py-32 bg-[#F8FAFC] border-t border-[#E2E8F0] relative overflow-hidden">
+    <section id="timeline-deck" className="w-full py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -325,7 +283,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
         {/* ========================================================= */}
         {/* BENTO GRID SHOWCASE (TRANSPARENT GLASSY TEXTURE STAGE)   */}
         {/* ========================================================= */}
-        <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-8">
+        <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
           {/* Main Bento Cell: Standalone Transparent Glassy Motion Stage (Span 8) */}
           <ImageReveal delay={0.1} y={28} className="lg:col-span-8 group flex flex-col">
@@ -335,10 +293,8 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
           {/* Right Side Column: Standalone Transparent Glassy Companion Cards (Span 4) */}
           <ImageReveal delay={0.25} y={28} className="lg:col-span-4 flex flex-col gap-6 justify-between">
             
-            {/* Side Card 1: Meet Velie AI with Interactive Folder Component */}
-            <div className={`bg-gradient-to-b from-white via-[#FAFBFD] to-[#F3F6FC] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(0,85,255,0.08)] hover:border-blue-300/80 transition-all duration-300 flex-1 relative group ${
-              isFolderOpen ? 'z-30 overflow-visible' : 'z-10 overflow-hidden'
-            }`}>
+            {/* Side Card 1: Meet Velie AI with Interactive Liquid Orb */}
+            <div className="bg-gradient-to-b from-white via-[#FAFBFD] to-[#F3F6FC] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(0,85,255,0.08)] hover:border-blue-300/80 transition-all duration-300 flex-1 relative group z-10 overflow-hidden">
               
               {/* Faded Diagonal Dot Pattern Overlay with Looping Animation */}
               <div 
@@ -368,73 +324,34 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                 </p>
               </div>
 
-              {/* Interactive Folder Showcase Area */}
-              <div className={`mt-4 pt-4 pb-3 bg-slate-100/70 rounded-2xl border border-slate-200/70 flex flex-col items-center justify-center relative min-h-[150px] transition-all duration-300 group/folder ${
-                isFolderOpen ? 'z-40 overflow-visible' : 'z-10 overflow-hidden'
-              }`}>
-                <Folder
-                  color="#0055FF"
-                  size={1.0}
-                  onOpenChange={setIsFolderOpen}
-                  items={[
-                    // Paper 1: Smart Email Sync
-                    <div key="p1" className="flex flex-col h-full justify-between p-0.5 text-left font-sans">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-slate-900 font-normal text-[10px]">
-                          <Mail className="w-3.5 h-3.5 text-[#0055FF]" />
-                          <span>Thread Sync</span>
-                        </div>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#0055FF] shadow-[0_0_6px_rgba(0,85,255,0.6)]" />
-                      </div>
-                      <p className="text-[9.5px] font-normal text-slate-800 leading-snug font-mono">
-                        velie@elev.io
-                      </p>
-                      <div className="text-[8.5px] font-normal text-white bg-[#0055FF] px-2.5 py-0.5 rounded-full shadow-xs w-fit">
-                        Conflict Protection
-                      </div>
-                    </div>,
-                    
-                    // Paper 2: Auto-Booked Slot
-                    <div key="p2" className="flex flex-col h-full justify-between p-0.5 text-left font-sans">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-slate-900 font-normal text-[10px]">
-                          <Calendar className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Auto-Booked</span>
-                        </div>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
-                      </div>
-                      <p className="text-[10px] font-normal text-slate-900 tabular-nums leading-snug">
-                        Thu • 2:00 PM
-                      </p>
-                      <div className="text-[8.5px] font-normal text-white bg-emerald-600 px-2.5 py-0.5 rounded-full shadow-xs w-fit">
-                        Calendar Synced
-                      </div>
-                    </div>,
+              {/* Interactive Liquid Glass Orb Showcase Stage */}
+              <div className="mt-5 relative w-full h-[220px] sm:h-[240px] rounded-2xl bg-[#010208] border border-slate-800/80 overflow-hidden flex flex-col items-center justify-center shadow-[inset_0_2px_14px_rgba(0,0,0,0.8),0_12px_32px_rgba(0,85,255,0.06)] group/orb transition-all duration-300">
+                {/* Background Ambient Radial Glow */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.18),transparent_70%)] pointer-events-none" />
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent pointer-events-none" />
 
-                    // Paper 3: Executive AI Briefing
-                    <div key="p3" className="flex flex-col h-full justify-between p-0.5 text-left font-sans">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-slate-900 font-normal text-[10px]">
-                          <FileText className="w-3.5 h-3.5 text-violet-600" />
-                          <span>Velie Vault</span>
-                        </div>
-                        <span className="w-1.5 h-1.5 rounded-full bg-violet-500 shadow-[0_0_6px_rgba(139,92,246,0.6)]" />
-                      </div>
-                      <p className="text-[9.5px] font-normal text-slate-700 leading-snug line-clamp-1">
-                        Executive Briefing
-                      </p>
-                      <div className="text-[8.5px] font-normal text-white bg-violet-600 px-2.5 py-0.5 rounded-full shadow-xs w-fit">
-                        Velie AI Briefing
-                      </div>
-                    </div>
-                  ]}
+                {/* Liquid Glass Orb Canvas */}
+                <LiquidOrb
+                  state={orbState}
+                  onStateChange={setOrbState}
+                  interactive={true}
+                  className="w-full h-full"
                 />
-              </div>
 
-              {/* Outer Atmospheric Fade Gradient covering bottom of card & folder together */}
-              <div className={`pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#F3F6FC] via-[#F3F6FC]/95 via-45% to-transparent transition-opacity duration-300 z-10 rounded-b-[32px] ${
-                isFolderOpen ? 'opacity-0' : 'opacity-100'
-              }`} />
+                {/* Top Quick Status Pill (Interactive state switch) */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOrbState(prev => prev === 'thinking' ? 'idle' : 'thinking');
+                  }}
+                  className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-tight bg-slate-900/85 hover:bg-slate-800 text-slate-300 border border-slate-700/70 shadow-xs flex items-center gap-1.5 transition-all duration-200 cursor-pointer hover:border-blue-500/50 active:scale-95"
+                  title="Click to toggle Velie Orb state"
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${orbState === 'thinking' ? 'bg-cyan-400 animate-ping' : 'bg-emerald-400'}`} />
+                  <span className="capitalize">{orbState}</span>
+                </button>
+              </div>
             </div>
 
             {/* Side Card 2: Instant Payouts Earnings & Stadium Chart */}
@@ -443,47 +360,6 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
           </ImageReveal>
 
         </div>
-
-        {/* 4 Step Bento Cards Below Main Stage (Transparent Glassy Texture with Animated Faded Dot Pattern) */}
-        <StaggerGroup stagger={0.08} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {steps.map((s) => (
-            <div
-              key={s.step}
-              className="bg-white/60 backdrop-blur-xl hover:bg-white/90 rounded-[24px] p-5.5 border border-white/80 hover:border-blue-300/80 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,85,255,0.08)] hover:-translate-y-1 flex flex-col justify-between space-y-2 group cursor-default relative overflow-hidden"
-            >
-              {/* Faded Diagonal Dot Pattern Overlay with Looping Animation */}
-              <div 
-                className="absolute inset-0 opacity-10 bg-[radial-gradient(#0055FF_1.2px,transparent_1.2px)] [background-size:16px_16px] pointer-events-none animate-dot-pulse-dark group-hover:opacity-25 transition-opacity duration-500"
-                style={{
-                  maskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0) 85%)',
-                  WebkitMaskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0) 85%)'
-                }}
-              />
-
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono font-normal text-slate-400 bg-white/80 border border-slate-200/60 px-2 py-0.5 rounded-md">
-                    {s.step}
-                  </span>
-                  <span
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: s.color }}
-                  />
-                </div>
-                <h4 className="text-lg font-normal text-[#0A0D14] tracking-tight group-hover:text-[#0055FF] transition-colors duration-150">
-                  {s.title}
-                </h4>
-                <p className="text-xs text-slate-500 leading-relaxed text-pretty mt-1">
-                  {s.desc}
-                </p>
-              </div>
-
-              <div className="pt-2 flex items-center gap-1.5 text-[11px] font-normal text-[#0055FF] relative z-10">
-                <span>{s.tag}</span>
-              </div>
-            </div>
-          ))}
-        </StaggerGroup>
 
       </div>
     </section>

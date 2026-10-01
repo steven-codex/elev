@@ -94,7 +94,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
   ];
 
   return (
-    <section className="relative w-full min-h-[920px] lg:min-h-[980px] bg-[#FBFCFE] overflow-hidden select-none py-10 lg:py-14 flex flex-col items-center justify-between">
+    <section className="relative z-10 w-full min-h-[920px] lg:min-h-[980px] bg-transparent border-t border-[#E2E8F0] overflow-hidden select-none py-10 lg:py-14 flex flex-col items-center justify-between">
       
       {/* ====================================================================
           BACKGROUND: Perimeter Frame Tile Pattern with Soft Fade Mask & 40% Opacity
@@ -803,9 +803,9 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 ==================================================================== */}
             {/* Progressive Optical Fade Mask Scrim across bottom of dashboard shell */}
             <div 
-              className="absolute inset-x-0 bottom-0 h-[280px] sm:h-[320px] pointer-events-none z-30"
+              className="absolute inset-x-0 bottom-0 h-[340px] sm:h-[380px] pointer-events-none z-30 backdrop-blur-[1px]"
               style={{
-                background: 'linear-gradient(to top, #FBFCFE 0%, rgba(251, 252, 254, 0.99) 16%, rgba(251, 252, 254, 0.93) 32%, rgba(251, 252, 254, 0.8) 48%, rgba(251, 252, 254, 0.58) 64%, rgba(251, 252, 254, 0.32) 78%, rgba(251, 252, 254, 0.1) 90%, rgba(251, 252, 254, 0) 100%)'
+                background: 'linear-gradient(to top, #ffffff 0%, #ffffff 32%, rgba(255, 255, 255, 0.98) 48%, rgba(255, 255, 255, 0.92) 64%, rgba(255, 255, 255, 0.75) 78%, rgba(255, 255, 255, 0.42) 90%, rgba(255, 255, 255, 0) 100%)'
               }}
             />
 
