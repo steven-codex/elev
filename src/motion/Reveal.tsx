@@ -18,11 +18,11 @@ interface RevealProps {
 export default function Reveal({
   children,
   className = '',
-  y = 24,
-  duration = 0.85,
+  y = 20,
+  duration = 1.05,
   delay = 0,
-  ease = 'power3.out',
-  start = 'top 88%',
+  ease = 'power4.out',
+  start = 'top 91%',
   as: Component = 'div',
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
@@ -43,6 +43,7 @@ export default function Reveal({
         {
           opacity: 0,
           y,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -50,6 +51,8 @@ export default function Reveal({
           duration,
           delay,
           ease,
+          force3D: true,
+          clearProps: 'transform',
           scrollTrigger: {
             trigger: el,
             start,

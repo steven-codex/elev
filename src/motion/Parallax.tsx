@@ -34,15 +34,17 @@ export default function Parallax({
         el,
         {
           y: -yOffset / 2,
+          force3D: true,
         },
         {
           y: yOffset / 2,
           ease: 'none',
+          force3D: true,
           scrollTrigger: {
             trigger: el,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: true,
+            scrub: 1.2,
           },
         }
       );

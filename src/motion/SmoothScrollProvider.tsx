@@ -33,12 +33,14 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
     }
 
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 1.25,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      touchMultiplier: 1.8,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
+      infinite: false,
     });
 
     lenisRef.current = lenis;
@@ -54,7 +56,18 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
     gsap.ticker.add(tickerCallback);
     gsap.ticker.lagSmoothing(0);
 
+    // Initial refresh to ensure all triggers align with Lenis
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('resize', handleResize);
+
     return () => {
+      window.removeEventListener('resize', handleResize);
       gsap.ticker.remove(tickerCallback);
       lenis.destroy();
       lenisRef.current = null;

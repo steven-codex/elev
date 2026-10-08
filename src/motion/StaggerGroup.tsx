@@ -20,11 +20,11 @@ export default function StaggerGroup({
   children,
   className = '',
   selector = ':scope > *',
-  stagger = 0.08,
-  y = 24,
-  duration = 0.8,
-  ease = 'power3.out',
-  start = 'top 86%',
+  stagger = 0.06,
+  y = 20,
+  duration = 0.95,
+  ease = 'power4.out',
+  start = 'top 89%',
   as: Component = 'div',
 }: StaggerGroupProps) {
   const ref = useRef<HTMLElement | null>(null);
@@ -49,6 +49,7 @@ export default function StaggerGroup({
         {
           opacity: 0,
           y,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -56,6 +57,8 @@ export default function StaggerGroup({
           duration,
           stagger,
           ease,
+          force3D: true,
+          clearProps: 'transform',
           scrollTrigger: {
             trigger: el,
             start,

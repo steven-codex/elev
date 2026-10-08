@@ -19,10 +19,10 @@ export default function ImageReveal({
   children,
   className = '',
   delay = 0,
-  duration = 0.95,
-  y = 30,
-  startScale = 0.98,
-  start = 'top 85%',
+  duration = 1.15,
+  y = 24,
+  startScale = 0.985,
+  start = 'top 89%',
   as: Component = 'div',
 }: ImageRevealProps) {
   const ref = useRef<HTMLElement | null>(null);
@@ -44,6 +44,7 @@ export default function ImageReveal({
           opacity: 0,
           y,
           scale: startScale,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -51,7 +52,9 @@ export default function ImageReveal({
           scale: 1,
           duration,
           delay,
-          ease: 'power3.out',
+          ease: 'power4.out',
+          force3D: true,
+          clearProps: 'transform',
           scrollTrigger: {
             trigger: el,
             start,
