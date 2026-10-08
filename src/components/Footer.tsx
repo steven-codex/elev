@@ -90,7 +90,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-slate-800/80 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 text-xs text-slate-400">
           {/* Left copyright & legal links */}
           <div className="flex flex-wrap items-center gap-3">
-            <span>by steve.codex</span>
+            <span>© 2026 elev by <strong className="font-medium text-slate-200">Newseed Global</strong>. All rights reserved.</span>
             <span className="text-slate-700">|</span>
             <a href="#privacy" className="hover:text-slate-200 transition-colors">Privacy Policy</a>
             <a href="#terms" className="hover:text-slate-200 transition-colors">Terms of Service</a>

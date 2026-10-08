@@ -140,7 +140,11 @@ const getStartTimeForStage = (id: ProductStage['id']) => {
   return 0;
 };
 
-export default function MinimalistMotionStage() {
+interface MinimalistMotionStageProps {
+  showControls?: boolean;
+}
+
+export default function MinimalistMotionStage({ showControls = false }: MinimalistMotionStageProps = {}) {
   // Start at 0.0s (Smart Booking) so user sees the booking flow right away
   const [currentTime, setCurrentTime] = useState<number>(0.0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -297,7 +301,9 @@ export default function MinimalistMotionStage() {
   return (
     <div
       id="minimalist-motion-stage"
-      className="w-full h-full relative rounded-[32px] sm:rounded-[36px] bg-[#1E60F2] bg-[url('/hero-fluid-wave-bg.png')] bg-cover bg-center overflow-hidden shadow-2xl flex flex-col items-center justify-between p-6 sm:p-8 pt-8 sm:pt-10 select-none min-h-[740px]"
+      className={`w-full h-full relative rounded-[32px] sm:rounded-[36px] bg-[#1E60F2] bg-[url('/hero-fluid-wave-bg.png')] bg-cover bg-center overflow-hidden shadow-2xl flex flex-col items-center ${
+        showControls ? 'justify-between min-h-[740px]' : 'justify-center min-h-[660px]'
+      } p-6 sm:p-8 pt-8 sm:pt-10 select-none`}
     >
       {/* Subtle Ambient Vignette / Glass Depth */}
       <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay pointer-events-none z-0" />
@@ -1518,142 +1524,144 @@ export default function MinimalistMotionStage() {
         {/* ========================================================= */}
         {/* FLOATING MEDIA PLAYER CONTROLLER BAR                     */}
         {/* ========================================================= */}
-        <div className="w-full max-w-[460px] mx-auto mt-4 z-20">
-          <div className="bg-slate-950/85 backdrop-blur-2xl border border-white/20 rounded-2xl p-3 sm:p-3.5 shadow-[0_16px_40px_rgba(0,15,45,0.45)] text-white flex flex-col gap-2.5">
-            {/* Top Row: Scene indicators & Timecode */}
-            <div className="flex items-center justify-between text-xs px-1">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                <span className="font-medium text-white/95 text-xs">
-                  {PRODUCT_STAGES[stageIndex].label}
-                </span>
-                <span className="text-[10px] font-mono text-white/60 px-1.5 py-0.5 rounded bg-white/10">
-                  Step 0{stageIndex + 1}/04
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 font-mono text-[11px] text-white/70">
-                <span className="text-white font-medium tabular-nums">{formatTime(currentTime)}</span>
-                <span className="text-white/40">/</span>
-                <span className="tabular-nums">{formatTime(TOTAL_DURATION)}</span>
-              </div>
-            </div>
-
-            {/* Middle Row: Scrubber Timeline Slider with Stage markers */}
-            <div className="relative flex flex-col px-0.5 group/scrub">
-              <input
-                type="range"
-                min={0}
-                max={TOTAL_DURATION}
-                step={0.02}
-                value={currentTime}
-                onChange={(e) => handleSeek(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-blue-400 focus:outline-none"
-              />
-              {/* Visual Stage Ticks */}
-              <div className="w-full flex justify-between mt-1 text-[9px] font-mono text-white/40 select-none">
-                <span>0s (Booking)</span>
-                <span>4.0s (Velie)</span>
-                <span>8.5s (Recaps)</span>
-                <span>12.5s (Pay)</span>
-                <span>16.5s</span>
-              </div>
-            </div>
-
-            {/* Bottom Controls Row: Play/Pause, Steps, Speed, Replay */}
-            <div className="flex items-center justify-between pt-0.5">
-              <div className="flex items-center gap-1 sm:gap-1.5">
-                {/* Play / Pause */}
-                <button
-                  type="button"
-                  onClick={togglePlay}
-                  className="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center hover:bg-blue-50 active:scale-[0.92] transition-transform shadow-md cursor-pointer"
-                  title={isPlaying ? "Pause (Space)" : "Play (Space)"}
-                >
-                  {isPlaying ? (
-                    <Pause className="w-3.5 h-3.5 fill-current" />
-                  ) : (
-                    <Play className="w-3.5 h-3.5 fill-current translate-x-0.5" />
-                  )}
-                </button>
-
-                {/* Skip Prev Scene */}
-                <button
-                  type="button"
-                  onClick={handlePrevScene}
-                  className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
-                  title="Previous Stage"
-                >
-                  <SkipBack className="w-3 h-3" />
-                </button>
-
-                {/* Skip Next Scene */}
-                <button
-                  type="button"
-                  onClick={handleNextScene}
-                  className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
-                  title="Next Stage"
-                >
-                  <SkipForward className="w-3 h-3" />
-                </button>
-
-                {/* Replay */}
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
-                  title="Reset to 0:00"
-                >
-                  <RotateCcw className="w-3 h-3" />
-                </button>
+        {showControls && (
+          <div className="w-full max-w-[460px] mx-auto mt-4 z-20">
+            <div className="bg-slate-950/85 backdrop-blur-2xl border border-white/20 rounded-2xl p-3 sm:p-3.5 shadow-[0_16px_40px_rgba(0,15,45,0.45)] text-white flex flex-col gap-2.5">
+              {/* Top Row: Scene indicators & Timecode */}
+              <div className="flex items-center justify-between text-xs px-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                  <span className="font-medium text-white/95 text-xs">
+                    {PRODUCT_STAGES[stageIndex].label}
+                  </span>
+                  <span className="text-[10px] font-mono text-white/60 px-1.5 py-0.5 rounded bg-white/10">
+                    Step 0{stageIndex + 1}/04
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 font-mono text-[11px] text-white/70">
+                  <span className="text-white font-medium tabular-nums">{formatTime(currentTime)}</span>
+                  <span className="text-white/40">/</span>
+                  <span className="tabular-nums">{formatTime(TOTAL_DURATION)}</span>
+                </div>
               </div>
 
-              {/* Stage Fast Jump Buttons */}
-              <div className="hidden sm:flex items-center gap-1 bg-white/10 p-0.5 rounded-lg text-[10px]">
-                {PRODUCT_STAGES.map((stage) => (
+              {/* Middle Row: Scrubber Timeline Slider with Stage markers */}
+              <div className="relative flex flex-col px-0.5 group/scrub">
+                <input
+                  type="range"
+                  min={0}
+                  max={TOTAL_DURATION}
+                  step={0.02}
+                  value={currentTime}
+                  onChange={(e) => handleSeek(parseFloat(e.target.value))}
+                  className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-blue-400 focus:outline-none"
+                />
+                {/* Visual Stage Ticks */}
+                <div className="w-full flex justify-between mt-1 text-[9px] font-mono text-white/40 select-none">
+                  <span>0s (Booking)</span>
+                  <span>4.0s (Velie)</span>
+                  <span>8.5s (Recaps)</span>
+                  <span>12.5s (Pay)</span>
+                  <span>16.5s</span>
+                </div>
+              </div>
+
+              {/* Bottom Controls Row: Play/Pause, Steps, Speed, Replay */}
+              <div className="flex items-center justify-between pt-0.5">
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  {/* Play / Pause */}
                   <button
-                    key={stage.id}
                     type="button"
-                    onClick={() => handleTabClick(stage.id)}
-                    className={`px-2 py-0.5 rounded transition-all cursor-pointer font-medium ${
-                      activeTab === stage.id
-                        ? 'bg-blue-500 text-white shadow-xs'
-                        : 'text-white/60 hover:text-white'
-                    }`}
+                    onClick={togglePlay}
+                    className="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center hover:bg-blue-50 active:scale-[0.92] transition-transform shadow-md cursor-pointer"
+                    title={isPlaying ? "Pause (Space)" : "Play (Space)"}
                   >
-                    {stage.badge}
+                    {isPlaying ? (
+                      <Pause className="w-3.5 h-3.5 fill-current" />
+                    ) : (
+                      <Play className="w-3.5 h-3.5 fill-current translate-x-0.5" />
+                    )}
                   </button>
-                ))}
-              </div>
 
-              {/* Speed & Loop Controls */}
-              <div className="flex items-center gap-1 sm:gap-1.5">
-                {/* Speed toggle */}
-                <button
-                  type="button"
-                  onClick={cycleSpeed}
-                  className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-medium transition-colors cursor-pointer ${
-                    speed !== 1 ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' : 'bg-white/10 text-white hover:bg-white/20'
-                  }`}
-                  title="Playback speed (0.25x slow-mo, 0.5x, 1x, 2x)"
-                >
-                  {speed}x
-                </button>
+                  {/* Skip Prev Scene */}
+                  <button
+                    type="button"
+                    onClick={handlePrevScene}
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
+                    title="Previous Stage"
+                  >
+                    <SkipBack className="w-3 h-3" />
+                  </button>
 
-                {/* Loop toggle */}
-                <button
-                  type="button"
-                  onClick={() => setIsLooping(!isLooping)}
-                  className={`px-2 py-0.5 rounded-md text-[10px] font-medium transition-colors cursor-pointer ${
-                    isLooping ? 'bg-blue-500/30 text-blue-300 border border-blue-400/40' : 'bg-white/5 text-white/40'
-                  }`}
-                  title="Toggle continuous looping"
-                >
-                  Loop
-                </button>
+                  {/* Skip Next Scene */}
+                  <button
+                    type="button"
+                    onClick={handleNextScene}
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
+                    title="Next Stage"
+                  >
+                    <SkipForward className="w-3 h-3" />
+                  </button>
+
+                  {/* Replay */}
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
+                    title="Reset to 0:00"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Stage Fast Jump Buttons */}
+                <div className="hidden sm:flex items-center gap-1 bg-white/10 p-0.5 rounded-lg text-[10px]">
+                  {PRODUCT_STAGES.map((stage) => (
+                    <button
+                      key={stage.id}
+                      type="button"
+                      onClick={() => handleTabClick(stage.id)}
+                      className={`px-2 py-0.5 rounded transition-all cursor-pointer font-medium ${
+                        activeTab === stage.id
+                          ? 'bg-blue-500 text-white shadow-xs'
+                          : 'text-white/60 hover:text-white'
+                      }`}
+                    >
+                      {stage.badge}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Speed & Loop Controls */}
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  {/* Speed toggle */}
+                  <button
+                    type="button"
+                    onClick={cycleSpeed}
+                    className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-medium transition-colors cursor-pointer ${
+                      speed !== 1 ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' : 'bg-white/10 text-white hover:bg-white/20'
+                    }`}
+                    title="Playback speed (0.25x slow-mo, 0.5x, 1x, 2x)"
+                  >
+                    {speed}x
+                  </button>
+
+                  {/* Loop toggle */}
+                  <button
+                    type="button"
+                    onClick={() => setIsLooping(!isLooping)}
+                    className={`px-2 py-0.5 rounded-md text-[10px] font-medium transition-colors cursor-pointer ${
+                      isLooping ? 'bg-blue-500/30 text-blue-300 border border-blue-400/40' : 'bg-white/5 text-white/40'
+                    }`}
+                    title="Toggle continuous looping"
+                  >
+                    Loop
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
       </div>
     </div>

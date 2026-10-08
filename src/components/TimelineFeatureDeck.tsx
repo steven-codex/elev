@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Sparkles,
   Mail,
   ChevronDown,
-  Check
+  Calendar,
+  Shield,
+  Clock,
+  CheckCircle2,
+  XCircle
 } from 'lucide-react';
 import MinimalistMotionStage from './MinimalistMotionStage';
 import LiquidOrb from './LiquidOrb';
@@ -14,41 +17,41 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
   const [activeTab, setActiveTab] = useState<'pending' | 'completed' | 'declined'>('completed');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isCardHovered, setIsCardHovered] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   const data = {
     pending: {
       amount: '$4,820.00',
-      capsuleHeights: [80, 64, 74, 46, 92, 66, 50],
-      bars: [28, 40, 22, 50, 36, 25, 18],
+      bars: [35, 52, 28, 65, 48, 30, 20],
       values: ['$850', '$1,200', '$420', '$950', '$680', '$450', '$270']
     },
     completed: {
       amount: '$53,089.90',
-      capsuleHeights: [80, 64, 74, 46, 92, 66, 50],
-      bars: [52, 76, 40, 44, 78, 56, 58],
+      bars: [55, 82, 40, 58, 96, 64, 70],
       values: ['$6,420', '$9,850', '$5,210', '$3,140', '$14,280', '$6,840', '$7,349']
     },
     declined: {
       amount: '$1,150.00',
-      capsuleHeights: [80, 64, 74, 46, 92, 66, 50],
-      bars: [16, 14, 24, 12, 28, 16, 10],
+      bars: [22, 16, 32, 14, 38, 18, 12],
       values: ['$180', '$120', '$250', '$90', '$320', '$110', '$80']
     }
   };
 
-  // Active auto-cycle showcase when user is idle (pauses on hover)
+  // Active auto-cycle showcase when user is idle (pauses on interaction or hover)
   useEffect(() => {
-    if (isCardHovered) return;
-    const tabList: ('completed' | 'pending' | 'declined')[] = ['completed', 'pending', 'declined'];
+    if (isCardHovered || hasInteracted) return;
+    const tabList: ('pending' | 'completed' | 'declined')[] = ['pending', 'completed', 'declined'];
     const timer = setInterval(() => {
       setActiveTab((prev) => {
         const nextIdx = (tabList.indexOf(prev) + 1) % tabList.length;
         return tabList[nextIdx];
       });
-    }, 2400);
+    }, 3200);
 
     return () => clearInterval(timer);
-  }, [isCardHovered]);
+  }, [isCardHovered, hasInteracted]);
 
   const current = data[activeTab];
 
@@ -57,28 +60,21 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
       id: 'pending' as const,
       label: 'Pending',
       icon: (active: boolean) => (
-        <svg className={`w-3.5 h-3.5 transition-colors duration-200 ${active ? 'text-[#0055FF]' : 'text-blue-500/70'}`} viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeDasharray="28 8" strokeLinecap="round" />
-        </svg>
+        <Clock className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-amber-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
       )
     },
     {
       id: 'completed' as const,
       label: 'Completed',
       icon: (active: boolean) => (
-        <div className={`w-3.5 h-3.5 rounded-[4px] flex items-center justify-center transition-colors duration-200 ${active ? 'bg-[#D6E6FF] text-[#0055FF]' : 'bg-slate-200/80 text-slate-500'}`}>
-          <Check className="w-2.5 h-2.5 stroke-[3]" />
-        </div>
+        <CheckCircle2 className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-emerald-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
       )
     },
     {
       id: 'declined' as const,
       label: 'Declined',
       icon: (active: boolean) => (
-        <svg className={`w-3.5 h-3.5 transition-colors duration-200 ${active ? 'text-[#0055FF]' : 'text-slate-400'}`} viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.75" />
-          <path d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-        </svg>
+        <XCircle className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-rose-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
       )
     }
   ];
@@ -89,16 +85,6 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
       onMouseLeave={() => setIsCardHovered(false)}
       className="bg-[#F8FAFD] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[360px]"
     >
-      
-      {/* Faded Diagonal Dot Pattern Overlay with Looping Animation */}
-      <div 
-        className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(#0055FF_1.2px,transparent_1.2px)] [background-size:16px_16px] pointer-events-none animate-dot-pulse-dark group-hover:opacity-[0.15] transition-opacity duration-500"
-        style={{
-          maskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 85%)',
-          WebkitMaskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 85%)'
-        }}
-      />
-
       <div className="relative z-10">
         {/* Top Row: "Your earnings" & "This month ⌵" */}
         <div className="flex items-start justify-between">
@@ -116,7 +102,7 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -5, filter: 'blur(2px)' }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-3xl sm:text-[2.6rem] font-normal text-[#0A0D14] tracking-tight tabular-nums leading-none whitespace-nowrap"
+                  className="text-3xl sm:text-[2.6rem] font-bold text-[#0A0D14] tracking-tight tabular-nums leading-none whitespace-nowrap"
                 >
                   {current.amount}
                 </motion.div>
@@ -126,114 +112,99 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
 
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-xs font-normal text-slate-600 hover:text-slate-900 hover:border-slate-300 active:scale-[0.97] transition-[border-color,color,transform] duration-150 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-xs font-normal text-slate-600 hover:text-slate-900 hover:border-slate-300 active:scale-[0.97] transition-[border-color,color,transform] duration-150 cursor-pointer select-none"
           >
             <span>This month</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </button>
         </div>
 
-        {/* Filter Tabs with Sliding layoutId Indicator */}
-        <div className="flex items-center gap-1 mt-5 border-b border-slate-200/60 relative">
+        {/* Filter Tabs Segmented Control (Consistent 3-column grid matching Velie card) */}
+        <div className="w-full grid grid-cols-3 gap-1 p-1 bg-[#EEF2F8] rounded-2xl border border-slate-200/60 mt-4 relative">
           {tabsConfig.map((tab) => {
             const active = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-t-lg text-xs font-normal transition-colors duration-200 cursor-pointer active:scale-[0.97] z-10 ${
-                  active ? 'text-[#0055FF] font-normal' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100/50'
+                onClick={() => {
+                  setHasInteracted(true);
+                  setActiveTab(tab.id);
+                }}
+                className={`group/tab relative flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl text-xs transition-[color,transform] duration-150 cursor-pointer active:scale-[0.97] select-none z-10 ${
+                  active ? 'text-[#0A0D14] font-medium' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
                 {active && (
                   <motion.div
                     layoutId="activePayoutTabPill"
-                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
-                    className="absolute inset-0 bg-[#E5EFFF] rounded-t-lg border-b-2 border-[#0055FF] -z-10"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    className="absolute inset-0 bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/70 -z-10"
                   />
                 )}
                 {tab.icon(active)}
-                <span>{tab.label}</span>
+                <span className="truncate">{tab.label}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Stadium Capsule Bar Chart with Sound Wave Equalizer Looping Motion */}
-        <div className="h-44 sm:h-48 relative my-3 pt-3 flex items-end justify-between gap-2 sm:gap-2.5">
-          
-          {/* Background Grid Lines behind bars */}
-          <div 
-            className="absolute inset-x-2 inset-y-0 opacity-[0.4] pointer-events-none"
-            style={{
-              backgroundImage: 'linear-gradient(to right, #E2E8F0 1px, transparent 1px), linear-gradient(to bottom, #E2E8F0 1px, transparent 1px)',
-              backgroundSize: '24px 24px'
-            }}
-          />
-
-          {/* Soft Atmospheric Fog Gradient at base of chart */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#F8FAFD] via-[#F8FAFD]/70 to-transparent z-10" />
-
-          {/* 7 Stadium Capsule Columns with Continuous Sound Wave Equalizer Pulse */}
+        {/* Stadium Capsule Bar Chart (Clean, grid-free, luminous pills) */}
+        <div className="h-44 sm:h-48 relative my-3 pt-6 flex items-end justify-between gap-2 sm:gap-2.5">
           {current.bars.map((fillPercent, index) => {
             const isHovered = hoveredIndex === index;
-            const capsuleHeight = current.capsuleHeights[index];
-            const waveDelta = index % 2 === 0 ? 14 : -12;
-            const peakHeight = Math.min(95, Math.max(14, fillPercent + waveDelta));
-            const dipHeight = Math.min(90, Math.max(10, fillPercent - waveDelta * 0.6));
 
             return (
               <div
                 key={index}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                style={{ height: `${capsuleHeight}%` }}
-                className="flex-1 max-w-[44px] sm:max-w-[48px] rounded-[22px] sm:rounded-[24px] bg-white border border-slate-200/70 shadow-[0_2px_8px_rgba(0,0,0,0.02)] relative flex flex-col justify-end overflow-hidden group/bar transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-1.5 hover:border-blue-400 hover:shadow-md cursor-pointer"
+                className="flex-1 max-w-[42px] sm:max-w-[46px] h-full flex flex-col items-center justify-end relative group/bar cursor-pointer"
               >
-                {/* Micro Hover Tooltip with Elastic Spring */}
+                {/* Tooltip on Hover */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
-                      initial={{ opacity: 0, y: 6, scale: 0.85 }}
+                      initial={{ opacity: 0, y: 4, scale: 0.9 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 3, scale: 0.9 }}
-                      transition={{ type: 'spring', stiffness: 450, damping: 25 }}
-                      className="absolute top-1.5 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-normal font-mono px-2 py-0.5 rounded-md shadow-lg z-30 whitespace-nowrap tabular-nums pointer-events-none"
+                      exit={{ opacity: 0, y: 2, scale: 0.94 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 28 }}
+                      className="absolute -top-7 left-1/2 -translate-x-1/2 bg-[#0A0D14] text-white text-[10px] font-mono px-2 py-0.5 rounded-lg shadow-lg z-30 whitespace-nowrap tabular-nums pointer-events-none border border-white/10"
                     >
                       {current.values[index]}
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {/* Filled Bar with Continuous Sound Wave Equalizer Looping & Spring Transitions */}
-                <motion.div
-                  initial={false}
-                  animate={
-                    isCardHovered
-                      ? { height: `${fillPercent}%` }
-                      : { height: [`${fillPercent}%`, `${peakHeight}%`, `${dipHeight}%`, `${fillPercent}%`] }
-                  }
-                  transition={
-                    isCardHovered
-                      ? { type: 'spring', stiffness: 260, damping: 22, delay: index * 0.03 }
-                      : {
-                          duration: 1.5 + (index % 3) * 0.25,
-                          repeat: Infinity,
-                          repeatType: 'mirror',
-                          ease: 'easeInOut',
-                          delay: index * 0.08
-                        }
-                  }
-                  className="w-full rounded-t-[18px] sm:rounded-t-[20px] relative overflow-hidden"
-                  style={{
-                    background: isHovered
-                      ? 'repeating-linear-gradient(-45deg, rgba(255,255,255,0.48) 0px, rgba(255,255,255,0.48) 2.5px, transparent 2.5px, transparent 6px), linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%)'
-                      : 'repeating-linear-gradient(-45deg, rgba(255,255,255,0.42) 0px, rgba(255,255,255,0.42) 2.5px, transparent 2.5px, transparent 6px), linear-gradient(180deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%)',
-                    maskImage: 'linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 18%, rgba(0,0,0,0.9) 55%, rgba(0,0,0,1) 100%)',
-                    WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 18%, rgba(0,0,0,0.9) 55%, rgba(0,0,0,1) 100%)'
-                  }}
-                />
+                {/* Stadium Track (Outer Pill Housing) */}
+                <div className="w-full flex-1 max-h-[145px] sm:max-h-[155px] rounded-full bg-[#EBF1FA]/80 border border-slate-200/50 p-1 flex flex-col justify-end overflow-hidden transition-[background-color,border-color,transform] duration-200 group-hover/bar:bg-[#E2ECF8] group-hover/bar:border-blue-300/70 group-hover/bar:-translate-y-0.5 shadow-[inset_0_1px_3px_rgba(0,0,0,0.03)]">
+                  {/* Filled Inner Pill */}
+                  <motion.div
+                    initial={false}
+                    animate={{ height: `${fillPercent}%` }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 280,
+                      damping: 24,
+                      delay: index * 0.035
+                    }}
+                    className="w-full rounded-full relative overflow-hidden transition-all duration-300 group-hover/bar:shadow-[0_4px_16px_rgba(0,85,255,0.4)]"
+                    style={{
+                      background: isHovered
+                        ? 'linear-gradient(180deg, #60A5FA 0%, #2563EB 50%, #0055FF 100%)'
+                        : 'linear-gradient(180deg, #3B82F6 0%, #1D4ED8 60%, #0055FF 100%)',
+                      boxShadow: '0 2px 8px rgba(0,85,255,0.22), inset 0 1px 1px rgba(255,255,255,0.6)'
+                    }}
+                  >
+                    {/* Subtle Top Specular Sheen */}
+                    <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-b from-white/60 to-transparent rounded-t-full pointer-events-none" />
+                  </motion.div>
+                </div>
+
+                {/* Day of Week Label */}
+                <span className="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-2 transition-colors duration-150 group-hover/bar:text-[#0055FF] group-hover/bar:font-medium select-none">
+                  {days[index]}
+                </span>
               </div>
             );
           })}
@@ -241,10 +212,10 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
 
       </div>
 
-      {/* Bottom Footer Description matching reference */}
-      <div className="relative z-10 pt-4">
-        <p className="text-[14px] sm:text-[15px] leading-relaxed text-slate-500 text-pretty">
-          <strong className="font-normal text-[#0A0D14]">Instant Payouts</strong>{' '}
+      {/* Bottom Footer Description with Faint Divider (Matching Meet Velie) */}
+      <div className="relative z-10 pt-4 border-t border-slate-200/60 mt-auto">
+        <p className="text-[13.5px] sm:text-[14px] leading-relaxed text-slate-500 text-pretty">
+          <strong className="font-semibold text-[#0A0D14]">Instant Payouts</strong>{' '}
           <span>– Get paid quickly for completed and approved jobs.</span>
         </p>
       </div>
@@ -259,8 +230,35 @@ interface TimelineFeatureDeckProps {
 
 export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckProps) {
   const [orbState, setOrbState] = useState<'idle' | 'thinking'>('thinking');
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [activeVelieMode, setActiveVelieMode] = useState<'threads' | 'booking' | 'briefing'>('booking');
 
-
+  const velieModes = [
+    {
+      id: 'threads' as const,
+      label: 'Email Sync',
+      orbState: 'idle' as const,
+      icon: (active: boolean) => (
+        <Mail className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-[#0055FF]' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+      )
+    },
+    {
+      id: 'booking' as const,
+      label: 'Auto-Book',
+      orbState: 'thinking' as const,
+      icon: (active: boolean) => (
+        <Calendar className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-emerald-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+      )
+    },
+    {
+      id: 'briefing' as const,
+      label: 'Shield',
+      orbState: 'thinking' as const,
+      icon: (active: boolean) => (
+        <Shield className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-violet-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+      )
+    }
+  ];
 
   return (
     <section id="timeline-deck" className="w-full py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
@@ -293,42 +291,75 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
           {/* Right Side Column: Standalone Transparent Glassy Companion Cards (Span 4) */}
           <ImageReveal delay={0.25} y={28} className="lg:col-span-4 flex flex-col gap-6 justify-between">
             
-            {/* Side Card 1: Meet Velie AI with Interactive Liquid Orb */}
-            <div className="bg-gradient-to-b from-white via-[#FAFBFD] to-[#F3F6FC] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(0,85,255,0.08)] hover:border-blue-300/80 transition-all duration-300 flex-1 relative group z-10 overflow-hidden">
+            {/* Side Card 1: Meet Velie AI Copilot */}
+            <div className="bg-[#F8FAFD] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[360px]">
               
-              {/* Faded Diagonal Dot Pattern Overlay with Looping Animation */}
-              <div 
-                className="absolute inset-0 opacity-15 bg-[radial-gradient(#0055FF_1.2px,transparent_1.2px)] [background-size:16px_16px] pointer-events-none animate-dot-pulse-dark group-hover:opacity-30 transition-opacity duration-500"
-                style={{
-                  maskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0) 85%)',
-                  WebkitMaskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0) 85%)'
-                }}
-              />
-
               <div className="relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-[#0055FF] border border-blue-200/60 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform duration-300">
-                    <Sparkles className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-normal uppercase tracking-wider bg-slate-900 text-white px-3 py-1 rounded-full font-mono shadow-xs flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    24/7 AI Copilot
-                  </span>
+                {/* Header Title with Tilted Interactive Email Badge */}
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <h3 className="text-2xl sm:text-[1.75rem] font-bold text-[#0A0D14] tracking-tight">
+                    Meet <span className="font-editorial italic font-normal text-[#0055FF]">Velie</span>
+                  </h3>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText('velie@elev.io');
+                      setCopiedEmail(true);
+                      setTimeout(() => setCopiedEmail(false), 2000);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#F0F5FF] hover:bg-[#E5EFFF] border border-[#BFDBFE] text-[#0055FF] shadow-[0_1px_4px_rgba(0,85,255,0.08)] rotate-[6deg] hover:rotate-0 active:scale-[0.95] transition-all duration-200 cursor-pointer select-none group/copy"
+                    title="Click to copy email address"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-[#0055FF] stroke-[2.2]" />
+                    <span className="font-mono text-[11px] font-medium tracking-tight">velie@elev.io</span>
+                    <span className="text-[10px] font-sans font-medium text-blue-500/80 group-hover/copy:text-blue-600 transition-colors ml-0.5">
+                      {copiedEmail ? 'Copied!' : 'Copy'}
+                    </span>
+                  </button>
                 </div>
 
-                <h3 className="text-2xl font-normal text-[#0A0D14] tracking-tight mb-2">
-                  Meet <span className="font-editorial italic font-normal text-[#0055FF]">Velie</span>
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed text-pretty">
-                  CC <span className="font-mono font-normal text-[#0055FF] bg-blue-50/80 border border-blue-200/80 px-2 py-0.5 rounded-md text-[11px] inline-flex items-center gap-1 shadow-2xs"><Mail className="w-3 h-3" />velie@elev.io</span> on any email. She opens smart workflows, weighs conflicts, and auto-books meetings.
+                {/* Subtitle */}
+                <p className="text-xs sm:text-[13.5px] text-slate-500 leading-relaxed mt-2 text-pretty">
+                  on any thread to triage scheduling and auto-book slots.
                 </p>
+
+                {/* Segmented Control Pill Bar (Clean 3-column grid) */}
+                <div className="w-full grid grid-cols-3 gap-1 p-1 bg-[#EEF2F8] rounded-2xl border border-slate-200/60 mt-4 relative">
+                  {velieModes.map((mode) => {
+                    const active = activeVelieMode === mode.id;
+                    return (
+                      <button
+                        key={mode.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveVelieMode(mode.id);
+                          setOrbState(mode.orbState);
+                        }}
+                        className={`group/tab relative flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl text-xs transition-[color,transform] duration-150 cursor-pointer active:scale-[0.97] select-none z-10 ${
+                          active ? 'text-[#0A0D14] font-medium' : 'text-slate-500 hover:text-slate-800'
+                        }`}
+                      >
+                        {active && (
+                          <motion.div
+                            layoutId="activeVelieModePill"
+                            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                            className="absolute inset-0 bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/70 -z-10"
+                          />
+                        )}
+                        {mode.icon(active)}
+                        <span className="truncate">{mode.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Interactive Liquid Glass Orb Showcase Stage */}
-              <div className="mt-5 relative w-full h-[220px] sm:h-[240px] rounded-2xl bg-[#010208] border border-slate-800/80 overflow-hidden flex flex-col items-center justify-center shadow-[inset_0_2px_14px_rgba(0,0,0,0.8),0_12px_32px_rgba(0,85,255,0.06)] group/orb transition-all duration-300">
-                {/* Background Ambient Radial Glow */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.18),transparent_70%)] pointer-events-none" />
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent pointer-events-none" />
+              {/* Interactive Liquid Glass Orb Showcase Stage with Soft Atmospheric Aura */}
+              <div className="relative w-full h-[180px] sm:h-[195px] my-3 flex items-center justify-center group/orb transition-all duration-300">
+                {/* Soft Radial Ambient Aura & Grounding Shadow */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.12)_0%,rgba(99,102,241,0.05)_45%,transparent_70%)] pointer-events-none" />
+                <div className="absolute bottom-2 w-32 h-6 bg-blue-500/10 blur-xl rounded-full pointer-events-none" />
 
                 {/* Liquid Glass Orb Canvas */}
                 <LiquidOrb
@@ -337,20 +368,14 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                   interactive={true}
                   className="w-full h-full"
                 />
+              </div>
 
-                {/* Top Quick Status Pill (Interactive state switch) */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOrbState(prev => prev === 'thinking' ? 'idle' : 'thinking');
-                  }}
-                  className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-tight bg-slate-900/85 hover:bg-slate-800 text-slate-300 border border-slate-700/70 shadow-xs flex items-center gap-1.5 transition-all duration-200 cursor-pointer hover:border-blue-500/50 active:scale-95"
-                  title="Click to toggle Velie Orb state"
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full ${orbState === 'thinking' ? 'bg-cyan-400 animate-ping' : 'bg-emerald-400'}`} />
-                  <span className="capitalize">{orbState}</span>
-                </button>
+              {/* Bottom Footer Description with Faint Divider */}
+              <div className="relative z-10 pt-4 border-t border-slate-200/60 mt-auto">
+                <p className="text-[13.5px] sm:text-[14px] leading-relaxed text-slate-500 text-pretty">
+                  <strong className="font-semibold text-[#0A0D14]">Velie Copilot</strong>{' '}
+                  <span>– Autonomous meeting prep & conflict protection.</span>
+                </p>
               </div>
             </div>
 

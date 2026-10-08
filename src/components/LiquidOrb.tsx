@@ -414,7 +414,7 @@ export default function LiquidOrb({
           <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 blur-[20px] opacity-40 animate-spin [animation-duration:12s]" />
 
           {/* Glass Sphere Shell */}
-          <div className="relative w-full h-full rounded-full border border-white/40 shadow-[inset_0_4px_24px_rgba(255,255,255,0.4),0_12px_36px_rgba(0,85,255,0.3)] bg-gradient-to-b from-white/20 via-slate-900/60 to-black/90 backdrop-blur-md overflow-hidden flex items-center justify-center">
+          <div className="relative w-full h-full rounded-full border border-white/60 shadow-[inset_0_4px_24px_rgba(255,255,255,0.6),0_12px_36px_rgba(0,85,255,0.25)] bg-gradient-to-b from-white/40 via-blue-200/30 to-blue-600/20 backdrop-blur-md overflow-hidden flex items-center justify-center">
             {/* Inner Refractive Concentric Waves */}
             <div className="absolute w-[80%] h-[80%] rounded-full border border-cyan-400/40 animate-ping [animation-duration:3s] opacity-60" />
             <div className="absolute w-[60%] h-[60%] rounded-full bg-gradient-to-tr from-[#0055FF]/80 to-[#C084FC]/80 blur-md animate-pulse" />
