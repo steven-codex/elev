@@ -66,7 +66,7 @@ export default function FaqSection() {
         {/* ========================================================= */}
         {/* EDITORIAL HEADER WITH RADIAL AMBIENT AURA                */}
         {/* ========================================================= */}
-        <div className="relative text-center mb-12 sm:mb-16">
+        <div className="relative text-center mb-6 sm:mb-8">
           {/* Soft Ethereal Radial Ambient Glow Cloud */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] sm:w-[780px] h-[340px] sm:h-[400px] bg-gradient-to-r from-blue-300/40 via-sky-200/35 to-indigo-200/30 rounded-full blur-[110px] pointer-events-none -z-10" 
@@ -80,18 +80,45 @@ export default function FaqSection() {
               about elev
             </span>
           </h2>
+        </div>
 
-          <div className="mt-6 sm:mt-8">
-            <span className="text-2xl sm:text-[1.85rem] font-bold tracking-tight text-slate-800">
-              FAQ
-            </span>
+        {/* ========================================================= */}
+        {/* EXACT FIGMA PEDESTAL NOTCH SVG SHAPE (d="M0 112C...")    */}
+        {/* ========================================================= */}
+        <div className="w-full flex justify-center -mb-[2px] relative z-20 pointer-events-none">
+          <div className="relative w-full max-w-[728px] h-[75px] sm:h-[95px] md:h-[112px] flex items-center justify-center">
+            {/* Base SVG with light-blue fill matching the bento container */}
+            <svg 
+              viewBox="0 0 728 112" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+              className="absolute inset-0 w-full h-full filter drop-shadow-[0_-4px_16px_rgba(0,85,255,0.04)]"
+              preserveAspectRatio="none"
+            >
+              <path 
+                d="M0 112C169.867 112 206.267 0 279.067 0H448.933C521.733 0 558.133 112 728 112H0Z" 
+                fill="#DCEBFE" 
+              />
+              <path 
+                d="M0 112C169.867 112 206.267 0 279.067 0H448.933C521.733 0 558.133 112 728 112H0Z" 
+                fill="#E1E1E1" 
+                fillOpacity="0.18" 
+              />
+            </svg>
+
+            {/* FAQ text positioned right on the plateau of the shape */}
+            <div className="relative z-10 pt-4 sm:pt-6 md:pt-7 pointer-events-auto select-none">
+              <span className="text-2xl sm:text-3xl md:text-[2.25rem] font-bold tracking-tight text-slate-800">
+                FAQ
+              </span>
+            </div>
           </div>
         </div>
 
         {/* ========================================================= */}
         {/* MORPHING BENTO SHOWCASE (ORGANIC SOFT SKY BLUE FRAME)     */}
         {/* ========================================================= */}
-        <div className="w-full max-w-[1180px] mx-auto p-4 sm:p-6 md:p-8 rounded-[36px] sm:rounded-[44px] bg-[#DCEBFE] border border-blue-200/60 shadow-[0_24px_60px_-15px_rgba(0,85,255,0.08)]">
+        <div className="w-full max-w-[1180px] mx-auto p-4 sm:p-6 md:p-8 rounded-[36px] sm:rounded-[44px] bg-[#DCEBFE] border border-blue-200/60 shadow-[0_24px_60px_-15px_rgba(0,85,255,0.08)] relative z-10">
           
           <div className="flex flex-col gap-4 sm:gap-6">
             
