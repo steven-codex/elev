@@ -55,6 +55,21 @@ const FAQ_ITEMS: FaqCardItem[] = [
   }
 ];
 
+// ============================================================================
+// DYNAMIC ORGANIC LIQUID GOO FRAME PATHS (1011 x 682)
+// Each state shares the exact same 26 command tokens so Framer Motion morphs smoothly:
+// 0: Card 0 active (Top-left expands -> center top divider dips further right)
+// 1: Card 1 active (Top-right expands -> center top divider dips further left)
+// 2: Card 2 active (Bottom-left expands -> bottom shelf step divider shifts right)
+// 3: Card 3 active (Bottom-right expands -> default Figma master vector)
+// ============================================================================
+const FAQ_FRAME_PATHS: Record<number, string> = {
+  0: 'M970.586 0C992.677 0 1010.59 17.9086 1010.59 40V314C1010.59 332.159 1010.57 367.891 1010.99 386.045C1011 386.362 1011 386.681 1011 387V604C1011 626.644 992.644 645 970 645H591.634C583.07 645 573.942 649.583 569.505 656.907C560.392 671.948 543.87 682 525 682H191C162.281 682 139 658.719 139 630V451C139 393.01 91.9899 346 34 346C15.2223 346 0 330.778 0 312V52C0.0000036 33.2223 15.2223 18 34 18H549C567.778 18 583 33.2223 583 52V288C583 291.866 586.134 295 590 295C595.012 295 599.586 291.254 599.586 286.243V40C599.586 17.9086 617.495 0 639.586 0H970.586Z',
+  1: 'M970.586 0C992.677 0 1010.59 17.9086 1010.59 40V314C1010.59 332.159 1010.57 367.891 1010.99 386.045C1011 386.362 1011 386.681 1011 387V604C1011 626.644 992.644 645 970 645H591.634C583.07 645 573.942 649.583 569.505 656.907C560.392 671.948 543.87 682 525 682H191C162.281 682 139 658.719 139 630V451C139 393.01 91.9899 346 34 346C15.2223 346 0 330.778 0 312V52C0.0000036 33.2223 15.2223 18 34 18H419C437.778 18 453 33.2223 453 52V288C453 291.866 456.134 295 460 295C465.012 295 469.586 291.254 469.586 286.243V40C469.586 17.9086 487.495 0 509.586 0H970.586Z',
+  2: 'M970.586 0C992.677 0 1010.59 17.9086 1010.59 40V314C1010.59 332.159 1010.57 367.891 1010.99 386.045C1011 386.362 1011 386.681 1011 387V604C1011 626.644 992.644 645 970 645H661.634C653.07 645 643.942 649.583 639.505 656.907C630.392 671.948 613.87 682 595 682H175C147 682 125 658.719 125 630V445C125 393.01 82 346 34 346C15.2223 346 0 330.778 0 312V52C0.0000036 33.2223 15.2223 18 34 18H484C502.778 18 518 33.2223 518 52V278C518 281.866 521.134 285 525 285C530.012 285 534.586 281.254 534.586 276.243V40C534.586 17.9086 552.495 0 574.586 0H970.586Z',
+  3: 'M970.586 0C992.677 0 1010.59 17.9086 1010.59 40V314C1010.59 332.159 1010.57 367.891 1010.99 386.045C1011 386.362 1011 386.681 1011 387V604C1011 626.644 992.644 645 970 645H591.634C583.07 645 573.942 649.583 569.505 656.907C560.392 671.948 543.87 682 525 682H191C162.281 682 139 658.719 139 630V451C139 393.01 91.9899 346 34 346C15.2223 346 0 330.778 0 312V52C0.0000036 33.2223 15.2223 18 34 18H484C502.778 18 518 33.2223 518 52V278C518 281.866 521.134 285 525 285C530.012 285 534.586 281.254 534.586 276.243V40C534.586 17.9086 552.495 0 574.586 0H970.586Z'
+};
+
 export default function FaqSection() {
   // Default to index 3 (bottom-right) to match reference mockup
   const [activeIndex, setActiveIndex] = useState<number>(3);
@@ -126,7 +141,7 @@ export default function FaqSection() {
         {/* ========================================================= */}
         <div className="w-full max-w-[1011px] mx-auto relative z-10">
           
-          {/* Custom Organic Vector Frame Backdrop (Desktop/Tablet) */}
+          {/* Custom Organic Liquid Goo Vector Frame Backdrop (Desktop/Tablet) */}
           <div className="absolute inset-0 w-full h-full pointer-events-none -z-0 hidden lg:block">
             <svg
               viewBox="0 0 1011 682"
@@ -135,8 +150,15 @@ export default function FaqSection() {
               className="w-full h-full filter drop-shadow-[0_24px_50px_rgba(0,85,255,0.08)]"
               preserveAspectRatio="none"
             >
-              <path
-                d="M970.586 0C992.677 0 1010.59 17.9086 1010.59 40V314C1010.59 332.159 1010.57 367.891 1010.99 386.045C1011 386.362 1011 386.681 1011 387V604C1011 626.644 992.644 645 970 645H591.634C583.07 645 573.942 649.583 569.505 656.907C560.392 671.948 543.87 682 525 682H191C162.281 682 139 658.719 139 630V451C139 393.01 91.9899 346 34 346C15.2223 346 0 330.778 0 312V52C3.60808e-06 33.2223 15.2223 18 34 18H484C502.778 18 518 33.2223 518 52V278C518 281.866 521.134 285 525 285C530.012 285 534.586 281.254 534.586 276.243V40C534.586 17.9086 552.495 6.28154e-07 574.586 0H970.586Z"
+              <motion.path
+                d={FAQ_FRAME_PATHS[activeIndex]}
+                animate={{ d: FAQ_FRAME_PATHS[activeIndex] }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 260,
+                  damping: 24,
+                  mass: 0.85
+                }}
                 fill="url(#faq_frame_organic_gradient)"
               />
               <defs>
@@ -158,20 +180,20 @@ export default function FaqSection() {
           {/* Mobile Fallback Backdrop (Soft matching gradient rounded box) */}
           <div className="absolute inset-0 w-full h-full pointer-events-none -z-0 block lg:hidden rounded-[36px] bg-gradient-to-b from-[#FFFCFC] to-[#D4EAFF] border border-blue-200/50 shadow-[0_20px_45px_rgba(0,85,255,0.06)]" />
 
-          {/* Interactive Bento Content Layers */}
-          <div className="relative z-10 p-4 sm:p-5 lg:p-0 flex flex-col gap-4 sm:gap-5 lg:gap-5">
+          {/* Calibrated Interactive Photo Bento Pockets */}
+          <div className="relative z-10 p-3 sm:p-5 lg:p-0 flex flex-col gap-4 sm:gap-5">
             
             {/* ROW 1: CARDS 0 & 1 */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-5 items-stretch lg:pt-6 lg:px-6">
+            <div className="flex flex-col lg:flex-row items-stretch gap-4 sm:gap-5 w-full pt-4 sm:pt-5 lg:pt-6 px-3 sm:px-5 lg:px-6">
               {[FAQ_ITEMS[0], FAQ_ITEMS[1]].map((item) => {
                 const isActive = activeIndex === item.id;
                 
-                // Dynamic morphing column spans
-                let colSpan = 'lg:col-span-6';
+                // Dynamic flex ratio that morphs simultaneously with the SVG top divider dip
+                let flexStyle = '1 1 0%';
                 if (activeIndex === 0) {
-                  colSpan = item.id === 0 ? 'lg:col-span-7' : 'lg:col-span-5';
+                  flexStyle = item.id === 0 ? '1.34 1 0%' : '0.66 1 0%';
                 } else if (activeIndex === 1) {
-                  colSpan = item.id === 1 ? 'lg:col-span-7' : 'lg:col-span-5';
+                  flexStyle = item.id === 1 ? '1.34 1 0%' : '0.66 1 0%';
                 }
 
                 return (
@@ -179,14 +201,15 @@ export default function FaqSection() {
                     key={item.id}
                     layout
                     transition={{
-                      layout: { type: 'spring', stiffness: 320, damping: 30, mass: 0.8 },
+                      layout: { type: 'spring', stiffness: 260, damping: 24, mass: 0.85 },
                     }}
+                    style={{ flex: flexStyle }}
                     onClick={() => setActiveIndex(item.id)}
-                    className={`${colSpan} group relative rounded-[28px] sm:rounded-[36px] overflow-hidden cursor-pointer active:scale-[0.985] transition-[box-shadow,border-color] duration-300 ${
+                    className={`group relative rounded-[26px] sm:rounded-[30px] overflow-hidden cursor-pointer active:scale-[0.985] transition-[box-shadow,border-color] duration-300 ${
                       isActive 
-                        ? 'ring-2 ring-blue-500/80 shadow-[0_20px_50px_rgba(0,85,255,0.18)]' 
+                        ? 'ring-2 ring-blue-500/80 shadow-[0_20px_45px_rgba(0,85,255,0.18)]' 
                         : 'border border-white/60 hover:border-blue-300 hover:shadow-lg'
-                    } min-h-[300px] sm:min-h-[340px] ${isActive ? 'lg:min-h-[380px]' : 'lg:min-h-[320px]'} flex flex-col justify-end p-4 sm:p-6`}
+                    } h-[300px] sm:h-[310px] lg:h-[312px] flex flex-col justify-end p-4 sm:p-6`}
                   >
                     {/* Background Image with Cinematic Hover Drift */}
                     <img
@@ -203,8 +226,8 @@ export default function FaqSection() {
                       {isActive ? (
                         <motion.div
                           layoutId={`faq-island-${item.id}`}
-                          className="w-full max-w-[480px] bg-slate-950/70 backdrop-blur-2xl border border-white/30 rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-[0_24px_50px_rgba(0,12,35,0.45),inset_0_1px_1px_rgba(255,255,255,0.3)] text-white flex flex-col items-center text-center select-none"
-                          transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+                          className="w-full max-w-[480px] bg-slate-950/70 backdrop-blur-2xl border border-white/30 rounded-[22px] sm:rounded-[26px] p-5 sm:p-6 shadow-[0_24px_50px_rgba(0,12,35,0.45),inset_0_1px_1px_rgba(255,255,255,0.3)] text-white flex flex-col items-center text-center select-none"
+                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
                         >
                           {/* Top Logo Badge */}
                           <div className="flex items-center gap-2 mb-2.5">
@@ -244,7 +267,7 @@ export default function FaqSection() {
                         <motion.div
                           layoutId={`faq-island-${item.id}`}
                           className="bg-slate-950/45 hover:bg-slate-950/65 backdrop-blur-xl border border-white/30 rounded-full px-5 py-2.5 flex items-center justify-center gap-2.5 shadow-lg select-none transition-colors group/pill"
-                          transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
                         >
                           <img 
                             src="/elev-infinity-logo.png" 
@@ -263,17 +286,17 @@ export default function FaqSection() {
               })}
             </div>
 
-            {/* ROW 2: CARDS 2 & 3 (Indented on desktop to follow x=139 stepped notch) */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-5 items-stretch lg:pb-7 lg:pr-6 lg:pl-[135px]">
+            {/* ROW 2: CARDS 2 & 3 (Indented on desktop lg:pl-[152px] to follow the x=139 stepped shelf chamber) */}
+            <div className="flex flex-col lg:flex-row items-stretch gap-4 sm:gap-5 w-full pb-5 sm:pb-6 lg:pb-7 px-3 sm:px-5 lg:pl-[152px] lg:pr-6">
               {[FAQ_ITEMS[2], FAQ_ITEMS[3]].map((item) => {
                 const isActive = activeIndex === item.id;
                 
-                // Dynamic morphing column spans
-                let colSpan = 'lg:col-span-6';
+                // Dynamic flex ratio that morphs simultaneously with the bottom shelf step divider
+                let flexStyle = item.id === 2 ? '0.76 1 0%' : '1.24 1 0%';
                 if (activeIndex === 2) {
-                  colSpan = item.id === 2 ? 'lg:col-span-7' : 'lg:col-span-5';
+                  flexStyle = item.id === 2 ? '1.25 1 0%' : '0.75 1 0%';
                 } else if (activeIndex === 3) {
-                  colSpan = item.id === 3 ? 'lg:col-span-7' : 'lg:col-span-5';
+                  flexStyle = item.id === 3 ? '1.28 1 0%' : '0.72 1 0%';
                 }
 
                 return (
@@ -281,14 +304,15 @@ export default function FaqSection() {
                     key={item.id}
                     layout
                     transition={{
-                      layout: { type: 'spring', stiffness: 320, damping: 30, mass: 0.8 },
+                      layout: { type: 'spring', stiffness: 260, damping: 24, mass: 0.85 },
                     }}
+                    style={{ flex: flexStyle }}
                     onClick={() => setActiveIndex(item.id)}
-                    className={`${colSpan} group relative rounded-[28px] sm:rounded-[36px] overflow-hidden cursor-pointer active:scale-[0.985] transition-[box-shadow,border-color] duration-300 ${
+                    className={`group relative rounded-[26px] sm:rounded-[30px] overflow-hidden cursor-pointer active:scale-[0.985] transition-[box-shadow,border-color] duration-300 ${
                       isActive 
-                        ? 'ring-2 ring-blue-500/80 shadow-[0_20px_50px_rgba(0,85,255,0.18)]' 
+                        ? 'ring-2 ring-blue-500/80 shadow-[0_20px_45px_rgba(0,85,255,0.18)]' 
                         : 'border border-white/60 hover:border-blue-300 hover:shadow-lg'
-                    } min-h-[300px] sm:min-h-[340px] ${isActive ? 'lg:min-h-[380px]' : 'lg:min-h-[320px]'} flex flex-col justify-end p-4 sm:p-6`}
+                    } h-[300px] sm:h-[310px] lg:h-[312px] flex flex-col justify-end p-4 sm:p-6`}
                   >
                     {/* Background Image with Cinematic Hover Drift */}
                     <img
@@ -305,8 +329,8 @@ export default function FaqSection() {
                       {isActive ? (
                         <motion.div
                           layoutId={`faq-island-${item.id}`}
-                          className="w-full max-w-[480px] bg-slate-950/70 backdrop-blur-2xl border border-white/30 rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-[0_24px_50px_rgba(0,12,35,0.45),inset_0_1px_1px_rgba(255,255,255,0.3)] text-white flex flex-col items-center text-center select-none"
-                          transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+                          className="w-full max-w-[480px] bg-slate-950/70 backdrop-blur-2xl border border-white/30 rounded-[22px] sm:rounded-[26px] p-5 sm:p-6 shadow-[0_24px_50px_rgba(0,12,35,0.45),inset_0_1px_1px_rgba(255,255,255,0.3)] text-white flex flex-col items-center text-center select-none"
+                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
                         >
                           {/* Top Logo Badge */}
                           <div className="flex items-center gap-2 mb-2.5">
@@ -346,7 +370,7 @@ export default function FaqSection() {
                         <motion.div
                           layoutId={`faq-island-${item.id}`}
                           className="bg-slate-950/45 hover:bg-slate-950/65 backdrop-blur-xl border border-white/30 rounded-full px-5 py-2.5 flex items-center justify-center gap-2.5 shadow-lg select-none transition-colors group/pill"
-                          transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
                         >
                           <img 
                             src="/elev-infinity-logo.png" 
