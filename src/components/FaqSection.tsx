@@ -73,6 +73,7 @@ const FAQ_FRAME_PATHS: Record<number, string> = {
 export default function FaqSection() {
   // Default to index 3 (bottom-right) to match reference mockup
   const [activeIndex, setActiveIndex] = useState<number>(3);
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
 
   return (
     <section id="faq" className="py-24 sm:py-32 bg-white relative overflow-hidden select-none">
@@ -180,20 +181,20 @@ export default function FaqSection() {
           {/* Mobile Fallback Backdrop (Soft matching gradient rounded box) */}
           <div className="absolute inset-0 w-full h-full pointer-events-none -z-0 block lg:hidden rounded-[36px] bg-gradient-to-b from-[#FFFCFC] to-[#D4EAFF] border border-blue-200/50 shadow-[0_20px_45px_rgba(0,85,255,0.06)]" />
 
-          {/* Calibrated Interactive Photo Bento Pockets */}
-          <div className="relative z-10 p-3 sm:p-5 lg:p-0 flex flex-col gap-4 sm:gap-5">
+          {/* Clean Calibrated Photo Bento Pockets Matching Foto 2 */}
+          <div className="relative z-10 p-3 sm:p-5 lg:p-0 flex flex-col">
             
             {/* ROW 1: CARDS 0 & 1 */}
-            <div className="flex flex-col lg:flex-row items-stretch gap-4 sm:gap-5 w-full pt-4 sm:pt-5 lg:pt-6 px-3 sm:px-5 lg:px-6">
+            <div className="flex flex-col lg:flex-row items-stretch gap-4 sm:gap-6 lg:gap-[48px] w-full pt-5 sm:pt-6 lg:pt-7 px-4 sm:px-6 lg:px-7">
               {[FAQ_ITEMS[0], FAQ_ITEMS[1]].map((item) => {
                 const isActive = activeIndex === item.id;
                 
                 // Dynamic flex ratio that morphs simultaneously with the SVG top divider dip
-                let flexStyle = '1 1 0%';
+                let flexStyle = item.id === 0 ? '1.08 1 0%' : '1 1 0%';
                 if (activeIndex === 0) {
-                  flexStyle = item.id === 0 ? '1.34 1 0%' : '0.66 1 0%';
+                  flexStyle = item.id === 0 ? '1.24 1 0%' : '0.76 1 0%';
                 } else if (activeIndex === 1) {
-                  flexStyle = item.id === 1 ? '1.34 1 0%' : '0.66 1 0%';
+                  flexStyle = item.id === 1 ? '1.24 1 0%' : '0.76 1 0%';
                 }
 
                 return (
@@ -204,12 +205,15 @@ export default function FaqSection() {
                       layout: { type: 'spring', stiffness: 260, damping: 24, mass: 0.85 },
                     }}
                     style={{ flex: flexStyle }}
-                    onClick={() => setActiveIndex(item.id)}
-                    className={`group relative rounded-[26px] sm:rounded-[30px] overflow-hidden cursor-pointer active:scale-[0.985] transition-[box-shadow,border-color] duration-300 ${
-                      isActive 
-                        ? 'ring-2 ring-blue-500/80 shadow-[0_20px_45px_rgba(0,85,255,0.18)]' 
-                        : 'border border-white/60 hover:border-blue-300 hover:shadow-lg'
-                    } h-[300px] sm:h-[310px] lg:h-[312px] flex flex-col justify-end p-4 sm:p-6`}
+                    onClick={() => {
+                      if (activeIndex === item.id) {
+                        setShowAnswer(!showAnswer);
+                      } else {
+                        setActiveIndex(item.id);
+                        setShowAnswer(false);
+                      }
+                    }}
+                    className={`group relative rounded-[26px] sm:rounded-[28px] border-2 sm:border-[2.5px] border-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] overflow-hidden cursor-pointer active:scale-[0.985] transition-all duration-300 h-[280px] sm:h-[285px] lg:h-[285px] flex flex-col justify-end p-4 sm:p-5`}
                   >
                     {/* Background Image with Cinematic Hover Drift */}
                     <img
@@ -218,85 +222,60 @@ export default function FaqSection() {
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
                     />
 
-                    {/* Gradient Overlay for Text Legibility */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent pointer-events-none" />
+                    {/* Gradient Overlay for Text Legibility (Subtle) */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent pointer-events-none" />
 
-                    {/* INTERACTIVE FLOATING GLASS ISLAND */}
-                    <div className="relative z-10 w-full flex justify-center">
-                      {isActive ? (
+                    {/* Active Question Tile (Clean Frosted Glass Matching Foto 2) */}
+                    {isActive ? (
+                      <div className="relative z-10 w-full flex justify-center pb-2">
                         <motion.div
-                          layoutId={`faq-island-${item.id}`}
-                          className="w-full max-w-[480px] bg-slate-950/70 backdrop-blur-2xl border border-white/30 rounded-[22px] sm:rounded-[26px] p-5 sm:p-6 shadow-[0_24px_50px_rgba(0,12,35,0.45),inset_0_1px_1px_rgba(255,255,255,0.3)] text-white flex flex-col items-center text-center select-none"
-                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
+                          layoutId="faq-active-tile"
+                          initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }}
+                          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                          transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
+                          className="w-[90%] max-w-[360px] bg-slate-950/35 hover:bg-slate-950/45 backdrop-blur-2xl border border-white/50 rounded-[22px] sm:rounded-[24px] p-4 sm:p-5 shadow-[0_16px_36px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)] text-white select-none"
                         >
-                          {/* Top Logo Badge */}
-                          <div className="flex items-center gap-2 mb-2.5">
+                          <div className="flex justify-end mb-2">
                             <img 
                               src="/elev-infinity-logo.png" 
                               alt="elev" 
-                              className="w-5 h-5 object-contain filter drop-shadow-sm" 
+                              className="w-5 h-5 object-contain filter drop-shadow" 
                             />
-                            <span className="text-[10px] font-mono text-blue-300 uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30">
-                              {item.badge}
-                            </span>
                           </div>
-
-                          {/* Question */}
-                          <h3 className="text-sm sm:text-base font-medium text-white leading-snug tracking-tight text-pretty mb-2.5 drop-shadow-xs">
+                          <h3 className="text-left text-xs sm:text-[13.5px] font-medium leading-snug tracking-tight text-white text-pretty drop-shadow-xs">
                             {item.question}
                           </h3>
 
-                          {/* Animated Answer Text with Smooth Blur-Fade Reveal */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
-                            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, y: -6, filter: 'blur(3px)' }}
-                            transition={{ duration: 0.38, delay: 0.08, ease: [0.23, 1, 0.32, 1] }}
-                            className="text-xs sm:text-[13px] text-white/85 leading-relaxed font-normal text-pretty pt-2.5 border-t border-white/15"
-                          >
-                            <p>{item.fullAnswer}</p>
-                          </motion.div>
-
-                          {/* Step Indicator */}
-                          <div className="flex items-center justify-between w-full mt-3.5 pt-2 border-t border-white/10 text-[10px] font-mono text-white/50">
-                            <span className="text-blue-300 font-medium">{item.tag}</span>
-                            <span>Step 0{item.id + 1}/04</span>
-                          </div>
+                          {showAnswer && (
+                            <motion.p
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                              className="text-left text-[11px] sm:text-xs text-white/90 leading-relaxed pt-2.5 mt-2.5 border-t border-white/20 text-pretty"
+                            >
+                              {item.fullAnswer}
+                            </motion.p>
+                          )}
                         </motion.div>
-                      ) : (
-                        <motion.div
-                          layoutId={`faq-island-${item.id}`}
-                          className="bg-slate-950/45 hover:bg-slate-950/65 backdrop-blur-xl border border-white/30 rounded-full px-5 py-2.5 flex items-center justify-center gap-2.5 shadow-lg select-none transition-colors group/pill"
-                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-                        >
-                          <img 
-                            src="/elev-infinity-logo.png" 
-                            alt="elev" 
-                            className="w-4 h-4 object-contain filter drop-shadow-sm group-hover/pill:scale-110 transition-transform" 
-                          />
-                          <span className="text-white/90 text-xs font-medium tracking-tight truncate max-w-[220px]">
-                            {item.tag}
-                          </span>
-                          <ChevronRight className="w-3.5 h-3.5 text-white/50 group-hover/pill:translate-x-0.5 transition-transform" />
-                        </motion.div>
-                      )}
-                    </div>
+                      </div>
+                    ) : null}
                   </motion.div>
                 );
               })}
             </div>
 
-            {/* ROW 2: CARDS 2 & 3 (Indented on desktop lg:pl-[152px] to follow the x=139 stepped shelf chamber) */}
-            <div className="flex flex-col lg:flex-row items-stretch gap-4 sm:gap-5 w-full pb-5 sm:pb-6 lg:pb-7 px-3 sm:px-5 lg:pl-[152px] lg:pr-6">
+            {/* ROW 2: CARDS 2 & 3 (Indented on desktop lg:pl-[172px] to snugly sit in the x=139 stepped shelf chamber) */}
+            <div className="flex flex-col lg:flex-row items-stretch gap-4 sm:gap-6 w-full pb-6 sm:pb-7 lg:pb-8 px-4 sm:px-6 lg:pl-[172px] lg:pr-7 mt-4 sm:mt-5">
               {[FAQ_ITEMS[2], FAQ_ITEMS[3]].map((item) => {
                 const isActive = activeIndex === item.id;
                 
                 // Dynamic flex ratio that morphs simultaneously with the bottom shelf step divider
-                let flexStyle = item.id === 2 ? '0.76 1 0%' : '1.24 1 0%';
+                let flexStyle = item.id === 2 ? '0.92 1 0%' : '1.08 1 0%';
                 if (activeIndex === 2) {
-                  flexStyle = item.id === 2 ? '1.25 1 0%' : '0.75 1 0%';
+                  flexStyle = item.id === 2 ? '1.2 1 0%' : '0.8 1 0%';
                 } else if (activeIndex === 3) {
-                  flexStyle = item.id === 3 ? '1.28 1 0%' : '0.72 1 0%';
+                  flexStyle = item.id === 3 ? '1.18 1 0%' : '0.82 1 0%';
                 }
 
                 return (
@@ -307,12 +286,15 @@ export default function FaqSection() {
                       layout: { type: 'spring', stiffness: 260, damping: 24, mass: 0.85 },
                     }}
                     style={{ flex: flexStyle }}
-                    onClick={() => setActiveIndex(item.id)}
-                    className={`group relative rounded-[26px] sm:rounded-[30px] overflow-hidden cursor-pointer active:scale-[0.985] transition-[box-shadow,border-color] duration-300 ${
-                      isActive 
-                        ? 'ring-2 ring-blue-500/80 shadow-[0_20px_45px_rgba(0,85,255,0.18)]' 
-                        : 'border border-white/60 hover:border-blue-300 hover:shadow-lg'
-                    } h-[300px] sm:h-[310px] lg:h-[312px] flex flex-col justify-end p-4 sm:p-6`}
+                    onClick={() => {
+                      if (activeIndex === item.id) {
+                        setShowAnswer(!showAnswer);
+                      } else {
+                        setActiveIndex(item.id);
+                        setShowAnswer(false);
+                      }
+                    }}
+                    className={`group relative rounded-[26px] sm:rounded-[28px] border-2 sm:border-[2.5px] border-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] overflow-hidden cursor-pointer active:scale-[0.985] transition-all duration-300 h-[270px] sm:h-[275px] lg:h-[275px] flex flex-col justify-end p-4 sm:p-5`}
                   >
                     {/* Background Image with Cinematic Hover Drift */}
                     <img
@@ -322,68 +304,54 @@ export default function FaqSection() {
                     />
 
                     {/* Gradient Overlay for Text Legibility */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent pointer-events-none" />
 
-                    {/* INTERACTIVE FLOATING GLASS ISLAND */}
-                    <div className="relative z-10 w-full flex justify-center">
-                      {isActive ? (
+                    {/* Active Question Tile (Card 3 in Foto 2) or Minimalist Logo Capsule (Card 2 in Foto 2) */}
+                    {isActive ? (
+                      <div className="relative z-10 w-full flex justify-center pb-2">
                         <motion.div
-                          layoutId={`faq-island-${item.id}`}
-                          className="w-full max-w-[480px] bg-slate-950/70 backdrop-blur-2xl border border-white/30 rounded-[22px] sm:rounded-[26px] p-5 sm:p-6 shadow-[0_24px_50px_rgba(0,12,35,0.45),inset_0_1px_1px_rgba(255,255,255,0.3)] text-white flex flex-col items-center text-center select-none"
-                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
+                          layoutId="faq-active-tile"
+                          initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }}
+                          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                          transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
+                          className="w-[90%] max-w-[360px] bg-white/20 hover:bg-white/25 backdrop-blur-2xl border border-white/60 rounded-[22px] sm:rounded-[24px] p-4 sm:p-5 shadow-[0_16px_36px_rgba(0,0,0,0.18),inset_0_1px_1px_rgba(255,255,255,0.6)] text-white select-none"
                         >
-                          {/* Top Logo Badge */}
-                          <div className="flex items-center gap-2 mb-2.5">
+                          <div className="flex justify-end mb-1.5 sm:mb-2">
                             <img 
                               src="/elev-infinity-logo.png" 
                               alt="elev" 
-                              className="w-5 h-5 object-contain filter drop-shadow-sm" 
+                              className="w-5 h-5 object-contain filter drop-shadow" 
                             />
-                            <span className="text-[10px] font-mono text-blue-300 uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30">
-                              {item.badge}
-                            </span>
                           </div>
-
-                          {/* Question */}
-                          <h3 className="text-sm sm:text-base font-medium text-white leading-snug tracking-tight text-pretty mb-2.5 drop-shadow-xs">
+                          <h3 className="text-left text-xs sm:text-[13.5px] font-medium leading-snug tracking-tight text-white text-pretty drop-shadow-sm">
                             {item.question}
                           </h3>
 
-                          {/* Animated Answer Text with Smooth Blur-Fade Reveal */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
-                            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, y: -6, filter: 'blur(3px)' }}
-                            transition={{ duration: 0.38, delay: 0.08, ease: [0.23, 1, 0.32, 1] }}
-                            className="text-xs sm:text-[13px] text-white/85 leading-relaxed font-normal text-pretty pt-2.5 border-t border-white/15"
-                          >
-                            <p>{item.fullAnswer}</p>
-                          </motion.div>
-
-                          {/* Step Indicator */}
-                          <div className="flex items-center justify-between w-full mt-3.5 pt-2 border-t border-white/10 text-[10px] font-mono text-white/50">
-                            <span className="text-blue-300 font-medium">{item.tag}</span>
-                            <span>Step 0{item.id + 1}/04</span>
-                          </div>
+                          {showAnswer && (
+                            <motion.p
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                              className="text-left text-[11px] sm:text-xs text-white/95 leading-relaxed pt-2.5 mt-2.5 border-t border-white/25 text-pretty drop-shadow-xs"
+                            >
+                              {item.fullAnswer}
+                            </motion.p>
+                          )}
                         </motion.div>
-                      ) : (
-                        <motion.div
-                          layoutId={`faq-island-${item.id}`}
-                          className="bg-slate-950/45 hover:bg-slate-950/65 backdrop-blur-xl border border-white/30 rounded-full px-5 py-2.5 flex items-center justify-center gap-2.5 shadow-lg select-none transition-colors group/pill"
-                          transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-                        >
+                      </div>
+                    ) : (
+                      /* Minimalist Frosted Glass Infinity Logo Capsule (as seen in Card 2 in Foto 2) */
+                      <div className="relative z-10 w-full flex justify-center pb-2">
+                        <div className="w-[84%] max-w-[310px] h-11 sm:h-12 bg-white/15 hover:bg-white/22 backdrop-blur-xl border border-white/50 rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.16),inset_0_1px_1px_rgba(255,255,255,0.55)] transition-transform duration-200 group-hover:scale-[1.02] select-none">
                           <img 
                             src="/elev-infinity-logo.png" 
                             alt="elev" 
-                            className="w-4 h-4 object-contain filter drop-shadow-sm group-hover/pill:scale-110 transition-transform" 
+                            className="w-6 h-6 object-contain filter drop-shadow" 
                           />
-                          <span className="text-white/90 text-xs font-medium tracking-tight truncate max-w-[220px]">
-                            {item.tag}
-                          </span>
-                          <ChevronRight className="w-3.5 h-3.5 text-white/50 group-hover/pill:translate-x-0.5 transition-transform" />
-                        </motion.div>
-                      )}
-                    </div>
+                        </div>
+                      </div>
+                    )}
                   </motion.div>
                 );
               })}
