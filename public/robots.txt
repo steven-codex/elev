@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://elev.newseedglobal.com/sitemap.xml
