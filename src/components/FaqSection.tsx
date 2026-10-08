@@ -97,13 +97,19 @@ export default function FaqSection() {
             >
               <path 
                 d="M0 112C169.867 112 206.267 0 279.067 0H448.933C521.733 0 558.133 112 728 112H0Z" 
-                fill="#DCEBFE" 
+                fill="url(#pedestal_gradient)" 
               />
               <path 
                 d="M0 112C169.867 112 206.267 0 279.067 0H448.933C521.733 0 558.133 112 728 112H0Z" 
                 fill="#E1E1E1" 
-                fillOpacity="0.18" 
+                fillOpacity="0.12" 
               />
+              <defs>
+                <linearGradient id="pedestal_gradient" x1="364" y1="0" x2="364" y2="112" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#F8FAFC" />
+                  <stop offset="1" stopColor="#D4EAFF" />
+                </linearGradient>
+              </defs>
             </svg>
 
             {/* FAQ text positioned right on the plateau of the shape */}
@@ -116,14 +122,47 @@ export default function FaqSection() {
         </div>
 
         {/* ========================================================= */}
-        {/* MORPHING BENTO SHOWCASE (ORGANIC SOFT SKY BLUE FRAME)     */}
+        {/* MORPHING BENTO SHOWCASE (CUSTOM FIGMA ORGANIC SVG FRAME)  */}
         {/* ========================================================= */}
-        <div className="w-full max-w-[1180px] mx-auto p-4 sm:p-6 md:p-8 rounded-[36px] sm:rounded-[44px] bg-[#DCEBFE] border border-blue-200/60 shadow-[0_24px_60px_-15px_rgba(0,85,255,0.08)] relative z-10">
+        <div className="w-full max-w-[1011px] mx-auto relative z-10">
           
-          <div className="flex flex-col gap-4 sm:gap-6">
+          {/* Custom Organic Vector Frame Backdrop (Desktop/Tablet) */}
+          <div className="absolute inset-0 w-full h-full pointer-events-none -z-0 hidden lg:block">
+            <svg
+              viewBox="0 0 1011 682"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-full h-full filter drop-shadow-[0_24px_50px_rgba(0,85,255,0.08)]"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M970.586 0C992.677 0 1010.59 17.9086 1010.59 40V314C1010.59 332.159 1010.57 367.891 1010.99 386.045C1011 386.362 1011 386.681 1011 387V604C1011 626.644 992.644 645 970 645H591.634C583.07 645 573.942 649.583 569.505 656.907C560.392 671.948 543.87 682 525 682H191C162.281 682 139 658.719 139 630V451C139 393.01 91.9899 346 34 346C15.2223 346 0 330.778 0 312V52C3.60808e-06 33.2223 15.2223 18 34 18H484C502.778 18 518 33.2223 518 52V278C518 281.866 521.134 285 525 285C530.012 285 534.586 281.254 534.586 276.243V40C534.586 17.9086 552.495 6.28154e-07 574.586 0H970.586Z"
+                fill="url(#faq_frame_organic_gradient)"
+              />
+              <defs>
+                <linearGradient
+                  id="faq_frame_organic_gradient"
+                  x1="505.5"
+                  y1="0"
+                  x2="642"
+                  y2="562.5"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stopColor="#FFFCFC" />
+                  <stop offset="1" stopColor="#D4EAFF" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          {/* Mobile Fallback Backdrop (Soft matching gradient rounded box) */}
+          <div className="absolute inset-0 w-full h-full pointer-events-none -z-0 block lg:hidden rounded-[36px] bg-gradient-to-b from-[#FFFCFC] to-[#D4EAFF] border border-blue-200/50 shadow-[0_20px_45px_rgba(0,85,255,0.06)]" />
+
+          {/* Interactive Bento Content Layers */}
+          <div className="relative z-10 p-4 sm:p-5 lg:p-0 flex flex-col gap-4 sm:gap-5 lg:gap-5">
             
             {/* ROW 1: CARDS 0 & 1 */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-5 items-stretch lg:pt-6 lg:px-6">
               {[FAQ_ITEMS[0], FAQ_ITEMS[1]].map((item) => {
                 const isActive = activeIndex === item.id;
                 
@@ -147,7 +186,7 @@ export default function FaqSection() {
                       isActive 
                         ? 'ring-2 ring-blue-500/80 shadow-[0_20px_50px_rgba(0,85,255,0.18)]' 
                         : 'border border-white/60 hover:border-blue-300 hover:shadow-lg'
-                    } min-h-[300px] sm:min-h-[340px] ${isActive ? 'lg:min-h-[390px]' : 'lg:min-h-[330px]'} flex flex-col justify-end p-4 sm:p-6`}
+                    } min-h-[300px] sm:min-h-[340px] ${isActive ? 'lg:min-h-[380px]' : 'lg:min-h-[320px]'} flex flex-col justify-end p-4 sm:p-6`}
                   >
                     {/* Background Image with Cinematic Hover Drift */}
                     <img
@@ -224,8 +263,8 @@ export default function FaqSection() {
               })}
             </div>
 
-            {/* ROW 2: CARDS 2 & 3 */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
+            {/* ROW 2: CARDS 2 & 3 (Indented on desktop to follow x=139 stepped notch) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-5 items-stretch lg:pb-7 lg:pr-6 lg:pl-[135px]">
               {[FAQ_ITEMS[2], FAQ_ITEMS[3]].map((item) => {
                 const isActive = activeIndex === item.id;
                 
@@ -249,7 +288,7 @@ export default function FaqSection() {
                       isActive 
                         ? 'ring-2 ring-blue-500/80 shadow-[0_20px_50px_rgba(0,85,255,0.18)]' 
                         : 'border border-white/60 hover:border-blue-300 hover:shadow-lg'
-                    } min-h-[300px] sm:min-h-[340px] ${isActive ? 'lg:min-h-[390px]' : 'lg:min-h-[330px]'} flex flex-col justify-end p-4 sm:p-6`}
+                    } min-h-[300px] sm:min-h-[340px] ${isActive ? 'lg:min-h-[380px]' : 'lg:min-h-[320px]'} flex flex-col justify-end p-4 sm:p-6`}
                   >
                     {/* Background Image with Cinematic Hover Drift */}
                     <img
@@ -327,25 +366,24 @@ export default function FaqSection() {
             </div>
 
           </div>
+        </div>
 
-          {/* Quick Navigator Pill Bar below Bento */}
-          <div className="flex items-center justify-center gap-2 mt-6 pt-4 border-t border-blue-200/50">
-            {FAQ_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setActiveIndex(item.id)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer active:scale-95 ${
-                  activeIndex === item.id
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'bg-white/70 text-slate-700 hover:bg-white hover:text-slate-900'
-                }`}
-              >
-                0{item.id + 1} {item.tag}
-              </button>
-            ))}
-          </div>
-
+        {/* Quick Navigator Pill Bar below Bento Frame */}
+        <div className="flex items-center justify-center gap-2 mt-8 pt-2">
+          {FAQ_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setActiveIndex(item.id)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer active:scale-95 ${
+                activeIndex === item.id
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'bg-slate-100/90 text-slate-700 hover:bg-slate-200/80 hover:text-slate-900 border border-slate-200/60'
+              }`}
+            >
+              0{item.id + 1} {item.tag}
+            </button>
+          ))}
         </div>
 
         {/* Support Help box */}
