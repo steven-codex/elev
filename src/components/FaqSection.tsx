@@ -239,54 +239,63 @@ export default function FaqSection() {
                   {/* Gradient Overlay for Text Legibility */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent pointer-events-none" />
 
-                  {/* MORPHING QUESTION BOX / CAPSULE (Smoothly morphs from pill into question box) */}
+                  {/* MORPHING QUESTION BOX / CAPSULE (Engineered to Emil Kowalski standard: no clipping, no distortion) */}
                   <div className="relative z-10 w-full flex justify-center pb-1 pointer-events-none">
                     <motion.div
                       layout
                       initial={false}
                       animate={{
-                        borderRadius: isActive ? 24 : 9999
+                        width: isActive ? '92%' : '80%',
+                        maxWidth: isActive ? 390 : 260,
+                        borderRadius: isActive ? 24 : 9999,
+                        paddingTop: isActive ? 16 : 10,
+                        paddingBottom: isActive ? 16 : 10,
+                        paddingLeft: isActive ? 20 : 16,
+                        paddingRight: isActive ? 20 : 16,
                       }}
                       transition={{
                         type: 'spring',
-                        stiffness: 280,
-                        damping: 24,
-                        mass: 0.85
+                        stiffness: 320,
+                        damping: 28,
+                        mass: 0.75
                       }}
-                      className={`relative pointer-events-auto backdrop-blur-2xl border border-white/60 shadow-[0_16px_36px_rgba(0,0,0,0.18),inset_0_1px_1px_rgba(255,255,255,0.6)] text-white select-none overflow-hidden transition-colors duration-300 ${
-                        isActive
-                          ? 'w-[92%] max-w-[390px] bg-white/20 hover:bg-white/25 p-4 lg:p-5'
-                          : 'w-[84%] max-w-[280px] h-11 lg:h-12 bg-white/18 hover:bg-white/26 flex items-center justify-center p-0'
-                      }`}
+                      className="relative pointer-events-auto backdrop-blur-2xl bg-white/20 hover:bg-white/25 border border-white/60 shadow-[0_16px_36px_rgba(0,0,0,0.18),inset_0_1px_1px_rgba(255,255,255,0.6)] text-white select-none overflow-hidden flex flex-col items-center justify-center transition-colors duration-200"
                     >
-                      {/* Logo: glides smoothly from center to top of card */}
+                      {/* Logo: uses layout="position" to prevent aspect ratio distortion during spring */}
                       <motion.div 
-                        layout 
+                        layout="position" 
                         transition={{
                           type: 'spring',
-                          stiffness: 280,
-                          damping: 24,
-                          mass: 0.85
+                          stiffness: 320,
+                          damping: 28,
+                          mass: 0.75
                         }}
-                        className={`flex justify-center items-center ${isActive ? 'mb-2' : ''}`}
+                        className={`flex justify-center items-center pointer-events-none select-none shrink-0 ${isActive ? 'mb-2' : ''}`}
                       >
-                        <motion.img 
-                          layout
+                        <img 
                           src="/elev-infinity-logo.png" 
                           alt="elev" 
                           className="w-5 h-5 lg:w-6 lg:h-6 object-contain filter drop-shadow" 
                         />
                       </motion.div>
 
-                      {/* Question content: enters smoothly during expansion */}
-                      <AnimatePresence>
+                      {/* Question content: enters after initial stretch, dissolves instantly on collapse */}
+                      <AnimatePresence mode="wait">
                         {isActive && (
                           <motion.div
-                            key="question-content"
-                            initial={{ opacity: 0, y: 6, filter: 'blur(3px)' }}
+                            key={`question-${item.id}`}
+                            initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
                             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, y: 4, filter: 'blur(3px)' }}
-                            transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+                            exit={{ 
+                              opacity: 0, 
+                              filter: 'blur(3px)',
+                              transition: { duration: 0.08, ease: 'easeOut' }
+                            }}
+                            transition={{ 
+                              duration: 0.22, 
+                              ease: [0.23, 1, 0.32, 1],
+                              delay: 0.05
+                            }}
                             className="w-full text-center"
                           >
                             <h3 className="text-center text-xs lg:text-[14px] font-medium leading-snug tracking-tight text-white text-pretty drop-shadow-sm">
@@ -298,7 +307,7 @@ export default function FaqSection() {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                                transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
                                 className="text-center text-[11px] lg:text-xs text-white/95 leading-relaxed pt-2.5 mt-2.5 border-t border-white/25 text-pretty drop-shadow-xs"
                               >
                                 {item.fullAnswer}
@@ -339,39 +348,54 @@ export default function FaqSection() {
                       layout
                       initial={false}
                       animate={{
-                        borderRadius: isActive ? 20 : 9999
+                        width: isActive ? '100%' : '80%',
+                        maxWidth: isActive ? 400 : 250,
+                        borderRadius: isActive ? 20 : 9999,
+                        paddingTop: isActive ? 14 : 9,
+                        paddingBottom: isActive ? 14 : 9,
+                        paddingLeft: isActive ? 16 : 14,
+                        paddingRight: isActive ? 16 : 14,
                       }}
                       transition={{
                         type: 'spring',
-                        stiffness: 280,
-                        damping: 24,
-                        mass: 0.85
+                        stiffness: 320,
+                        damping: 28,
+                        mass: 0.75
                       }}
-                      className={`relative pointer-events-auto backdrop-blur-xl border border-white/60 shadow-lg text-white select-none overflow-hidden transition-colors duration-300 ${
-                        isActive
-                          ? 'w-full bg-white/25 p-3.5'
-                          : 'w-[84%] max-w-[260px] h-10 bg-white/20 flex items-center justify-center p-0'
-                      }`}
+                      className="relative pointer-events-auto backdrop-blur-xl bg-white/25 border border-white/60 shadow-lg text-white select-none overflow-hidden flex flex-col items-center justify-center transition-colors duration-200"
                     >
                       <motion.div 
-                        layout 
-                        className={`flex justify-center items-center ${isActive ? 'mb-1.5' : ''}`}
+                        layout="position" 
+                        transition={{
+                          type: 'spring',
+                          stiffness: 320,
+                          damping: 28,
+                          mass: 0.75
+                        }}
+                        className={`flex justify-center items-center pointer-events-none select-none shrink-0 ${isActive ? 'mb-1.5' : ''}`}
                       >
-                        <motion.img 
-                          layout
+                        <img 
                           src="/elev-infinity-logo.png" 
                           alt="elev" 
                           className="w-4 h-4 sm:w-5 sm:h-5 object-contain filter drop-shadow" 
                         />
                       </motion.div>
-                      <AnimatePresence>
+                      <AnimatePresence mode="wait">
                         {isActive && (
                           <motion.div
-                            key="mobile-question-content"
-                            initial={{ opacity: 0, y: 4, filter: 'blur(2px)' }}
+                            key={`mobile-question-${item.id}`}
+                            initial={{ opacity: 0, y: 8, filter: 'blur(3px)' }}
                             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, y: 4, filter: 'blur(2px)' }}
-                            transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+                            exit={{ 
+                              opacity: 0, 
+                              filter: 'blur(2px)',
+                              transition: { duration: 0.08, ease: 'easeOut' }
+                            }}
+                            transition={{ 
+                              duration: 0.2, 
+                              ease: [0.23, 1, 0.32, 1],
+                              delay: 0.05
+                            }}
                             className="w-full text-center"
                           >
                             <h3 className="text-center text-xs sm:text-sm font-medium leading-snug text-white">{item.question}</h3>
