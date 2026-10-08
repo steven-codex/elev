@@ -126,14 +126,56 @@ export default function FaqSection() {
         {/* ========================================================= */}
         {/* EDITORIAL HEADER WITH ETHEREAL RADIAL AMBIENT AURA        */}
         {/* ========================================================= */}
-        <div className="relative text-center mb-4 sm:mb-6">
+        <div className="relative text-center mb-6 sm:mb-8 pt-4 sm:pt-6">
+          {/* Giant Typographic FAQ Watermark SVG (Provided by User) */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[46%] w-[720px] sm:w-[820px] max-w-[92vw] pointer-events-none -z-10 select-none flex items-center justify-center"
+            aria-hidden="true"
+          >
+            <svg
+              viewBox="0 0 820 373"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-full h-auto"
+            >
+              <g opacity="0.24">
+                <path
+                  d="M0 341.486V7.52584H216.961V54.0921H24.0022L50.8281 26.3405V179.68L24.0022 155.691H208.489V200.846H24.0022L50.8281 176.857V341.486H0Z"
+                  fill="url(#paint0_linear_150_88)"
+                />
+                <path
+                  d="M200.669 341.486L321.15 7.52584H385.626L506.108 341.486H451.985L421.394 254.468H284.912L254.791 341.486H200.669ZM300.913 208.372H405.864L353.153 55.9735L300.913 208.372Z"
+                  fill="url(#paint1_linear_150_88)"
+                />
+                <path
+                  d="M750.817 373L723.991 338.193C716.461 341.329 707.676 343.837 697.636 345.719C687.596 347.914 676.771 349.011 665.163 349.011C632.846 349.011 605.236 341.329 582.332 325.963C559.428 310.598 541.701 289.902 529.15 263.875C516.914 237.535 510.796 207.902 510.796 174.976C510.796 142.05 516.757 112.417 528.68 86.0769C540.602 59.7364 558.016 38.8836 580.92 23.5183C604.138 7.83942 632.218 0 665.163 0C698.734 0 726.972 7.83942 749.876 23.5183C773.094 38.8836 790.507 59.7364 802.116 86.0769C814.039 112.417 820 142.05 820 174.976C820 205.707 814.509 233.615 803.528 258.701C792.86 283.787 777.329 304.17 756.935 319.849L799.292 373H750.817ZM665.163 302.445C671.124 302.445 676.458 302.132 681.164 301.504C685.87 300.877 690.106 299.78 693.871 298.212L646.337 238.475H694.812L726.815 280.808C740.307 269.833 750.347 255.565 756.935 238.005C763.838 220.131 767.289 199.121 767.289 174.976C767.289 151.771 763.524 130.448 755.994 111.006C748.778 91.5645 737.64 76.0424 722.58 64.4401C707.519 52.5242 688.38 46.5662 665.163 46.5662C642.259 46.5662 623.276 52.5242 608.216 64.4401C593.156 76.0424 581.861 91.5645 574.331 111.006C567.115 130.448 563.506 151.771 563.506 174.976C563.506 197.867 567.115 219.034 574.331 238.475C581.861 257.917 593.156 273.439 608.216 285.042C623.59 296.644 642.572 302.445 665.163 302.445Z"
+                  fill="url(#paint2_linear_150_88)"
+                />
+              </g>
+              <defs>
+                <linearGradient id="paint0_linear_150_88" x1="384.5" y1="100.5" x2="396" y2="296.5" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#A5D6FB" />
+                  <stop offset="1" stopColor="#506DFD" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="paint1_linear_150_88" x1="384.5" y1="100.5" x2="396" y2="296.5" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#A5D6FB" />
+                  <stop offset="1" stopColor="#506DFD" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="paint2_linear_150_88" x1="384.5" y1="100.5" x2="396" y2="296.5" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#A5D6FB" />
+                  <stop offset="1" stopColor="#506DFD" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
           {/* Soft Ethereal Radial Ambient Glow Cloud as seen in Foto 1 */}
           <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] sm:w-[950px] h-[400px] sm:h-[480px] bg-gradient-to-r from-blue-300/35 via-sky-200/30 to-indigo-200/25 rounded-full blur-[130px] pointer-events-none -z-10" 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] sm:w-[950px] h-[400px] sm:h-[480px] bg-gradient-to-r from-blue-300/35 via-sky-200/30 to-indigo-200/25 rounded-full blur-[130px] pointer-events-none -z-20" 
             aria-hidden="true"
           />
 
-          <h2 className="text-3xl sm:text-5xl lg:text-[3.75rem] text-[#0A0D14] font-medium tracking-tight leading-[1.12]">
+          <h2 className="relative z-10 text-3xl sm:text-5xl lg:text-[3.75rem] text-[#0A0D14] font-medium tracking-tight leading-[1.12]">
             Everything you need to know
             <br />
             <span className="font-instrument italic font-normal text-[#2563EB] inline-block mt-1 sm:mt-2">
@@ -151,13 +193,6 @@ export default function FaqSection() {
           {/* DESKTOP / TABLET (lg+): Lockstep 1011:941 Aspect Ratio Container */}
           <div className="relative w-full aspect-[1011/941] hidden lg:block select-none">
             
-            {/* AMBIENT FAQ TEXT (Perched right between the converging light wings as in Foto 1) */}
-            <div className="absolute top-[13%] left-1/2 -translate-x-1/2 select-none z-20 pointer-events-none">
-              <span className="text-4xl sm:text-5xl md:text-[3.25rem] font-bold tracking-widest text-[#93C5FD] drop-shadow-xs">
-                FAQ
-              </span>
-            </div>
-
             {/* EXACT FIGMA SVG BACKDROP (1011 x 941) PROVIDED BY USER */}
             <svg
               viewBox="0 0 1011 941"
