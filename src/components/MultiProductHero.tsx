@@ -124,7 +124,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
   };
 
   return (
-    <section className="w-full bg-white pt-12 sm:pt-16 lg:pt-20 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-8 font-sans antialiased relative">
+    <section className="w-full bg-white pt-16 sm:pt-24 lg:pt-32 xl:pt-36 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-8 font-sans antialiased relative">
       {/* Massive Background Fluid Wave Asset (Bleeding through header zone matching Frame 11) */}
       <div 
         className="absolute -top-24 sm:-top-36 lg:-top-52 xl:-top-60 left-1/2 -translate-x-1/2 w-full max-w-[2600px] pointer-events-none -z-0 overflow-visible flex flex-col items-center select-none"
@@ -154,7 +154,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
         {/* =========================================================================
             CENTERED HERO HEADER & SIGNATURE CONVERSION ENGINE (EXPANDED SPACING)
            ========================================================================= */}
-        <div className="flex flex-col items-center text-center max-w-5xl mx-auto mb-28 sm:mb-36 lg:mb-48">
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto mb-24 sm:mb-32 lg:mb-40 xl:mb-44">
           <Reveal delay={0.1} y={24}>
             <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-normal tracking-tight text-[#0A0D14] leading-[1.08] text-balance">
               Easy scheduling ahead <br className="hidden sm:inline" />
