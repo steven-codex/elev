@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import GradientWaves from './GradientWaves';
 import ScrollExpand from './ScrollExpand';
-import { Reveal, ImageReveal, BlurText } from '../motion';
+import { Reveal, ImageReveal } from '../motion';
 
 interface MultiProductHeroProps {
   onOpenAuth: (mode: 'signup' | 'login') => void;
@@ -124,7 +124,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
   };
 
   return (
-    <section className="w-full bg-white pt-16 sm:pt-24 lg:pt-32 xl:pt-36 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-8 font-sans antialiased relative">
+    <section id="hero" className="w-full bg-white pt-16 sm:pt-24 lg:pt-32 xl:pt-36 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-8 font-sans antialiased relative">
       {/* Massive Background Fluid Wave Asset (Bleeding through header zone matching Frame 11) */}
       <div 
         className="absolute -top-24 sm:-top-36 lg:-top-52 xl:-top-60 left-1/2 -translate-x-1/2 w-full max-w-[2600px] pointer-events-none -z-0 overflow-visible flex flex-col items-center select-none"
@@ -155,68 +155,21 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
             CENTERED HERO HEADER & SIGNATURE CONVERSION ENGINE (EXPANDED SPACING)
            ========================================================================= */}
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto mb-24 sm:mb-32 lg:mb-40 xl:mb-44">
-          <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-normal tracking-tight text-[#0A0D14] leading-[1.08] text-balance">
-            {['Easy', 'scheduling', 'ahead'].map((word, idx) => (
-              <span key={idx} className="inline-block overflow-visible mr-[0.24em]">
-                <motion.span
-                  className="inline-block will-change-[transform,filter,opacity]"
-                  initial={{ opacity: 0, filter: 'blur(12px)', y: 16 }}
-                  animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                  transition={{
-                    duration: 0.75,
-                    delay: 0.12 + idx * 0.08,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  {word}
-                </motion.span>
-              </span>
-            ))}
-            <br className="hidden sm:inline" />
-            <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">
-              {['One', 'platform', 'for', 'all', 'of', 'meetings'].map((word, idx) => (
-                <span key={idx} className="inline-block overflow-visible mr-[0.24em]">
-                  <motion.span
-                    className="inline-block will-change-[transform,filter,opacity] bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent"
-                    initial={{ opacity: 0, filter: 'blur(12px)', y: 16 }}
-                    animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                    transition={{
-                      duration: 0.75,
-                      delay: 0.38 + idx * 0.07,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                  >
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
-            </span>
-          </h1>
+          <Reveal delay={0.05} y={20}>
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-normal tracking-tight text-[#0A0D14] leading-[1.08] text-balance">
+              Easy scheduling ahead <br className="hidden sm:inline" />
+              <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">One platform for all of meetings</span>
+            </h1>
+          </Reveal>
           
-          <motion.p
-            initial={{ opacity: 0, filter: 'blur(10px)', y: 16 }}
-            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.82,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mt-6 leading-relaxed font-normal text-pretty mx-auto"
-          >
-            elev connects and simplifies all of the work around meetings — from scheduling, payments, and meeting prep to notetaking, contact intelligence, and follow-up.
-          </motion.p>
+          <Reveal delay={0.16} y={16}>
+            <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mt-6 leading-relaxed font-normal text-pretty mx-auto">
+              elev connects and simplifies all of the work around meetings — from scheduling, payments, and meeting prep to notetaking, contact intelligence, and follow-up.
+            </p>
+          </Reveal>
 
           {/* Email Sign-up Form */}
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(8px)', y: 16 }}
-            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-            transition={{
-              duration: 0.75,
-              delay: 1.0,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="w-full"
-          >
+          <Reveal delay={0.26} y={16} className="w-full">
             <form onSubmit={handleEmailSubmit} className="mt-9 sm:mt-11 flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg mx-auto">
               <input
                 type="email"
@@ -234,39 +187,32 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
-          </motion.div>
+          </Reveal>
 
           {/* Reassurance Micro-Copy */}
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(6px)', y: 12 }}
-            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-            transition={{
-              duration: 0.7,
-              delay: 1.15,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="flex flex-wrap items-center justify-center gap-3.5 mt-5 sm:mt-6 text-xs text-slate-500"
-          >
-            <span className="flex items-center gap-1.5 font-normal text-slate-700">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
-              Create your free account
-            </span>
-            <span className="text-slate-300">•</span>
-            <span>No credit card required</span>
-            <span className="text-slate-300">•</span>
-            <button
-              type="button"
-              onClick={onOpenDemo}
-              className="text-[#0055FF] font-normal hover:underline active:scale-[0.96] transition-transform duration-150 ease-out cursor-pointer"
-            >
-              Talk to sales or view demo →
-            </button>
-          </motion.div>
+          <Reveal delay={0.34} y={12}>
+            <div className="flex flex-wrap items-center justify-center gap-3.5 mt-5 sm:mt-6 text-xs text-slate-500">
+              <span className="flex items-center gap-1.5 font-normal text-slate-700">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
+                Create your free account
+              </span>
+              <span className="text-slate-300">•</span>
+              <span>No credit card required</span>
+              <span className="text-slate-300">•</span>
+              <button
+                type="button"
+                onClick={onOpenDemo}
+                className="text-[#0055FF] font-normal hover:underline active:scale-[0.96] transition-transform duration-150 ease-out cursor-pointer"
+              >
+                Talk to sales or view demo →
+              </button>
+            </div>
+          </Reveal>
         </div>
       </div>
 
       {/* Hero Interactive Stage Section */}
-      <ImageReveal delay={0.15} y={32} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
+      <ImageReveal delay={0.2} y={28} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
         <div className="w-full relative rounded-[32px] sm:rounded-[36px] bg-[#1E60F2] bg-[url('/hero-fluid-wave-bg.png')] bg-cover bg-center overflow-hidden shadow-2xl group flex flex-col justify-center items-center p-6 sm:p-12 pt-8 sm:pt-12">
           
           {/* Subtle Ambient Vignette / Glass Depth */}

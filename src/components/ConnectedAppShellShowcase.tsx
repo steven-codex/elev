@@ -18,6 +18,7 @@ import {
   Clock,
   Sparkles
 } from 'lucide-react';
+import { Reveal, ImageReveal } from '../motion';
 
 interface ConnectedAppShellShowcaseProps {
   onOpenAuth: (mode: 'signup' | 'login') => void;
@@ -125,7 +126,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
         {/* ====================================================================
             ECOSYSTEM VISUALIZATION (Centerpiece Brand + 4 Connected Feature Nodes)
             ==================================================================== */}
-        <div className="relative w-full max-w-5xl h-[340px] sm:h-[370px] flex items-center justify-center">
+        <Reveal delay={0.1} y={24} className="relative w-full max-w-5xl h-[340px] sm:h-[370px] flex items-center justify-center">
           
           {/* UNIFIED SVG SYSTEM: Lines, Elbows, Anchor Dots, Traveling Pulses, and Docking Nodes */}
           <svg 
@@ -357,12 +358,12 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             </foreignObject>
 
           </svg>
-        </div>
+        </Reveal>
 
         {/* ====================================================================
             THE ELEV DASHBOARD APP SHELL (gpt-taste Ultra-Clean Design Engineering)
             ==================================================================== */}
-        <div className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-7">
+        <ImageReveal delay={0.2} y={32} className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-7">
           
           {/* STACKED GLASS LAYER 2 (Backmost stacked card sheet) */}
           <div className="absolute top-0 inset-x-12 h-10 rounded-t-[32px] bg-white/60 backdrop-blur-md pointer-events-none z-0" />
@@ -844,7 +845,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
 
           </div>
 
-        </div>
+        </ImageReveal>
 
       </div>
     </section>

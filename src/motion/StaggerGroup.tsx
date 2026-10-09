@@ -22,9 +22,9 @@ export default function StaggerGroup({
   selector = ':scope > *',
   stagger = 0.06,
   y = 20,
-  duration = 0.85,
-  ease = 'power3.out',
-  start = 'top 82%',
+  duration = 0.95,
+  ease = 'power4.out',
+  start = 'top 89%',
   as: Component = 'div',
 }: StaggerGroupProps) {
   const ref = useRef<HTMLElement | null>(null);

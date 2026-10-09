@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { HelpCircle } from 'lucide-react';
+import { Reveal, ImageReveal } from '../motion';
 
 interface FaqCardItem {
   id: number;
@@ -126,7 +127,7 @@ export default function FaqSection() {
         {/* ========================================================= */}
         {/* EDITORIAL HEADER WITH ETHEREAL RADIAL AMBIENT AURA        */}
         {/* ========================================================= */}
-        <div className="relative text-center mb-6 sm:mb-8 pt-4 sm:pt-6">
+        <Reveal y={24} duration={0.9} className="relative text-center mb-6 sm:mb-8 pt-4 sm:pt-6">
           {/* Giant Typographic FAQ Watermark SVG (Provided by User) */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[46%] w-[720px] sm:w-[820px] max-w-[92vw] pointer-events-none -z-10 select-none flex items-center justify-center"
@@ -182,13 +183,13 @@ export default function FaqSection() {
               about elev
             </span>
           </h2>
-        </div>
+        </Reveal>
 
         {/* ========================================================= */}
         {/* MASTER BENTO SHOWCASE (CUSTOM FIGMA 1011 x 941 SVG FRAME) */}
         {/* Exactly matching Foto 1 with top light wings & white frame */}
         {/* ========================================================= */}
-        <div className="w-full max-w-[1120px] xl:max-w-[1180px] mx-auto relative z-10">
+        <ImageReveal delay={0.15} y={32} className="w-full max-w-[1120px] xl:max-w-[1180px] mx-auto relative z-10">
           
           {/* DESKTOP / TABLET (lg+): Lockstep 1011:941 Aspect Ratio Container */}
           <div className="relative w-full aspect-[1011/941] hidden lg:block select-none">
@@ -374,34 +375,36 @@ export default function FaqSection() {
             })}
           </div>
 
-        </div>
+        </ImageReveal>
 
-        {/* Quick Navigator Pill Bar below Bento Frame */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mt-9 pt-2 px-4">
-          {FAQ_ITEMS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setActiveIndex(item.id)}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13px] font-medium tracking-tight transition-all duration-200 cursor-pointer active:scale-[0.96] ${
-                activeIndex === item.id
-                  ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-600/30'
-                  : 'bg-slate-100/90 text-slate-700 hover:bg-slate-200/80 hover:text-slate-900 border border-slate-200/70'
-              }`}
-            >
-              0{item.id + 1} {item.tag}
-            </button>
-          ))}
-        </div>
+        {/* Quick Navigator Pill Bar below Bento Frame & Support Help Box */}
+        <Reveal delay={0.25} y={16}>
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mt-9 pt-2 px-4">
+            {FAQ_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveIndex(item.id)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13px] font-medium tracking-tight transition-all duration-200 cursor-pointer active:scale-[0.96] ${
+                  activeIndex === item.id
+                    ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-600/30'
+                    : 'bg-slate-100/90 text-slate-700 hover:bg-slate-200/80 hover:text-slate-900 border border-slate-200/70'
+                }`}
+              >
+                0{item.id + 1} {item.tag}
+              </button>
+            ))}
+          </div>
 
-        {/* Support Help box */}
-        <div className="mt-12 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
-          <HelpCircle className="w-4 h-4 text-blue-600" />
-          <span>Have a question not listed here?</span>
-          <a href="#demo" className="font-medium text-blue-600 hover:underline">
-            Contact our product team
-          </a>
-        </div>
+          {/* Support Help box */}
+          <div className="mt-12 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+            <HelpCircle className="w-4 h-4 text-blue-600" />
+            <span>Have a question not listed here?</span>
+            <a href="#demo" className="font-medium text-blue-600 hover:underline">
+              Contact our product team
+            </a>
+          </div>
+        </Reveal>
 
       </div>
     </section>

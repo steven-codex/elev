@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
+import { ImageReveal } from '../motion';
 
 export default function Footer() {
   const [lang, setLang] = useState('English (United States)');
@@ -7,7 +8,8 @@ export default function Footer() {
   return (
     <footer className="w-full bg-transparent py-10 sm:py-14 px-4 select-none relative z-10">
       {/* FLOATING ROUNDED CARD CONTAINER (Reference Match: media_1789474288000.png) */}
-      <div className="max-w-[1360px] w-[95vw] lg:w-[88vw] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#0A0D18] border border-slate-800/80 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.4)] p-8 sm:p-12 lg:p-14 text-white">
+      <ImageReveal delay={0.1} y={28} className="w-full flex justify-center">
+        <div className="max-w-[1360px] w-[95vw] lg:w-[88vw] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#0A0D18] border border-slate-800/80 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.4)] p-8 sm:p-12 lg:p-14 text-white">
         
         {/* TOP ROW: BRAND, HEADLINE & BADGES */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 pb-12">
@@ -151,6 +153,7 @@ export default function Footer() {
         </div>
 
       </div>
-    </footer>
+    </ImageReveal>
+  </footer>
   );
 }

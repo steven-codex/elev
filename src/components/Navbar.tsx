@@ -17,6 +17,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { NAV_MENU_SECTIONS } from '../data/landingData';
+import { useLenis } from '../motion/SmoothScrollProvider';
 
 interface NavbarProps {
   onOpenDemo: () => void;
@@ -24,12 +25,31 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
+  const { scrollTo } = useLenis();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
   const navRef = useRef<HTMLDivElement>(null);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setActiveDropdown(null);
+    setMobileMenuOpen(false);
+
+    if (href === '#' || href === '#hero' || href === '#top') {
+      scrollTo(0, { duration: 1.1 });
+      window.history.pushState(null, '', ' ');
+      return;
+    }
+
+    const targetEl = document.querySelector(href);
+    if (targetEl) {
+      scrollTo(targetEl as HTMLElement, { offset: -80, duration: 1.1 });
+      window.history.pushState(null, '', href);
+    }
+  };
 
   useEffect(() => {
     let rafId: number;
@@ -125,7 +145,8 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
           <div className="flex items-center gap-7 sm:gap-9 lg:gap-10">
             {/* Brand Logo & Name */}
             <a
-              href="#"
+              href="#hero"
+              onClick={(e) => handleNavClick(e, '#hero')}
               className="flex items-center gap-2.5 group cursor-pointer select-none"
               aria-label="elev home"
             >
@@ -169,33 +190,36 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
                   <div className="absolute top-full -left-4 pt-3 w-[520px] z-50 animate-in fade-in slide-in-from-top-1.5 duration-150">
                     <div className="bg-white rounded-[24px] shadow-2xl shadow-slate-950/12 border border-slate-200/90 p-4.5 overflow-hidden text-slate-900">
                       <div className="grid grid-cols-1 gap-1">
-                        {productSection.dropdown.items.map((item) => (
-                          <a
-                            key={item.title}
-                            href="#workflows"
-                            onClick={() => setActiveDropdown(null)}
-                            className="group flex items-start gap-3.5 p-2.5 rounded-2xl hover:bg-slate-50 transition-[background-color] duration-150"
-                          >
-                            <div className="p-2 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-[background-color,color] duration-150 shrink-0">
-                              {getIcon(item.icon)}
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-normal text-slate-900 group-hover:text-blue-600 transition-colors duration-150">
-                                  {item.title}
-                                </span>
-                                {item.badge && (
-                                  <span className="text-[10px] font-normal uppercase tracking-wider bg-blue-100/80 text-blue-700 px-2 py-0.5 rounded-md">
-                                    {item.badge}
-                                  </span>
-                                )}
+                        {productSection.dropdown.items.map((item) => {
+                          const targetHref = item.title === 'Platform & Integrations' ? '#integrations' : '#workflows';
+                          return (
+                            <a
+                              key={item.title}
+                              href={targetHref}
+                              onClick={(e) => handleNavClick(e, targetHref)}
+                              className="group flex items-start gap-3.5 p-2.5 rounded-2xl hover:bg-slate-50 transition-[background-color] duration-150"
+                            >
+                              <div className="p-2 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-[background-color,color] duration-150 shrink-0">
+                                {getIcon(item.icon)}
                               </div>
-                              <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-normal">
-                                {item.description}
-                              </p>
-                            </div>
-                          </a>
-                        ))}
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-normal text-slate-900 group-hover:text-blue-600 transition-colors duration-150">
+                                    {item.title}
+                                  </span>
+                                  {item.badge && (
+                                    <span className="text-[10px] font-normal uppercase tracking-wider bg-blue-100/80 text-blue-700 px-2 py-0.5 rounded-md">
+                                      {item.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-normal">
+                                  {item.description}
+                                </p>
+                              </div>
+                            </a>
+                          );
+                        })}
                       </div>
 
                       {productSection.dropdown.featured && (
@@ -258,7 +282,7 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
                           <a
                             key={item.title}
                             href="#workflows"
-                            onClick={() => setActiveDropdown(null)}
+                            onClick={(e) => handleNavClick(e, '#workflows')}
                             className="group flex items-start gap-3.5 p-2.5 rounded-2xl hover:bg-slate-50 transition-[background-color] duration-150"
                           >
                             <div className="p-2 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-[background-color,color] duration-150 shrink-0">
@@ -306,6 +330,7 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
               {/* 3. Integrations Link */}
               <a
                 href="#integrations"
+                onClick={(e) => handleNavClick(e, '#integrations')}
                 className="py-2 hover:text-[#0A0D14] transition-colors cursor-pointer select-none"
               >
                 Integrations
@@ -314,6 +339,7 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
               {/* 4. Pricing Link */}
               <a
                 href="#pricing"
+                onClick={(e) => handleNavClick(e, '#pricing')}
                 className="py-2 hover:text-[#0A0D14] transition-colors cursor-pointer select-none"
               >
                 Pricing
@@ -369,28 +395,28 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
             <div className="space-y-1">
               <a
                 href="#workflows"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, '#workflows')}
                 className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
               >
                 Product Suite (Scheduling, AI, Notetaker)
               </a>
               <a
                 href="#workflows"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, '#workflows')}
                 className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
               >
                 Solutions (Sales, Recruiting, Success)
               </a>
               <a
                 href="#integrations"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, '#integrations')}
                 className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
               >
                 150+ Integrations
               </a>
               <a
                 href="#pricing"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, '#pricing')}
                 className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
               >
                 Pricing

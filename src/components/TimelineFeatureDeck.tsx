@@ -261,7 +261,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
   ];
 
   return (
-    <section id="timeline-deck" className="w-full py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
+    <section id="workflows" className="w-full py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
