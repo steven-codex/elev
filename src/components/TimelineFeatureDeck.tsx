@@ -261,7 +261,8 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
   ];
 
   return (
-    <section id="workflows" className="w-full py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
+    <section id="features" className="w-full py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
+      <div id="workflows" className="sr-only" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -273,7 +274,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
           </Reveal>
           <Reveal delay={0.12} y={16}>
             <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed text-pretty">
-              elev automates the workflow before, during, and after every session — so your team can focus on high-impact execution.
+              newseed automates the workflow before, during, and after every session — so your team can focus on high-impact execution.
             </p>
           </Reveal>
         </div>
@@ -304,7 +305,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                   <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard.writeText('velie@elev.io');
+                      navigator.clipboard.writeText('velie@newseedglobal.com');
                       setCopiedEmail(true);
                       setTimeout(() => setCopiedEmail(false), 2000);
                     }}
@@ -312,7 +313,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                     title="Click to copy email address"
                   >
                     <Mail className="w-3.5 h-3.5 text-[#0055FF] stroke-[2.2]" />
-                    <span className="font-mono text-[11px] font-medium tracking-tight">velie@elev.io</span>
+                    <span className="font-mono text-[11px] font-medium tracking-tight">velie@newseedglobal.com</span>
                     <span className="text-[10px] font-sans font-medium text-blue-500/80 group-hover/copy:text-blue-600 transition-colors ml-0.5">
                       {copiedEmail ? 'Copied!' : 'Copy'}
                     </span>

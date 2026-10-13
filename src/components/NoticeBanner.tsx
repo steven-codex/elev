@@ -17,7 +17,7 @@ export default function NoticeBanner({ onOpenDemo }: NoticeBannerProps) {
           <div className="flex items-center gap-1.5 font-normal">
             <Volume2 className="w-3.5 h-3.5 text-[#0055FF] shrink-0" />
             <span className="text-[#0A0D14] font-normal">
-              Introducing elev <span className="tabular-nums font-normal">2.4</span> — built to handle all of the work around meetings.
+              Introducing newseed <span className="tabular-nums font-normal">2.4</span> — built to handle all of the work around meetings.
             </span>
           </div>
           

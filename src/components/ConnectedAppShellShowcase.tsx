@@ -316,7 +316,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 <div className="w-[200px] h-[95px] flex items-center justify-center drop-shadow-[0_16px_32px_rgba(0,85,255,0.26)]">
                   <img 
                     src="/elev-infinity-logo.png" 
-                    alt="elev Brandmark" 
+                    alt="newseed Brandmark" 
                     className="w-full h-full object-contain pointer-events-none" 
                   />
                 </div>
@@ -380,16 +380,16 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                   ================================================================ */}
               <aside className="md:col-span-3 border-r border-slate-100 bg-[#FAFBFD] p-4 sm:p-5 flex flex-col justify-between select-none">
                 <div>
-                  {/* Brand Header: elev Infinity Logo + Sidebar Control */}
+                  {/* Brand Header: newseed Infinity Logo + Sidebar Control */}
                   <div className="flex items-center justify-between px-2 mb-7">
                     <div className="flex items-center gap-3">
                       <img 
                         src="/elev-infinity-logo.png" 
-                        alt="elev" 
+                        alt="newseed" 
                         className="h-8.5 sm:h-9.5 w-auto object-contain" 
                       />
                       <span className="text-2xl font-normal text-[#0A0D14] tracking-tight">
-                        elev
+                        newseed
                       </span>
                     </div>
                     {/* Sidebar Collapsible / Info Button */}
@@ -485,12 +485,12 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                       <div className="flex items-center gap-2 pl-1 cursor-pointer group">
                         <img
                           src="/elev-infinity-logo.png"
-                          alt="elev"
+                          alt="newseed"
                           className="w-8 h-8 rounded-full object-contain p-1 bg-slate-50 border border-slate-200 group-hover:border-blue-400 transition-colors"
                         />
                         <div className="text-left hidden sm:block">
                           <p className="text-xs font-normal text-[#0A0D14] leading-none group-hover:text-[#0055FF] transition-colors">
-                            elev
+                            newseed
                           </p>
                           <p className="text-[10px] text-slate-400 mt-0.5 leading-none">
                             Workspace
@@ -813,11 +813,11 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             {/* Centered Brandmark, Headline, Subtitle, and Pill CTA Overlay (Lowered to avoid covering cards) */}
             <div className="absolute inset-x-0 bottom-4 sm:bottom-6 z-40 flex flex-col items-center justify-end px-4 text-center pointer-events-auto">
               
-              {/* elev Brandmark Infinity Ribbon - Direct Floating, No Fill / No Border Card */}
+              {/* newseed Brandmark Infinity Ribbon - Direct Floating, No Fill / No Border Card */}
               <div className="mb-3.5 sm:mb-4 flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-[0.96]">
                 <img 
                   src="/elev-infinity-logo.png" 
-                  alt="elev Logo" 
+                  alt="newseed Logo" 
                   className="h-12 sm:h-14 md:h-16 w-auto object-contain pointer-events-none drop-shadow-[0_8px_20px_rgba(0,85,255,0.22)]" 
                 />
               </div>

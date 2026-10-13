@@ -1,23 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import {
-  Menu,
-  X,
-  ChevronDown,
-  ArrowRight,
-  Clock,
-  Zap,
-  BookOpen,
-  Lock,
-  Layers,
-  TrendingUp,
-  UserCheck,
-  HeartHandshake,
-  Megaphone,
-  ShieldCheck,
-  Sparkles
-} from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { NAV_MENU_SECTIONS } from '../data/landingData';
-import { useLenis } from '../motion/SmoothScrollProvider';
 
 interface NavbarProps {
   onOpenDemo: () => void;
@@ -25,28 +8,26 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
-  const { scrollTo } = useLenis();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href?: string) => {
     e.preventDefault();
-    setActiveDropdown(null);
     setMobileMenuOpen(false);
 
-    if (href === '#' || href === '#hero' || href === '#top') {
-      scrollTo(0, { duration: 1.1 });
+    if (!href || href === '#' || href === '#hero' || href === '#top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       window.history.pushState(null, '', ' ');
       return;
     }
 
     const targetEl = document.querySelector(href);
     if (targetEl) {
-      scrollTo(targetEl as HTMLElement, { offset: -80, duration: 1.1 });
+      const targetTop = targetEl.getBoundingClientRect().top + window.scrollY - 76;
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
       window.history.pushState(null, '', href);
     }
   };
@@ -58,7 +39,7 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
         const currentScrollY = window.scrollY;
         setIsScrolled(currentScrollY > 20);
 
-        // Always visible when near the very top of the page
+        // Always visible when near top
         if (currentScrollY < 40) {
           setIsVisible(true);
         } else {
@@ -67,7 +48,6 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
           if (delta > 6) {
             // Scrolling down -> fade out
             setIsVisible(false);
-            setActiveDropdown(null);
           } else if (delta < -6) {
             // Scrolling up -> fade in
             setIsVisible(true);
@@ -86,41 +66,11 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
     };
   }, []);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (navRef.current && !navRef.current.contains(event.target as Node)) {
-        setActiveDropdown(null);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const getIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Clock': return <Clock className="w-4 h-4 text-blue-600" />;
-      case 'Zap': return <Zap className="w-4 h-4 text-blue-600" />;
-      case 'BookOpen': return <BookOpen className="w-4 h-4 text-blue-600" />;
-      case 'Lock': return <Lock className="w-4 h-4 text-blue-600" />;
-      case 'Layers': return <Layers className="w-4 h-4 text-blue-600" />;
-      case 'TrendingUp': return <TrendingUp className="w-4 h-4 text-blue-600" />;
-      case 'UserCheck': return <UserCheck className="w-4 h-4 text-blue-600" />;
-      case 'HeartHandshake': return <HeartHandshake className="w-4 h-4 text-blue-600" />;
-      case 'Megaphone': return <Megaphone className="w-4 h-4 text-blue-600" />;
-      case 'ShieldCheck': return <ShieldCheck className="w-4 h-4 text-blue-600" />;
-      default: return <Sparkles className="w-4 h-4 text-blue-600" />;
-    }
-  };
-
-  const productSection = NAV_MENU_SECTIONS.find((s) => s.label === 'Product');
-  const solutionsSection = NAV_MENU_SECTIONS.find((s) => s.label === 'Solutions');
-
   const showNav = isVisible || mobileMenuOpen;
 
   return (
     <header
-      className={`sticky top-3 sm:top-4 z-50 w-full px-3 sm:px-6 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      className={`sticky top-3 sm:top-4 z-50 w-full px-3 sm:px-6 transition-[opacity,transform] duration-200 ease-out ${
         showNav
           ? 'opacity-100 translate-y-0 pointer-events-none'
           : 'opacity-0 -translate-y-4 pointer-events-none'
@@ -128,19 +78,19 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
     >
       <div
         ref={navRef}
-        className={`w-full max-w-[1190px] mx-auto flex justify-center transition-opacity duration-300 ${
+        className={`w-full max-w-[1190px] mx-auto flex justify-center transition-opacity duration-200 ${
           showNav ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
         <div
-          className={`relative w-full flex items-center justify-between rounded-[16px] sm:rounded-[18px] h-[64px] sm:h-[68px] px-5 sm:px-8 transition-all duration-300 ${
+          className={`relative w-full flex items-center justify-between rounded-[16px] sm:rounded-[18px] h-[64px] sm:h-[68px] px-5 sm:px-8 transition-[background-color,border-color,box-shadow] duration-200 ${
             isScrolled
-              ? 'bg-white/95 backdrop-blur-md border border-slate-200'
+              ? 'bg-white/95 backdrop-blur-md border border-slate-200 shadow-sm'
               : 'bg-white/90 backdrop-blur-md border border-slate-200/80'
           }`}
         >
           {/* ========================================================= */}
-          {/* LEFT GROUP: BRAND LOGO + LEFT-ALIGNED NAVIGATION          */}
+          {/* LEFT GROUP: BRAND LOGO + DIRECT NAVIGATION LINKS          */}
           {/* ========================================================= */}
           <div className="flex items-center gap-7 sm:gap-9 lg:gap-10">
             {/* Brand Logo & Name */}
@@ -148,203 +98,30 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
               href="#hero"
               onClick={(e) => handleNavClick(e, '#hero')}
               className="flex items-center gap-2.5 group cursor-pointer select-none"
-              aria-label="elev home"
+              aria-label="newseed home"
             >
               <img
                 src="/elev-infinity-logo.png"
-                alt="elev"
+                alt="newseed"
                 className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
               />
               <span className="font-normal text-[22px] sm:text-[26px] tracking-[-0.03em] text-[#0A0D14] group-hover:text-blue-600 transition-colors duration-150">
-                elev
+                newseed
               </span>
             </a>
 
-            {/* Desktop Navigation Links (Authentic elev Project Content) */}
-            <nav className="hidden md:flex items-center gap-6 sm:gap-7 text-[15px] font-normal text-slate-700">
-              
-              {/* 1. Product Dropdown (Scheduling, Velie AI, Notetaker, Payments, Integrations) */}
-              <div
-                className="relative"
-                onMouseEnter={() => setActiveDropdown('Product')}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button
-                  type="button"
-                  onClick={() => setActiveDropdown(activeDropdown === 'Product' ? null : 'Product')}
-                  className={`flex items-center gap-1.5 py-2 hover:text-[#0A0D14] transition-colors cursor-pointer select-none ${
-                    activeDropdown === 'Product' ? 'text-[#0A0D14]' : 'text-slate-700'
-                  }`}
-                  aria-expanded={activeDropdown === 'Product'}
+            {/* Desktop Direct Links */}
+            <nav className="hidden md:flex items-center gap-6 sm:gap-7 lg:gap-8 text-[15px] font-normal text-slate-700">
+              {NAV_MENU_SECTIONS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href || '#'}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className="py-2 hover:text-[#0A0D14] transition-colors duration-150 cursor-pointer select-none"
                 >
-                  <span>Product</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-                      activeDropdown === 'Product' ? 'rotate-180 text-slate-900' : ''
-                    }`}
-                  />
-                </button>
-
-                {/* Product Floating Panel */}
-                {activeDropdown === 'Product' && productSection?.dropdown && (
-                  <div className="absolute top-full -left-4 pt-3 w-[520px] z-50 animate-in fade-in slide-in-from-top-1.5 duration-150">
-                    <div className="bg-white rounded-[24px] shadow-2xl shadow-slate-950/12 border border-slate-200/90 p-4.5 overflow-hidden text-slate-900">
-                      <div className="grid grid-cols-1 gap-1">
-                        {productSection.dropdown.items.map((item) => {
-                          const targetHref = item.title === 'Platform & Integrations' ? '#integrations' : '#workflows';
-                          return (
-                            <a
-                              key={item.title}
-                              href={targetHref}
-                              onClick={(e) => handleNavClick(e, targetHref)}
-                              className="group flex items-start gap-3.5 p-2.5 rounded-2xl hover:bg-slate-50 transition-[background-color] duration-150"
-                            >
-                              <div className="p-2 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-[background-color,color] duration-150 shrink-0">
-                                {getIcon(item.icon)}
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm font-normal text-slate-900 group-hover:text-blue-600 transition-colors duration-150">
-                                    {item.title}
-                                  </span>
-                                  {item.badge && (
-                                    <span className="text-[10px] font-normal uppercase tracking-wider bg-blue-100/80 text-blue-700 px-2 py-0.5 rounded-md">
-                                      {item.badge}
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-normal">
-                                  {item.description}
-                                </p>
-                              </div>
-                            </a>
-                          );
-                        })}
-                      </div>
-
-                      {productSection.dropdown.featured && (
-                        <div className="mt-3.5 pt-3.5 border-t border-slate-100 bg-slate-50/70 -mx-4.5 -mb-4.5 p-4.5">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <span className="text-[11px] font-normal text-blue-600 uppercase tracking-wider">
-                                {productSection.dropdown.featured.tag}
-                              </span>
-                              <h4 className="text-xs font-normal text-slate-900 mt-0.5">
-                                {productSection.dropdown.featured.title}
-                              </h4>
-                            </div>
-                            <button
-                              onClick={() => {
-                                setActiveDropdown(null);
-                                onOpenDemo();
-                              }}
-                              className="text-xs font-normal text-[#0055FF] hover:text-blue-700 flex items-center gap-1 active:scale-[0.96] transition-[color,transform] duration-150 cursor-pointer group/feat"
-                            >
-                              <span>{productSection.dropdown.featured.linkText}</span>
-                              <ArrowRight className="w-3.5 h-3.5 group-hover/feat:translate-x-0.5 transition-transform duration-150" />
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 2. Solutions Dropdown (Sales, Recruiting, Customer Success, Marketing, IT) */}
-              <div
-                className="relative"
-                onMouseEnter={() => setActiveDropdown('Solutions')}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button
-                  type="button"
-                  onClick={() => setActiveDropdown(activeDropdown === 'Solutions' ? null : 'Solutions')}
-                  className={`flex items-center gap-1.5 py-2 hover:text-[#0A0D14] transition-colors cursor-pointer select-none ${
-                    activeDropdown === 'Solutions' ? 'text-[#0A0D14]' : 'text-slate-700'
-                  }`}
-                  aria-expanded={activeDropdown === 'Solutions'}
-                >
-                  <span>Solutions</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-                      activeDropdown === 'Solutions' ? 'rotate-180 text-slate-900' : ''
-                    }`}
-                  />
-                </button>
-
-                {/* Solutions Floating Panel */}
-                {activeDropdown === 'Solutions' && solutionsSection?.dropdown && (
-                  <div className="absolute top-full -left-12 pt-3 w-[520px] z-50 animate-in fade-in slide-in-from-top-1.5 duration-150">
-                    <div className="bg-white rounded-[24px] shadow-2xl shadow-slate-950/12 border border-slate-200/90 p-4.5 overflow-hidden text-slate-900">
-                      <div className="grid grid-cols-1 gap-1">
-                        {solutionsSection.dropdown.items.map((item) => (
-                          <a
-                            key={item.title}
-                            href="#workflows"
-                            onClick={(e) => handleNavClick(e, '#workflows')}
-                            className="group flex items-start gap-3.5 p-2.5 rounded-2xl hover:bg-slate-50 transition-[background-color] duration-150"
-                          >
-                            <div className="p-2 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-[background-color,color] duration-150 shrink-0">
-                              {getIcon(item.icon)}
-                            </div>
-                            <div>
-                              <span className="text-sm font-normal text-slate-900 group-hover:text-blue-600 transition-colors duration-150 block">
-                                {item.title}
-                              </span>
-                              <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-normal">
-                                {item.description}
-                              </p>
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-
-                      <div className="mt-3.5 pt-3.5 border-t border-slate-100 bg-slate-50/70 -mx-4.5 -mb-4.5 p-4.5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <span className="text-[11px] font-normal text-blue-600 uppercase tracking-wider">
-                              Enterprise Workflows
-                            </span>
-                            <h4 className="text-xs font-normal text-slate-900 mt-0.5">
-                              Built for teams from 5 to 5,000
-                            </h4>
-                          </div>
-                          <button
-                            onClick={() => {
-                              setActiveDropdown(null);
-                              onOpenDemo();
-                            }}
-                            className="text-xs font-normal text-[#0055FF] hover:text-blue-700 flex items-center gap-1 active:scale-[0.96] transition-[color,transform] duration-150 cursor-pointer group/feat"
-                          >
-                            <span>Explore Solutions →</span>
-                            <ArrowRight className="w-3.5 h-3.5 group-hover/feat:translate-x-0.5 transition-transform duration-150" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 3. Integrations Link */}
-              <a
-                href="#integrations"
-                onClick={(e) => handleNavClick(e, '#integrations')}
-                className="py-2 hover:text-[#0A0D14] transition-colors cursor-pointer select-none"
-              >
-                Integrations
-              </a>
-
-              {/* 4. Pricing Link */}
-              <a
-                href="#pricing"
-                onClick={(e) => handleNavClick(e, '#pricing')}
-                className="py-2 hover:text-[#0A0D14] transition-colors cursor-pointer select-none"
-              >
-                Pricing
-              </a>
-
+                  {item.label}
+                </a>
+              ))}
             </nav>
           </div>
 
@@ -354,14 +131,14 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
           <div className="hidden md:flex items-center gap-5 sm:gap-6">
             <button
               onClick={() => onOpenAuth('login')}
-              className="text-[15px] font-normal text-slate-700 hover:text-[#0A0D14] px-3.5 py-2 rounded-full hover:bg-slate-100/60 active:scale-[0.96] transition-all duration-150 cursor-pointer select-none"
+              className="text-[15px] font-normal text-slate-700 hover:text-[#0A0D14] px-3.5 py-2 rounded-full hover:bg-slate-100/60 active:scale-[0.96] transition-[color,background-color,transform] duration-150 cursor-pointer select-none"
             >
               Login
             </button>
 
             <button
               onClick={() => onOpenDemo()}
-              className="bg-[#0A0D14] hover:bg-[#1E2330] text-white font-normal text-sm sm:text-[15px] px-6 sm:px-7 py-2.5 sm:py-3 rounded-full active:scale-[0.96] transition-all duration-150 cursor-pointer select-none"
+              className="bg-[#0A0D14] hover:bg-[#1E2330] text-white font-normal text-sm sm:text-[15px] px-6 sm:px-7 py-2.5 sm:py-3 rounded-full active:scale-[0.96] transition-[background-color,transform] duration-150 cursor-pointer select-none"
             >
               Get Started
             </button>
@@ -373,7 +150,7 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
           <div className="flex md:hidden items-center gap-2.5">
             <button
               onClick={() => onOpenDemo()}
-              className="bg-[#0A0D14] text-white font-normal text-xs sm:text-sm px-4 py-2 rounded-full active:scale-[0.96] transition-all cursor-pointer"
+              className="bg-[#0A0D14] text-white font-normal text-xs sm:text-sm px-4 py-2 rounded-full active:scale-[0.96] transition-transform cursor-pointer"
             >
               Get Started
             </button>
@@ -391,36 +168,18 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
       {/* Mobile Floating Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden max-w-[1190px] mx-auto mt-2 pointer-events-auto">
-          <div className="bg-white/98 backdrop-blur-xl rounded-[16px] border border-slate-200/90 p-4.5 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150">
+          <div className="bg-white/98 backdrop-blur-xl rounded-[16px] border border-slate-200/90 p-4 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150">
             <div className="space-y-1">
-              <a
-                href="#workflows"
-                onClick={(e) => handleNavClick(e, '#workflows')}
-                className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
-              >
-                Product Suite (Scheduling, AI, Notetaker)
-              </a>
-              <a
-                href="#workflows"
-                onClick={(e) => handleNavClick(e, '#workflows')}
-                className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
-              >
-                Solutions (Sales, Recruiting, Success)
-              </a>
-              <a
-                href="#integrations"
-                onClick={(e) => handleNavClick(e, '#integrations')}
-                className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
-              >
-                150+ Integrations
-              </a>
-              <a
-                href="#pricing"
-                onClick={(e) => handleNavClick(e, '#pricing')}
-                className="block px-3 py-2 rounded-xl text-sm font-normal text-slate-900 hover:bg-slate-50"
-              >
-                Pricing
-              </a>
+              {NAV_MENU_SECTIONS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href || '#'}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className="block px-3.5 py-2.5 rounded-xl text-sm font-normal text-slate-800 hover:text-black hover:bg-slate-50 active:scale-[0.98] transition-[background-color,transform] duration-150 cursor-pointer"
+                >
+                  {item.label}
+                </a>
+              ))}
             </div>
 
             <div className="pt-3.5 border-t border-slate-100 flex flex-col gap-2">

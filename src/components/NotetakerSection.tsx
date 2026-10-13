@@ -80,7 +80,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
   const [includeVideo, setIncludeVideo] = useState(true);
   const [restrictPasscode, setRestrictPasscode] = useState(false);
   const [passcodeCopied, setPasscodeCopied] = useState(false);
-  const passcode = 'ELEV-9241';
+  const passcode = 'NEWSEED-9241';
 
   // Integrations state
   const [toggles, setToggles] = useState({
@@ -289,7 +289,7 @@ export default function NotetakerSection({ onOpenDemo }: NotetakerSectionProps) 
             transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-sans max-w-2xl"
           >
-            elev automatically joins Zoom, Google Meet, and Teams. It transcribes with 99.4% precision, writes your follow-up emails, and logs structured deal intelligence directly into your CRM before you even close your laptop.
+            newseed automatically joins Zoom, Google Meet, and Teams. It transcribes with 99.4% precision, writes your follow-up emails, and logs structured deal intelligence directly into your CRM before you even close your laptop.
           </motion.p>
 
           {/* Social Proof Metric Bar (Landing Page Copywriter) */}

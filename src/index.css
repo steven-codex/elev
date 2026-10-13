@@ -377,30 +377,11 @@
 }
 
 /* ===================================================================
-   LENIS SMOOTH SCROLL SYSTEM
+   NATIVE SMOOTH SCROLL & SCROLL PADDING SYSTEM
+   =================================================================== */
 html {
-  scroll-behavior: auto !important;
-}
-
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
 }
 
 /* ===================================================================

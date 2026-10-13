@@ -114,7 +114,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                   Verified Host
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-normal">Principal Solutions Consultant at elev</p>
+              <p className="text-xs text-slate-500 font-normal">Principal Solutions Consultant at newseed</p>
             </div>
           </div>
 
@@ -144,7 +144,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                   </div>
                 </div>
                 <p className="text-xs text-slate-500 mt-2.5 leading-relaxed">
-                  Learn how high-growth teams automate lead routing, shorten sales cycles, and eliminate email back-and-forth with elev.
+                  Learn how high-growth teams automate lead routing, shorten sales cycles, and eliminate email back-and-forth with newseed.
                 </p>
               </div>
 
@@ -319,7 +319,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-mono">
-                    <span>Powered by elev</span>
+                    <span>Powered by newseed</span>
                     <span className="text-emerald-600 font-normal flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       Real-time sync
@@ -396,7 +396,7 @@ export default function InteractiveScheduler({ compact = false }: InteractiveSch
 
               <div className="pt-3 flex items-center justify-between">
                 <p className="text-[11px] text-slate-400 font-mono">
-                  By scheduling, you agree to elev Terms & Privacy.
+                  By scheduling, you agree to newseed Terms & Privacy.
                 </p>
                 <button
                   type="submit"

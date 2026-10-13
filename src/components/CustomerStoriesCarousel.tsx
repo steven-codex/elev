@@ -7,7 +7,7 @@ export default function CustomerStoriesCarousel() {
   const stories = [
     {
       metric: '75 hours saved monthly',
-      quote: '“elev helps us protect our team’s time and make every single student and parent support interaction count.”',
+      quote: '“newseed helps us protect our team’s time and make every single student and parent support interaction count.”',
       author: 'Marques Stewart',
       role: 'Managing Director of Technology',
       company: 'Achievement First',
@@ -16,7 +16,7 @@ export default function CustomerStoriesCarousel() {
     },
     {
       metric: '80% reduction in booking emails',
-      quote: '“We care deeply about the experience our clients have with us — and elev helps us start it off right from the first touchpoint.”',
+      quote: '“We care deeply about the experience our clients have with us — and newseed helps us start it off right from the first touchpoint.”',
       author: 'Akira Bradley',
       role: 'Co-Founder',
       company: 'Barking with the Bradley’s',
@@ -34,7 +34,7 @@ export default function CustomerStoriesCarousel() {
     },
     {
       metric: '$1,200 annual savings',
-      quote: '“I use elev every single day. Without it, I honestly couldn’t run my agency and serve high-touch clients efficiently.”',
+      quote: '“I use newseed every single day. Without it, I honestly couldn’t run my agency and serve high-touch clients efficiently.”',
       author: 'Pua Pakele',
       role: 'Founder & Creative Lead',
       company: 'RBL Media',
@@ -78,7 +78,7 @@ export default function CustomerStoriesCarousel() {
             Real customers <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">Real results</span>
           </h2>
           <p className="text-base sm:text-lg text-slate-600 mt-4 leading-relaxed max-w-xl mx-auto text-pretty">
-            Discover how modern teams use elev to eliminate scheduling friction and protect productive time.
+            Discover how modern teams use newseed to eliminate scheduling friction and protect productive time.
           </p>
         </div>
 

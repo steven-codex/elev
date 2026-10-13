@@ -16,7 +16,7 @@ export default function HowItWorks({ onOpenDemo }: HowItWorksProps) {
     {
       step: '02',
       title: 'Share your link or embed',
-      description: 'Share your personalized elev link via email, LinkedIn, or text, or embed a booking widget right into your website or demo request page with one line of code.',
+      description: 'Share your personalized newseed link via email, LinkedIn, or text, or embed a booking widget right into your website or demo request page with one line of code.',
       icon: <Link2 className="w-6 h-6 text-blue-600" />,
       tag: 'Zero friction'
     },

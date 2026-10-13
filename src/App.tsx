@@ -19,7 +19,6 @@ import Footer from './components/Footer';
 import DemoModal from './components/DemoModal';
 import AuthModal from './components/AuthModal';
 import GooeySvgDefs from './components/GooeySvgDefs';
-import { SmoothScrollProvider } from './motion';
 
 export default function App() {
   const [demoModalOpen, setDemoModalOpen] = useState(false);
@@ -44,8 +43,7 @@ export default function App() {
   };
 
   return (
-    <SmoothScrollProvider>
-      <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-950 relative overflow-x-clip">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-950 relative overflow-x-clip">
         {/* Global SVG Filter Definitions */}
         <GooeySvgDefs />
 
@@ -106,7 +104,7 @@ export default function App() {
             <ConnectedAppShellShowcase onOpenAuth={handleOpenAuth} onOpenDemo={handleOpenDemo} />
 
             {/* Global Footer */}
-            <Footer />
+            <Footer onOpenDemo={handleOpenDemo} onOpenAuth={handleOpenAuth} />
           </div>
         </main>
 
@@ -119,6 +117,5 @@ export default function App() {
           onSwitchMode={handleSwitchAuthMode}
         />
       </div>
-    </SmoothScrollProvider>
   );
 }

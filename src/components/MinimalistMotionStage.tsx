@@ -229,9 +229,11 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('elev:seek-stage', handleCustomSeek);
+    window.addEventListener('newseed:seek-stage', handleCustomSeek);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('elev:seek-stage', handleCustomSeek);
+      window.removeEventListener('newseed:seek-stage', handleCustomSeek);
     };
   }, []);
 
@@ -303,7 +305,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
       id="minimalist-motion-stage"
       className={`w-full h-full relative rounded-[32px] sm:rounded-[36px] bg-[#1E60F2] bg-[url('/hero-fluid-wave-bg.png')] bg-cover bg-center overflow-hidden shadow-2xl flex flex-col items-center ${
         showControls ? 'justify-between min-h-[740px]' : 'justify-center min-h-[660px]'
-      } p-6 sm:p-8 pt-8 sm:pt-10 select-none`}
+      } p-6 sm:p-8 pt-8 sm:pt-10`}
     >
       {/* Subtle Ambient Vignette / Glass Depth */}
       <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay pointer-events-none z-0" />
@@ -397,8 +399,16 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
                   className="w-full h-full flex flex-col items-center justify-between gap-4"
                 >
-                  {!isConfirmed ? (
-                    <div className="w-full flex flex-col items-center justify-between gap-3 flex-1 py-1">
+                  <AnimatePresence mode="wait">
+                    {!isConfirmed ? (
+                      <motion.div
+                        key="scheduling-pending"
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95, filter: 'blur(4px)' }}
+                        transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+                        className="w-full flex flex-col items-center justify-between gap-3 flex-1 py-1"
+                      >
                       {/* Calendar Card Container */}
                       <div className="w-full bg-[#FAFBFD] rounded-2xl p-3 border border-slate-100 relative z-10">
                         <div className="flex items-center justify-between mb-2">
@@ -579,52 +589,109 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         <span>Book Now</span>
                         <span className="translate-x-0.5 font-normal">→</span>
                       </motion.button>
-                    </div>
-                  ) : (
-                    <div className="w-full flex flex-col items-center justify-between gap-4 flex-1 py-2">
-                      <motion.div
-                        initial={{ scale: 0.5 }}
-                        animate={{ scale: [0.5, 1.2, 1] }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                        className="w-12 h-12 rounded-full bg-[#ECFDF5] text-[#10B981] flex items-center justify-center border border-[#A7F3D0]/60"
-                      >
-                        <Check className="w-6 h-6 stroke-[2.5]" />
                       </motion.div>
-
-                      <div>
-                        <h3 className="text-2xl font-normal text-[#0F172A] tracking-tight">
-                          Meeting scheduled
-                        </h3>
-                        <p className="text-xs text-[#64748B] mt-1 font-normal">
-                          Thu, Oct {selectedDate} · {selectedTime}
-                        </p>
-                      </div>
-
-                      {/* Google Calendar Confirmation Tile Matched to Reference (Flat, No Drop Shadow) */}
-                      <div className="w-full bg-white border border-slate-200/90 rounded-[20px] p-4 flex items-center justify-between text-left">
-                        <div className="flex items-center gap-3.5">
-                          <img
-                            src="/icon-scheduling-3d.png"
-                            alt="Google Calendar"
-                            className="w-9 h-9 object-contain shrink-0"
-                          />
-                          <div>
-                            <span className="text-base font-normal text-[#0A0D14] block leading-tight tracking-tight">
-                              Google Calendar
-                            </span>
-                            <span className="text-xs text-[#64748B] font-normal mt-1 block">
-                              Invite sent ✓
-                            </span>
+                    ) : (
+                      <motion.div
+                        key="scheduling-complete"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.22 }}
+                        className="w-full h-full flex flex-col items-center justify-center flex-1 py-2 text-center select-none"
+                      >
+                        <div className="flex flex-col items-center w-full max-w-[340px] mx-auto my-auto">
+                          {/* Bouncy Morphing Check Badge with Organic Elastic Physics */}
+                          <div className="relative mb-3 sm:mb-3.5 flex items-center justify-center">
+                            {/* Ambient Pulse Ripple */}
+                            <motion.div
+                              initial={{ scale: 0.7, opacity: 0.8 }}
+                              animate={{ scale: [0.7, 1.45, 1.6], opacity: [0.8, 0.3, 0] }}
+                              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], times: [0, 0.6, 1] }}
+                              className="absolute inset-0 rounded-full bg-[#10B981]/25 pointer-events-none -z-10"
+                            />
+                            
+                            <motion.div
+                              initial={{ scale: 0.35, opacity: 0, rotate: -25 }}
+                              animate={{ scale: [0.35, 1.22, 0.94, 1.04, 1], opacity: 1, rotate: [-25, 6, -2, 0] }}
+                              transition={{ duration: 0.75, ease: [0.34, 1.56, 0.64, 1] }}
+                              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-b from-[#ECFDF5] to-[#D1FAE5] text-[#059669] flex items-center justify-center border border-[#A7F3D0] shadow-[0_8px_24px_rgba(16,185,129,0.18)] relative"
+                            >
+                              <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none">
+                                <motion.path
+                                  d="M5 13.2l4.2 4.3L19 7.5"
+                                  stroke="#059669"
+                                  strokeWidth={2.75}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  initial={{ pathLength: 0, opacity: 0 }}
+                                  animate={{ pathLength: 1, opacity: 1 }}
+                                  transition={{
+                                    pathLength: { duration: 0.38, delay: 0.14, ease: [0.23, 1, 0.32, 1] },
+                                    opacity: { duration: 0.08, delay: 0.12 }
+                                  }}
+                                />
+                              </svg>
+                            </motion.div>
                           </div>
-                        </div>
 
-                        <div className="px-3.5 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0]/80 text-[#059669] text-xs font-normal flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                          <span>Invite Sent</span>
+                          {/* Morphing Bouncy Heading */}
+                          <motion.h3
+                            initial={{ opacity: 0, y: 18, scale: 0.85, filter: "blur(8px)", letterSpacing: "0.06em" }}
+                            animate={{ opacity: 1, y: 0, scale: [0.85, 1.08, 0.97, 1], filter: "blur(0px)", letterSpacing: "-0.025em" }}
+                            transition={{ duration: 0.68, delay: 0.12, ease: [0.34, 1.56, 0.64, 1] }}
+                            className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight will-change-transform"
+                          >
+                            Meeting scheduled
+                          </motion.h3>
+
+                          {/* Morphing Bouncy Slot Date & Time */}
+                          <motion.span
+                            initial={{ opacity: 0, y: 22, scale: 0.8, filter: "blur(10px)" }}
+                            animate={{ opacity: 1, y: 0, scale: [0.8, 1.14, 0.95, 1.02, 1], filter: "blur(0px)" }}
+                            transition={{ duration: 0.72, delay: 0.22, ease: [0.34, 1.56, 0.64, 1] }}
+                            className="text-base sm:text-lg font-medium text-[#64748B] tracking-tight block mt-1.5 sm:mt-2 will-change-transform"
+                          >
+                            Thu, Oct {selectedDate} · {selectedTime}
+                          </motion.span>
+
+                          {/* Google Calendar Ticket / Confirmation Card */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 28, scale: 0.92, filter: "blur(4px)" }}
+                            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 280,
+                              damping: 24,
+                              mass: 0.8,
+                              delay: 0.32
+                            }}
+                            className="w-full bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex items-center justify-between text-left relative z-10 mt-5 sm:mt-6 will-change-transform"
+                          >
+                            <div className="flex items-center gap-3.5">
+                              <img
+                                src="/icon-scheduling-3d.png"
+                                alt="Google Calendar"
+                                className="w-9 h-9 object-contain shrink-0"
+                              />
+                              <div>
+                                <span className="text-sm sm:text-base font-medium text-[#0A0D14] block leading-tight tracking-tight">
+                                  Google Calendar
+                                </span>
+                                <span className="text-xs text-[#64748B] font-normal mt-0.5 block">
+                                  Invite sent ✓
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="px-3.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0]/80 text-[#059669] text-xs font-medium flex items-center gap-1.5 shadow-2xs">
+                              <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                              <span>Invite Sent</span>
+                            </div>
+                          </motion.div>
                         </div>
-                      </div>
-                    </div>
-                  )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               );
             })()}
@@ -700,7 +767,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     >
                       <img
                         src="/icon-velie-3d.png"
-                        alt="Elev AI Core"
+                        alt="newseed AI Core"
                         className="w-11 h-11 object-contain drop-shadow-[0_4px_12px_rgba(34,197,94,0.25)]"
                       />
                     </motion.div>
@@ -1078,7 +1145,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     )}
                   </div>
 
-                  {/* Elev Notetaker 3D Icon at Bottom Center (Smoothly fades out and scales down when recaps ready centers) */}
+                  {/* newseed Notetaker 3D Icon at Bottom Center (Smoothly fades out and scales down when recaps ready centers) */}
                   <motion.div
                     animate={{
                       y: isAllAbsorbed ? 14 : [-2, 2, -2],
@@ -1094,7 +1161,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   >
                     <img
                       src="/icon-notetaker-3d.png"
-                      alt="Elev Notetaker"
+                      alt="newseed Notetaker"
                       className="w-11 h-11 object-contain drop-shadow-[0_4px_12px_rgba(99,102,241,0.2)]"
                     />
                   </motion.div>

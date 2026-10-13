@@ -1,20 +1,11 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { HelpCircle } from 'lucide-react';
 import { Reveal, ImageReveal } from '../motion';
+import GlassyFaqInteractiveCard, { type FaqCardItem } from './GlassyFaqInteractiveCard';
 
-interface FaqCardItem {
-  id: number;
-  tag: string;
-  badge: string;
-  question: string;
-  fullAnswer: string;
-  image: string;
-  alt: string;
-}
-
-// 4 FAQ Cards ordered precisely matching Foto 1:
-// 0: Top-Left (Man with glasses in gray buttoned shirt)
+// 4 FAQ Cards ordered precisely matching elev master design:
+// 0: Top-Left (Man with glasses in gray buttoned shirt - as shown in user reference)
 // 1: Top-Right (Person pointing at elev pricing on laptop)
 // 2: Bottom-Left (Asian man in burgundy sweater at laptop with cactus)
 // 3: Bottom-Right (Man on phone by office window)
@@ -23,9 +14,9 @@ const FAQ_ITEMS: FaqCardItem[] = [
     id: 0,
     tag: 'Enterprise Security',
     badge: 'SOC 2 Type II',
-    question: 'How secure is elev with enterprise calendar and client data?',
+    question: 'How secure is newseed with enterprise calendar and client data?',
     fullAnswer:
-      'Security is foundational. Elev maintains SOC 2 Type II certification, GDPR compliance, end-to-end TLS 1.3 & AES-256 encryption, and HIPAA BAA execution. We never store or monetize your private email or calendar contents.',
+      'SOC 2 Type II certified with end-to-end TLS 1.3 encryption. Your calendar data stays private and is never stored or monetized.',
     image: '/images/elev-team-collaboration-laptop.jpg',
     alt: 'Team member collaborating on laptop in glassy office'
   },
@@ -35,9 +26,9 @@ const FAQ_ITEMS: FaqCardItem[] = [
     badge: 'Smart Distribution',
     question: 'What is Round-Robin scheduling and how does team routing work?',
     fullAnswer:
-      'Round-robin automatically distributes incoming prospect calls across team members based on availability, priority weighting, territory, or deal size — eliminating booking delays and maximizing pipeline velocity.',
+      'Automatically distributes inbound leads across available team reps by priority, territory, or availability to maximize pipeline velocity.',
     image: '/images/elev-pricing-laptop-showcase.jpg',
-    alt: 'Elev pricing plan displayed on laptop in office'
+    alt: 'newseed pricing plan displayed on laptop in office'
   },
   {
     id: 2,
@@ -45,7 +36,7 @@ const FAQ_ITEMS: FaqCardItem[] = [
     badge: '14-Day Free Trial',
     question: 'Can I start with the free plan and upgrade when my team grows?',
     fullAnswer:
-      'Yes! The Basic plan is free forever with unlimited 1-on-1 meetings. You can explore the Teams plan anytime with a 14-day risk-free trial without entering a credit card, and invite teammates whenever you need.',
+      'Yes. The Basic plan is free forever. Upgrade anytime with a 14-day trial without entering a credit card.',
     image: '/images/elev-focused-coworking-laptop.jpg',
     alt: 'Person working on laptop in modern coworking office'
   },
@@ -53,22 +44,15 @@ const FAQ_ITEMS: FaqCardItem[] = [
     id: 3,
     tag: 'Calendar Intelligence',
     badge: 'Real-Time Sync',
-    question: 'How does elev prevent double bookings across multiple calendars?',
+    question: 'How does newseed prevent double bookings across multiple calendars?',
     fullAnswer:
-      'Elev connects directly to Google Calendar, Microsoft Outlook, and Office 365 in real time. Before displaying any open slot, elev validates availability across all connected accounts and locks confirmed bookings instantly to eliminate overlaps.',
+      'Real-time sync across Google Calendar and Outlook validates slot availability and locks bookings instantly to eliminate overlaps.',
     image: '/images/elev-workplace-sales-call.jpg',
     alt: 'Executive taking a call at standing desk overlooking city'
   }
 ];
 
-// ============================================================================
-// DYNAMIC LIQUID GOO FRAME PATHS (1011 x 941)
-// Main body path (Path 3) from the exact user Figma SVG with morphing variants:
-// 0: Card 0 active (Top-left expands -> center top divider shifts right)
-// 1: Card 1 active (Top-right expands -> center top divider shifts left)
-// 2: Card 2 active (Bottom-left expands -> bottom shelf shifts right)
-// 3: Card 3 active (Master Figma vector from user)
-// ============================================================================
+// Dynamic liquid morph paths matching the master SVG container
 const FAQ_FRAME_PATHS: Record<number, string> = {
   0: 'M970.586 259C992.677 259 1010.59 276.909 1010.59 299V573C1010.59 591.159 1010.57 626.891 1010.99 645.045C1011 645.362 1011 645.681 1011 646V863C1011 885.644 992.644 904 970 904H591.634C579.259 904 557.002 912.534 549.125 922.078C539.587 933.634 525.154 941 509 941H128C99.2812 941 76 917.719 76 889V647C76 623.804 57.196 605 34 605C15.2223 605 0 589.778 0 571V311C0.0000036 292.222 15.2223 277 34 277H549C567.778 277 583 292.222 583 311V548.954C583 552.32 585.508 555.166 588.737 556.118C593.827 557.619 599.586 554.144 599.586 548.837V299C599.586 276.909 617.495 259 639.586 259H970.586Z',
   1: 'M970.586 259C992.677 259 1010.59 276.909 1010.59 299V573C1010.59 591.159 1010.57 626.891 1010.99 645.045C1011 645.362 1011 645.681 1011 646V863C1011 885.644 992.644 904 970 904H591.634C579.259 904 557.002 912.534 549.125 922.078C539.587 933.634 525.154 941 509 941H128C99.2812 941 76 917.719 76 889V647C76 623.804 57.196 605 34 605C15.2223 605 0 589.778 0 571V311C0.0000036 292.222 15.2223 277 34 277H419C437.778 277 453 292.222 453 311V548.954C453 552.32 455.508 555.166 458.737 556.118C463.827 557.619 469.586 554.144 469.586 548.837V299C469.586 276.909 487.495 259 509.586 259H970.586Z',
@@ -83,8 +67,6 @@ interface PocketCoords {
   height: string;
 }
 
-// Calibrated pocket coordinates for 1011 x 941 with generous safe margins
-// Guarantees zero shelf or corner overlap across all 4 interactive morph states
 const CARD_POCKETS: Record<number, Record<number, PocketCoords>> = {
   // State 0: Card 0 active (expands top-left)
   0: {
@@ -107,7 +89,7 @@ const CARD_POCKETS: Record<number, Record<number, PocketCoords>> = {
     2: { left: '13.00%', top: '65.00%', width: '42.50%', height: '28.00%' },
     3: { left: '59.50%', top: '65.50%', width: '36.00%', height: '27.50%' }
   },
-  // State 3: Card 3 active (expands bottom-right, master Figma default)
+  // State 3: Card 3 active (expands bottom-right)
   3: {
     0: { left: '4.50%', top: '31.50%', width: '42.50%', height: '28.50%' },
     1: { left: '56.00%', top: '31.50%', width: '39.50%', height: '28.50%' },
@@ -117,18 +99,21 @@ const CARD_POCKETS: Record<number, Record<number, PocketCoords>> = {
 };
 
 export default function FaqSection() {
-  const [activeIndex, setActiveIndex] = useState<number>(3);
-  const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 sm:py-32 bg-white relative overflow-hidden select-none">
+    <section
+      id="faq"
+      className="py-24 sm:py-32 bg-white relative overflow-hidden"
+    >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* ========================================================= */}
         {/* EDITORIAL HEADER WITH ETHEREAL RADIAL AMBIENT AURA        */}
         {/* ========================================================= */}
-        <Reveal y={24} duration={0.9} className="relative text-center mb-6 sm:mb-8 pt-4 sm:pt-6">
-          {/* Giant Typographic FAQ Watermark SVG (Provided by User) */}
+        <Reveal y={24} duration={0.9} className="relative text-center mb-10 sm:mb-14 pt-4 sm:pt-6">
+          {/* Giant Typographic FAQ Watermark SVG */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[46%] w-[720px] sm:w-[820px] max-w-[92vw] pointer-events-none -z-10 select-none flex items-center justify-center"
             aria-hidden="true"
@@ -139,7 +124,7 @@ export default function FaqSection() {
               xmlns="http://www.w3.org/2000/svg"
               className="w-full h-auto"
             >
-              <g opacity="0.24">
+              <g opacity="0.22">
                 <path
                   d="M0 341.486V7.52584H216.961V54.0921H24.0022L50.8281 26.3405V179.68L24.0022 155.691H208.489V200.846H24.0022L50.8281 176.857V341.486H0Z"
                   fill="url(#paint0_linear_150_88)"
@@ -170,7 +155,7 @@ export default function FaqSection() {
             </svg>
           </div>
 
-          {/* Soft Ethereal Radial Ambient Glow Cloud as seen in Foto 1 */}
+          {/* Soft Ethereal Radial Ambient Glow Cloud */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] sm:w-[950px] h-[400px] sm:h-[480px] bg-gradient-to-r from-blue-300/35 via-sky-200/30 to-indigo-200/25 rounded-full blur-[130px] pointer-events-none -z-20" 
             aria-hidden="true"
@@ -180,21 +165,20 @@ export default function FaqSection() {
             Everything you need to know
             <br />
             <span className="font-instrument italic font-normal text-[#2563EB] inline-block mt-1 sm:mt-2">
-              about elev
+              about newseed
             </span>
           </h2>
         </Reveal>
 
         {/* ========================================================= */}
         {/* MASTER BENTO SHOWCASE (CUSTOM FIGMA 1011 x 941 SVG FRAME) */}
-        {/* Exactly matching Foto 1 with top light wings & white frame */}
         {/* ========================================================= */}
         <ImageReveal delay={0.15} y={32} className="w-full max-w-[1120px] xl:max-w-[1180px] mx-auto relative z-10">
           
           {/* DESKTOP / TABLET (lg+): Lockstep 1011:941 Aspect Ratio Container */}
-          <div className="relative w-full aspect-[1011/941] hidden lg:block select-none">
+          <div className="relative w-full aspect-[1011/941] hidden lg:block">
             
-            {/* EXACT FIGMA SVG BACKDROP (1011 x 941) PROVIDED BY USER */}
+            {/* EXACT FIGMA SVG BACKDROP (1011 x 941) */}
             <svg
               viewBox="0 0 1011 941"
               fill="none"
@@ -217,7 +201,7 @@ export default function FaqSection() {
                 animate={{ d: FAQ_FRAME_PATHS[activeIndex] }}
                 transition={{
                   type: 'spring',
-                  stiffness: 260,
+                  stiffness: 220,
                   damping: 24,
                   mass: 0.85
                 }}
@@ -235,10 +219,10 @@ export default function FaqSection() {
               </defs>
             </svg>
 
-            {/* 4 DYNAMIC MORPHING CARDS (Animated in lockstep with liquid SVG) */}
+            {/* 4 DYNAMIC MORPHING CARDS */}
             {FAQ_ITEMS.map((item) => {
-              const isActive = activeIndex === item.id;
               const coords = CARD_POCKETS[activeIndex][item.id];
+              const isHovered = hoveredCardId === item.id;
 
               return (
                 <motion.div
@@ -251,125 +235,83 @@ export default function FaqSection() {
                   }}
                   transition={{
                     type: 'spring',
-                    stiffness: 260,
-                    damping: 24,
+                    stiffness: 240,
+                    damping: 25,
                     mass: 0.85
                   }}
-                  onClick={() => {
-                    if (activeIndex === item.id) {
-                      setShowAnswer(!showAnswer);
-                    } else {
-                      setActiveIndex(item.id);
-                      setShowAnswer(false);
-                    }
+                  onMouseEnter={() => {
+                    setHoveredCardId(item.id);
+                    setActiveIndex(item.id);
                   }}
-                  className="absolute group rounded-[28px] sm:rounded-[32px] border-[2.5px] border-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] overflow-hidden cursor-pointer active:scale-[0.985] flex flex-col justify-end p-4 lg:p-5"
+                  onMouseLeave={() => {
+                    setHoveredCardId(null);
+                  }}
+                  className="absolute group rounded-[28px] sm:rounded-[32px] border-[2.5px] border-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] overflow-hidden cursor-pointer active:scale-[0.99] flex flex-col justify-end"
                 >
-                  {/* Background Image with Cinematic Hover Drift */}
+                  {/* Background Image with Cinematic Hover Zoom */}
                   <img
                     src={item.image}
                     alt={item.alt}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
                   />
 
-                  {/* Gradient Overlay for Text Legibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent pointer-events-none" />
+                  {/* Natural Light Overlay matching crystal glass reference */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/15 via-transparent to-transparent pointer-events-none" />
 
-                  {/* MORPHING QUESTION BOX / CAPSULE (Pure Native CSS Transitions + GPU Composited Grid Morph) */}
-                  <div className="relative z-10 w-full flex justify-center pb-1 pointer-events-none">
-                    <div
-                      className={`relative pointer-events-auto backdrop-blur-xl border border-white/60 shadow-[0_16px_36px_rgba(0,0,0,0.18),inset_0_1px_1px_rgba(255,255,255,0.6)] text-white select-none overflow-hidden flex flex-col items-center justify-center transition-[width,max-width,border-radius,padding,background-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[width,border-radius] ${
-                        isActive
-                          ? 'w-[92%] max-w-[390px] rounded-[24px] bg-white/22 p-4 lg:p-5'
-                          : 'w-[80%] max-w-[260px] rounded-full bg-white/18 py-2.5 px-4 hover:bg-white/24'
-                      }`}
-                    >
-                      {/* Logo: smooth margin transition without scale stretching */}
-                      <div className={`transition-[margin] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] shrink-0 flex items-center justify-center ${isActive ? 'mb-2' : 'mb-0'}`}>
-                        <img 
-                          src="/elev-infinity-logo.png" 
-                          alt="elev" 
-                          className="w-5 h-5 lg:w-6 lg:h-6 object-contain filter drop-shadow pointer-events-none select-none" 
-                        />
-                      </div>
-
-                      {/* Expandable Question Grid: 0fr -> 1fr smooth continuous CSS transition */}
-                      <div
-                        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] w-full ${
-                          isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
-                        }`}
-                      >
-                        <div className="overflow-hidden min-h-0 text-center">
-                          <h3 className="text-center text-xs lg:text-[14px] font-medium leading-snug tracking-tight text-white text-pretty drop-shadow-sm">
-                            {item.question}
-                          </h3>
-
-                          {showAnswer && (
-                            <p className="text-center text-[11px] lg:text-xs text-white/95 leading-relaxed pt-2 mt-2 border-t border-white/25 text-pretty drop-shadow-xs">
-                              {item.fullAnswer}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  {/* Emil Kowalski Glassy Morphing Capsule/Card */}
+                  <GlassyFaqInteractiveCard
+                    item={item}
+                    isParentHovered={isHovered}
+                    onCardHoverChange={(hovered) => {
+                      if (hovered) {
+                        setHoveredCardId(item.id);
+                        setActiveIndex(item.id);
+                      } else if (hoveredCardId === item.id) {
+                        setHoveredCardId(null);
+                      }
+                    }}
+                  />
                 </motion.div>
               );
             })}
           </div>
 
-          {/* MOBILE / SMALL SCREENS (< lg): Clean Responsive Vertical Stack with Unified Header */}
+          {/* MOBILE / SMALL SCREENS (< lg): Clean Responsive Vertical Stack */}
           <div className="block lg:hidden w-full max-w-[640px] mx-auto rounded-[36px] bg-white p-5 sm:p-6 border border-blue-200/50 shadow-[0_20px_45px_rgba(0,85,255,0.06)] space-y-4">
-            <div className="text-center pt-1 pb-1">
-              <span className="text-3xl font-bold tracking-widest text-[#93C5FD]">
+            <div className="flex items-center justify-between px-2 pt-1 pb-1">
+              <span className="text-2xl sm:text-3xl font-bold tracking-widest text-[#93C5FD]">
                 FAQ
               </span>
+              <span className="text-xs text-slate-500 font-medium">
+                Tap card to explore
+              </span>
             </div>
+
             {FAQ_ITEMS.map((item) => {
-              const isActive = activeIndex === item.id;
+              const isHovered = hoveredCardId === item.id;
               return (
                 <div
                   key={item.id}
                   onClick={() => {
-                    if (activeIndex === item.id) setShowAnswer(!showAnswer);
-                    else { setActiveIndex(item.id); setShowAnswer(false); }
+                    setHoveredCardId((prev) => (prev === item.id ? null : item.id));
+                    setActiveIndex(item.id);
                   }}
-                  className="relative rounded-[24px] border-2 border-white shadow-md overflow-hidden cursor-pointer h-[240px] sm:h-[280px] flex flex-col justify-end p-4"
+                  className="relative rounded-[28px] border-2 border-white shadow-md overflow-hidden cursor-pointer min-h-[300px] sm:min-h-[340px] flex flex-col justify-end p-2"
                 >
-                  <img src={item.image} alt={item.alt} className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
-                  <div className="relative z-10 w-full flex justify-center pb-1 pointer-events-none">
-                    <div
-                      className={`relative pointer-events-auto backdrop-blur-xl border border-white/60 shadow-lg text-white select-none overflow-hidden flex flex-col items-center justify-center transition-[width,max-width,border-radius,padding,background-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[width,border-radius] ${
-                        isActive
-                          ? 'w-full rounded-[20px] bg-white/25 p-3.5'
-                          : 'w-[80%] max-w-[240px] rounded-full bg-white/20 py-2 px-3.5'
-                      }`}
-                    >
-                      <div className={`transition-[margin] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] shrink-0 flex items-center justify-center ${isActive ? 'mb-1.5' : 'mb-0'}`}>
-                        <img 
-                          src="/elev-infinity-logo.png" 
-                          alt="elev" 
-                          className="w-4 h-4 sm:w-5 sm:h-5 object-contain filter drop-shadow pointer-events-none select-none" 
-                        />
-                      </div>
-
-                      <div
-                        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] w-full ${
-                          isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
-                        }`}
-                      >
-                        <div className="overflow-hidden min-h-0 text-center">
-                          <h3 className="text-center text-xs sm:text-sm font-medium leading-snug text-white">{item.question}</h3>
-                          {showAnswer && (
-                            <p className="text-center text-[11px] sm:text-xs text-white/90 pt-2 mt-2 border-t border-white/20">
-                              {item.fullAnswer}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-slate-950/15 to-transparent pointer-events-none" />
+                  <GlassyFaqInteractiveCard
+                    item={item}
+                    isParentHovered={isHovered}
+                    onCardHoverChange={(hovered) => {
+                      if (hovered) setHoveredCardId(item.id);
+                      else if (hoveredCardId === item.id) setHoveredCardId(null);
+                    }}
+                  />
                 </div>
               );
             })}
@@ -384,7 +326,10 @@ export default function FaqSection() {
               <button
                 key={item.id}
                 type="button"
-                onClick={() => setActiveIndex(item.id)}
+                onClick={() => {
+                  setActiveIndex(item.id);
+                  setHoveredCardId(item.id);
+                }}
                 className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13px] font-medium tracking-tight transition-all duration-200 cursor-pointer active:scale-[0.96] ${
                   activeIndex === item.id
                     ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-600/30'

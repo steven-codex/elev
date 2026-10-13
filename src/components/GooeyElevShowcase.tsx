@@ -27,7 +27,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
   const pillars = [
     {
       id: 'scheduling',
-      name: 'elev Schedule',
+      name: 'newseed Schedule',
       label: 'Autonomous Booking',
       color: 'bg-blue-600',
       glow: 'shadow-blue-500/50',
@@ -37,7 +37,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
     },
     {
       id: 'velie',
-      name: 'elev Velie',
+      name: 'newseed Velie',
       label: 'AI Executive Copilot',
       color: 'bg-amber-500',
       glow: 'shadow-amber-500/50',
@@ -47,7 +47,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
     },
     {
       id: 'notetaker',
-      name: 'elev Notetaker',
+      name: 'newseed Notetaker',
       label: 'Automated Recaps',
       color: 'bg-purple-600',
       glow: 'shadow-purple-500/50',
@@ -57,7 +57,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
     },
     {
       id: 'payments',
-      name: 'elev Pay',
+      name: 'newseed Pay',
       label: 'Instant Upfront Checkout',
       color: 'bg-teal-500',
       glow: 'shadow-teal-500/50',
@@ -113,7 +113,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
 
           <h2 className="text-3xl sm:text-5xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-tight tracking-tight">
             Meetings used to require four different apps <br className="hidden sm:inline" />
-            <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">elev dissolves them into one</span>
+            <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">newseed dissolves them into one</span>
           </h2>
 
           <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
@@ -148,7 +148,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.97] text-white text-xs sm:text-sm font-normal shadow-sm transition-all cursor-pointer"
                 >
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Fuse Into elev Core</span>
+                  <span>Fuse Into newseed Core</span>
                 </button>
               ) : (
                 <button
@@ -183,7 +183,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
               <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-xs text-slate-400 z-20">
                 <span className="font-mono text-[11px] flex items-center gap-1.5">
                   <span className={`w-2 h-2 rounded-full ${isMerged ? 'bg-emerald-400 animate-pulse' : 'bg-blue-400'}`} />
-                  ENGINE: {isMerged ? 'UNIFIED_ELEV_FLOW' : 'DISPERSED_NODES'}
+                  ENGINE: {isMerged ? 'UNIFIED_NEWSEED_FLOW' : 'DISPERSED_NODES'}
                 </span>
                 <span className="text-[11px] text-slate-500 font-mono">
                   VISCOSITY: {viscosity}px
@@ -197,7 +197,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                   filter: `url(#gooey-heavy)`
                 }}
               >
-                {/* Central elev Brand Core Blob */}
+                {/* Central newseed Brand Core Blob */}
                 <motion.div
                   animate={{
                     scale: isMerged ? [1.15, 1.25, 1.18] : [1, 1.05, 0.98, 1],
@@ -218,7 +218,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                   onClick={() => setIsMerged(!isMerged)}
                 >
                   <div className="w-16 h-16 rounded-full bg-slate-950/20 flex items-center justify-center text-white font-normal text-xl tracking-tight">
-                    elev
+                    newseed
                   </div>
                 </motion.div>
 
@@ -295,7 +295,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
             <div className="lg:col-span-5 space-y-4 text-left">
               <div className="space-y-1.5">
                 <span className="text-[11px] font-normal uppercase tracking-wider text-blue-600 font-mono">
-                  THE ELEV ADVANTAGE
+                  THE NEWSEED ADVANTAGE
                 </span>
                 <h4 className="text-xl sm:text-2xl font-normal text-slate-900">
                   {isMerged
@@ -303,7 +303,7 @@ export default function GooeyElevShowcase({ onOpenDemo }: GooeyElevShowcaseProps
                     : 'Four fragmented tasks, unified.'}
                 </h4>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Traditional stacks make you string Calendly to Otter, Zapier, and Stripe. With elev, everything flows through a single intelligent layer.
+                  Traditional stacks make you string Calendly to Otter, Zapier, and Stripe. With newseed, everything flows through a single intelligent layer.
                 </p>
               </div>
 

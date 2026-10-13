@@ -43,7 +43,7 @@ const INTEGRATIONS = [
   { name: 'HubSpot', category: 'crm', desc: 'Map custom questions to contact properties.', icon: 'https://cdn.calendlycms.com/hubspot.svg' },
   { name: 'Stripe', category: 'crm', desc: 'Charge booking deposits and packages seamlessly.', icon: 'https://cdn.calendlycms.com/stripe-logo.svg' },
   { name: 'PayPal', category: 'crm', desc: 'Accept international payments and consultations.', icon: 'https://cdn.calendlycms.com/paypal-icon.svg' },
-  { name: 'Zapier', category: 'all', desc: 'Connect elev with 5,000+ business productivity apps.', icon: 'https://cdn.calendlycms.com/zapier-icon.svg' }
+  { name: 'Zapier', category: 'all', desc: 'Connect newseed with 5,000+ business productivity apps.', icon: 'https://cdn.calendlycms.com/zapier-icon.svg' }
 ];
 
 export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionProps) {
@@ -85,7 +85,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
             <div className="lg:col-span-5 p-7 sm:p-10 lg:p-14 lg:pr-4 space-y-6 text-left relative z-10">
               <Reveal y={24}>
                 <h2 className="text-3xl sm:text-4xl lg:text-[3.1rem] font-normal text-[#0A0D14] tracking-tight leading-[1.08] text-balance">
-                  Connect elev to <br />
+                  Connect newseed to <br />
                   <span className="font-instrument italic font-normal text-[#5A95FF] bg-gradient-to-r from-[#4A8DFF] via-[#60A5FA] to-[#93C5FD] bg-clip-text text-transparent">
                     everything you use
                   </span>
@@ -94,7 +94,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
 
               <Reveal delay={0.12} y={16}>
                 <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-normal max-w-sm text-pretty">
-                  elev.ai fits right into your existing stack and automates the busywork in between.
+                  newseed fits right into your existing stack and automates the busywork in between.
                 </p>
               </Reveal>
 
@@ -141,7 +141,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
               <div className="p-6 pb-4 border-b border-slate-100 flex items-center justify-between">
                 <div>
                   <h3 className="text-xl font-normal text-[#0A0D14] tracking-tight">150+ Native Integrations</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Explore native apps and single-click connections with elev.</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Explore native apps and single-click connections with newseed.</p>
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
@@ -345,7 +345,7 @@ function RadarAnimation() {
 
 function FluidIntegrationsStage() {
   return (
-    <div className="relative w-full h-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex flex-col justify-between pt-10 sm:pt-12 pb-8 sm:pb-10 pr-4 sm:pr-8 lg:pr-10 pl-2 select-none">
+    <div className="relative w-full h-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex flex-col justify-between pt-10 sm:pt-12 pb-8 sm:pb-10 pr-4 sm:pr-8 lg:pr-10 pl-2">
       {/* Background Fluid Wave Artwork (Foto 2) Flush to Bottom-Right Corner & Clipped by Parent Card */}
       <div 
         className="absolute right-0 bottom-0 w-full h-[76%] sm:h-[80%] rounded-bl-[140px] sm:rounded-bl-[180px] overflow-hidden pointer-events-none"
@@ -412,7 +412,7 @@ function FluidIntegrationsStage() {
           >
             <img
               src="/elev-infinity-logo.png"
-              alt="elev"
+              alt="newseed"
               className="w-24 sm:w-28 md:w-32 lg:w-36 h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(0,85,255,0.25)] group-hover:scale-105 transition-transform duration-300 pointer-events-none select-none"
             />
           </motion.div>

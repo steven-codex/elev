@@ -2,11 +2,32 @@ import { useState } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import { ImageReveal } from '../motion';
 
-export default function Footer() {
+interface FooterProps {
+  onOpenDemo?: () => void;
+  onOpenAuth?: (mode: 'login' | 'signup') => void;
+}
+
+export default function Footer({ onOpenDemo, onOpenAuth }: FooterProps) {
   const [lang, setLang] = useState('English (United States)');
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href?: string) => {
+    e.preventDefault();
+    if (!href || href === '#' || href === '#hero' || href === '#top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.history.pushState(null, '', ' ');
+      return;
+    }
+
+    const targetEl = document.querySelector(href);
+    if (targetEl) {
+      const targetTop = targetEl.getBoundingClientRect().top + window.scrollY - 76;
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      window.history.pushState(null, '', href);
+    }
+  };
+
   return (
-    <footer className="w-full bg-transparent py-10 sm:py-14 px-4 select-none relative z-10">
+    <footer className="w-full bg-transparent py-10 sm:py-14 px-4 relative z-10">
       {/* FLOATING ROUNDED CARD CONTAINER (Reference Match: media_1789474288000.png) */}
       <ImageReveal delay={0.1} y={28} className="w-full flex justify-center">
         <div className="max-w-[1360px] w-[95vw] lg:w-[88vw] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#0A0D18] border border-slate-800/80 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.4)] p-8 sm:p-12 lg:p-14 text-white">
@@ -19,11 +40,11 @@ export default function Footer() {
             <div className="flex items-center gap-3.5 sm:gap-4">
               <img 
                 src="/elev-infinity-logo.png" 
-                alt="elev" 
+                alt="newseed" 
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain" 
               />
               <span className="text-3xl sm:text-4xl lg:text-5xl font-normal text-white tracking-tight">
-                elev
+                newseed
               </span>
             </div>
 
@@ -40,50 +61,122 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* MIDDLE ROW: 3 COLUMN LINKS GRID */}
-        <div className="pt-10 pb-12 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl">
+        {/* MIDDLE ROW: REAL CONTENT-ALIGNED LINKS GRID */}
+        <div className="pt-10 pb-12 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-2xl">
           {/* Col 1: PRODUCT */}
           <div>
             <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
               PRODUCT
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-300">
-              <li><a href="#meetings" className="hover:text-white transition-colors">Meetings</a></li>
-              <li><a href="#calendar" className="hover:text-white transition-colors">Calendar</a></li>
-              <li><a href="#contacts" className="hover:text-white transition-colors">Contacts</a></li>
-              <li><a href="#payments" className="hover:text-white transition-colors">Payments</a></li>
-              <li><a href="#ai-notes" className="hover:text-white transition-colors">AI Notes</a></li>
-              <li><a href="#follow-ups" className="hover:text-white transition-colors">Follow-ups</a></li>
-            </ul>
-          </div>
-
-          {/* Col 2: COMPANY */}
-          <div>
-            <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
-              COMPANY
-            </h4>
-            <ul className="space-y-2.5 text-xs text-slate-300">
-              <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
               <li>
-                <a href="#careers" className="hover:text-white transition-colors flex items-center gap-2">
-                  <span>Careers</span>
-                  <span className="bg-[#0055FF] text-white text-[10px] font-normal px-2 py-0.5 rounded-full">Hiring</span>
+                <a
+                  href="#features"
+                  onClick={(e) => handleNavClick(e, '#features')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Features
                 </a>
               </li>
-              <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
+              <li>
+                <a
+                  href="#integrations"
+                  onClick={(e) => handleNavClick(e, '#integrations')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Integrations
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#pricing"
+                  onClick={(e) => handleNavClick(e, '#pricing')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Pricing
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#faq"
+                  onClick={(e) => handleNavClick(e, '#faq')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  FAQ
+                </a>
+              </li>
             </ul>
           </div>
 
-          {/* Col 3: RESOURCES */}
+          {/* Col 2: CAPABILITIES */}
           <div>
             <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
-              RESOURCES
+              CAPABILITIES
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-300">
-              <li><a href="#help" className="hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-              <li><a href="#security" className="hover:text-white transition-colors">Security</a></li>
-              <li><a href="#blog" className="hover:text-white transition-colors">Blog</a></li>
+              <li>
+                <a
+                  href="#features"
+                  onClick={(e) => handleNavClick(e, '#features')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Smart Scheduling
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#features"
+                  onClick={(e) => handleNavClick(e, '#features')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  AI Meeting Notes
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#features"
+                  onClick={(e) => handleNavClick(e, '#features')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Team Lead Routing
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 3: GET STARTED */}
+          <div>
+            <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
+              GET STARTED
+            </h4>
+            <ul className="space-y-2.5 text-xs text-slate-300">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onOpenDemo?.()}
+                  className="hover:text-white transition-colors cursor-pointer text-left text-xs"
+                >
+                  Request a Demo
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onOpenAuth?.('login')}
+                  className="hover:text-white transition-colors cursor-pointer text-left text-xs"
+                >
+                  Sign In
+                </button>
+              </li>
+              <li>
+                <a
+                  href="#top"
+                  onClick={(e) => handleNavClick(e, '#top')}
+                  className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  Back to Top ↑
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -92,7 +185,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-slate-800/80 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 text-xs text-slate-400">
           {/* Left copyright & legal links */}
           <div className="flex flex-wrap items-center gap-3">
-            <span>© 2024 elev by <strong className="font-medium text-slate-200">Newseed Global</strong>. All rights reserved.</span>
+            <span className="text-slate-400 font-normal">© Copyright newseed 2026</span>
             <span className="text-slate-700">|</span>
             <a href="#privacy" className="hover:text-slate-200 transition-colors">Privacy Policy</a>
             <a href="#terms" className="hover:text-slate-200 transition-colors">Terms of Service</a>

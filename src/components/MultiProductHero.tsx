@@ -10,8 +10,6 @@ import {
   Zap,
   ArrowRight
 } from 'lucide-react';
-import GradientWaves from './GradientWaves';
-import ScrollExpand from './ScrollExpand';
 import { Reveal, ImageReveal } from '../motion';
 
 interface MultiProductHeroProps {
@@ -164,7 +162,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
           
           <Reveal delay={0.16} y={16}>
             <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mt-6 leading-relaxed font-normal text-pretty mx-auto">
-              elev connects and simplifies all of the work around meetings — from scheduling, payments, and meeting prep to notetaking, contact intelligence, and follow-up.
+              newseed connects and simplifies all of the work around meetings — from scheduling, payments, and meeting prep to notetaking, contact intelligence, and follow-up.
             </p>
           </Reveal>
 
@@ -354,7 +352,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                 </h2>
 
                 <p className="text-sm sm:text-base text-[#475569] mt-3 leading-relaxed font-normal">
-                  {activeProductTab === 'scheduling' && "Giving you complete control and total customization, elev is the easiest and most powerful way to find time to connect."}
+                  {activeProductTab === 'scheduling' && "Giving you complete control and total customization, newseed is the easiest and most powerful way to find time to connect."}
                   {activeProductTab === 'velie' && "Add Velie to any email thread to coordinate scheduling on your behalf without switching tools or sacrificing control."}
                   {activeProductTab === 'notetaker' && "Finish the day knowing every meeting was captured, next steps were tracked, and follow-ups were handled automatically."}
                   {activeProductTab === 'payments' && "Charge upfront for meetings, sell consultation packages, and send invoices with payment features that make it easy to get paid."}
@@ -408,7 +406,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                         damping: 26,
                         mass: 0.8
                       }}
-                      className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/90 shadow-[0_12px_32px_rgba(0,0,0,0.06)] relative overflow-hidden flex flex-col sm:flex-row gap-5 sm:gap-6 items-start select-none"
+                      className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/90 shadow-[0_12px_32px_rgba(0,0,0,0.06)] relative overflow-hidden flex flex-col sm:flex-row gap-5 sm:gap-6 items-start"
                     >
                       {/* Left Half: The Calendar Grid (240px min-width) */}
                       <div className="w-[240px] shrink-0 text-left">
@@ -591,7 +589,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                   </div>
                   <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-normal text-slate-600 shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-                    <span>elev.ai/notetaker</span>
+                    <span>newseedglobal.com/notetaker</span>
                   </div>
                   <span className="w-4" />
                 </div>
@@ -1057,25 +1055,8 @@ function LiveChatConversationAnimation() {
   const current = conversations[currentConvoIndex];
 
   return (
-    <div className="w-full max-w-[390px] bg-white border border-slate-200/90 shadow-[0_12px_32px_rgba(0,0,0,0.05)] rounded-2xl p-5 relative overflow-hidden select-none text-left font-sans">
-      
-      {/* 1. Header Bar */}
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <h3 className="text-xs font-normal text-[#0A0D14] tracking-tight">
-            Clients worth your time
-          </h3>
-        </div>
-        <span className="text-[10px] font-normal text-[#0055FF] bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200/60 tracking-wide uppercase">
-          Live Booking
-        </span>
-      </div>
-
-      {/* 2. Conversation Bubble Area */}
+    <div className="w-full max-w-[390px] bg-white border border-slate-200/90 shadow-[0_12px_32px_rgba(0,0,0,0.05)] rounded-2xl p-5 relative overflow-hidden text-left font-sans">
+      {/* Conversation Bubble Area */}
       <div className="min-h-[148px] flex flex-col justify-between py-1">
         <AnimatePresence mode="wait">
           <motion.div
@@ -1118,7 +1099,7 @@ function LiveChatConversationAnimation() {
               </motion.div>
             </div>
 
-            {/* Right Chat Message Row (Velie / elev AI) */}
+            {/* Right Chat Message Row (Velie / newseed AI) */}
             <div className="flex items-end gap-2.5 justify-end min-h-[40px]">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9, x: 8 }}
@@ -1208,7 +1189,7 @@ function LiveNotetakerSoundwaveAnimation() {
   }, []);
 
   return (
-    <div className="w-full max-w-[390px] bg-white border border-slate-200/80 shadow-[0_12px_32px_rgba(0,0,0,0.04)] rounded-2xl p-5 relative overflow-hidden select-none text-left font-sans">
+    <div className="w-full max-w-[390px] bg-white border border-slate-200/80 shadow-[0_12px_32px_rgba(0,0,0,0.04)] rounded-2xl p-5 relative overflow-hidden text-left font-sans">
       
       {/* SVG Gooey Filter Definition */}
       <svg className="absolute w-0 h-0 pointer-events-none">
@@ -1443,7 +1424,7 @@ function LivePaymentsConveyorAnimation() {
   }, []);
 
   return (
-    <div className="w-full max-w-[390px] h-[380px] bg-[#FAFBFD] border border-slate-200/90 rounded-3xl relative overflow-hidden select-none font-sans shadow-[0_16px_36px_rgba(0,0,0,0.04)]">
+    <div className="w-full max-w-[390px] h-[380px] bg-[#FAFBFD] border border-slate-200/90 rounded-3xl relative overflow-hidden font-sans shadow-[0_16px_36px_rgba(0,0,0,0.04)]">
       {/* Sleek neutral grid pattern with looping pulse animation */}
       <div 
         className="absolute inset-0 opacity-15 bg-[radial-gradient(#0055FF_1.2px,transparent_1.2px)] [background-size:16px_16px] pointer-events-none animate-dot-pulse-dark"

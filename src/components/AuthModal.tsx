@@ -66,7 +66,7 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                   <Check className="w-6 h-6 stroke-[3]" />
                 </div>
                 <h3 className="text-xl font-normal text-slate-900">
-                  {mode === 'signup' ? 'Welcome to elev!' : 'Welcome back!'}
+                  {mode === 'signup' ? 'Welcome to newseed!' : 'Welcome back!'}
                 </h3>
                 <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
                   Your calendar sync is ready. Launching your personal scheduling workspace...
@@ -83,11 +83,11 @@ export default function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthM
                       <path d="M12 9v3l2 2" />
                     </svg>
                   </div>
-                  <span className="font-normal text-xl text-slate-900 tracking-tight">elev</span>
+                  <span className="font-normal text-xl text-slate-900 tracking-tight">newseed</span>
                 </div>
 
                 <h3 className="text-2xl font-normal text-slate-900 tracking-tight">
-                  {mode === 'signup' ? 'Get started with elev free' : 'Log in to your elev account'}
+                  {mode === 'signup' ? 'Get started with newseed free' : 'Log in to your newseed account'}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 mb-6 leading-relaxed">
                   {mode === 'signup'

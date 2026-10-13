@@ -10,81 +10,20 @@ import {
 
 export const NAV_MENU_SECTIONS: NavMenuSection[] = [
   {
-    label: 'Product',
-    dropdown: {
-      items: [
-        {
-          title: 'Scheduling Engine',
-          description: 'Smart booking links, custom availability buffers, and routing forms.',
-          icon: 'Clock'
-        },
-        {
-          title: 'Velie AI Assistant',
-          description: '24/7 AI scheduling copilot that negotiates times via email CC.',
-          icon: 'Zap',
-          badge: 'Beta'
-        },
-        {
-          title: 'Notetaker 2.0',
-          description: 'Autonomous recording, 99.4% transcription, and CRM auto-sync.',
-          icon: 'BookOpen',
-          badge: 'New'
-        },
-        {
-          title: 'Payments & Checkout',
-          description: 'Upfront meeting deposits, session bundles, and Stripe billing.',
-          icon: 'Lock',
-          badge: 'New'
-        },
-        {
-          title: 'Platform & Integrations',
-          description: '150+ native apps with Google, Microsoft 365, Zoom, and Salesforce.',
-          icon: 'Layers'
-        }
-      ],
-      featured: {
-        tag: 'Introducing elev 2.4',
-        title: 'Built for all of meetings',
-        description: 'Connects and simplifies scheduling, AI copilot coordination, notetaking, and upfront payments.',
-        linkText: 'Explore Product Suite →'
-      }
-    }
+    label: 'Features',
+    href: '#features'
   },
   {
-    label: 'Solutions',
-    dropdown: {
-      items: [
-        {
-          title: 'Sales & Revenue',
-          description: 'Shorten deal cycles and prevent pipeline slippage with instant booking.',
-          icon: 'TrendingUp'
-        },
-        {
-          title: 'Recruiting & Talent',
-          description: 'Coordinate panel interviews and candidate screeners without delay.',
-          icon: 'UserCheck'
-        },
-        {
-          title: 'Customer Success',
-          description: 'Accelerate client onboarding and run quarterly business reviews.',
-          icon: 'HeartHandshake'
-        },
-        {
-          title: 'Marketing & Demand Gen',
-          description: 'Convert web traffic into booked qualified demos instantly.',
-          icon: 'Megaphone'
-        },
-        {
-          title: 'Information Technology',
-          description: 'Centralized admin controls, SSO, SCIM provisioning, and audit logs.',
-          icon: 'ShieldCheck'
-        }
-      ]
-    }
+    label: 'Integrations',
+    href: '#integrations'
   },
   {
     label: 'Pricing',
     href: '#pricing'
+  },
+  {
+    label: 'FAQ',
+    href: '#faq'
   }
 ];
 
@@ -278,7 +217,7 @@ export const INTEGRATIONS_LIST: IntegrationItem[] = [
   {
     name: 'Zapier',
     category: 'messaging',
-    description: 'Connect elev to 5,000+ business apps and custom webhook pipelines.',
+    description: 'Connect newseed to 5,000+ business apps and custom webhook pipelines.',
     icon: 'Share2'
   }
 ];
@@ -297,7 +236,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       '1 connected calendar account (Google or Outlook)',
       '1 active event type (e.g. 30-min call)',
       'Unlimited one-on-one meetings',
-      'Personalized elev booking link (elev.io/yourname)',
+      'Personalized newseed booking link (newseedglobal.com/yourname)',
       'Automated email confirmations and calendar invites',
       'Web, iOS, and Android access'
     ]
@@ -314,7 +253,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     features: [
       'Connect up to 6 calendars per user',
       'Unlimited active event types',
-      'Custom branding (remove elev watermark)',
+      'Custom branding (remove newseed watermark)',
       'Automated email & SMS reminder workflows',
       'Collective one-off group booking links',
       'Payment collection via Stripe & PayPal',
@@ -366,7 +305,7 @@ export const PRICING_PLANS: PricingPlan[] = [
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    quote: 'Elev transformed our inbound sales conversion. Prospects now book demos right from our demo request page instead of waiting 24 hours. Our show rate jumped from 61% to 89% in week one.',
+    quote: 'newseed transformed our inbound sales conversion. Prospects now book demos right from our demo request page instead of waiting 24 hours. Our show rate jumped from 61% to 89% in week one.',
     author: 'Elena Rostova',
     role: 'VP of Global Revenue',
     company: 'CloudScale Technologies',
@@ -375,7 +314,7 @@ export const TESTIMONIALS: Testimonial[] = [
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80'
   },
   {
-    quote: 'Our recruiting team coordinates 200+ panel interviews across 4 time zones every month. Elev automated all the collective availability math. We saved over 18 hours per recruiter each month.',
+    quote: 'Our recruiting team coordinates 200+ panel interviews across 4 time zones every month. newseed automated all the collective availability math. We saved over 18 hours per recruiter each month.',
     author: 'Marcus Chen',
     role: 'Head of Talent Acquisition',
     company: 'HyperGrowth Systems',
@@ -397,12 +336,12 @@ export const TESTIMONIALS: Testimonial[] = [
 export const FAQS: FaqItem[] = [
   {
     category: 'General',
-    question: 'How does elev prevent double bookings across multiple calendars?',
-    answer: 'Elev connects directly to your Google Calendar, Microsoft Outlook, or Office 365 accounts in real time. Whenever someone visits your booking link, elev checks your real-time busy slots across all connected accounts and only displays truly available times. When an event is scheduled, elev immediately blocks the time slot across your calendars and sends calendar invites to both parties.'
+    question: 'How does newseed prevent double bookings across multiple calendars?',
+    answer: 'newseed connects directly to your Google Calendar, Microsoft Outlook, or Office 365 accounts in real time. Whenever someone visits your booking link, newseed checks your real-time busy slots across all connected accounts and only displays truly available times. When an event is scheduled, newseed immediately blocks the time slot across your calendars and sends calendar invites to both parties.'
   },
   {
     category: 'Teams & Routing',
-    question: 'What is Round-Robin scheduling and how does it work in elev?',
+    question: 'What is Round-Robin scheduling and how does it work in newseed?',
     answer: 'Round-robin scheduling automatically distributes incoming appointments among multiple team members. You can configure distribution based on equal availability, priority weighting, or specific qualification rules (e.g. territory or deal size). This ensures leads are served immediately without overloading any individual team member.'
   },
   {
@@ -412,12 +351,12 @@ export const FAQS: FaqItem[] = [
   },
   {
     category: 'Security',
-    question: 'How secure is elev with enterprise calendar data?',
-    answer: 'Security is paramount at elev. We maintain SOC 2 Type II certification, adhere strictly to GDPR regulations, support HIPAA BAA execution for healthcare, and encrypt all data in transit and at rest with TLS 1.3 and AES-256. We never view or store the contents of your emails or private notes.'
+    question: 'How secure is newseed with enterprise calendar data?',
+    answer: 'Security is paramount at newseed. We maintain SOC 2 Type II certification, adhere strictly to GDPR regulations, support HIPAA BAA execution for healthcare, and encrypt all data in transit and at rest with TLS 1.3 and AES-256. We never view or store the contents of your emails or private notes.'
   },
   {
     category: 'Integrations',
-    question: 'Does elev work with Zoom, Google Meet, and Microsoft Teams?',
-    answer: 'Yes! Elev integrates natively with Zoom, Google Meet, Microsoft Teams, Webex, and GoToMeeting. When a meeting is confirmed, elev automatically provisions a unique, secure video conference link and inserts it directly into the calendar event and reminder messages.'
+    question: 'Does newseed work with Zoom, Google Meet, and Microsoft Teams?',
+    answer: 'Yes! newseed integrates natively with Zoom, Google Meet, Microsoft Teams, Webex, and GoToMeeting. When a meeting is confirmed, newseed automatically provisions a unique, secure video conference link and inserts it directly into the calendar event and reminder messages.'
   }
 ];

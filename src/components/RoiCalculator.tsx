@@ -135,7 +135,7 @@ export default function RoiCalculator({ onOpenAuth }: RoiCalculatorProps) {
               onClick={() => onOpenAuth('signup')}
               className="w-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 active:scale-[0.96] text-white font-normal text-sm py-3.5 px-6 rounded-full shadow-xs hover:shadow-md hover:shadow-blue-500/20 transition-[transform,box-shadow,filter] duration-150 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Unlock these savings with elev</span>
+              <span>Unlock these savings with newseed</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

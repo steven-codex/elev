@@ -56,7 +56,7 @@ export default function IntegrationsSection3({ onOpenExplorer }: IntegrationsSec
               <IntegrationCard
                 borderClassName="shadow-xl shadow-blue-500/10 border-blue-400/80 ring-4 ring-blue-50/90"
                 className="bg-white/95 scale-110 z-20 shadow-lg"
-                title="elev.ai Core Hub"
+                title="newseed Core Hub"
               >
                 <LogoIcon />
               </IntegrationCard>
@@ -94,7 +94,7 @@ export default function IntegrationsSection3({ onOpenExplorer }: IntegrationsSec
             </h2>
 
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-normal text-pretty">
-              elev.ai fits right into your existing stack and automates the busywork in between — syncing 150+ apps with zero latency.
+              newseed fits right into your existing stack and automates the busywork in between — syncing 150+ apps with zero latency.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
