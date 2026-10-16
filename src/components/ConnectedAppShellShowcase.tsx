@@ -18,7 +18,7 @@ import {
   Clock,
   Sparkles
 } from 'lucide-react';
-import { Reveal, ImageReveal } from '../motion';
+import { Reveal, PerspectiveScrollTilt } from '../motion';
 
 interface ConnectedAppShellShowcaseProps {
   onOpenAuth: (mode: 'signup' | 'login') => void;
@@ -363,7 +363,16 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
         {/* ====================================================================
             THE ELEV DASHBOARD APP SHELL (gpt-taste Ultra-Clean Design Engineering)
             ==================================================================== */}
-        <ImageReveal delay={0.2} y={32} className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-7">
+        <PerspectiveScrollTilt
+          initialRotateX={20}
+          initialScale={0.94}
+          initialY={36}
+          perspective={1200}
+          start="top 95%"
+          end="center 55%"
+          scrub={1.2}
+          className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-7"
+        >
           
           {/* STACKED GLASS LAYER 2 (Backmost stacked card sheet) */}
           <div className="absolute top-0 inset-x-12 h-10 rounded-t-[32px] bg-white/60 backdrop-blur-md pointer-events-none z-0" />
@@ -372,7 +381,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
           <div className="absolute top-3 inset-x-6 h-10 rounded-t-[30px] bg-white/80 backdrop-blur-xl pointer-events-none z-10" />
 
           {/* FOREGROUND MAIN DASHBOARD WINDOW SHELL (Clean Single Border, Layered Shadows, Rounded 36px) */}
-          <div className="relative z-20 rounded-[32px] sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_32px_90px_-20px_rgba(15,23,42,0.08),0_4px_24px_rgba(0,0,0,0.02)] overflow-hidden transition-all duration-500">
+          <div className="relative z-20 rounded-[32px] sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_32px_90px_-20px_rgba(15,23,42,0.08),0_4px_24px_rgba(0,0,0,0.02)] overflow-hidden transition-[box-shadow,border-color] duration-500">
             <div className="grid grid-cols-1 md:grid-cols-12 min-h-[640px]">
               
               {/* ================================================================
@@ -845,7 +854,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
 
           </div>
 
-        </ImageReveal>
+        </PerspectiveScrollTilt>
 
       </div>
     </section>

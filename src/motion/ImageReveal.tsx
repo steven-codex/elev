@@ -12,6 +12,8 @@ interface ImageRevealProps {
   y?: number;
   startScale?: number;
   start?: string;
+  blur?: number;
+  ease?: string;
   as?: ElementType;
 }
 
@@ -19,10 +21,12 @@ export default function ImageReveal({
   children,
   className = '',
   delay = 0,
-  duration = 1.15,
-  y = 24,
-  startScale = 0.985,
-  start = 'top 89%',
+  duration = 1.35,
+  y = 32,
+  startScale = 0.965,
+  start = 'top 86%',
+  blur = 6,
+  ease = 'power3.out',
   as: Component = 'div',
 }: ImageRevealProps) {
   const ref = useRef<HTMLElement | null>(null);
@@ -33,7 +37,7 @@ export default function ImageReveal({
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      gsap.set(el, { opacity: 1, y: 0, scale: 1 });
+      gsap.set(el, { opacity: 1, y: 0, scale: 1, filter: 'none' });
       return;
     }
 
@@ -44,17 +48,19 @@ export default function ImageReveal({
           opacity: 0,
           y,
           scale: startScale,
+          filter: blur > 0 ? `blur(${blur}px)` : 'none',
           force3D: true,
         },
         {
           opacity: 1,
           y: 0,
           scale: 1,
+          filter: 'blur(0px)',
           duration,
           delay,
-          ease: 'power4.out',
+          ease,
           force3D: true,
-          clearProps: 'transform',
+          clearProps: 'transform,filter,opacity',
           scrollTrigger: {
             trigger: el,
             start,
@@ -65,7 +71,7 @@ export default function ImageReveal({
     }, el);
 
     return () => ctx.revert();
-  }, [delay, duration, y, startScale, start]);
+  }, [delay, duration, y, startScale, start, blur, ease]);
 
   const Comp = Component as any;
 

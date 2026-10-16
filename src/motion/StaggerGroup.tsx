@@ -13,6 +13,8 @@ interface StaggerGroupProps {
   duration?: number;
   ease?: string;
   start?: string;
+  blur?: number;
+  startScale?: number;
   as?: ElementType;
 }
 
@@ -20,11 +22,13 @@ export default function StaggerGroup({
   children,
   className = '',
   selector = ':scope > *',
-  stagger = 0.06,
-  y = 20,
-  duration = 0.95,
-  ease = 'power4.out',
-  start = 'top 89%',
+  stagger = 0.12,
+  y = 28,
+  duration = 1.25,
+  ease = 'power3.out',
+  start = 'top 86%',
+  blur = 6,
+  startScale = 0.97,
   as: Component = 'div',
 }: StaggerGroupProps) {
   const ref = useRef<HTMLElement | null>(null);
@@ -36,7 +40,7 @@ export default function StaggerGroup({
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       const items = el.querySelectorAll(selector);
-      items.forEach((item) => gsap.set(item, { opacity: 1, y: 0 }));
+      items.forEach((item) => gsap.set(item, { opacity: 1, y: 0, scale: 1, filter: 'none' }));
       return;
     }
 
@@ -49,16 +53,20 @@ export default function StaggerGroup({
         {
           opacity: 0,
           y,
+          scale: startScale,
+          filter: blur > 0 ? `blur(${blur}px)` : 'none',
           force3D: true,
         },
         {
           opacity: 1,
           y: 0,
+          scale: 1,
+          filter: 'blur(0px)',
           duration,
           stagger,
           ease,
           force3D: true,
-          clearProps: 'transform',
+          clearProps: 'transform,filter,opacity',
           scrollTrigger: {
             trigger: el,
             start,
@@ -69,7 +77,7 @@ export default function StaggerGroup({
     }, el);
 
     return () => ctx.revert();
-  }, [selector, stagger, y, duration, ease, start]);
+  }, [selector, stagger, y, duration, ease, start, blur, startScale]);
 
   const Comp = Component as any;
 

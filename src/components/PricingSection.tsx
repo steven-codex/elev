@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, ShieldCheck, ArrowRight } from 'lucide-react';
-import { Reveal } from '../motion';
+import { Reveal, StaggerGroup } from '../motion';
 
 interface PricingSectionProps {
   onOpenAuth: (mode: 'signup') => void;
@@ -103,11 +103,17 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
           </Reveal>
         </div>
 
-        {/* 2-Card Clean Pricing Grid (Light Theme Matched to Reference Structure) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7 lg:gap-8 items-stretch max-w-4xl mx-auto mb-16">
+        {/* 2-Card Clean Pricing Grid with Cinematic Stagger Curtain */}
+        <StaggerGroup
+          stagger={0.16}
+          y={32}
+          blur={6}
+          startScale={0.965}
+          className="grid grid-cols-1 md:grid-cols-2 gap-7 lg:gap-8 items-stretch max-w-4xl mx-auto mb-16"
+        >
           
           {/* CARD 1: Standard */}
-          <div className="relative rounded-[32px] bg-white border border-slate-200/90 p-8 sm:p-10 flex flex-col justify-between overflow-hidden shadow-[0_16px_48px_rgba(0,35,102,0.05),0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-300 hover:border-slate-300 hover:shadow-[0_24px_56px_rgba(0,35,102,0.08)] group">
+          <div className="relative rounded-[32px] bg-white border border-slate-200/90 p-8 sm:p-10 flex flex-col justify-between overflow-hidden shadow-[0_16px_48px_rgba(0,35,102,0.05),0_2px_8px_rgba(0,0,0,0.02)] transition-[border-color,box-shadow,transform] duration-300 hover:border-slate-300 hover:shadow-[0_24px_56px_rgba(0,35,102,0.08)] group">
             <div>
               {/* Header */}
               <h3 className="text-xl sm:text-2xl font-normal text-[#0A0D14] tracking-tight">
@@ -143,7 +149,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
               <button
                 type="button"
                 onClick={onOpenDemo}
-                className="w-full mt-7 py-3.5 px-6 rounded-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white font-normal text-sm sm:text-base tracking-tight shadow-[0_8px_24px_rgba(0,85,255,0.24)] hover:shadow-[0_12px_28px_rgba(0,85,255,0.36)] transition-all duration-160 active:scale-[0.97] cursor-pointer"
+                className="w-full mt-7 py-3.5 px-6 rounded-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white font-normal text-sm sm:text-base tracking-tight shadow-[0_8px_24px_rgba(0,85,255,0.24)] hover:shadow-[0_12px_28px_rgba(0,85,255,0.36)] transition-[filter,box-shadow,transform] duration-160 active:scale-[0.97] cursor-pointer"
               >
                 Book Your Demo
               </button>
@@ -178,7 +184,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
           </div>
 
           {/* CARD 2: Pro */}
-          <div className="relative rounded-[32px] bg-white border-2 border-[#0055FF] p-8 sm:p-10 flex flex-col justify-between overflow-hidden shadow-[0_20px_60px_rgba(0,85,255,0.12),0_4px_16px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_28px_72px_rgba(0,85,255,0.18)] group md:-translate-y-1">
+          <div className="relative rounded-[32px] bg-white border-2 border-[#0055FF] p-8 sm:p-10 flex flex-col justify-between overflow-hidden shadow-[0_20px_60px_rgba(0,85,255,0.12),0_4px_16px_rgba(0,0,0,0.03)] transition-[border-color,box-shadow,transform] duration-300 hover:shadow-[0_28px_72px_rgba(0,85,255,0.18)] group md:-translate-y-1">
             {/* Top-Right Soft Aurora Glow (Light Adaptation of Reference Glow) */}
             <div 
               className="pointer-events-none absolute -top-16 -right-16 w-80 h-80 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(0,85,255,0.09)_0%,rgba(168,85,247,0.05)_42%,transparent_72%)] blur-2xl transition-opacity duration-500 opacity-90 group-hover:opacity-100" 
@@ -225,7 +231,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
               <button
                 type="button"
                 onClick={onOpenDemo}
-                className="w-full mt-7 py-3.5 px-6 rounded-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white font-normal text-sm sm:text-base tracking-tight shadow-[0_8px_24px_rgba(0,85,255,0.28)] hover:shadow-[0_12px_28px_rgba(0,85,255,0.4)] transition-all duration-160 active:scale-[0.97] cursor-pointer relative z-10"
+                className="w-full mt-7 py-3.5 px-6 rounded-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white font-normal text-sm sm:text-base tracking-tight shadow-[0_8px_24px_rgba(0,85,255,0.28)] hover:shadow-[0_12px_28px_rgba(0,85,255,0.4)] transition-[filter,box-shadow,transform] duration-160 active:scale-[0.97] cursor-pointer relative z-10"
               >
                 Book Your Demo
               </button>
@@ -259,7 +265,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
             </div>
           </div>
 
-        </div>
+        </StaggerGroup>
 
         {/* Enterprise Security Reassurance Banner */}
         <Reveal y={20} className="w-full">

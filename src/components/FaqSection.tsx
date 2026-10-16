@@ -330,7 +330,7 @@ export default function FaqSection() {
                   setActiveIndex(item.id);
                   setHoveredCardId(item.id);
                 }}
-                className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13px] font-medium tracking-tight transition-all duration-200 cursor-pointer active:scale-[0.96] ${
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13px] font-medium tracking-tight transition-[background-color,border-color,color,box-shadow,transform] duration-200 cursor-pointer active:scale-[0.96] ${
                   activeIndex === item.id
                     ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-600/30'
                     : 'bg-slate-100/90 text-slate-700 hover:bg-slate-200/80 hover:text-slate-900 border border-slate-200/70'

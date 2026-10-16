@@ -309,7 +309,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                       setCopiedEmail(true);
                       setTimeout(() => setCopiedEmail(false), 2000);
                     }}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#F0F5FF] hover:bg-[#E5EFFF] border border-[#BFDBFE] text-[#0055FF] shadow-[0_1px_4px_rgba(0,85,255,0.08)] rotate-[6deg] hover:rotate-0 active:scale-[0.95] transition-all duration-200 cursor-pointer select-none group/copy"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#F0F5FF] hover:bg-[#E5EFFF] border border-[#BFDBFE] text-[#0055FF] shadow-[0_1px_4px_rgba(0,85,255,0.08)] rotate-[6deg] hover:rotate-0 active:scale-[0.95] transition-[transform,background-color,border-color,box-shadow] duration-200 cursor-pointer select-none group/copy"
                     title="Click to copy email address"
                   >
                     <Mail className="w-3.5 h-3.5 text-[#0055FF] stroke-[2.2]" />

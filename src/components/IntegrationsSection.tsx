@@ -103,7 +103,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#80B5FF] to-[#3B82F6] hover:from-[#6BA3FF] hover:to-[#2563EB] text-white font-normal text-xs sm:text-sm shadow-[0_8px_22px_rgba(59,130,246,0.28)] hover:shadow-[0_12px_28px_rgba(59,130,246,0.38)] active:scale-[0.97] transition-all duration-160 cursor-pointer"
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#80B5FF] to-[#3B82F6] hover:from-[#6BA3FF] hover:to-[#2563EB] text-white font-normal text-xs sm:text-sm shadow-[0_8px_22px_rgba(59,130,246,0.28)] hover:shadow-[0_12px_28px_rgba(59,130,246,0.38)] active:scale-[0.97] transition-[filter,box-shadow,transform] duration-160 cursor-pointer"
                   >
                     <span>Explore 150+ integrations</span>
                     <ArrowRight className="w-4 h-4 text-white" />
@@ -160,7 +160,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search 150+ integrations..."
-                    className="w-full pl-10 pr-4 py-2 text-xs rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0055FF] bg-white shadow-2xs transition-all"
+                    className="w-full pl-10 pr-4 py-2 text-xs rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0055FF] bg-white shadow-2xs transition-[border-color,box-shadow]"
                   />
                 </div>
 
@@ -169,7 +169,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
                     <button
                       key={cat.id}
                       onClick={() => setActiveCategory(cat.id as any)}
-                      className={`text-xs font-normal px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer active:scale-[0.96] whitespace-nowrap ${
+                      className={`text-xs font-normal px-3.5 py-1.5 rounded-full transition-[background-color,border-color,color,transform] duration-200 cursor-pointer active:scale-[0.96] whitespace-nowrap ${
                         activeCategory === cat.id
                           ? 'bg-[#0055FF] text-white shadow-xs'
                           : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -188,7 +188,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
                   return (
                     <div
                       key={item.name}
-                      className="p-4 rounded-2xl border border-slate-200/80 bg-white hover:border-blue-400 transition-all shadow-2xs flex flex-col justify-between"
+                      className="p-4 rounded-2xl border border-slate-200/80 bg-white hover:border-blue-400 transition-[border-color,box-shadow] duration-200 shadow-2xs flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-3">
