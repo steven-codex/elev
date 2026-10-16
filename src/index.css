@@ -171,6 +171,45 @@
   animation: float-subtle 4s ease-in-out infinite;
 }
 
+/* ── Architectural Conduit Transferring Light Beams (Linear/Vercel Stream) ── */
+@keyframes transferBeamLong {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: -450;
+  }
+}
+
+@keyframes transferBeamShort {
+  0% {
+    stroke-dashoffset: 75;
+  }
+  100% {
+    stroke-dashoffset: -300;
+  }
+}
+
+.animate-transfer-long-1 {
+  animation: transferBeamLong 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 0s;
+}
+
+.animate-transfer-short-2 {
+  animation: transferBeamShort 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 0.8s;
+}
+
+.animate-transfer-long-3 {
+  animation: transferBeamLong 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 1.6s;
+}
+
+.animate-transfer-short-4 {
+  animation: transferBeamShort 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 2.4s;
+}
+
 /* ── Dot Grid Backgrounds & Faded Looping Animations ── */
 .bg-dot-grid {
   background-image: radial-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px);

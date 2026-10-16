@@ -296,49 +296,47 @@ function IntegrationPill({
   );
 }
 
-function RadarAnimation() {
+function AcousticRippleAnimation() {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10 overflow-visible">
       <style>{`
-        @keyframes seamlessRadarRipple {
+        @keyframes etherealAcousticPulse {
           0% {
-            transform: scale(0.5);
+            transform: scale(0.92);
             opacity: 0;
           }
-          18% {
-            opacity: 0.65;
+          22% {
+            opacity: 0.38;
+          }
+          75% {
+            opacity: 0.12;
           }
           100% {
-            transform: scale(2.45);
+            transform: scale(1.52);
             opacity: 0;
           }
         }
       `}</style>
 
-      {/* Ambient Central White Breathing Glow */}
+      {/* Ambient Central Luminous Breathing Glow */}
       <motion.div
-        animate={{ scale: [1, 1.22, 1], opacity: [0.35, 0.6, 0.35] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-44 h-44 rounded-full bg-white/40 blur-2xl pointer-events-none"
+        animate={{ scale: [1, 1.14, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-44 h-44 rounded-full bg-gradient-to-tr from-white/60 via-cyan-200/25 to-blue-200/20 blur-2xl pointer-events-none"
       />
 
-      {/* Static Concentric White Radar Range Rings with Soft Bloom */}
-      <div className="absolute w-[140px] h-[140px] rounded-full border border-white/50 shadow-[0_0_12px_rgba(255,255,255,0.3)] pointer-events-none" />
-      <div className="absolute w-[240px] h-[240px] rounded-full border border-white/35 shadow-[0_0_14px_rgba(255,255,255,0.2)] pointer-events-none" />
-      <div className="absolute w-[340px] h-[340px] rounded-full border border-white/20 shadow-[0_0_16px_rgba(255,255,255,0.12)] pointer-events-none" />
+      {/* Static Concentric White Orbital Rings (Subtle, Faint, Elegant) */}
+      <div className="absolute w-[170px] h-[170px] rounded-full border border-white/20 shadow-[0_0_12px_rgba(255,255,255,0.15)] pointer-events-none" />
+      <div className="absolute w-[260px] h-[260px] rounded-full border border-white/12 shadow-[0_0_14px_rgba(255,255,255,0.08)] pointer-events-none" />
 
-      {/* Continuously Staggered Expanding Radar Waves (Zero-Flicker GPU Composited) */}
-      {[0, -1.6, -3.2].map((delay, idx) => (
-        <div
-          key={idx}
-          style={{
-            animation: 'seamlessRadarRipple 4.8s cubic-bezier(0.16, 1, 0.3, 1) infinite',
-            animationDelay: `${delay}s`,
-            willChange: 'transform, opacity'
-          }}
-          className="absolute w-[160px] h-[160px] rounded-full border border-white/70 shadow-[0_0_16px_rgba(255,255,255,0.4)] pointer-events-none"
-        />
-      ))}
+      {/* Single Meditative Expanding Acoustic Wave */}
+      <div
+        style={{
+          animation: 'etherealAcousticPulse 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite',
+          willChange: 'transform, opacity'
+        }}
+        className="absolute w-[170px] h-[170px] rounded-full border border-white/35 shadow-[0_0_14px_rgba(255,255,255,0.22)] pointer-events-none"
+      />
     </div>
   );
 }
@@ -401,8 +399,8 @@ function FluidIntegrationsStage() {
 
         {/* Center 3D Infinity Logo with Animated Radar System */}
         <div className="relative shrink-0 flex items-center justify-center p-2">
-          {/* Radar Animation Layer */}
-          <RadarAnimation />
+          {/* Acoustic Ripple Animation Layer */}
+          <AcousticRippleAnimation />
 
           {/* 3D Infinity Mark */}
           <motion.div

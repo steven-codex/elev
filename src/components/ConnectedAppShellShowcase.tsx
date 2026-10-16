@@ -19,6 +19,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Reveal, PerspectiveScrollTilt } from '../motion';
+import LiquidOrb from './LiquidOrb';
 
 interface ConnectedAppShellShowcaseProps {
   onOpenAuth: (mode: 'signup' | 'login') => void;
@@ -136,139 +137,119 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             fill="none"
           >
             <defs>
-              <linearGradient id="glow-purple" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#A855F7" />
-                <stop offset="100%" stopColor="#0055FF" />
+              {/* Elegant Thin Blue Gradients for Transferring Light Beams */}
+              <linearGradient id="beam-blue-left" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#93C5FD" stopOpacity="0.0" />
+                <stop offset="35%" stopColor="#38BDF8" stopOpacity="0.85" />
+                <stop offset="70%" stopColor="#0055FF" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.1" />
               </linearGradient>
 
-              <linearGradient id="glow-green" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#84CC16" />
-                <stop offset="100%" stopColor="#0055FF" />
+              <linearGradient id="beam-blue-right" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#93C5FD" stopOpacity="0.0" />
+                <stop offset="35%" stopColor="#38BDF8" stopOpacity="0.85" />
+                <stop offset="70%" stopColor="#0055FF" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.1" />
               </linearGradient>
 
-              <linearGradient id="glow-blue" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#38BDF8" />
-                <stop offset="100%" stopColor="#0055FF" />
-              </linearGradient>
-
-              <linearGradient id="glow-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#06B6D4" />
-                <stop offset="100%" stopColor="#0055FF" />
-              </linearGradient>
-
-              {/* Radial glow filter for docking nodes */}
-              <filter id="cyan-glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3" result="blur" />
+              {/* Filter for subtle blue beam glow */}
+              <filter id="beam-glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
             </defs>
 
             {/* ------------------------------------------------------------
-                CONNECTOR PATHS WITH SMOOTH 90-DEGREE ROUNDED ELBOWS (R=30)
+                ARCHITECTURAL CONDUITS WITH THIN BLUE TRANSFERRING BEAMS
                 ------------------------------------------------------------ */}
             
-            {/* Path 1: Top-Left Notetaker (Purple) -> (255, 75) to (405, 370) */}
-            <path
-              d="M 255 75 L 375 75 Q 405 75, 405 105 L 405 370"
-              stroke={activeFeature === 'notetaker' ? 'url(#glow-purple)' : '#CBD5E1'}
-              strokeWidth={activeFeature === 'notetaker' ? '2.5' : '1.5'}
-              strokeLinecap="round"
-              className="transition-all duration-300"
-            />
-            {/* Path 1 Anchor Dot on Card Right Edge */}
-            <circle cx="255" cy="75" r="5" fill="#A855F7" stroke="#FFFFFF" strokeWidth="2" />
-            {/* Path 1 Traveling Pulse */}
-            <circle r="3.5" fill="#A855F7">
-              <animateMotion
-                path="M 255 75 L 375 75 Q 405 75, 405 105 L 405 370"
-                dur="3.2s"
-                repeatCount="indefinite"
+            {/* Conduit 1: Top-Left Notetaker (Purple) -> (255, 75) to (405, 370) */}
+            <g className="conduit-group">
+              {/* Base Static Hairline Path */}
+              <path
+                d="M 255 75 L 375 75 Q 405 75, 405 105 L 405 370"
+                stroke={activeFeature === 'notetaker' ? '#BFDBFE' : '#E2E8F0'}
+                strokeWidth={activeFeature === 'notetaker' ? '1.75' : '1.25'}
+                strokeLinecap="round"
+                className="transition-[stroke,stroke-width] duration-250 ease-out"
               />
-            </circle>
-            {/* Path 1 Docking Node at Dashboard Top */}
-            <circle cx="405" cy="366" r="9" fill="#A855F7" opacity="0.25">
-              <animate attributeName="r" values="6;11;6" dur="2.4s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.35;0.1;0.35" dur="2.4s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="405" cy="366" r="4.5" fill="#A855F7" stroke="#FFFFFF" strokeWidth="1.5" />
+              {/* Flowing Thin Blue Light Beam */}
+              <path
+                d="M 255 75 L 375 75 Q 405 75, 405 105 L 405 370"
+                stroke="url(#beam-blue-left)"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeDasharray="100 450"
+                className="animate-transfer-long-1 pointer-events-none"
+                filter="url(#beam-glow)"
+              />
+            </g>
 
-            {/* Path 2: Bottom-Left Velie (Green) -> (155, 220) to (255, 370) */}
-            <path
-              d="M 155 220 L 225 220 Q 255 220, 255 250 L 255 370"
-              stroke={activeFeature === 'velie' ? 'url(#glow-green)' : '#CBD5E1'}
-              strokeWidth={activeFeature === 'velie' ? '2.5' : '1.5'}
-              strokeLinecap="round"
-              className="transition-all duration-300"
-            />
-            {/* Path 2 Anchor Dot on Card Right Edge */}
-            <circle cx="155" cy="220" r="5" fill="#84CC16" stroke="#FFFFFF" strokeWidth="2" />
-            {/* Path 2 Traveling Pulse */}
-            <circle r="3.5" fill="#84CC16">
-              <animateMotion
-                path="M 155 220 L 225 220 Q 255 220, 255 250 L 255 370"
-                dur="3.6s"
-                repeatCount="indefinite"
-                begin="0.8s"
+            {/* Conduit 2: Bottom-Left Velie (Green) -> (155, 220) to (255, 370) */}
+            <g className="conduit-group">
+              {/* Base Static Hairline Path */}
+              <path
+                d="M 155 220 L 225 220 Q 255 220, 255 250 L 255 370"
+                stroke={activeFeature === 'velie' ? '#BFDBFE' : '#E2E8F0'}
+                strokeWidth={activeFeature === 'velie' ? '1.75' : '1.25'}
+                strokeLinecap="round"
+                className="transition-[stroke,stroke-width] duration-250 ease-out"
               />
-            </circle>
-            {/* Path 2 Docking Node at Dashboard Top */}
-            <circle cx="255" cy="366" r="9" fill="#84CC16" opacity="0.25">
-              <animate attributeName="r" values="6;11;6" dur="2.6s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.35;0.1;0.35" dur="2.6s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="255" cy="366" r="4.5" fill="#84CC16" stroke="#FFFFFF" strokeWidth="1.5" />
+              {/* Flowing Thin Blue Light Beam */}
+              <path
+                d="M 155 220 L 225 220 Q 255 220, 255 250 L 255 370"
+                stroke="url(#beam-blue-left)"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeDasharray="75 300"
+                className="animate-transfer-short-2 pointer-events-none"
+                filter="url(#beam-glow)"
+              />
+            </g>
 
-            {/* Path 3: Top-Right Scheduling (Blue) -> (745, 75) to (595, 370) */}
-            <path
-              d="M 745 75 L 625 75 Q 595 75, 595 105 L 595 370"
-              stroke={activeFeature === 'scheduling' ? 'url(#glow-blue)' : '#CBD5E1'}
-              strokeWidth={activeFeature === 'scheduling' ? '2.5' : '1.5'}
-              strokeLinecap="round"
-              className="transition-all duration-300"
-            />
-            {/* Path 3 Anchor Dot on Card Left Edge */}
-            <circle cx="745" cy="75" r="5" fill="#38BDF8" stroke="#FFFFFF" strokeWidth="2" />
-            {/* Path 3 Traveling Pulse */}
-            <circle r="3.5" fill="#38BDF8">
-              <animateMotion
-                path="M 745 75 L 625 75 Q 595 75, 595 105 L 595 370"
-                dur="3.4s"
-                repeatCount="indefinite"
-                begin="1.2s"
+            {/* Conduit 3: Top-Right Scheduling (Blue) -> (745, 75) to (595, 370) */}
+            <g className="conduit-group">
+              {/* Base Static Hairline Path */}
+              <path
+                d="M 745 75 L 625 75 Q 595 75, 595 105 L 595 370"
+                stroke={activeFeature === 'scheduling' ? '#BFDBFE' : '#E2E8F0'}
+                strokeWidth={activeFeature === 'scheduling' ? '1.75' : '1.25'}
+                strokeLinecap="round"
+                className="transition-[stroke,stroke-width] duration-250 ease-out"
               />
-            </circle>
-            {/* Path 3 Docking Node at Dashboard Top */}
-            <circle cx="595" cy="366" r="9" fill="#38BDF8" opacity="0.25">
-              <animate attributeName="r" values="6;11;6" dur="2.5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.35;0.1;0.35" dur="2.5s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="595" cy="366" r="4.5" fill="#38BDF8" stroke="#FFFFFF" strokeWidth="1.5" />
+              {/* Flowing Thin Blue Light Beam */}
+              <path
+                d="M 745 75 L 625 75 Q 595 75, 595 105 L 595 370"
+                stroke="url(#beam-blue-right)"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeDasharray="100 450"
+                className="animate-transfer-long-3 pointer-events-none"
+                filter="url(#beam-glow)"
+              />
+            </g>
 
-            {/* Path 4: Bottom-Right Payments (Cyan) -> (845, 220) to (745, 370) */}
-            <path
-              d="M 845 220 L 775 220 Q 745 220, 745 250 L 745 370"
-              stroke={activeFeature === 'payments' ? 'url(#glow-cyan)' : '#CBD5E1'}
-              strokeWidth={activeFeature === 'payments' ? '2.5' : '1.5'}
-              strokeLinecap="round"
-              className="transition-all duration-300"
-            />
-            {/* Path 4 Anchor Dot on Card Left Edge */}
-            <circle cx="845" cy="220" r="5" fill="#06B6D4" stroke="#FFFFFF" strokeWidth="2" />
-            {/* Path 4 Traveling Pulse */}
-            <circle r="3.5" fill="#06B6D4">
-              <animateMotion
-                path="M 845 220 L 775 220 Q 745 220, 745 250 L 745 370"
-                dur="3s"
-                repeatCount="indefinite"
-                begin="0.4s"
+            {/* Conduit 4: Bottom-Right Payments (Cyan) -> (845, 220) to (745, 370) */}
+            <g className="conduit-group">
+              {/* Base Static Hairline Path */}
+              <path
+                d="M 845 220 L 775 220 Q 745 220, 745 250 L 745 370"
+                stroke={activeFeature === 'payments' ? '#BFDBFE' : '#E2E8F0'}
+                strokeWidth={activeFeature === 'payments' ? '1.75' : '1.25'}
+                strokeLinecap="round"
+                className="transition-[stroke,stroke-width] duration-250 ease-out"
               />
-            </circle>
-            {/* Path 4 Docking Node at Dashboard Top */}
-            <circle cx="745" cy="366" r="9" fill="#06B6D4" opacity="0.25">
-              <animate attributeName="r" values="6;11;6" dur="2.3s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.35;0.1;0.35" dur="2.3s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="745" cy="366" r="4.5" fill="#06B6D4" stroke="#FFFFFF" strokeWidth="1.5" />
+              {/* Flowing Thin Blue Light Beam */}
+              <path
+                d="M 845 220 L 775 220 Q 745 220, 745 250 L 745 370"
+                stroke="url(#beam-blue-right)"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeDasharray="75 300"
+                className="animate-transfer-short-4 pointer-events-none"
+                filter="url(#beam-glow)"
+              />
+            </g>
 
 
 
@@ -283,7 +264,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 onMouseLeave={() => setActiveFeature(null)}
                 className="w-full h-full cursor-pointer group"
               >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(168,85,247,0.22),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(168,85,247,0.35)]">
+                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(168,85,247,0.22),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(168,85,247,0.35)] active:scale-[0.96]">
                   <img 
                     src="/icon-notetaker-3d.png" 
                     alt="AI Notetaker" 
@@ -300,7 +281,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 onMouseLeave={() => setActiveFeature(null)}
                 className="w-full h-full cursor-pointer group"
               >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(132,204,22,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(132,204,22,0.38)]">
+                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(132,204,22,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(132,204,22,0.38)] active:scale-[0.96]">
                   <img 
                     src="/icon-velie-3d.png" 
                     alt="Velie AI" 
@@ -310,14 +291,28 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
               </div>
             </foreignObject>
 
-            {/* Center Logo: 3D Infinity Ribbon -> x=390..610, y=95..205 */}
-            <foreignObject x="390" y="95" width="220" height="105" className="overflow-visible">
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="w-[200px] h-[95px] flex items-center justify-center drop-shadow-[0_16px_32px_rgba(0,85,255,0.26)]">
-                  <img 
-                    src="/elev-infinity-logo.png" 
-                    alt="newseed Brandmark" 
-                    className="w-full h-full object-contain pointer-events-none" 
+            {/* Centerpiece: Velie Liquid Glass Orb (Enlarged 270px, Exact Velie Section Card Palette & Aura) */}
+            <foreignObject x="365" y="13" width="270" height="270" className="overflow-visible">
+              <div className="w-full h-full relative flex items-center justify-center group/orb cursor-pointer">
+                {/* Soft Radial Ambient Aura (Identical to Velie Card in TimelineFeatureDeck) */}
+                <div 
+                  className={`absolute inset-0 rounded-full transition-all duration-500 pointer-events-none ${
+                    activeFeature 
+                      ? 'bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.18)_0%,rgba(99,102,241,0.08)_45%,transparent_70%)] scale-110'
+                      : 'bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.12)_0%,rgba(99,102,241,0.05)_45%,transparent_70%)] scale-100'
+                  }`}
+                  aria-hidden="true" 
+                />
+
+                {/* Soft Grounding Ambient Shadow (Identical to Velie Card) */}
+                <div className="absolute bottom-2 w-40 h-6 bg-blue-500/10 blur-xl rounded-full pointer-events-none" />
+
+                {/* Liquid Glass Orb Canvas / WebGPU Caustics */}
+                <div className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-[0.96]">
+                  <LiquidOrb
+                    state="thinking"
+                    interactive={true}
+                    className="w-full h-full"
                   />
                 </div>
               </div>
@@ -330,7 +325,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 onMouseLeave={() => setActiveFeature(null)}
                 className="w-full h-full cursor-pointer group"
               >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(56,189,248,0.26),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(56,189,248,0.4)]">
+                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(56,189,248,0.26),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(56,189,248,0.4)] active:scale-[0.96]">
                   <img 
                     src="/icon-scheduling-3d.png" 
                     alt="Scheduling" 
@@ -347,7 +342,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 onMouseLeave={() => setActiveFeature(null)}
                 className="w-full h-full cursor-pointer group"
               >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(6,182,212,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(6,182,212,0.38)]">
+                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(6,182,212,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(6,182,212,0.38)] active:scale-[0.96]">
                   <img 
                     src="/icon-payments-3d.png" 
                     alt="Payments" 

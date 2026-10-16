@@ -30,11 +30,15 @@ export default function LiquidOrb({
   const [internalState, setInternalState] = useState<OrbState>(externalState);
   const [webGpuSupported, setWebGpuSupported] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState(false);
+  const switchStateRef = useRef<((nextState: OrbState) => void) | null>(null);
 
   // Sync external state if changed
   useEffect(() => {
     if (externalState) {
       setInternalState(externalState);
+      if (switchStateRef.current) {
+        switchStateRef.current(externalState);
+      }
     }
   }, [externalState]);
 
@@ -131,7 +135,9 @@ export default function LiquidOrb({
       transitionStartedAt = now;
       activeTransitionDuration = nextState === 'thinking' ? activationDurationMs : settleDurationMs;
       currentState = nextState;
+      if (onStateChange) onStateChange(nextState);
     }
+    switchStateRef.current = switchState;
 
     // Attach to window for external control
     const api = {
@@ -388,6 +394,7 @@ export default function LiquidOrb({
 
     return () => {
       stopped = true;
+      switchStateRef.current = null;
       cancelAnimationFrame(animationFrame);
       ribbonTarget?.destroy();
       device?.destroy();
@@ -407,24 +414,24 @@ export default function LiquidOrb({
           aria-label="Liquid Glass Orb Particle Ribbon"
         />
       ) : (
-        /* Fallback: Ultra-Polished Neural Glass Orb for Non-WebGPU Browsers */
-        <div className="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-transparent">
-          {/* Outer Multi-Layer Diffuse Glow */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0055FF] via-[#7C3AED] to-[#38BDF8] blur-[32px] opacity-70 animate-pulse" />
-          <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 blur-[20px] opacity-40 animate-spin [animation-duration:12s]" />
+        /* Fallback: Ultra-Polished Neural Glass Orb Faithful to Photo 1 & Velie Section Card */
+        <div className="relative w-full h-full max-w-[270px] max-h-[270px] aspect-square rounded-full flex items-center justify-center bg-transparent">
+          {/* Outer Multi-Layer Diffuse Glow (Soft Velie Cyan & Violet Atmospheric Haze) */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-400/25 via-indigo-400/15 to-pink-400/20 blur-[28px] opacity-70 animate-pulse pointer-events-none" />
+          <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-300/20 to-cyan-300/25 blur-[18px] opacity-45 animate-spin [animation-duration:16s] pointer-events-none" />
 
-          {/* Glass Sphere Shell */}
-          <div className="relative w-full h-full rounded-full border border-white/60 shadow-[inset_0_4px_24px_rgba(255,255,255,0.6),0_12px_36px_rgba(0,85,255,0.25)] bg-gradient-to-b from-white/40 via-blue-200/30 to-blue-600/20 backdrop-blur-md overflow-hidden flex items-center justify-center">
-            {/* Inner Refractive Concentric Waves */}
-            <div className="absolute w-[80%] h-[80%] rounded-full border border-cyan-400/40 animate-ping [animation-duration:3s] opacity-60" />
-            <div className="absolute w-[60%] h-[60%] rounded-full bg-gradient-to-tr from-[#0055FF]/80 to-[#C084FC]/80 blur-md animate-pulse" />
+          {/* Glass Sphere Shell (Translucent Pearlescent Glass) */}
+          <div className="relative w-full h-full rounded-full border border-white/80 shadow-[inset_0_4px_24px_rgba(255,255,255,0.85),0_12px_36px_rgba(0,85,255,0.10)] bg-gradient-to-b from-white/75 via-white/35 to-blue-50/20 backdrop-blur-md overflow-hidden flex items-center justify-center">
+            {/* Inner Refractive Iridescent Ribbon Waves */}
+            <div className="absolute w-[82%] h-[82%] rounded-full border border-cyan-300/40 animate-ping [animation-duration:4s] opacity-50 pointer-events-none" />
+            <div className="absolute w-[68%] h-[68%] rounded-full bg-gradient-to-tr from-cyan-300/35 via-purple-300/30 to-pink-300/35 blur-md animate-pulse pointer-events-none" />
             
-            {/* Highlight Crescent Rim */}
-            <div className="absolute top-2 left-3 w-16 h-8 rounded-[50%] bg-white/40 blur-[4px] -rotate-45 pointer-events-none" />
-            <div className="absolute bottom-3 right-3 w-10 h-6 rounded-[50%] bg-cyan-300/30 blur-[6px] pointer-events-none" />
+            {/* Luminous Specular Crescents */}
+            <div className="absolute top-2 left-4 w-20 h-10 rounded-[50%] bg-white/70 blur-[3px] -rotate-45 pointer-events-none" />
+            <div className="absolute bottom-3 right-4 w-14 h-7 rounded-[50%] bg-cyan-200/40 blur-[5px] pointer-events-none" />
 
-            {/* Glowing Core */}
-            <div className="w-12 h-12 rounded-full bg-white shadow-[0_0_24px_#38BDF8] animate-pulse" />
+            {/* Glowing Pure White Core */}
+            <div className="w-14 h-14 rounded-full bg-white/95 shadow-[0_0_28px_rgba(56,189,248,0.65),0_0_12px_rgba(255,255,255,0.9)] animate-pulse pointer-events-none" />
           </div>
         </div>
       )}
