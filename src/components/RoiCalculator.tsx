@@ -1,143 +1,172 @@
 import { useState } from 'react';
-import { Calculator, ArrowRight, DollarSign, Clock, TrendingUp } from 'lucide-react';
+import { ArrowRight, Clock, DollarSign } from 'lucide-react';
+import { useLang } from '../i18n';
+import { ROI, SITE } from '../data/landingData';
 
-interface RoiCalculatorProps {
-  onOpenAuth: (mode: 'signup') => void;
-}
+// Share of repetitive work assumed automatable (00 §9). Fixed by the formula, not a user input.
+const AUTOMATABLE_SHARE = 0.6;
 
-export default function RoiCalculator({ onOpenAuth }: RoiCalculatorProps) {
-  const [teamSize, setTeamSize] = useState(15);
-  const [meetingsPerWeek, setMeetingsPerWeek] = useState(8);
+export default function RoiCalculator() {
+  const { lang, t } = useLang();
+  const salaryRange = ROI.inputs.salary.range[lang];
+  const locale = lang === 'id' ? 'id-ID' : 'en-US';
 
-  // Math: Average 15 mins saved per scheduled meeting by eliminating email ping-pong & rescheduling
-  // (15 mins * meetingsPerWeek * teamSize * 50 weeks) / 60 = hours saved per year
-  const hoursSavedPerMeeting = 0.25; // 15 mins
-  const totalAnnualMeetings = teamSize * meetingsPerWeek * 50;
-  const annualHoursSaved = Math.round(totalAnnualMeetings * hoursSavedPerMeeting);
-  
-  // Assuming average hourly knowledge worker cost of $60/hr
-  const estimatedAnnualSavings = annualHoursSaved * 60;
-  const hoursSavedPerRepMonthly = Math.round((meetingsPerWeek * hoursSavedPerMeeting * 50) / 12);
+  const [people, setPeople] = useState<number>(ROI.inputs.people.default);
+  const [hours, setHours] = useState<number>(ROI.inputs.hours.default);
+  const [salary, setSalary] = useState<number>(salaryRange.default);
+  const [salaryLang, setSalaryLang] = useState(lang);
+
+  // Switching language resets the salary to that language's default (USD or IDR).
+  if (salaryLang !== lang) {
+    setSalaryLang(lang);
+    setSalary(salaryRange.default);
+  }
+
+  const money = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: lang === 'id' ? 'IDR' : 'USD',
+    maximumFractionDigits: 0,
+  });
+
+  const hoursPerYear = Math.round(people * hours * 52 * AUTOMATABLE_SHARE);
+  const costPerYear = Math.round(people * salary * 12 * (hours / 40) * AUTOMATABLE_SHARE);
+  const costPerMonth = Math.round(costPerYear / 12);
+
+  const prefill = t(ROI.waPrefill)
+    .replace('{cost}', money.format(costPerYear))
+    .replace('{people}', String(people));
 
   return (
     <section id="roi" className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
+
           {/* Left Column: Sliders */}
           <div className="lg:col-span-6 space-y-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E2E8F0] shadow-2xs mb-4">
-                <span className="w-2 h-2 rounded-full bg-[#0055FF] animate-pulse" />
-                <span className="text-[11px] font-normal uppercase tracking-widest text-[#0A0D14]">
-                  Productivity ROI Estimator
-                </span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight">
-                Calculate the real value <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">of automated scheduling</span>
-              </h2>
-              <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl">
-                See how much focused productive time your sales, recruiting, and customer success teams reclaim when email ping-pong is eliminated.
-              </p>
-            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight text-balance">
+              {t(ROI.heading)}
+            </h2>
 
-            {/* Slider 1: Team Size */}
+            {/* Slider 1: People */}
             <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-normal text-slate-700">Team members booking meetings:</span>
+                <label htmlFor="roi-people" className="font-normal text-slate-700">
+                  {t(ROI.inputs.people.label)}
+                </label>
                 <span className="font-normal text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
-                  {teamSize} people
+                  {people}
                 </span>
               </div>
               <input
+                id="roi-people"
                 type="range"
-                min="1"
-                max="100"
-                value={teamSize}
-                onChange={(e) => setTeamSize(Number(e.target.value))}
+                min={ROI.inputs.people.min}
+                max={ROI.inputs.people.max}
+                value={people}
+                onChange={(e) => setPeople(Number(e.target.value))}
                 className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
               />
-              <div className="flex justify-between text-[11px] text-slate-400 font-mono">
-                <span>1 member</span>
-                <span>50 members</span>
-                <span>100+ members</span>
+              <div className="flex justify-between text-[11px] text-slate-400 font-mono tabular-nums">
+                <span>{ROI.inputs.people.min}</span>
+                <span>{ROI.inputs.people.max}</span>
               </div>
             </div>
 
-            {/* Slider 2: Meetings Per Week */}
+            {/* Slider 2: Hours per person per week */}
             <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-normal text-slate-700">Average weekly meetings per person:</span>
+                <label htmlFor="roi-hours" className="font-normal text-slate-700">
+                  {t(ROI.inputs.hours.label)}
+                </label>
                 <span className="font-normal text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
-                  {meetingsPerWeek} meetings
+                  {hours}
                 </span>
               </div>
               <input
+                id="roi-hours"
                 type="range"
-                min="2"
-                max="30"
-                value={meetingsPerWeek}
-                onChange={(e) => setMeetingsPerWeek(Number(e.target.value))}
+                min={ROI.inputs.hours.min}
+                max={ROI.inputs.hours.max}
+                value={hours}
+                onChange={(e) => setHours(Number(e.target.value))}
                 className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
               />
-              <div className="flex justify-between text-[11px] text-slate-400 font-mono">
-                <span>2 meetings</span>
-                <span>15 meetings</span>
-                <span>30 meetings</span>
+              <div className="flex justify-between text-[11px] text-slate-400 font-mono tabular-nums">
+                <span>{ROI.inputs.hours.min}</span>
+                <span>{ROI.inputs.hours.max}</span>
+              </div>
+            </div>
+
+            {/* Slider 3: Average monthly salary */}
+            <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
+              <div className="flex items-center justify-between text-sm">
+                <label htmlFor="roi-salary" className="font-normal text-slate-700">
+                  {t(ROI.inputs.salary.label)}
+                </label>
+                <span className="font-normal text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
+                  {money.format(salary)}
+                </span>
+              </div>
+              <input
+                id="roi-salary"
+                type="range"
+                min={salaryRange.min}
+                max={salaryRange.max}
+                step={salaryRange.step}
+                value={salary}
+                onChange={(e) => setSalary(Number(e.target.value))}
+                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
+              />
+              <div className="flex justify-between text-[11px] text-slate-400 font-mono tabular-nums">
+                <span>{money.format(salaryRange.min)}</span>
+                <span>{money.format(salaryRange.max)}</span>
               </div>
             </div>
           </div>
 
           {/* Right Column: Calculated Results Display */}
           <div className="lg:col-span-6 bg-[#F8FAFC] rounded-2xl p-8 sm:p-10 border border-[#E2E8F0] shadow-sm relative">
-            <div className="text-xs font-normal uppercase tracking-wider text-slate-500 mb-6 flex items-center justify-between">
-              <span>Estimated Annual Impact</span>
-              <span className="text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full font-normal text-[11px] flex items-center gap-1">
-                <TrendingUp className="w-3 h-3 text-emerald-600" />
-                High ROI Impact
-              </span>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
               <div className="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-2xs">
                 <div className="flex items-center gap-2 text-slate-500 text-xs mb-2">
                   <Clock className="w-4 h-4 text-[#0055FF]" />
-                  <span>Annual Time Saved</span>
+                  <span>{t(ROI.outputs.hours)}</span>
                 </div>
                 <div className="text-3xl sm:text-4xl font-normal text-[#0A0D14] tracking-tight tabular-nums">
-                  {annualHoursSaved.toLocaleString()} <span className="text-sm font-normal text-slate-500">hrs</span>
+                  {hoursPerYear.toLocaleString(locale)}
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">
-                  ~{hoursSavedPerRepMonthly} hrs saved / employee / month
-                </p>
               </div>
 
               <div className="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-2xs">
                 <div className="flex items-center gap-2 text-slate-500 text-xs mb-2">
                   <DollarSign className="w-4 h-4 text-emerald-600" />
-                  <span>Value Reclaimed</span>
+                  <span>{t(ROI.outputs.savings)}</span>
                 </div>
                 <div className="text-3xl sm:text-4xl font-normal text-emerald-600 tracking-tight tabular-nums">
-                  ${estimatedAnnualSavings.toLocaleString()}
+                  {money.format(costPerYear)}
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">
-                  Based on $60/hr industry benchmark
+                <p className="text-[11px] text-slate-500 mt-1 tabular-nums">
+                  {t(ROI.outputs.perMonth).replace('{x}', money.format(costPerMonth))}
                 </p>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] mb-6 text-xs text-blue-900 flex items-center justify-between">
-              <span className="font-normal">Average lead conversion acceleration:</span>
-              <span className="font-normal text-[#0055FF]">+320% faster</span>
+            {/* Formula and assumption, small grey text */}
+            <div className="space-y-1.5 mb-6 text-[11px] leading-relaxed text-slate-500 font-mono break-words">
+              <p>{ROI.formula.hours}</p>
+              <p>{ROI.formula.cost}</p>
+              <p className="font-sans">{t(ROI.assumption)}</p>
             </div>
 
-            <button
-              onClick={() => onOpenAuth('signup')}
+            <a
+              href={SITE.whatsapp(prefill)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 active:scale-[0.96] text-white font-normal text-sm py-3.5 px-6 rounded-full shadow-xs hover:shadow-md hover:shadow-blue-500/20 transition-[transform,box-shadow,filter] duration-150 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Unlock these savings with newseed</span>
+              <span>{t(ROI.cta)}</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
           </div>
 
         </div>

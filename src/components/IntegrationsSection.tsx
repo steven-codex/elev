@@ -1,100 +1,54 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import {
-  ArrowRight,
-  Search,
-  Zap,
-  Video,
-  Calendar as CalendarIcon,
-  MessageSquare,
-  Database,
-  Sparkles,
-  Layers,
-  CreditCard,
-  X,
-  Bot
-} from 'lucide-react';
-import { Reveal, ImageReveal } from '../motion';
+import { ArrowRight, Search, X } from 'lucide-react';
+import { Reveal } from '../motion';
+import { useLang } from '../i18n';
+import { INTEGRATIONS } from '../data/landingData';
 
-interface IntegrationsSectionProps {
-  onOpenDemo: () => void;
-}
+// Logo files live in public/logos/ (Simple Icons, CC0).
+const itemIcon = (name: string) => INTEGRATIONS.items.find((item) => item.name === name)?.icon ?? '';
 
-const CATEGORIES = [
-  { id: 'all', label: 'All' },
-  { id: 'calendars', label: 'Calendars' },
-  { id: 'video', label: 'Video' },
-  { id: 'crm', label: 'CRM & Pay' },
-  { id: 'ai', label: 'AI Models' }
-] as const;
-
-const INTEGRATIONS = [
-  { name: 'Zoom', category: 'video', desc: 'Auto-generate unique meeting URLs with passwords.', icon: 'https://cdn.calendlycms.com/Zoom-1.svg' },
-  { name: 'Google Calendar', category: 'calendars', desc: 'Real-time multi-calendar conflict detection and sync.', icon: 'https://cdn.calendlycms.com/google-calendar-icon.svg' },
-  { name: 'Gmail', category: 'calendars', desc: 'Embed free-time slots right into your compose box.', icon: 'https://cdn.calendlycms.com/google-gmail-icon.svg' },
-  { name: 'Google Meet', category: 'video', desc: 'Instant 1-click video links for every booked invite.', icon: 'https://cdn.calendlycms.com/google-meet-icon.svg' },
-  { name: 'Salesforce', category: 'crm', desc: 'Log meetings, leads, and custom activity records.', icon: 'https://cdn.calendlycms.com/saleforce.svg' },
-  { name: 'Slack', category: 'crm', desc: 'Instant meeting notifications and booking reminders.', icon: 'https://cdn.calendlycms.com/slack-logo-icon.svg' },
-  { name: 'Microsoft Teams', category: 'video', desc: 'Direct video link generation with Outlook sync.', icon: 'https://cdn.calendlycms.com/teams.svg' },
-  { name: 'Outlook', category: 'calendars', desc: 'Native Microsoft 365 calendar synchronization.', icon: 'https://cdn.calendlycms.com/outlook.svg' },
-  { name: 'Chrome Extension', category: 'all', desc: 'Quick-share booking links from your browser toolbar.', icon: 'https://cdn.calendlycms.com/chrome-logo.svg' },
-  { name: 'OpenAI (ChatGPT)', category: 'ai', desc: 'Coordinate meeting requests directly from ChatGPT.', icon: 'https://cdn.calendlycms.com/openai-icon.svg' },
-  { name: 'Claude', category: 'ai', desc: 'Prompt Claude to find availability and prepare agendas.', icon: 'https://cdn.calendlycms.com/claude-icon.svg' },
-  { name: 'HubSpot', category: 'crm', desc: 'Map custom questions to contact properties.', icon: 'https://cdn.calendlycms.com/hubspot.svg' },
-  { name: 'Stripe', category: 'crm', desc: 'Charge booking deposits and packages seamlessly.', icon: 'https://cdn.calendlycms.com/stripe-logo.svg' },
-  { name: 'PayPal', category: 'crm', desc: 'Accept international payments and consultations.', icon: 'https://cdn.calendlycms.com/paypal-icon.svg' },
-  { name: 'Zapier', category: 'all', desc: 'Connect newseed with 5,000+ business productivity apps.', icon: 'https://cdn.calendlycms.com/zapier-icon.svg' }
-];
-
-export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionProps) {
+export default function IntegrationsSection() {
+  const { t } = useLang();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<'all' | 'calendars' | 'video' | 'crm' | 'ai'>('all');
+  const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [connectedApps, setConnectedApps] = useState<Record<string, boolean>>({
-    'Google Calendar': true,
-    'Zoom': true,
-    'Stripe': true
-  });
 
   const filtered = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
-    return INTEGRATIONS.filter(item => {
+    return INTEGRATIONS.items.filter(item => {
       const matchesCat = activeCategory === 'all' || item.category === activeCategory;
-      const matchesSearch = !query || item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
+      const matchesSearch = !query || item.name.toLowerCase().includes(query) || t(item.desc).toLowerCase().includes(query);
       return matchesCat && matchesSearch;
     });
-  }, [activeCategory, searchQuery]);
-
-  const toggleConnect = (name: string) => {
-    setConnectedApps(prev => ({ ...prev, [name]: !prev[name] }));
-  };
+  }, [activeCategory, searchQuery, t]);
 
   return (
-    <section id="integrations" className="py-20 sm:py-28 bg-white border-t border-[#E2E8F0]">
+    <section id="integrations" className="py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Main Pristine White Hero Card Container */}
         <div className="relative w-full bg-white text-slate-900 rounded-[36px] sm:rounded-[44px] border border-slate-200/80 shadow-[0_16px_50px_rgba(0,0,0,0.04)] overflow-hidden">
-          
+
           {/* Ambient Soft Glow */}
           <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[160px] pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[520px] lg:min-h-[580px] items-center relative z-10">
-            
+
             {/* Left Column: Text & CTA */}
-            <div className="lg:col-span-5 p-7 sm:p-10 lg:p-14 lg:pr-4 space-y-6 text-left relative z-10">
+            <div className="lg:col-span-5 p-8 sm:p-12 lg:p-16 lg:pr-6 space-y-7 sm:space-y-8 text-left relative z-10">
               <Reveal y={24}>
                 <h2 className="text-3xl sm:text-4xl lg:text-[3.1rem] font-normal text-[#0A0D14] tracking-tight leading-[1.08] text-balance">
-                  Connect newseed to <br />
+                  {t(INTEGRATIONS.heading.lead)} <br />
                   <span className="font-instrument italic font-normal text-[#5A95FF] bg-gradient-to-r from-[#4A8DFF] via-[#60A5FA] to-[#93C5FD] bg-clip-text text-transparent">
-                    everything you use
+                    {t(INTEGRATIONS.heading.accent)}
                   </span>
                 </h2>
               </Reveal>
 
               <Reveal delay={0.12} y={16}>
                 <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-normal max-w-sm text-pretty">
-                  newseed fits right into your existing stack and automates the busywork in between.
+                  {t(INTEGRATIONS.sub)}
                 </p>
               </Reveal>
 
@@ -105,7 +59,7 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
                     onClick={() => setIsModalOpen(true)}
                     className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#80B5FF] to-[#3B82F6] hover:from-[#6BA3FF] hover:to-[#2563EB] text-white font-normal text-xs sm:text-sm shadow-[0_8px_22px_rgba(59,130,246,0.28)] hover:shadow-[0_12px_28px_rgba(59,130,246,0.38)] active:scale-[0.97] transition-[filter,box-shadow,transform] duration-160 cursor-pointer"
                   >
-                    <span>Explore 150+ integrations</span>
+                    <span>{t(INTEGRATIONS.cta)}</span>
                     <ArrowRight className="w-4 h-4 text-white" />
                   </button>
                 </div>
@@ -124,12 +78,12 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
       </div>
 
       {/* ========================================================= */}
-      {/* INTERACTIVE INTEGRATIONS EXPLORER MODAL                   */}
+      {/* INTERACTIVE TOOLS EXPLORER MODAL                          */}
       {/* ========================================================= */}
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-xl">
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -140,8 +94,8 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
               {/* Modal Header */}
               <div className="p-6 pb-4 border-b border-slate-100 flex items-center justify-between">
                 <div>
-                  <h3 className="text-xl font-normal text-[#0A0D14] tracking-tight">150+ Native Integrations</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Explore native apps and single-click connections with newseed.</p>
+                  <h3 className="text-xl font-normal text-[#0A0D14] tracking-tight">{t(INTEGRATIONS.modal.title)}</h3>
+                  <p className="text-xs text-slate-500 mt-0.5">{t(INTEGRATIONS.modal.sub)}</p>
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
@@ -159,40 +113,39 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search 150+ integrations..."
+                    placeholder={t(INTEGRATIONS.modal.search)}
                     className="w-full pl-10 pr-4 py-2 text-xs rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0055FF] bg-white shadow-2xs transition-[border-color,box-shadow]"
                   />
                 </div>
 
                 <div className="flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-0.5">
-                  {CATEGORIES.map(cat => (
+                  {INTEGRATIONS.modal.categories.map(cat => (
                     <button
                       key={cat.id}
-                      onClick={() => setActiveCategory(cat.id as any)}
+                      onClick={() => setActiveCategory(cat.id)}
                       className={`text-xs font-normal px-3.5 py-1.5 rounded-full transition-[background-color,border-color,color,transform] duration-200 cursor-pointer active:scale-[0.96] whitespace-nowrap ${
                         activeCategory === cat.id
                           ? 'bg-[#0055FF] text-white shadow-xs'
                           : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                       }`}
                     >
-                      {cat.label}
+                      {t(cat.label)}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Integrations Grid */}
+              {/* Tools Grid */}
               <div className="p-6 overflow-y-auto flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
-                {filtered.map((item) => {
-                  const isConnected = !!connectedApps[item.name];
-                  return (
-                    <div
-                      key={item.name}
-                      className="p-4 rounded-2xl border border-slate-200/80 bg-white hover:border-blue-400 transition-[border-color,box-shadow] duration-200 shadow-2xs flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/60 p-1.5 flex items-center justify-center">
+                {filtered.map((item) => (
+                  <div
+                    key={item.name}
+                    className="p-4 rounded-2xl border border-slate-200/80 bg-white hover:border-blue-400 transition-[border-color,box-shadow] duration-200 shadow-2xs flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/60 p-1.5 flex items-center justify-center">
+                          {item.icon ? (
                             <img
                               src={item.icon}
                               alt={item.name}
@@ -201,36 +154,33 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
                                 (e.target as HTMLElement).style.display = 'none';
                               }}
                             />
-                          </div>
-                          <button
-                            onClick={() => toggleConnect(item.name)}
-                            className={`text-[10px] font-normal px-2.5 py-0.5 rounded-full border transition-colors cursor-pointer active:scale-95 ${
-                              isConnected
-                                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                                : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'
-                            }`}
-                          >
-                            {isConnected ? '✓ Connected' : '+ Connect'}
-                          </button>
+                          ) : (
+                            <span
+                              aria-hidden="true"
+                              className="w-5 h-5 rounded-full bg-[#0055FF] text-white text-[10px] font-semibold flex items-center justify-center"
+                            >
+                              {item.name.charAt(0)}
+                            </span>
+                          )}
                         </div>
-                        <h4 className="font-normal text-xs text-slate-900 mb-1">{item.name}</h4>
-                        <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
-                          {item.desc}
-                        </p>
                       </div>
+                      <h4 className="font-normal text-xs text-slate-900 mb-1">{item.name}</h4>
+                      <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                        {t(item.desc)}
+                      </p>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
 
               {/* Modal Footer */}
               <div className="p-4 px-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span>Showing {filtered.length} integrations</span>
+                <span>{t(INTEGRATIONS.modal.showing)(filtered.length)}</span>
                 <button
                   onClick={() => setIsModalOpen(false)}
                   className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white font-normal transition-all duration-200 shadow-xs hover:shadow-blue-500/20 cursor-pointer active:scale-95"
                 >
-                  Done
+                  {t(INTEGRATIONS.modal.done)}
                 </button>
               </div>
 
@@ -243,54 +193,40 @@ export default function IntegrationsSection({ onOpenDemo }: IntegrationsSectionP
   );
 }
 
-function ZoomIconSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="none">
-      <rect width="24" height="24" rx="5.5" fill="#2D8CFF"/>
-      <path d="M5 8.5C5 7.67157 5.67157 7 6.5 7H12.5C13.3284 7 14 7.67157 14 8.5V15.5C14 16.3284 13.3284 17 12.5 17H6.5C5.67157 17 5 16.3284 5 15.5V8.5Z" fill="white"/>
-      <path d="M15 10.2L18.4 7.8C18.7333 7.55 19.2 7.788 19.2 8.2V15.8C19.2 16.212 18.7333 16.45 18.4 16.2L15 13.8V10.2Z" fill="white"/>
-    </svg>
-  );
-}
-
-function IntegrationPill({ 
-  name, 
-  icon, 
-  floatOffset = 2.5, 
-  floatDuration = 5, 
-  floatDelay = 0 
-}: { 
-  name: string; 
-  icon: string | React.ReactNode; 
-  floatOffset?: number; 
-  floatDuration?: number; 
-  floatDelay?: number; 
+function IntegrationPill({
+  name,
+  icon,
+  floatOffset = 2.5,
+  floatDuration = 5,
+  floatDelay = 0
+}: {
+  name: string;
+  icon: string;
+  floatOffset?: number;
+  floatDuration?: number;
+  floatDelay?: number;
 }) {
   return (
     <motion.div
       animate={{ y: [-floatOffset, floatOffset, -floatOffset] }}
-      transition={{ 
-        duration: floatDuration, 
-        repeat: Infinity, 
-        ease: 'easeInOut', 
-        delay: floatDelay 
+      transition={{
+        duration: floatDuration,
+        repeat: Infinity,
+        ease: 'easeInOut',
+        delay: floatDelay
       }}
       whileHover={{ scale: 1.05, y: -2 }}
       whileTap={{ scale: 0.96 }}
       className="bg-white border border-slate-100/90 shadow-[0_10px_25px_rgba(0,30,80,0.06),0_2px_6px_rgba(0,0,0,0.02)] hover:shadow-[0_16px_36px_rgba(0,30,80,0.12)] px-4 sm:px-5 py-2.5 sm:py-3 rounded-[20px] sm:rounded-[22px] flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none transition-shadow shrink-0"
     >
-      {typeof icon === 'string' ? (
-        <img 
-          src={icon} 
-          alt={name} 
-          className="w-5 h-5 sm:w-5.5 sm:h-5.5 object-contain shrink-0"
-          onError={(e) => {
-            (e.target as HTMLElement).style.display = 'none';
-          }}
-        />
-      ) : (
-        icon
-      )}
+      <img
+        src={icon}
+        alt={name}
+        className="w-5 h-5 sm:w-5.5 sm:h-5.5 object-contain shrink-0"
+        onError={(e) => {
+          (e.target as HTMLElement).style.display = 'none';
+        }}
+      />
       <span className="text-xs sm:text-sm font-normal text-[#0A0D14] tracking-tight whitespace-nowrap">{name}</span>
     </motion.div>
   );
@@ -344,8 +280,8 @@ function AcousticRippleAnimation() {
 function FluidIntegrationsStage() {
   return (
     <div className="relative w-full h-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex flex-col justify-between pt-10 sm:pt-12 pb-8 sm:pb-10 pr-4 sm:pr-8 lg:pr-10 pl-2">
-      {/* Background Fluid Wave Artwork (Foto 2) Flush to Bottom-Right Corner & Clipped by Parent Card */}
-      <div 
+      {/* Background Fluid Wave Artwork Flush to Bottom-Right Corner & Clipped by Parent Card */}
+      <div
         className="absolute right-0 bottom-0 w-full h-[76%] sm:h-[80%] rounded-bl-[140px] sm:rounded-bl-[180px] overflow-hidden pointer-events-none"
         style={{
           WebkitMaskImage: 'linear-gradient(to top, black 35%, rgba(0,0,0,0.85) 65%, transparent 100%)',
@@ -353,7 +289,7 @@ function FluidIntegrationsStage() {
         }}
         aria-hidden="true"
       >
-        <div 
+        <div
           className="absolute inset-0 bg-[url('/integrations-bg.png')] bg-cover bg-right-bottom"
           style={{
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 6%, rgba(0,0,0,0.9) 25%, black 100%)',
@@ -364,37 +300,37 @@ function FluidIntegrationsStage() {
 
       {/* Row 1: Top Row (Sitting on Pristine White Field above Wave) */}
       <div className="relative z-10 w-full flex items-center justify-center gap-3 sm:gap-5 lg:gap-6">
-        <IntegrationPill 
-          name="Google Calendar" 
-          icon="https://cdn.calendlycms.com/google-calendar-icon.svg" 
-          floatOffset={2.5} 
-          floatDuration={4.8} 
-          floatDelay={0} 
+        <IntegrationPill
+          name="WhatsApp"
+          icon={itemIcon('WhatsApp')}
+          floatOffset={2.5}
+          floatDuration={4.8}
+          floatDelay={0}
         />
-        <IntegrationPill 
-          name="Zoom" 
-          icon={<ZoomIconSvg />} 
-          floatOffset={3} 
-          floatDuration={5.2} 
-          floatDelay={0.5} 
+        <IntegrationPill
+          name="n8n"
+          icon={itemIcon('n8n')}
+          floatOffset={3}
+          floatDuration={5.2}
+          floatDelay={0.5}
         />
-        <IntegrationPill 
-          name="Slack" 
-          icon="https://cdn.calendlycms.com/slack-logo-icon.svg" 
-          floatOffset={2.5} 
-          floatDuration={4.4} 
-          floatDelay={1.2} 
+        <IntegrationPill
+          name="Google Sheets"
+          icon={itemIcon('Google Sheets')}
+          floatOffset={2.5}
+          floatDuration={4.4}
+          floatDelay={1.2}
         />
       </div>
 
-      {/* Row 2: Middle Row (Spanning Salesforce, elev 3D Infinity with Radar Animation, Stripe) */}
+      {/* Row 2: Middle Row (OpenAI, Newseed 3D Infinity with Radar Animation, HubSpot) */}
       <div className="relative z-10 w-full flex items-center justify-between px-1 sm:px-3 lg:px-4">
-        <IntegrationPill 
-          name="Salesforce" 
-          icon="https://cdn.calendlycms.com/saleforce.svg" 
-          floatOffset={3} 
-          floatDuration={5.6} 
-          floatDelay={0.8} 
+        <IntegrationPill
+          name="OpenAI"
+          icon={itemIcon('OpenAI')}
+          floatOffset={3}
+          floatDuration={5.6}
+          floatDelay={0.8}
         />
 
         {/* Center 3D Infinity Logo with Animated Radar System */}
@@ -410,46 +346,45 @@ function FluidIntegrationsStage() {
           >
             <img
               src="/elev-infinity-logo.png"
-              alt="newseed"
+              alt="Newseed"
               className="w-24 sm:w-28 md:w-32 lg:w-36 h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(0,85,255,0.25)] group-hover:scale-105 transition-transform duration-300 pointer-events-none select-none"
             />
           </motion.div>
         </div>
 
-        <IntegrationPill 
-          name="Stripe" 
-          icon="https://cdn.calendlycms.com/stripe-logo.svg" 
-          floatOffset={2.5} 
-          floatDuration={4.9} 
-          floatDelay={1.5} 
+        <IntegrationPill
+          name="HubSpot"
+          icon={itemIcon('HubSpot')}
+          floatOffset={2.5}
+          floatDuration={4.9}
+          floatDelay={1.5}
         />
       </div>
 
-      {/* Row 3: Bottom Row (OpenAI, HubSpot, Zapier) */}
+      {/* Row 3: Bottom Row (Claude, Make, Notion) */}
       <div className="relative z-10 w-full flex items-center justify-center gap-3 sm:gap-5 lg:gap-6">
-        <IntegrationPill 
-          name="OpenAI" 
-          icon="https://cdn.calendlycms.com/openai-icon.svg" 
-          floatOffset={3} 
-          floatDuration={5.1} 
-          floatDelay={0.3} 
+        <IntegrationPill
+          name="Claude"
+          icon={itemIcon('Claude')}
+          floatOffset={3}
+          floatDuration={5.1}
+          floatDelay={0.3}
         />
-        <IntegrationPill 
-          name="HubSpot" 
-          icon="https://cdn.calendlycms.com/hubspot.svg" 
-          floatOffset={2.5} 
-          floatDuration={4.6} 
-          floatDelay={1.0} 
+        <IntegrationPill
+          name="Make"
+          icon={itemIcon('Make')}
+          floatOffset={2.5}
+          floatDuration={4.6}
+          floatDelay={1.0}
         />
-        <IntegrationPill 
-          name="Zapier" 
-          icon="https://cdn.calendlycms.com/zapier-icon.svg" 
-          floatOffset={3} 
-          floatDuration={5.4} 
-          floatDelay={0.7} 
+        <IntegrationPill
+          name="Notion"
+          icon={itemIcon('Notion')}
+          floatOffset={3}
+          floatDuration={5.4}
+          floatDelay={0.7}
         />
       </div>
     </div>
   );
 }
-

@@ -1,102 +1,68 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Search,
   Bell,
   ChevronDown,
   Plus,
   Home,
-  Video,
-  Calendar,
+  MessageSquare,
+  Workflow,
   Users,
-  CreditCard,
-  FileText,
-  CheckSquare,
   BarChart3,
-  Settings,
-  ArrowUpRight,
-  ArrowRight,
   Clock,
-  Sparkles
+  CheckSquare,
+  ArrowRight
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Reveal, PerspectiveScrollTilt } from '../motion';
 import LiquidOrb from './LiquidOrb';
-
-interface ConnectedAppShellShowcaseProps {
-  onOpenAuth: (mode: 'signup' | 'login') => void;
-  onOpenDemo?: () => void;
-}
+import { useLang } from '../i18n';
+import { APP_SHELL, FINAL_CTA, PROCESS, SITE } from '../data/landingData';
 
 type FeatureKey = 'notetaker' | 'velie' | 'scheduling' | 'payments' | null;
+type NavKey = keyof typeof APP_SHELL.nav;
 
-export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppShellShowcaseProps) {
+// Ecosystem nodes map to process steps 01-04 in node order (00b §A4).
+const STEP_BY_NODE: Record<Exclude<FeatureKey, null>, number> = {
+  notetaker: 0,
+  velie: 1,
+  scheduling: 2,
+  payments: 3
+};
+
+const NAV_ITEMS: { key: NavKey; icon: LucideIcon }[] = [
+  { key: 'home', icon: Home },
+  { key: 'conversations', icon: MessageSquare },
+  { key: 'workflows', icon: Workflow },
+  { key: 'leads', icon: Users },
+  { key: 'reports', icon: BarChart3 }
+];
+
+const METRIC_STYLES: { icon: LucideIcon; tone: string; hover: string }[] = [
+  { icon: MessageSquare, tone: 'bg-blue-50 text-blue-600', hover: 'hover:border-blue-200' },
+  { icon: Users, tone: 'bg-emerald-50 text-emerald-600', hover: 'hover:border-emerald-200' },
+  { icon: Clock, tone: 'bg-purple-50 text-purple-600', hover: 'hover:border-purple-200' },
+  { icon: CheckSquare, tone: 'bg-amber-50 text-amber-600', hover: 'hover:border-amber-200' }
+];
+
+const RUN_DOTS = ['bg-blue-500', 'bg-emerald-500', 'bg-purple-500'];
+
+export default function ConnectedAppShellShowcase() {
+  const { t } = useLang();
   const [activeFeature, setActiveFeature] = useState<FeatureKey>(null);
-  const [activeNav, setActiveNav] = useState('Home');
-  const [joinedMeeting, setJoinedMeeting] = useState<string | null>(null);
+  const [activeNav, setActiveNav] = useState<NavKey>('home');
+  const [openedRun, setOpenedRun] = useState<number | null>(null);
 
-  const handleJoin = (meetingName: string) => {
-    setJoinedMeeting(meetingName);
-    setTimeout(() => setJoinedMeeting(null), 3000);
+  const handleOpen = (index: number) => {
+    setOpenedRun(index);
+    setTimeout(() => setOpenedRun(null), 3000);
   };
 
-  const navItems = [
-    { name: 'Home', icon: Home },
-    { name: 'Meetings', icon: Video },
-    { name: 'Calendar', icon: Calendar },
-    { name: 'Contacts', icon: Users },
-    { name: 'Payments', icon: CreditCard },
-  ];
-
-  const meetings = [
-    {
-      id: 'm1',
-      time: '09:00 AM',
-      color: 'bg-blue-500',
-      title: 'Product sync',
-      platform: 'Google Meet',
-      avatars: [
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80',
-      ]
-    },
-    {
-      id: 'm2',
-      time: '11:00 AM',
-      color: 'bg-emerald-500',
-      title: 'Client onboarding',
-      platform: 'Zoom',
-      avatars: [
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80',
-      ]
-    },
-    {
-      id: 'm3',
-      time: '02:00 PM',
-      color: 'bg-purple-500',
-      title: 'Design review',
-      platform: 'Google Meet',
-      avatars: [
-        'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&auto=format&fit=crop&q=80',
-      ]
-    }
-  ];
-
-  const activityData = [
-    { day: 'Mon', height: 42 },
-    { day: 'Tue', height: 60 },
-    { day: 'Wed', height: 50 },
-    { day: 'Thu', height: 86, active: true },
-    { day: 'Fri', height: 54 },
-    { day: 'Sat', height: 75 },
-    { day: 'Sun', height: 92 },
-  ];
+  const activeStep = activeFeature ? PROCESS.steps[STEP_BY_NODE[activeFeature]] : null;
+  const days = t(APP_SHELL.days);
 
   return (
-    <section className="relative z-10 w-full min-h-[920px] lg:min-h-[980px] bg-transparent border-t border-[#E2E8F0] overflow-hidden select-none py-10 lg:py-14 flex flex-col items-center justify-between">
+    <section id="process" className="relative z-10 w-full min-h-[1040px] lg:min-h-[1140px] bg-transparent border-t border-[#E2E8F0] overflow-hidden select-none pt-28 sm:pt-36 lg:pt-44 pb-24 sm:pb-32 lg:pb-36 flex flex-col items-center justify-between">
       
       {/* ====================================================================
           BACKGROUND: Perimeter Frame Tile Pattern with Soft Fade Mask & 40% Opacity
@@ -123,6 +89,11 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
       </div>
 
       <div className="relative z-10 w-full max-w-[1540px] px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+
+        {/* Process heading (00 §6) above the ecosystem diagram */}
+        <h2 className="mb-2 sm:mb-4 text-2xl sm:text-3xl lg:text-[32px] font-normal text-[#0A0D14] tracking-tight leading-snug text-balance text-center max-w-xl">
+          {t(PROCESS.heading)}
+        </h2>
 
         {/* ====================================================================
             ECOSYSTEM VISUALIZATION (Centerpiece Brand + 4 Connected Feature Nodes)
@@ -164,7 +135,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 ------------------------------------------------------------ */}
             
             {/* Conduit 1: Top-Left Notetaker (Purple) -> (255, 75) to (405, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 255 75 L 375 75 Q 405 75, 405 105 L 405 370"
@@ -186,7 +157,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             </g>
 
             {/* Conduit 2: Bottom-Left Velie (Green) -> (155, 220) to (255, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 155 220 L 225 220 Q 255 220, 255 250 L 255 370"
@@ -208,7 +179,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             </g>
 
             {/* Conduit 3: Top-Right Scheduling (Blue) -> (745, 75) to (595, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 745 75 L 625 75 Q 595 75, 595 105 L 595 370"
@@ -230,7 +201,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             </g>
 
             {/* Conduit 4: Bottom-Right Payments (Cyan) -> (845, 220) to (745, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 845 220 L 775 220 Q 745 220, 745 250 L 745 370"
@@ -255,45 +226,52 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
 
             {/* ------------------------------------------------------------
                 EMBEDDED INTERACTIVE CARDS VIA FOREIGNOBJECT (100% Pinned)
+                Zero-Jitter Hit-Testing with Buffered Bounding Box & GPU Acceleration
                 ------------------------------------------------------------ */}
 
-            {/* Card 1: Top-Left Notetaker (Purple) -> x=145..255, y=20..130 */}
-            <foreignObject x="145" y="20" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('notetaker')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(168,85,247,0.22),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(168,85,247,0.35)] active:scale-[0.96]">
+            {/* Card 1: Top-Left Notetaker (Purple) -> Center at (200, 75), Card 110x110 at x=145..255, y=20..130 */}
+            <foreignObject x="130" y="5" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('notetaker')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(168,85,247,0.22),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(168,85,247,0.35)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-notetaker-3d.png" 
-                    alt="AI Notetaker" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-3 transition-transform" 
+                    alt={t(PROCESS.steps[0].title)} 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-3 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
+                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
+                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[0].num}</span>{t(PROCESS.steps[0].title)}
+                </span>
               </div>
             </foreignObject>
 
-            {/* Card 2: Bottom-Left Velie (Green) -> x=45..155, y=165..275 */}
-            <foreignObject x="45" y="165" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('velie')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(132,204,22,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(132,204,22,0.38)] active:scale-[0.96]">
+            {/* Card 2: Bottom-Left Velie (Green) -> Center at (100, 220), Card 110x110 at x=45..155, y=165..275 */}
+            <foreignObject x="30" y="150" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('velie')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(132,204,22,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(132,204,22,0.38)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-velie-3d.png" 
-                    alt="Velie AI" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-6 transition-transform" 
+                    alt={t(PROCESS.steps[1].title)} 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-6 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
+                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
+                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[1].num}</span>{t(PROCESS.steps[1].title)}
+                </span>
               </div>
             </foreignObject>
 
             {/* Centerpiece: Velie Liquid Glass Orb (Enlarged 270px, Exact Velie Section Card Palette & Aura) */}
-            <foreignObject x="365" y="13" width="270" height="270" className="overflow-visible">
-              <div className="w-full h-full relative flex items-center justify-center group/orb cursor-pointer">
+            <foreignObject x="365" y="13" width="270" height="270" className="overflow-visible pointer-events-none">
+              <div className="w-full h-full relative flex items-center justify-center group/orb cursor-pointer pointer-events-auto">
                 {/* Soft Radial Ambient Aura (Identical to Velie Card in TimelineFeatureDeck) */}
                 <div 
                   className={`absolute inset-0 rounded-full transition-all duration-500 pointer-events-none ${
@@ -308,7 +286,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 <div className="absolute bottom-2 w-40 h-6 bg-blue-500/10 blur-xl rounded-full pointer-events-none" />
 
                 {/* Liquid Glass Orb Canvas / WebGPU Caustics */}
-                <div className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-[0.96]">
+                <div className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 ease-out hover:scale-105 active:scale-[0.96] will-change-transform transform-gpu">
                   <LiquidOrb
                     state="thinking"
                     interactive={true}
@@ -318,42 +296,55 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
               </div>
             </foreignObject>
 
-            {/* Card 3: Top-Right Scheduling (Blue) -> x=745..855, y=20..130 */}
-            <foreignObject x="745" y="20" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('scheduling')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(56,189,248,0.26),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(56,189,248,0.4)] active:scale-[0.96]">
+            {/* Card 3: Top-Right Scheduling (Blue) -> Center at (800, 75), Card 110x110 at x=745..855, y=20..130 */}
+            <foreignObject x="730" y="5" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('scheduling')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(56,189,248,0.26),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(56,189,248,0.4)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-scheduling-3d.png" 
-                    alt="Scheduling" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-3 transition-transform" 
+                    alt={t(PROCESS.steps[2].title)} 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-3 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
+                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
+                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[2].num}</span>{t(PROCESS.steps[2].title)}
+                </span>
               </div>
             </foreignObject>
 
-            {/* Card 4: Bottom-Right Payments (Cyan) -> x=845..955, y=165..275 */}
-            <foreignObject x="845" y="165" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('payments')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(6,182,212,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(6,182,212,0.38)] active:scale-[0.96]">
+            {/* Card 4: Bottom-Right Payments (Cyan) -> Center at (900, 220), Card 110x110 at x=845..955, y=165..275 */}
+            <foreignObject x="830" y="150" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('payments')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(6,182,212,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(6,182,212,0.38)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-payments-3d.png" 
-                    alt="Payments" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-6 transition-transform" 
+                    alt={t(PROCESS.steps[3].title)} 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-6 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
+                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
+                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[3].num}</span>{t(PROCESS.steps[3].title)}
+                </span>
               </div>
             </foreignObject>
 
           </svg>
         </Reveal>
+
+        {/* Hover caption: the active step's line (00 §6) */}
+        <div className="mt-2 min-h-[52px] max-w-xl px-4 text-center" aria-live="polite">
+          {activeStep && (
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed text-pretty">{t(activeStep.body)}</p>
+          )}
+        </div>
 
         {/* ====================================================================
             THE ELEV DASHBOARD APP SHELL (gpt-taste Ultra-Clean Design Engineering)
@@ -366,7 +357,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
           start="top 95%"
           end="center 55%"
           scrub={1.2}
-          className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-7"
+          className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-8 sm:pt-12 mt-12 sm:mt-16 lg:mt-20"
         >
           
           {/* STACKED GLASS LAYER 2 (Backmost stacked card sheet) */}
@@ -384,21 +375,21 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                   ================================================================ */}
               <aside className="md:col-span-3 border-r border-slate-100 bg-[#FAFBFD] p-4 sm:p-5 flex flex-col justify-between select-none">
                 <div>
-                  {/* Brand Header: newseed Infinity Logo + Sidebar Control */}
+                  {/* Brand Header: elev Infinity Logo + Sidebar Control */}
                   <div className="flex items-center justify-between px-2 mb-7">
                     <div className="flex items-center gap-3">
                       <img 
                         src="/elev-infinity-logo.png" 
-                        alt="newseed" 
+                        alt={SITE.brand} 
                         className="h-8.5 sm:h-9.5 w-auto object-contain" 
                       />
                       <span className="text-2xl font-normal text-[#0A0D14] tracking-tight">
-                        newseed
+                        {SITE.brand}
                       </span>
                     </div>
                     {/* Sidebar Collapsible / Info Button */}
                     <button 
-                      aria-label="Toggle sidebar"
+                      aria-label={t(APP_SHELL.a11y.sidebar)}
                       className="w-8 h-8 rounded-lg border border-slate-200/70 text-slate-400 hover:text-slate-700 hover:bg-white active:scale-[0.94] flex items-center justify-center transition-all cursor-pointer shadow-2xs"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -410,13 +401,13 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
 
                   {/* Nav Links */}
                   <nav className="space-y-1">
-                    {navItems.map((item) => {
+                    {NAV_ITEMS.map((item) => {
                       const Icon = item.icon;
-                      const isActive = activeNav === item.name;
+                      const isActive = activeNav === item.key;
                       return (
                         <button
-                          key={item.name}
-                          onClick={() => setActiveNav(item.name)}
+                          key={item.key}
+                          onClick={() => setActiveNav(item.key)}
                           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-normal transition-all text-left cursor-pointer active:scale-[0.98] ${
                             isActive
                               ? 'bg-[#EEF4FF] text-[#0055FF] shadow-2xs'
@@ -424,7 +415,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                           }`}
                         >
                           <Icon className={`w-4 h-4 ${isActive ? 'text-[#0055FF]' : 'text-slate-400'}`} />
-                          <span>{item.name}</span>
+                          <span>{t(APP_SHELL.nav[item.key])}</span>
                         </button>
                       );
                     })}
@@ -440,10 +431,10 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                       </div>
                       <div className="text-left">
                         <p className="text-xs font-normal text-[#0A0D14] group-hover:text-[#0055FF] transition-colors">
-                          Upgrade to Pro
+                          {t(APP_SHELL.upsell.title)}
                         </p>
                         <p className="text-[10px] text-slate-500">
-                          Unlock all features
+                          {t(APP_SHELL.upsell.sub)}
                         </p>
                       </div>
                     </div>
@@ -466,7 +457,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <input
                         type="text"
-                        placeholder="Search meetings, contacts, or anything..."
+                        placeholder={t(APP_SHELL.search)}
                         className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-full pl-9 pr-14 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-normal text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">
@@ -478,7 +469,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                     <div className="flex items-center justify-end gap-3 shrink-0">
                       {/* Bell with notification indicator */}
                       <button 
-                        aria-label="Notifications"
+                        aria-label={t(APP_SHELL.a11y.notifications)}
                         className="relative w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 active:scale-[0.94] transition-all cursor-pointer border border-slate-200/60"
                       >
                         <Bell className="w-4 h-4" />
@@ -489,130 +480,76 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                       <div className="flex items-center gap-2 pl-1 cursor-pointer group">
                         <img
                           src="/elev-infinity-logo.png"
-                          alt="newseed"
+                          alt={SITE.brand}
                           className="w-8 h-8 rounded-full object-contain p-1 bg-slate-50 border border-slate-200 group-hover:border-blue-400 transition-colors"
                         />
                         <div className="text-left hidden sm:block">
                           <p className="text-xs font-normal text-[#0A0D14] leading-none group-hover:text-[#0055FF] transition-colors">
-                            newseed
+                            {t(APP_SHELL.workspaceName)}
                           </p>
                           <p className="text-[10px] text-slate-400 mt-0.5 leading-none">
-                            Workspace
+                            {t(APP_SHELL.workspaceLabel)}
                           </p>
                         </div>
                         <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                       </div>
 
                       {/* New Meeting Primary CTA Button */}
-                      <button 
-                        onClick={() => onOpenAuth('signup')}
-                        className="bg-[#0B1222] hover:bg-slate-800 text-white text-xs font-normal px-4 py-2 rounded-full flex items-center gap-1.5 shadow-2xs hover:shadow-md active:scale-[0.96] transition-all cursor-pointer shrink-0"
+                      <a
+                        href={SITE.calendly}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-[#0B1222] hover:bg-slate-800 text-white text-xs font-normal px-4 py-2 rounded-full flex items-center gap-1.5 shadow-2xs hover:shadow-md active:scale-[0.96] transition-[background-color,box-shadow,transform] cursor-pointer shrink-0"
                       >
                         <Plus className="w-3.5 h-3.5" />
-                        <span>New Meeting</span>
-                      </button>
+                        <span>{t(APP_SHELL.newWorkflow)}</span>
+                      </a>
                     </div>
                   </header>
 
                   {/* Greeting Header Banner with Subtitle */}
                   <div className="pt-5 pb-4">
                     <h2 className="text-xl sm:text-2xl font-normal text-[#0A0D14] tracking-tight">
-                      Good morning, Steven
+                      {t(APP_SHELL.greeting)}
                     </h2>
                     <p className="text-xs text-slate-400 mt-1 font-normal">
-                      Here's what's happening with your meetings today.
+                      {t(APP_SHELL.greetingSub)}
                     </p>
                   </div>
 
                   {/* ============================================================
-                      4 TOP METRIC CARDS (Bento Grid Density)
+                      4 TOP METRIC CARDS (Example numbers, 00b §H)
                       ============================================================ */}
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 my-3 grid-flow-dense">
-                    
-                    {/* Card 1: Upcoming Meetings */}
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200/70 shadow-2xs hover:border-blue-200 hover:shadow-sm transition-all duration-300">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                            <Calendar className="w-3.5 h-3.5" />
+                    {APP_SHELL.metrics.map((m, i) => {
+                      const { icon: Icon, tone, hover } = METRIC_STYLES[i];
+                      return (
+                        <div
+                          key={m.value + i}
+                          className={`p-4 rounded-2xl bg-white border border-slate-200/70 shadow-2xs ${hover} hover:shadow-sm transition-all duration-300`}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-6 h-6 rounded-lg ${tone} flex items-center justify-center`}>
+                                <Icon className="w-3.5 h-3.5" />
+                              </div>
+                              <span className="text-xs font-normal text-slate-600">
+                                {t(m.label)}
+                              </span>
+                            </div>
                           </div>
-                          <span className="text-xs font-normal text-slate-600">
-                            Upcoming Meetings
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-2xl font-normal text-[#0A0D14]">12</span>
-                        <span className="inline-flex items-center text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/50">
-                          ↑ 20%
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-400 mt-1 font-normal">this week</p>
-                    </div>
-
-                    {/* Card 2: Payments */}
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200/70 shadow-2xs hover:border-emerald-200 hover:shadow-sm transition-all duration-300">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                            <CreditCard className="w-3.5 h-3.5" />
+                          <div className="flex items-baseline gap-2 mt-1">
+                            <span className="text-2xl font-normal text-[#0A0D14] tabular-nums">{m.value}</span>
+                            {m.delta && (
+                              <span className="inline-flex items-center text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/50">
+                                {m.delta}
+                              </span>
+                            )}
                           </div>
-                          <span className="text-xs font-normal text-slate-600">
-                            Payments
-                          </span>
+                          <p className="text-[11px] text-slate-400 mt-1 font-normal">{t(m.note)}</p>
                         </div>
-                      </div>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-2xl font-normal text-[#0A0D14]">$2,480</span>
-                        <span className="inline-flex items-center text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/50">
-                          ↑ 18%
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-400 mt-1 font-normal">this month</p>
-                    </div>
-
-                    {/* Card 3: New Contacts */}
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200/70 shadow-2xs hover:border-purple-200 hover:shadow-sm transition-all duration-300">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-                            <Users className="w-3.5 h-3.5" />
-                          </div>
-                          <span className="text-xs font-normal text-slate-600">
-                            New Contacts
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-2xl font-normal text-[#0A0D14]">28</span>
-                        <span className="inline-flex items-center text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/50">
-                          ↑ 32%
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-400 mt-1 font-normal">this month</p>
-                    </div>
-
-                    {/* Card 4: Follow-ups */}
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200/70 shadow-2xs hover:border-amber-200 hover:shadow-sm transition-all duration-300">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                            <CheckSquare className="w-3.5 h-3.5" />
-                          </div>
-                          <span className="text-xs font-normal text-slate-600">
-                            Follow-ups
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-2xl font-normal text-[#0A0D14]">16</span>
-                        <span className="inline-flex items-center text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/50">
-                          ↑ 12%
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-400 mt-1 font-normal">pending</p>
-                    </div>
-
+                      );
+                    })}
                   </div>
 
                   {/* ============================================================
@@ -620,67 +557,62 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                       ============================================================ */}
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-4">
                     
-                    {/* Left Column: Today's Meetings (Col-span-6) */}
+                    {/* Left Column: Recent runs (Col-span-6) */}
                     <div className="lg:col-span-6 border border-slate-200/70 rounded-2xl p-5 bg-white shadow-2xs hover:shadow-xs transition-shadow">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-sm font-normal text-[#0A0D14]">
-                          Today's Meetings
+                          {t(APP_SHELL.runs.heading)}
                         </h3>
-                        <button className="text-xs font-normal text-slate-500 hover:text-[#0055FF] flex items-center gap-1 transition-colors cursor-pointer active:scale-95">
-                          <span>View all</span>
-                          <span className="text-xs">→</span>
-                        </button>
                       </div>
 
                       {/* Vertical Timeline */}
                       <div className="relative space-y-3.5 pl-1">
                         {/* Continuous timeline guide */}
                         <div className="absolute left-[72px] top-3 bottom-3 w-0.5 bg-slate-100" />
-                        
-                        {meetings.map((m) => (
+
+                        {APP_SHELL.runs.items.map((run, i) => (
                           <div
-                            key={m.id}
+                            key={run.time}
                             className="relative flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50/80 border border-transparent hover:border-slate-100 transition-all group"
                           >
                             <div className="flex items-center gap-3">
                               {/* Timeline Dot */}
-                              <span className={`w-2.5 h-2.5 rounded-full ${m.color} shrink-0 z-10 ring-4 ring-white`} />
+                              <span className={`w-2.5 h-2.5 rounded-full ${RUN_DOTS[i]} shrink-0 z-10 ring-4 ring-white`} />
                               <span className="text-xs font-normal text-slate-500 shrink-0 w-16">
-                                {m.time}
+                                {run.time}
                               </span>
                               <div>
                                 <p className="text-xs font-normal text-[#0A0D14] leading-tight">
-                                  {m.title}
+                                  {t(run.label)}
                                 </p>
                                 <div className="flex items-center gap-2 mt-1">
-                                  {/* Attendees Overlapping Avatars */}
+                                  {/* Initials in place of the old attendee photos */}
                                   <div className="flex -space-x-1.5 overflow-hidden">
-                                    {m.avatars.map((av, idx) => (
-                                      <img
-                                        key={idx}
-                                        src={av}
-                                        alt="Attendee"
-                                        className="inline-block h-4 w-4 rounded-full ring-1 ring-white object-cover"
-                                      />
+                                    {run.initials.map((ini) => (
+                                      <span
+                                        key={ini}
+                                        className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[7px] font-normal text-slate-600 ring-1 ring-white"
+                                      >
+                                        {ini}
+                                      </span>
                                     ))}
                                   </div>
-                                  <span className="text-[10px] text-slate-400 flex items-center gap-1">
-                                    <Video className="w-3 h-3 text-slate-400" />
-                                    <span>{m.platform}</span>
+                                  <span className="text-[10px] font-normal text-slate-500 bg-slate-50 border border-slate-200/70 px-2 py-0.5 rounded-full">
+                                    {run.tool}
                                   </span>
                                 </div>
                               </div>
                             </div>
 
                             <button
-                              onClick={() => handleJoin(m.title)}
+                              onClick={() => handleOpen(i)}
                               className={`text-xs font-normal px-4 py-1.5 rounded-full transition-all cursor-pointer active:scale-[0.94] ${
-                                joinedMeeting === m.title
+                                openedRun === i
                                   ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
                                   : 'bg-[#EEF4FF] text-[#0055FF] hover:bg-blue-100'
                               }`}
                             >
-                              {joinedMeeting === m.title ? 'Joined ✓' : 'Join'}
+                              {openedRun === i ? t(APP_SHELL.runs.opened) : t(APP_SHELL.runs.view)}
                             </button>
                           </div>
                         ))}
@@ -692,10 +624,10 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                       <div>
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="text-sm font-normal text-[#0A0D14]">
-                            Meeting Activity
+                            {t(APP_SHELL.activity.title)}
                           </h3>
                           <div className="flex items-center gap-1 text-[11px] font-normal text-slate-600 bg-slate-50 border border-slate-200/70 px-2.5 py-1 rounded-lg cursor-pointer hover:bg-slate-100 active:scale-95 transition-all">
-                            <span>Last 7 days</span>
+                            <span>{t(APP_SHELL.activity.range)}</span>
                             <ChevronDown className="w-3 h-3 text-slate-400" />
                           </div>
                         </div>
@@ -704,7 +636,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                         <div className="relative pt-6 pb-1">
                           {/* Floating Tooltip Pill on Thursday Peak */}
                           <div className="absolute top-0 left-[52.5%] -translate-x-1/2 bg-[#0B1222] text-white text-[10px] font-normal px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1.5 whitespace-nowrap z-20">
-                            <span>12 meetings</span>
+                            <span>{t(APP_SHELL.activity.tooltip)}</span>
                             <span className="text-emerald-400 font-normal">↑ 40%</span>
                             <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#0B1222] rotate-45" />
                           </div>
@@ -750,13 +682,9 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
 
                           {/* Days Axis */}
                           <div className="flex items-center justify-between text-[10px] font-normal text-slate-400 pt-1 border-t border-slate-100">
-                            <span>Mon</span>
-                            <span>Tue</span>
-                            <span>Wed</span>
-                            <span className="font-normal text-[#0A0D14]">Thu</span>
-                            <span>Fri</span>
-                            <span>Sat</span>
-                            <span>Sun</span>
+                            {days.map((d, i) => (
+                              <span key={d} className={i === 3 ? 'font-normal text-[#0A0D14]' : undefined}>{d}</span>
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -772,10 +700,9 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                             </svg>
                           </div>
                           <div>
-                            <p className="text-[10px] text-slate-400 leading-none">Completion rate</p>
+                            <p className="text-[10px] text-slate-400 leading-none">{t(APP_SHELL.activity.success)}</p>
                             <div className="flex items-center gap-1 mt-1">
                               <span className="text-sm font-normal text-[#0A0D14]">98%</span>
-                              <span className="text-[10px] font-normal text-emerald-600">↑ 12%</span>
                             </div>
                           </div>
                         </div>
@@ -786,10 +713,9 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                             <Clock className="w-4 h-4" />
                           </div>
                           <div>
-                            <p className="text-[10px] text-slate-400 leading-none">Average length</p>
+                            <p className="text-[10px] text-slate-400 leading-none">{t(APP_SHELL.activity.avgRun)}</p>
                             <div className="flex items-center gap-1 mt-1">
-                              <span className="text-sm font-normal text-[#0A0D14]">28 min</span>
-                              <span className="text-[10px] font-normal text-rose-500">↓ 6%</span>
+                              <span className="text-sm font-normal text-[#0A0D14]">{APP_SHELL.activity.runTime}</span>
                             </div>
                           </div>
                         </div>
@@ -808,42 +734,58 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 ==================================================================== */}
             {/* Progressive Optical Fade Mask Scrim across bottom of dashboard shell */}
             <div 
-              className="absolute inset-x-0 bottom-0 h-[340px] sm:h-[380px] pointer-events-none z-30 backdrop-blur-[1px]"
+              className="absolute inset-x-0 bottom-0 h-[360px] sm:h-[420px] pointer-events-none z-30 backdrop-blur-[1px]"
               style={{
                 background: 'linear-gradient(to top, #ffffff 0%, #ffffff 32%, rgba(255, 255, 255, 0.98) 48%, rgba(255, 255, 255, 0.92) 64%, rgba(255, 255, 255, 0.75) 78%, rgba(255, 255, 255, 0.42) 90%, rgba(255, 255, 255, 0) 100%)'
               }}
             />
 
-            {/* Centered Brandmark, Headline, Subtitle, and Pill CTA Overlay (Lowered to avoid covering cards) */}
-            <div className="absolute inset-x-0 bottom-4 sm:bottom-6 z-40 flex flex-col items-center justify-end px-4 text-center pointer-events-auto">
-              
-              {/* newseed Brandmark Infinity Ribbon - Direct Floating, No Fill / No Border Card */}
-              <div className="mb-3.5 sm:mb-4 flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-[0.96]">
-                <img 
-                  src="/elev-infinity-logo.png" 
-                  alt="newseed Logo" 
-                  className="h-12 sm:h-14 md:h-16 w-auto object-contain pointer-events-none drop-shadow-[0_8px_20px_rgba(0,85,255,0.22)]" 
+            {/* Final CTA block: heading, agenda, time zones, Calendly button, trust line */}
+            <div className="absolute inset-x-0 bottom-6 sm:bottom-8 lg:bottom-10 z-40 flex flex-col items-center justify-end px-4 text-center pointer-events-auto">
+
+              {/* Newseed mark (infinity logo, no fill or border) */}
+              <div className="mb-3 sm:mb-3.5 flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-[0.96]">
+                <img
+                  src="/elev-infinity-logo.png"
+                  alt={SITE.brand}
+                  className="h-10 sm:h-12 md:h-14 w-auto object-contain pointer-events-none drop-shadow-[0_8px_20px_rgba(0,85,255,0.22)]"
                 />
               </div>
 
-              {/* Main Headline (Lowered position, does not obstruct dashboard cards) */}
               <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-normal text-[#0A0D14] tracking-tight leading-snug text-balance max-w-xl">
-                One connected workspace for all your meetings
+                {t(FINAL_CTA.heading)}
               </h2>
 
-              {/* Subtitle */}
-              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1.5 sm:mt-2 max-w-md leading-relaxed text-balance">
-                Seamlessly unify AI note-taking, automated scheduling, and client payments in a single dashboard.
+              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1 sm:mt-1.5 max-w-md leading-relaxed text-balance">
+                {t(FINAL_CTA.sub)}
               </p>
 
-              {/* Solid Blue Pill CTA Button */}
-              <button
-                onClick={() => onOpenAuth('signup')}
-                className="mt-3.5 sm:mt-4.5 bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs sm:text-sm font-normal px-7 sm:px-8 py-3 sm:py-3.5 rounded-full flex items-center gap-2 shadow-[0_8px_24px_-4px_rgba(0,85,255,0.38)] active:scale-[0.96] transition-all cursor-pointer border border-blue-400/30"
+              <ol className="mt-3 w-full max-w-md space-y-1.5 text-left">
+                {FINAL_CTA.agenda.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-slate-600 font-normal leading-snug">
+                    <span className="text-[#0055FF] tabular-nums shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                    <span>{t(item)}</span>
+                  </li>
+                ))}
+              </ol>
+
+              <p className="mt-2.5 text-[11px] sm:text-xs text-slate-400 font-normal">
+                {FINAL_CTA.timeZones.join(' · ')}
+              </p>
+
+              <a
+                href={SITE.calendly}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 sm:mt-3.5 bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs sm:text-sm font-normal px-7 sm:px-8 py-3 sm:py-3.5 rounded-full flex items-center gap-2 shadow-[0_8px_24px_-4px_rgba(0,85,255,0.38)] active:scale-[0.96] transition-[background-color,box-shadow,transform] cursor-pointer border border-blue-400/30"
               >
-                <span>Get started for free</span>
+                <span>{t(SITE.cta.primary)}</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.2]" />
-              </button>
+              </a>
+
+              <p className="mt-2 text-[11px] text-slate-400 font-normal">
+                {t(FINAL_CTA.trust)}
+              </p>
 
             </div>
 

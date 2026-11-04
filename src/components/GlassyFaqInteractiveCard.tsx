@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { SITE } from '../data/landingData';
 
 export interface FaqCardItem {
   id: number;
@@ -234,7 +235,7 @@ export default function GlassyFaqInteractiveCard({
         >
           <img
             src="/elev-infinity-logo.png"
-            alt="newseed"
+            alt={SITE.brand}
             className="h-5 sm:h-5.5 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,102,255,0.4)] select-none pointer-events-none"
           />
         </motion.div>

@@ -1,13 +1,40 @@
-import { useState, useEffect, useRef } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
-import { NAV_MENU_SECTIONS } from '../data/landingData';
+import { NAV, SITE } from '../data/landingData';
+import { useLang } from '../i18n';
 
-interface NavbarProps {
-  onOpenDemo: () => void;
-  onOpenAuth: (mode: 'login' | 'signup') => void;
+function LangSwitch() {
+  const { lang, setLang } = useLang();
+  const options = ['en', 'id'] as const;
+  return (
+    <div
+      role="group"
+      aria-label="Language"
+      className="flex items-center gap-0.5 text-[15px] font-normal text-slate-700"
+    >
+      {options.map((code, i) => (
+        <Fragment key={code}>
+          {i > 0 && <span aria-hidden="true" className="text-slate-400">·</span>}
+          <button
+            type="button"
+            aria-pressed={lang === code}
+            onClick={() => setLang(code)}
+            className={`px-2 py-2 rounded-full active:scale-[0.96] transition-[color,background-color,transform] duration-150 cursor-pointer select-none ${
+              lang === code
+                ? 'font-semibold text-[#0A0D14] bg-slate-100/60'
+                : 'hover:text-[#0A0D14] hover:bg-slate-100/60'
+            }`}
+          >
+            {code.toUpperCase()}
+          </button>
+        </Fragment>
+      ))}
+    </div>
+  );
 }
 
-export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
+export default function Navbar() {
+  const { t } = useLang();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -98,62 +125,54 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
               href="#hero"
               onClick={(e) => handleNavClick(e, '#hero')}
               className="flex items-center gap-2.5 group cursor-pointer select-none"
-              aria-label="newseed home"
+              aria-label="Newseed home"
             >
               <img
                 src="/elev-infinity-logo.png"
-                alt="newseed"
+                alt="Newseed"
                 className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
               />
               <span className="font-normal text-[22px] sm:text-[26px] tracking-[-0.03em] text-[#0A0D14] group-hover:text-blue-600 transition-colors duration-150">
-                newseed
+                Newseed
               </span>
             </a>
 
             {/* Desktop Direct Links */}
-            <nav className="hidden md:flex items-center gap-6 sm:gap-7 lg:gap-8 text-[15px] font-normal text-slate-700">
-              {NAV_MENU_SECTIONS.map((item) => (
+            <nav className="hidden lg:flex items-center gap-6 sm:gap-7 lg:gap-8 text-[15px] font-normal text-slate-700">
+              {NAV.items.map((item) => (
                 <a
-                  key={item.label}
-                  href={item.href || '#'}
+                  key={item.href}
+                  href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
                   className="py-2 hover:text-[#0A0D14] transition-colors duration-150 cursor-pointer select-none"
                 >
-                  {item.label}
+                  {t(item.label)}
                 </a>
               ))}
             </nav>
           </div>
 
           {/* ========================================================= */}
-          {/* RIGHT GROUP: LOGIN LINK + OBSIDIAN BLACK PILL BUTTON      */}
+          {/* RIGHT GROUP: LANGUAGE SWITCH + OBSIDIAN BLACK PILL BUTTON */}
           {/* ========================================================= */}
-          <div className="hidden md:flex items-center gap-5 sm:gap-6">
-            <button
-              onClick={() => onOpenAuth('login')}
-              className="text-[15px] font-normal text-slate-700 hover:text-[#0A0D14] px-3.5 py-2 rounded-full hover:bg-slate-100/60 active:scale-[0.96] transition-[color,background-color,transform] duration-150 cursor-pointer select-none"
-            >
-              Login
-            </button>
+          <div className="hidden lg:flex items-center gap-5 sm:gap-6">
+            <LangSwitch />
 
-            <button
-              onClick={() => onOpenDemo()}
-              className="bg-[#0A0D14] hover:bg-[#1E2330] text-white font-normal text-sm sm:text-[15px] px-6 sm:px-7 py-2.5 sm:py-3 rounded-full active:scale-[0.96] transition-[background-color,transform] duration-150 cursor-pointer select-none"
+            <a
+              href={SITE.calendly}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whitespace-nowrap bg-[#0A0D14] hover:bg-[#1E2330] text-white font-normal text-sm sm:text-[15px] px-6 sm:px-7 py-2.5 sm:py-3 rounded-full active:scale-[0.96] transition-[background-color,transform] duration-150 cursor-pointer select-none"
             >
-              Get Started
-            </button>
+              {t(NAV.cta)}
+            </a>
           </div>
 
           {/* ========================================================= */}
           {/* MOBILE ACTIONS & DRAWER TOGGLE                            */}
           {/* ========================================================= */}
-          <div className="flex md:hidden items-center gap-2.5">
-            <button
-              onClick={() => onOpenDemo()}
-              className="bg-[#0A0D14] text-white font-normal text-xs sm:text-sm px-4 py-2 rounded-full active:scale-[0.96] transition-transform cursor-pointer"
-            >
-              Get Started
-            </button>
+          <div className="flex lg:hidden items-center gap-2.5">
+            <LangSwitch />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1.5 rounded-full text-slate-700 hover:bg-slate-100 min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer active:scale-[0.96] transition-colors"
@@ -167,40 +186,31 @@ export default function Navbar({ onOpenDemo, onOpenAuth }: NavbarProps) {
 
       {/* Mobile Floating Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden max-w-[1190px] mx-auto mt-2 pointer-events-auto">
+        <div className="lg:hidden max-w-[1190px] mx-auto mt-2 pointer-events-auto">
           <div className="bg-white/98 backdrop-blur-xl rounded-[16px] border border-slate-200/90 p-4 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150">
             <div className="space-y-1">
-              {NAV_MENU_SECTIONS.map((item) => (
+              {NAV.items.map((item) => (
                 <a
-                  key={item.label}
-                  href={item.href || '#'}
+                  key={item.href}
+                  href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
                   className="block px-3.5 py-2.5 rounded-xl text-sm font-normal text-slate-800 hover:text-black hover:bg-slate-50 active:scale-[0.98] transition-[background-color,transform] duration-150 cursor-pointer"
                 >
-                  {item.label}
+                  {t(item.label)}
                 </a>
               ))}
             </div>
 
             <div className="pt-3.5 border-t border-slate-100 flex flex-col gap-2">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenAuth('login');
-                }}
-                className="w-full py-2.5 text-center text-xs sm:text-sm font-normal text-slate-700 rounded-full hover:bg-slate-50 border border-slate-200 cursor-pointer active:scale-[0.96] transition-[background-color,transform]"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenDemo();
-                }}
+              <a
+                href={SITE.calendly}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
                 className="w-full py-2.5 text-center text-xs sm:text-sm font-normal bg-[#0A0D14] text-white rounded-full shadow-xs hover:bg-[#1E2330] cursor-pointer active:scale-[0.96] transition-[background-color,transform]"
               >
-                Get Started
-              </button>
+                {t(NAV.cta)}
+              </a>
             </div>
           </div>
         </div>

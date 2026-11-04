@@ -2,54 +2,16 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { HelpCircle } from 'lucide-react';
 import { Reveal, ImageReveal } from '../motion';
+import { useLang } from '../i18n';
+import { FAQ, SITE } from '../data/landingData';
 import GlassyFaqInteractiveCard, { type FaqCardItem } from './GlassyFaqInteractiveCard';
 
-// 4 FAQ Cards ordered precisely matching elev master design:
-// 0: Top-Left (Man with glasses in gray buttoned shirt - as shown in user reference)
-// 1: Top-Right (Person pointing at elev pricing on laptop)
-// 2: Bottom-Left (Asian man in burgundy sweater at laptop with cactus)
-// 3: Bottom-Right (Man on phone by office window)
-const FAQ_ITEMS: FaqCardItem[] = [
-  {
-    id: 0,
-    tag: 'Enterprise Security',
-    badge: 'SOC 2 Type II',
-    question: 'How secure is newseed with enterprise calendar and client data?',
-    fullAnswer:
-      'SOC 2 Type II certified with end-to-end TLS 1.3 encryption. Your calendar data stays private and is never stored or monetized.',
-    image: '/images/elev-team-collaboration-laptop.jpg',
-    alt: 'Team member collaborating on laptop in glassy office'
-  },
-  {
-    id: 1,
-    tag: 'Round-Robin Routing',
-    badge: 'Smart Distribution',
-    question: 'What is Round-Robin scheduling and how does team routing work?',
-    fullAnswer:
-      'Automatically distributes inbound leads across available team reps by priority, territory, or availability to maximize pipeline velocity.',
-    image: '/images/elev-pricing-laptop-showcase.jpg',
-    alt: 'newseed pricing plan displayed on laptop in office'
-  },
-  {
-    id: 2,
-    tag: 'Flexible Plans',
-    badge: '14-Day Free Trial',
-    question: 'Can I start with the free plan and upgrade when my team grows?',
-    fullAnswer:
-      'Yes. The Basic plan is free forever. Upgrade anytime with a 14-day trial without entering a credit card.',
-    image: '/images/elev-focused-coworking-laptop.jpg',
-    alt: 'Person working on laptop in modern coworking office'
-  },
-  {
-    id: 3,
-    tag: 'Calendar Intelligence',
-    badge: 'Real-Time Sync',
-    question: 'How does newseed prevent double bookings across multiple calendars?',
-    fullAnswer:
-      'Real-time sync across Google Calendar and Outlook validates slot availability and locks bookings instantly to eliminate overlaps.',
-    image: '/images/elev-workplace-sales-call.jpg',
-    alt: 'Executive taking a call at standing desk overlooking city'
-  }
+// Photos for the 4 cards, in card order (0 = top-left, 1 = top-right, 2 = bottom-left, 3 = bottom-right).
+const FAQ_IMAGES = [
+  '/images/elev-team-collaboration-laptop.jpg',
+  '/images/elev-pricing-laptop-showcase.jpg',
+  '/images/elev-focused-coworking-laptop.jpg',
+  '/images/elev-workplace-sales-call.jpg'
 ];
 
 // Dynamic liquid morph paths matching the master SVG container
@@ -99,20 +61,32 @@ const CARD_POCKETS: Record<number, Record<number, PocketCoords>> = {
 };
 
 export default function FaqSection() {
+  const { t } = useLang();
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
+
+  const FAQ_ITEMS: FaqCardItem[] = FAQ.items.map((item, i) => ({
+    id: i,
+    tag: t(item.tag),
+    badge: t(item.badge),
+    question: t(item.q),
+    fullAnswer: t(item.a),
+    image: FAQ_IMAGES[i],
+    alt: t(item.alt)
+  }));
+  const whatsappHref = SITE.whatsapp(t(SITE.waPrefillDefault));
 
   return (
     <section
       id="faq"
-      className="py-24 sm:py-32 bg-white relative overflow-hidden"
+      className="py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0]/80 relative overflow-hidden"
     >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* ========================================================= */}
         {/* EDITORIAL HEADER WITH ETHEREAL RADIAL AMBIENT AURA        */}
         {/* ========================================================= */}
-        <Reveal y={24} duration={0.9} className="relative text-center mb-10 sm:mb-14 pt-4 sm:pt-6">
+        <Reveal y={24} duration={0.9} className="relative text-center mb-16 sm:mb-20 lg:mb-24 pt-4 sm:pt-6">
           {/* Giant Typographic FAQ Watermark SVG */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[46%] w-[720px] sm:w-[820px] max-w-[92vw] pointer-events-none -z-10 select-none flex items-center justify-center"
@@ -162,10 +136,10 @@ export default function FaqSection() {
           />
 
           <h2 className="relative z-10 text-3xl sm:text-5xl lg:text-[3.75rem] text-[#0A0D14] font-medium tracking-tight leading-[1.12]">
-            Everything you need to know
+            {t(FAQ.heading.lead)}
             <br />
             <span className="font-instrument italic font-normal text-[#2563EB] inline-block mt-1 sm:mt-2">
-              about newseed
+              {t(FAQ.heading.accent)}
             </span>
           </h2>
         </Reveal>
@@ -198,6 +172,7 @@ export default function FaqSection() {
               {/* Main Liquid White Frame with Smooth Spring Morphing */}
               <motion.path
                 d={FAQ_FRAME_PATHS[activeIndex]}
+                initial={{ d: FAQ_FRAME_PATHS[0] }}
                 animate={{ d: FAQ_FRAME_PATHS[activeIndex] }}
                 transition={{
                   type: 'spring',
@@ -283,7 +258,7 @@ export default function FaqSection() {
                 FAQ
               </span>
               <span className="text-xs text-slate-500 font-medium">
-                Tap card to explore
+                {t(FAQ.mobileHint)}
               </span>
             </div>
 
@@ -321,7 +296,7 @@ export default function FaqSection() {
 
         {/* Quick Navigator Pill Bar below Bento Frame & Support Help Box */}
         <Reveal delay={0.25} y={16}>
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mt-9 pt-2 px-4">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mt-14 sm:mt-18 pt-2 px-4">
             {FAQ_ITEMS.map((item) => (
               <button
                 key={item.id}
@@ -342,11 +317,11 @@ export default function FaqSection() {
           </div>
 
           {/* Support Help box */}
-          <div className="mt-12 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+          <div className="mt-14 sm:mt-16 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
             <HelpCircle className="w-4 h-4 text-blue-600" />
-            <span>Have a question not listed here?</span>
-            <a href="#demo" className="font-medium text-blue-600 hover:underline">
-              Contact our product team
+            <span>{t(FAQ.help.lead)}</span>
+            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-600 hover:underline">
+              {t(FAQ.help.link)}
             </a>
           </div>
         </Reveal>
