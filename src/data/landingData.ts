@@ -1,373 +1,4 @@
-import {
-  WorkflowTab,
-  FeatureCard,
-  IntegrationItem,
-  PricingPlan,
-  Testimonial,
-  FaqItem,
-  NavMenuSection
-} from '../types';
 import type { L } from '../i18n';
-
-export const NAV_MENU_SECTIONS: NavMenuSection[] = [
-  {
-    label: 'Features',
-    href: '#features'
-  },
-  {
-    label: 'Integrations',
-    href: '#integrations'
-  },
-  {
-    label: 'Pricing',
-    href: '#pricing'
-  },
-  {
-    label: 'FAQ',
-    href: '#faq'
-  }
-];
-
-export const WORKFLOW_TABS: WorkflowTab[] = [
-  {
-    id: 'sales',
-    name: 'Sales & Revenue',
-    category: 'Sales Pipeline',
-    headline: 'Speed to lead: Convert qualified inbound buyers in seconds',
-    description: 'Eliminate the friction of delayed follow-ups. Embed scheduling directly into inbound forms, route leads based on Salesforce fields, and ensure top reps get booked instantly while intent is peaked.',
-    stats: {
-      value: '+320%',
-      label: 'Faster inbound response time'
-    },
-    features: [
-      'Automatic routing based on company size, geography, or budget',
-      'Instant calendar booking right on the "Thank You" submission page',
-      'Bi-directional Salesforce & HubSpot CRM auto-logging'
-    ],
-    mockupType: 'sales'
-  },
-  {
-    id: 'recruiting',
-    name: 'Recruiting',
-    category: 'Talent Acquisition',
-    headline: 'Hire top candidates before competitors make an offer',
-    description: 'Coordinate multiple hiring managers, panel interviews, and time zone differences effortlessly. Send candidate-friendly links that only show mutually open slots.',
-    stats: {
-      value: '4.5 hrs',
-      label: 'Saved per recruiter each week'
-    },
-    features: [
-      'Multi-interviewer collective availability synchronization',
-      'Automated candidate prep reminders with candidate briefing pack',
-      'Integration with Greenhouse, Lever, and Workday ATS'
-    ],
-    mockupType: 'recruiting'
-  },
-  {
-    id: 'cs',
-    name: 'Customer Success',
-    category: 'Client Retention',
-    headline: 'Deliver white-glove onboarding and continuous engagement',
-    description: 'Make it effortless for customers to book onboarding milestones, technical support escalations, and executive reviews. Keep customers delighted and renewals predictable.',
-    stats: {
-      value: '99.4%',
-      label: 'Customer retention rate'
-    },
-    features: [
-      'Round-robin distribution to assign available CS reps evenly',
-      'Automated survey links and feedback follow-ups after meetings',
-      'Dedicated VIP booking links with priority buffer times'
-    ],
-    mockupType: 'cs'
-  },
-  {
-    id: 'revops',
-    name: 'RevOps & Admin',
-    category: 'Operations & IT',
-    headline: 'Standardize scheduling across the entire organization',
-    description: 'Ensure uniform branding, compliant data handling, and automated calendar governance. Manage team templates, permissions, and security from a unified admin console.',
-    stats: {
-      value: '100%',
-      label: 'Calendar governance & SOC 2 compliance'
-    },
-    features: [
-      'Enterprise SAML Single Sign-On (Okta, Azure AD, OneLogin)',
-      'Automated user provisioning via SCIM',
-      'Company-wide meeting templates and brand governance'
-    ],
-    mockupType: 'revops'
-  }
-];
-
-export const CORE_FEATURES: FeatureCard[] = [
-  {
-    id: 'availability',
-    title: 'Advanced Availability Controls',
-    description: 'Fine-tune your schedule with custom meeting buffers, daily booking maximums, minimum notice limits, and automatic time-zone detection for worldwide attendees.',
-    icon: 'Sliders',
-    tag: 'Control',
-    visualHighlight: '15m buffer before & after'
-  },
-  {
-    id: 'team-pooling',
-    title: 'Round-Robin & Team Pooling',
-    description: 'Distribute incoming meetings fairly among team members based on availability, sales quotas, or priority weighting so no single rep gets overwhelmed.',
-    icon: 'Shuffle',
-    badge: 'Popular',
-    tag: 'Distribution',
-    visualHighlight: 'Equal distribution across 8 reps'
-  },
-  {
-    id: 'automated-workflows',
-    title: 'Automated Reminders & Workflows',
-    description: 'Cut no-shows by up to 85% with automated, personalized SMS and email reminders, custom cancellation rescheduling policies, and instant post-meeting agendas.',
-    icon: 'Sparkles',
-    badge: 'High Impact',
-    tag: 'Automation',
-    visualHighlight: '85% drop in no-shows'
-  },
-  {
-    id: 'payments',
-    title: 'Frictionless Payment Collection',
-    description: 'Collect client deposits, consulting fees, or service payments before an appointment is booked using native Stripe and PayPal integrations.',
-    icon: 'CreditCard',
-    tag: 'Monetization',
-    visualHighlight: 'Secure Stripe & PayPal checkouts'
-  },
-  {
-    id: 'lead-routing',
-    title: 'Intelligent Lead Routing Forms',
-    description: 'Ask qualification questions on your website. High-value enterprise prospects book straight into your senior VP calendar, while smaller tiers receive self-serve demos.',
-    icon: 'Compass',
-    tag: 'Conversion',
-    visualHighlight: 'Dynamic logic branching'
-  },
-  {
-    id: 'security-admin',
-    title: 'Enterprise Security & Compliance',
-    description: 'Protect sensitive company data with SOC 2 Type II certification, GDPR compliance, HIPAA compliance BAA, domain controls, and audit logs.',
-    icon: 'Shield',
-    tag: 'Security',
-    visualHighlight: 'SOC 2 Type II & HIPAA'
-  }
-];
-
-export const INTEGRATIONS_LIST: IntegrationItem[] = [
-  {
-    name: 'Google Calendar',
-    category: 'calendars',
-    description: 'Real-time two-way synchronization prevents double bookings instantly.',
-    icon: 'Calendar',
-    popular: true
-  },
-  {
-    name: 'Microsoft Outlook',
-    category: 'calendars',
-    description: 'Native sync with Outlook, Office 365, and Exchange calendars.',
-    icon: 'CalendarDays',
-    popular: true
-  },
-  {
-    name: 'Zoom Video',
-    category: 'video',
-    description: 'Auto-generates unique, password-protected Zoom video links for each booking.',
-    icon: 'Video',
-    popular: true
-  },
-  {
-    name: 'Google Meet',
-    category: 'video',
-    description: 'Embeds dynamic Google Meet conference links directly in the invite.',
-    icon: 'Tv',
-    popular: true
-  },
-  {
-    name: 'Microsoft Teams',
-    category: 'video',
-    description: 'Instantly provisions Teams meetings with dial-in audio numbers.',
-    icon: 'VideoIcon'
-  },
-  {
-    name: 'Salesforce CRM',
-    category: 'crm',
-    description: 'Automatically creates or updates leads, contacts, and opportunities upon booking.',
-    icon: 'Database',
-    popular: true
-  },
-  {
-    name: 'HubSpot',
-    category: 'crm',
-    description: 'Log meeting activities, track pipeline stages, and update deals automatically.',
-    icon: 'Workflow',
-    popular: true
-  },
-  {
-    name: 'Stripe',
-    category: 'payments',
-    description: 'Charge for appointments, client consultations, or coaching sessions before booking.',
-    icon: 'CreditCard',
-    popular: true
-  },
-  {
-    name: 'Slack',
-    category: 'messaging',
-    description: 'Receive real-time Slack notifications when someone books, reschedules, or cancels.',
-    icon: 'MessageSquare',
-    popular: true
-  },
-  {
-    name: 'Zapier',
-    category: 'messaging',
-    description: 'Connect elev to 5,000+ business apps and custom webhook pipelines.',
-    icon: 'Share2'
-  }
-];
-
-export const PRICING_PLANS: PricingPlan[] = [
-  {
-    id: 'free',
-    name: 'Basic',
-    tagline: 'For individuals starting out with simple personal scheduling.',
-    monthlyPrice: 0,
-    annualPrice: 0,
-    seatType: 'Always free',
-    ctaText: 'Sign up free',
-    ctaVariant: 'outline',
-    features: [
-      '1 connected calendar account (Google or Outlook)',
-      '1 active event type (e.g. 30-min call)',
-      'Unlimited one-on-one meetings',
-      'Personalized elev booking link (elevglobal.com/yourname)',
-      'Automated email confirmations and calendar invites',
-      'Web, iOS, and Android access'
-    ]
-  },
-  {
-    id: 'standard',
-    name: 'Standard',
-    tagline: 'For professionals needing multi-calendar flexibility and custom branding.',
-    monthlyPrice: 12,
-    annualPrice: 10,
-    seatType: 'per seat / month, billed annually',
-    ctaText: 'Start 14-day free trial',
-    ctaVariant: 'outline',
-    features: [
-      'Connect up to 6 calendars per user',
-      'Unlimited active event types',
-      'Custom branding (remove elev watermark)',
-      'Automated email & SMS reminder workflows',
-      'Collective one-off group booking links',
-      'Payment collection via Stripe & PayPal',
-      'Google Meet, Zoom, and Teams native video'
-    ]
-  },
-  {
-    id: 'teams',
-    name: 'Teams',
-    tagline: 'For sales, CS, and recruiting teams that need automated routing.',
-    monthlyPrice: 20,
-    annualPrice: 16,
-    popular: true,
-    seatType: 'per seat / month, billed annually',
-    ctaText: 'Try Teams free for 14 days',
-    ctaVariant: 'primary',
-    features: [
-      'Everything in Standard, plus:',
-      'Round-robin and collective team scheduling',
-      'Routing Forms to qualify & distribute inbound leads',
-      'Salesforce & HubSpot CRM bi-directional sync',
-      'Admin management with centralized team billing',
-      'Team availability pools and shift schedules',
-      'Advanced reporting on booking velocity & show rates',
-      'Priority live chat support'
-    ]
-  },
-  {
-    id: 'enterprise',
-    name: 'Enterprise',
-    tagline: 'For large organizations needing enterprise security and governance.',
-    monthlyPrice: 0,
-    annualPrice: 0,
-    seatType: 'Custom volume pricing (30+ seats)',
-    ctaText: 'Contact enterprise sales',
-    ctaVariant: 'secondary',
-    features: [
-      'Everything in Teams, plus:',
-      'SAML Single Sign-On (Okta, Azure, Ping)',
-      'SCIM automated user provisioning and deprovisioning',
-      'Custom terms of service, SLA & Security Review',
-      'Audit logs and domain verification',
-      'Dedicated Enterprise Customer Success Manager',
-      'Custom onboarding, training, and API rate limits',
-      'HIPAA compliance BAA support'
-    ]
-  }
-];
-
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    quote: 'elev transformed our inbound sales conversion. Prospects now book demos right from our demo request page instead of waiting 24 hours. Our show rate jumped from 61% to 89% in week one.',
-    author: 'Elena Rostova',
-    role: 'VP of Global Revenue',
-    company: 'CloudScale Technologies',
-    metric: '+48%',
-    metricLabel: 'Increase in qualified pipeline velocity',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80'
-  },
-  {
-    quote: 'Our recruiting team coordinates 200+ panel interviews across 4 time zones every month. elev automated all the collective availability math. We saved over 18 hours per recruiter each month.',
-    author: 'Marcus Chen',
-    role: 'Head of Talent Acquisition',
-    company: 'HyperGrowth Systems',
-    metric: '18 hrs',
-    metricLabel: 'Saved per recruiter per month',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80'
-  },
-  {
-    quote: 'The automated SMS and email reminders alone reduced our client onboarding no-shows to practically zero. Our customers constantly remark on how smooth the whole booking experience is.',
-    author: 'Sarah Linwood',
-    role: 'Director of Customer Success',
-    company: 'Aura Data',
-    metric: '91%',
-    metricLabel: 'Reduction in onboarding no-shows',
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&auto=format&fit=crop&q=80'
-  }
-];
-
-export const FAQS: FaqItem[] = [
-  {
-    category: 'General',
-    question: 'How does elev prevent double bookings across multiple calendars?',
-    answer: 'elev connects directly to your Google Calendar, Microsoft Outlook, or Office 365 accounts in real time. Whenever someone visits your booking link, elev checks your real-time busy slots across all connected accounts and only displays truly available times. When an event is scheduled, elev immediately blocks the time slot across your calendars and sends calendar invites to both parties.'
-  },
-  {
-    category: 'Teams & Routing',
-    question: 'What is Round-Robin scheduling and how does it work in elev?',
-    answer: 'Round-robin scheduling automatically distributes incoming appointments among multiple team members. You can configure distribution based on equal availability, priority weighting, or specific qualification rules (e.g. territory or deal size). This ensures leads are served immediately without overloading any individual team member.'
-  },
-  {
-    category: 'Pricing',
-    question: 'Can I start with the free plan and upgrade later?',
-    answer: 'Yes, absolutely. The Basic plan is free forever and includes 1 connected calendar and unlimited 1-on-1 meetings. You can start with the free plan, invite your team, and test our Teams plan features with a risk-free 14-day trial without needing to enter a credit card.'
-  },
-  {
-    category: 'Security',
-    question: 'How secure is elev with enterprise calendar data?',
-    answer: 'Security is paramount at elev. We maintain SOC 2 Type II certification, adhere strictly to GDPR regulations, support HIPAA BAA execution for healthcare, and encrypt all data in transit and at rest with TLS 1.3 and AES-256. We never view or store the contents of your emails or private notes.'
-  },
-  {
-    category: 'Integrations',
-    question: 'Does elev work with Zoom, Google Meet, and Microsoft Teams?',
-    answer: 'Yes! elev integrates natively with Zoom, Google Meet, Microsoft Teams, Webex, and GoToMeeting. When a meeting is confirmed, elev automatically provisions a unique, secure video conference link and inserts it directly into the calendar event and reminder messages.'
-  }
-];
-
-// ---------------------------------------------------------------------------
-// Newseed EN/ID content. Source: docs/prd/00-content-source.md (approved copy).
-// Copy is verbatim. Entries marked "ID TODO" have no Indonesian text in PRD 00
-// yet; the English is repeated in `id` as a placeholder until copy is approved.
-// The old exports above stay until PRD 06 removes them.
-// ---------------------------------------------------------------------------
 
 export interface CaseMetric {
   value: string;
@@ -382,7 +13,7 @@ export interface CaseStudy {
   metrics: CaseMetric[];
   builtWith: string[];
   flow?: L<string[]>;
-  quote?: { text: L; by: L; confirm: true }; // [CONFIRM] consent, PRD 00 open item 1
+  quote?: { text: L; by: L; confirm: boolean }; // confirm: true hides the quote until consent, PRD 00 open item 1
 }
 
 export const SITE = {
@@ -406,6 +37,18 @@ export const SITE = {
     id: 'Halo Newseed, saya ingin diskusi otomasi untuk bisnis saya.',
   },
   langSwitch: { en: 'EN · ID', id: 'EN · ID' },
+  meta: {
+    title: {
+      en: 'AI Automation & WhatsApp AI Agents for Growing Businesses | Newseed',
+      id: 'Otomasi AI & AI Agent WhatsApp untuk Bisnis yang Bertumbuh | Newseed',
+    },
+    description: {
+      en: 'Newseed builds AI agents and workflow automations that answer customers on WhatsApp, follow up every lead and keep your data in sync. Free 30-minute audit.',
+      id: 'Newseed membangun AI agent dan otomasi alur kerja yang menjawab pelanggan di WhatsApp, menindaklanjuti setiap prospek, dan menjaga data tetap sinkron. Audit gratis 30 menit.',
+    },
+    ogLocale: { en: 'en_US', id: 'id_ID' },
+    url: { en: 'https://www.newseedglobal.com/', id: 'https://www.newseedglobal.com/id' },
+  },
 };
 
 export const NAV = {
@@ -596,7 +239,11 @@ export const TOOLS = {
 
 export const SERVICES = {
   eyebrow: { en: 'What we build', id: 'Yang kami bangun' },
-  heading: { en: 'Less manual work. More room to grow.', id: 'Lebih sedikit kerja manual. Lebih banyak ruang untuk tumbuh.' },
+  // Heading is split so the second sentence can take the italic gradient span.
+  heading: {
+    lead: { en: 'Less manual work.', id: 'Lebih sedikit kerja manual.' },
+    accent: { en: 'More room to grow.', id: 'Lebih banyak ruang untuk tumbuh.' },
+  },
   sub: {
     en: "Start with the one process that eats the most time. Connect the rest when you're ready.",
     id: 'Mulai dari satu proses yang paling menyita waktu. Hubungkan sisanya saat Anda siap.',
@@ -688,7 +335,7 @@ export const PROCESS = {
     },
     {
       num: '02',
-      title: { en: 'Build', id: 'Build' },
+      title: { en: 'Build', id: 'Bangun' },
       body: {
         en: 'We build on your existing tools, typically in 2–4 weeks, with you reviewing as we go.',
         id: 'Kami bangun di atas tools yang sudah ada, umumnya 2–4 minggu, dan Anda ikut meninjau prosesnya.',
@@ -696,7 +343,7 @@ export const PROCESS = {
     },
     {
       num: '03',
-      title: { en: 'Launch', id: 'Launch' },
+      title: { en: 'Launch', id: 'Luncurkan' },
       body: {
         en: 'We test with real cases, train your team, and switch it on with human hand-off in place.',
         id: 'Kami uji dengan kasus nyata, latih tim Anda, lalu aktifkan dengan jalur eskalasi ke manusia.',
@@ -704,7 +351,7 @@ export const PROCESS = {
     },
     {
       num: '04',
-      title: { en: 'Improve', id: 'Improve' },
+      title: { en: 'Improve', id: 'Tingkatkan' },
       body: {
         en: 'We monitor, fix and adjust the flows as your business changes.',
         id: 'Kami pantau, perbaiki, dan sesuaikan alur saat bisnis Anda berubah.',
@@ -715,11 +362,23 @@ export const PROCESS = {
 
 export const CASE_STUDIES = {
   eyebrow: { en: 'Work', id: 'Studi kasus' },
-  heading: { en: 'Systems we built, running in real businesses', id: 'Sistem yang kami bangun, berjalan di bisnis nyata' },
+  // H2 split so the second part can carry the italic gradient span. Joined with a space.
+  headingLead: { en: 'Systems we built,', id: 'Sistem yang kami bangun,' },
+  headingAccent: { en: 'running in real businesses', id: 'berjalan di bisnis nyata' },
   footnote: {
     en: 'actual = measured by the client · estimated = our estimate from the before/after process',
     id: 'aktual = diukur oleh klien · estimasi = perkiraan kami dari proses sebelum/sesudah',
   },
+  basis: {
+    actual: { en: 'actual', id: 'aktual' },
+    estimated: { en: 'estimated', id: 'estimasi' },
+  },
+  // Labels for the detail panel. Not in PRD 00: written for this section, see report.
+  labels: {
+    problem: { en: 'Problem', id: 'Masalah' },
+    builtWith: { en: 'Built with', id: 'Dibangun dengan' },
+  },
+  demosHeading: { en: 'Try it yourself', id: 'Coba sendiri' },
   items: [
     {
       industry: { en: 'Music school, Indonesia', id: 'Sekolah musik, Indonesia' },
@@ -792,6 +451,7 @@ export const CASE_STUDIES = {
   ] as CaseStudy[],
 };
 
+// Demo A: chip i plays replies[i]. Reply text is written for the demo (00 §8 names the chips only).
 export const DEMO_CHAT = {
   business: 'Harmoni Music Studio', // fictional
   chips: [
@@ -799,18 +459,45 @@ export const DEMO_CHAT = {
     { en: 'What are the prices?', id: 'Berapa biayanya?' },
     { en: 'Can I book a trial?', id: 'Bisa daftar kelas percobaan?' },
   ],
+  replies: [
+    {
+      en: 'For an 8-year-old, beginner piano or guitar is a good start: 45 minutes once a week, with a teacher who goes at their pace.',
+      id: 'Untuk anak usia 8 tahun, kelas piano atau gitar pemula cocok untuk memulai: 45 menit seminggu sekali, dengan guru yang menyesuaikan tempo belajarnya.',
+    },
+    {
+      // [CONFIRM: fictional price OK] The IDR 450,000 / Rp 450.000 price is fictional. Needs a yes before launch.
+      en: 'Trial class is free. Regular classes start from IDR 450,000/month.',
+      id: 'Kelas percobaan gratis. Kelas reguler mulai dari Rp 450.000/bulan.',
+    },
+    {
+      en: "We have two trial slots this week: Saturday 10:00 or Tuesday 16:00. I've reserved Saturday 10:00 for you, and your registration is confirmed.",
+      id: 'Ada dua slot kelas percobaan minggu ini: Sabtu pukul 10.00 atau Selasa pukul 16.00. Saya sudah pesankan slot Sabtu pukul 10.00 untuk Anda, pendaftaran Anda sudah dikonfirmasi.',
+    },
+  ] as L[],
   handoff: { en: 'Handed to team: registration confirmed', id: 'Diteruskan ke tim: pendaftaran dikonfirmasi' },
+  reset: { en: 'Reset', id: 'Ulangi' },
   caption: { en: 'Scripted demo with fictional data.', id: 'Demo dengan skrip dan data fiktif.' },
 };
 
+// Demo B: column 0 is the input and is always filled. Rows fill in turn (see DemoEnrich).
+// Fictional companies and values from 00b §J.
 export const DEMO_ENRICH = {
   button: { en: 'Enrich list', id: 'Lengkapi data' },
-  // ID TODO: column names are the same in both languages until copy is approved.
+  reset: { en: 'Reset', id: 'Ulangi' },
+  counter: { en: 'enriched', id: 'dilengkapi' },
   columns: [
+    { en: 'Company', id: 'Perusahaan' },
     { en: 'Domain', id: 'Domain' },
-    { en: 'Size', id: 'Size' },
-    { en: 'Industry', id: 'Industry' },
-    { en: 'Contact role', id: 'Contact role' },
+    { en: 'Size', id: 'Ukuran' },
+    { en: 'Industry', id: 'Industri' },
+    { en: 'Contact', id: 'Kontak' },
+  ],
+  rows: [
+    { company: 'Brightwater Foods', domain: 'brightwaterfoods.co', size: '51–200', industry: { en: 'Food & beverage', id: 'Makanan & minuman' }, contact: 'Head of Procurement' },
+    { company: 'Ironvale Components', domain: 'ironvale.io', size: '201–500', industry: { en: 'Manufacturing', id: 'Manufaktur' }, contact: 'Operations Director' },
+    { company: 'Nimbus Retail Group', domain: 'nimbusretail.com', size: '1,000+', industry: { en: 'Retail', id: 'Retail' }, contact: 'VP Partnerships' },
+    { company: 'Alder & Finch', domain: 'alderfinch.com', size: '11–50', industry: { en: 'Design agency', id: 'Agensi desain' }, contact: 'Founder' },
+    { company: 'Kestrel Analytics', domain: 'kestrelanalytics.ai', size: '51–200', industry: { en: 'Data & analytics', id: 'Data & analitik' }, contact: 'Head of Sales' },
   ],
   caption: {
     en: 'Input is just the company name. Every other column fills automatically.',
@@ -820,10 +507,9 @@ export const DEMO_ENRICH = {
 
 export const ROI = {
   heading: { en: 'What is repetitive work costing you?', id: 'Berapa biaya kerja repetitif di bisnis Anda?' },
-  // ID TODO: input labels have no Indonesian text in PRD 00. EN is repeated as a placeholder.
   inputs: {
     people: {
-      label: { en: 'Team members doing admin/ops work', id: 'Team members doing admin/ops work' },
+      label: { en: 'Team members doing admin/ops work', id: 'Jumlah tim admin/operasional' },
       min: 1,
       max: 50,
       default: 6,
@@ -831,18 +517,18 @@ export const ROI = {
     hours: {
       label: {
         en: 'Hours of repetitive work per person per week',
-        id: 'Hours of repetitive work per person per week',
+        id: 'Jam kerja repetitif per orang per minggu',
       },
       min: 2,
       max: 30,
       default: 10,
     },
     salary: {
-      label: { en: 'Average monthly salary', id: 'Average monthly salary' },
-      currency: { en: 'USD', id: 'Rp' },
+      label: { en: 'Average monthly salary', id: 'Rata-rata gaji bulanan' },
+      currency: { en: 'USD', id: 'IDR' },
       range: {
-        en: { min: 500, max: 8000, default: 1500 },
-        id: { min: 3500000, max: 25000000, default: 6500000 },
+        en: { min: 500, max: 8000, default: 1500, step: 50 },
+        id: { min: 3500000, max: 25000000, default: 6500000, step: 100000 },
       },
     },
   },
@@ -854,86 +540,135 @@ export const ROI = {
     en: 'Assumes about 60% of repetitive work can be automated. This is an estimate, not a quote.',
     id: 'Asumsi sekitar 60% kerja repetitif dapat diotomasi. Ini estimasi, bukan penawaran harga.',
   },
+  outputs: {
+    savings: { en: 'Estimated yearly savings', id: 'Estimasi penghematan per tahun' },
+    hours: { en: 'Hours freed per year', id: 'Jam kerja terbebas per tahun' },
+    perMonth: { en: 'About {x} per month', id: 'Sekitar {x} per bulan' },
+  },
   cta: { en: 'Talk through these numbers', id: 'Bahas angka ini bersama kami' },
+  // {cost} and {people} are filled in at click time.
+  waPrefill: {
+    en: 'Hi Newseed, the ROI calculator shows about {cost}/year in savings for my team of {people}. I\'d like to talk it through.',
+    id: 'Halo Newseed, kalkulator ROI menunjukkan potensi hemat sekitar {cost}/tahun untuk tim saya ({people} orang). Saya ingin diskusi lebih lanjut.',
+  },
 };
 
 export const ENGAGEMENT = {
-  heading: { en: 'Start small. Grow when it pays off.', id: 'Mulai kecil. Kembangkan saat hasilnya terbukti.' },
-  plans: [
-    {
-      name: { en: 'Audit', id: 'Audit' },
-      badge: { en: 'Free', id: 'Gratis' },
-      body: {
-        en: '30-minute call. We map your bottlenecks and tell you what\'s worth automating, even if it\'s not us who builds it.',
-        id: 'Sesi 30 menit. Kami petakan hambatan Anda dan tunjukkan apa yang layak diotomasi, meski bukan kami yang membangunnya.',
-      },
-      cta: { en: 'Book audit', id: 'Jadwalkan audit' },
+  heading: {
+    lead: { en: 'Start small.', id: 'Mulai kecil.' },
+    accent: { en: 'Grow when it pays off.', id: 'Kembangkan saat hasilnya terbukti.' },
+  },
+  sub: {
+    en: 'Every engagement starts with a free audit and a fixed scope.',
+    id: 'Setiap kerja sama dimulai dengan audit gratis dan cakupan yang disepakati.',
+  },
+  build: {
+    name: { en: 'Build', id: 'Build' },
+    badge: { en: 'Project', id: 'Proyek' },
+    price: { en: '2–4 weeks', id: '2–4 minggu' },
+    unit: { en: 'per project', id: 'per proyek' },
+    body: {
+      en: 'A scoped project with clear milestones, usually live in 2–4 weeks. Fixed scope agreed before we start.',
+      id: 'Proyek dengan cakupan dan milestone jelas, umumnya live dalam 2–4 minggu. Cakupan disepakati sebelum mulai.',
     },
-    {
-      name: { en: 'Build', id: 'Build' },
-      badge: { en: 'Project', id: 'Proyek' },
-      highlight: true,
-      body: {
-        en: 'A scoped project with clear milestones, usually live in 2–4 weeks. Fixed scope agreed before we start.',
-        id: 'Proyek dengan cakupan dan milestone jelas, umumnya live dalam 2–4 minggu. Cakupan disepakati sebelum mulai.',
-      },
-      cta: { en: 'Discuss a project', id: 'Diskusikan proyek' },
+    note: { en: 'Fixed scope · Milestones', id: 'Cakupan tetap · Milestone' },
+    cta: { en: 'Discuss a project', id: 'Diskusikan proyek' },
+    includesHeading: { en: 'Includes:', id: 'Termasuk:' },
+    features: [
+      { en: 'Process audit and solution design', id: 'Audit proses dan desain solusi' },
+      { en: 'AI agent or workflow built on your tools', id: 'AI agent atau workflow di atas tools Anda' },
+      { en: 'Integrations with CRM, Sheets, email', id: 'Integrasi dengan CRM, Sheets, email' },
+      { en: 'Testing with real cases', id: 'Pengujian dengan kasus nyata' },
+      { en: 'Team training and hand-off docs', id: 'Pelatihan tim dan dokumentasi' },
+      { en: '30 days of post-launch fixes', id: '30 hari perbaikan setelah live' },
+    ],
+    footer: { en: 'You own every account and workflow', id: 'Semua akun dan workflow milik Anda' },
+  },
+  grow: {
+    name: { en: 'Grow', id: 'Grow' },
+    badge: { en: 'Ongoing', id: 'Berkelanjutan' }, // Q2 resolved: "Most chosen" is unverified
+    price: { en: 'Monthly', id: 'Bulanan' },
+    unit: { en: 'retainer', id: 'retainer' },
+    body: {
+      en: 'Monitoring, fixes and new flows each month as your business changes.',
+      id: 'Pemantauan, perbaikan, dan alur baru setiap bulan seiring bisnis Anda berubah.',
     },
-    {
-      name: { en: 'Grow', id: 'Grow' },
-      badge: { en: 'Retainer', id: 'Retainer' },
-      body: {
-        en: 'Monitoring, fixes and new flows each month as your business changes.',
-        id: 'Pemantauan, perbaikan, dan alur baru setiap bulan seiring bisnis Anda berubah.',
-      },
-      cta: { en: 'Ask about retainers', id: 'Tanya soal retainer' },
+    note: { en: 'Cancel anytime', id: 'Bisa berhenti kapan saja' },
+    cta: { en: 'Ask about retainers', id: 'Tanya soal retainer' },
+    includesHeading: { en: 'Build, plus:', id: 'Build, ditambah:' },
+    features: [
+      { en: 'Monitoring and error alerts', id: 'Pemantauan dan notifikasi error' },
+      { en: 'Fixes when tools or APIs change', id: 'Perbaikan saat tools atau API berubah' },
+      { en: 'New flows each month', id: 'Alur baru setiap bulan' },
+      { en: 'Prompt and knowledge-base updates', id: 'Pembaruan prompt dan knowledge base' },
+      { en: 'Monthly impact report', id: 'Laporan dampak bulanan' },
+      { en: 'Priority WhatsApp support', id: 'Dukungan prioritas via WhatsApp' },
+    ],
+    footer: { en: 'Scope reviewed every month', id: 'Cakupan ditinjau setiap bulan' },
+  },
+  audit: {
+    name: { en: 'Audit', id: 'Audit' },
+    badge: { en: 'Free', id: 'Gratis' },
+    title: { en: 'Not sure where to start?', id: 'Belum tahu mulai dari mana?' },
+    body: {
+      en: "30-minute call. We map your bottlenecks and tell you what's worth automating, even if it's not us who builds it.",
+      id: 'Sesi 30 menit. Kami petakan hambatan Anda dan tunjukkan apa yang layak diotomasi, meski bukan kami yang membangunnya.',
     },
-  ],
+    cta: { en: 'Book a free audit', id: 'Jadwalkan audit gratis' },
+  },
 };
 
 export const FAQ = {
+  heading: {
+    lead: { en: 'Everything you need to know', id: 'Yang perlu Anda tahu' },
+    accent: { en: 'before we start', id: 'sebelum mulai' },
+  },
+  mobileHint: { en: 'Tap a card', id: 'Ketuk kartu' },
+  help: {
+    lead: { en: 'Still have a question?', id: 'Masih ada pertanyaan?' },
+    link: { en: 'Ask us on WhatsApp', id: 'Tanya via WhatsApp' },
+  },
+  // Order = 00b §G (00 §11 rows 3, 2, 5, 6). Image order is set in FaqSection.
   items: [
     {
-      q: { en: 'What kind of businesses do you work with?', id: 'Bisnis seperti apa yang cocok?' },
-      a: {
-        en: "Small and mid-sized teams with a lot of repeated work: customer chats, lead follow-up, order and data handling. We've built for education, property, distribution and field services.",
-        id: 'Tim kecil hingga menengah dengan banyak pekerjaan berulang: chat pelanggan, follow-up prospek, pengelolaan pesanan dan data. Kami sudah membangun untuk pendidikan, properti, distribusi, dan layanan lapangan.',
-      },
-    },
-    {
-      q: { en: 'How long does a project take?', id: 'Berapa lama pengerjaannya?' },
-      a: {
-        en: 'Most first systems go live in 2–4 weeks. The audit tells you the real timeline before you commit.',
-        id: 'Sebagian besar sistem pertama live dalam 2–4 minggu. Audit akan memberi gambaran waktu yang pasti sebelum Anda memutuskan.',
-      },
-    },
-    {
+      tag: { en: 'Your team', id: 'Tim Anda' },
+      badge: { en: 'Human in the loop', id: 'Manusia tetap terlibat' }, // ID badge is not in 00b: written here, to confirm
       q: { en: 'Will AI replace my team?', id: 'Apakah AI akan menggantikan tim saya?' },
       a: {
         en: 'No. It takes the repetitive part. Your team keeps the decisions, and every flow has a hand-off to a person.',
         id: 'Tidak. AI mengambil bagian yang repetitif. Keputusan tetap di tim Anda, dan setiap alur punya jalur eskalasi ke manusia.',
       },
+      alt: { en: 'Team member working on a laptop in a bright office', id: 'Anggota tim bekerja di depan laptop di kantor yang terang' },
     },
     {
-      q: { en: 'Do I need to change my tools?', id: 'Apakah saya harus ganti tools?' },
+      tag: { en: 'Timeline', id: 'Waktu' },
+      badge: { en: '2–4 weeks', id: '2–4 minggu' },
+      q: { en: 'How long does a project take?', id: 'Berapa lama pengerjaannya?' },
       a: {
-        en: 'Usually not. We connect what you already use: WhatsApp, Sheets, your CRM, email.',
-        id: 'Umumnya tidak. Kami hubungkan yang sudah Anda pakai: WhatsApp, Sheets, CRM, email.',
+        en: 'Most first systems go live in 2–4 weeks. The audit tells you the real timeline before you commit.',
+        id: 'Sebagian besar sistem pertama live dalam 2–4 minggu. Audit akan memberi gambaran waktu yang pasti sebelum Anda memutuskan.',
       },
+      alt: { en: 'Laptop on a desk with a project plan on screen', id: 'Laptop di meja dengan rencana proyek di layar' },
     },
     {
+      tag: { en: 'Pricing', id: 'Biaya' },
+      badge: { en: 'Fixed scope', id: 'Cakupan tetap' },
       q: { en: 'How much does it cost?', id: 'Berapa biayanya?' },
       a: {
         en: 'It depends on scope. After the free audit you get a fixed-scope proposal, so you know the price before anything is built.',
         id: 'Tergantung cakupan. Setelah audit gratis Anda menerima proposal dengan cakupan tetap, jadi harga sudah jelas sebelum apa pun dibangun.',
       },
+      alt: { en: 'Person working on a laptop in a coworking space', id: 'Seseorang bekerja di depan laptop di ruang kerja bersama' },
     },
     {
+      tag: { en: 'Data & privacy', id: 'Data & privasi' },
+      badge: { en: 'NDA', id: 'NDA' },
       q: { en: 'Is my data safe?', id: 'Apakah data saya aman?' },
       a: {
         en: 'We work under NDA, use your own accounts where possible, and only access what the flow needs.',
         id: 'Kami bekerja di bawah NDA, memakai akun milik Anda bila memungkinkan, dan hanya mengakses data yang dibutuhkan alur.',
       },
+      alt: { en: 'Professional taking a call at a standing desk by a window', id: 'Profesional menerima telepon di meja berdiri dekat jendela' },
     },
   ],
 };
@@ -954,31 +689,270 @@ export const FINAL_CTA = {
   ],
   timeZones: ['Jakarta (WIB)', 'Singapore (SGT)', 'Dubai (GST)', 'London', 'New York'],
   trust: { en: 'NDA on request · Free · 30 minutes', id: 'NDA bila diperlukan · Gratis · 30 menit' },
-  dashboard: {
-    // Illustrative run log. ID TODO: no Indonesian text in PRD 00, EN repeated as placeholder.
-    rows: [
-      { en: 'WhatsApp agent · 142 chats handled today', id: 'WhatsApp agent · 142 chats handled today' },
-      { en: 'Lead sync · 18 new rows', id: 'Lead sync · 18 new rows' },
-      { en: 'Quote flow · 6 PDFs sent', id: 'Quote flow · 6 PDFs sent' },
-      { en: 'Handed to team · 9', id: 'Handed to team · 9' },
+};
+
+// App shell mockup copy (Example content), 00b §H. Used by ConnectedAppShellShowcase.
+export const APP_SHELL = {
+  nav: {
+    home: { en: 'Home', id: 'Beranda' },
+    conversations: { en: 'Conversations', id: 'Percakapan' },
+    workflows: { en: 'Workflows', id: 'Workflow' },
+    leads: { en: 'Leads', id: 'Prospek' },
+    reports: { en: 'Reports', id: 'Laporan' },
+  },
+  upsell: {
+    title: { en: 'Need a new flow?', id: 'Butuh alur baru?' },
+    sub: { en: 'Ask your engineer', id: 'Tanya engineer Anda' },
+  },
+  search: { en: 'Search chats, leads, or workflows...', id: 'Cari chat, prospek, atau workflow...' },
+  workspaceName: { en: 'Harmoni Studio', id: 'Harmoni Studio' }, // ID kept as EN: 00b gives "Workspace" for the label only
+  workspaceLabel: { en: 'Workspace', id: 'Workspace' },
+  newWorkflow: { en: 'New workflow', id: 'Workflow baru' },
+  greeting: { en: 'Good morning', id: 'Selamat pagi' },
+  greetingSub: { en: "Here's what your automations handled today.", id: 'Ini yang ditangani otomasi Anda hari ini.' },
+  // Example numbers, illustrative only (under the "Example" caption).
+  metrics: [
+    { label: { en: 'Chats handled', id: 'Chat ditangani' }, value: '142', delta: '↑ 20%', note: { en: 'today', id: 'hari ini' } },
+    { label: { en: 'New leads', id: 'Prospek baru' }, value: '28', delta: '↑ 32%', note: { en: 'this week', id: 'minggu ini' } },
+    { label: { en: 'Hours saved', id: 'Jam dihemat' }, value: '31.5 h', delta: '↑ 18%', note: { en: 'this week', id: 'minggu ini' } },
+    { label: { en: 'Hand-offs', id: 'Eskalasi' }, value: '9', note: { en: 'pending', id: 'menunggu' } },
+  ],
+  runs: {
+    heading: { en: 'Recent runs', id: 'Proses terbaru' },
+    view: { en: 'View', id: 'Lihat' },
+    opened: { en: 'Opened ✓', id: 'Dibuka ✓' },
+    items: [
+      { time: '09:00', label: { en: 'WhatsApp agent · 142 chats', id: 'WhatsApp agent · 142 chat' }, tool: 'WhatsApp', initials: ['RA', 'BP'] },
+      { time: '11:00', label: { en: 'Lead sync · 18 new rows', id: 'Sinkron prospek · 18 baris baru' }, tool: 'Sheets', initials: ['MS', 'DK'] },
+      { time: '14:00', label: { en: 'Quote flow · 6 PDFs sent', id: 'Alur penawaran · 6 PDF terkirim' }, tool: 'Gmail', initials: ['SL', 'NY'] },
     ],
+  },
+  activity: {
+    title: { en: 'Automation runs', id: 'Proses otomasi' },
+    range: { en: 'Last 7 days', id: '7 hari terakhir' },
+    tooltip: { en: '412 runs', id: '412 proses' },
+    success: { en: 'Success rate', id: 'Tingkat sukses' },
+    avgRun: { en: 'Avg. run time', id: 'Rata-rata durasi' },
+    runTime: '1m 48s',
+  },
+  days: {
+    en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    id: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+  },
+  a11y: {
+    sidebar: { en: 'Toggle sidebar', id: 'Buka atau tutup sidebar' },
+    notifications: { en: 'Notifications', id: 'Notifikasi' },
   },
 };
 
 export const FOOTER = {
+  heading: {
+    lead: { en: 'Where growing teams', id: 'Tempat tim yang sedang tumbuh' },
+    accent: { en: 'get their time back', id: 'mendapatkan waktunya kembali' },
+  },
   tagline: {
     en: 'AI automation & growth systems for teams that would rather grow than copy-paste.',
     id: 'Sistem otomasi AI untuk tim yang lebih memilih tumbuh daripada copy-paste.',
   },
-  // ID TODO: column headings have no Indonesian text in PRD 00.
   headings: {
-    services: { en: 'Services', id: 'Services' },
-    company: { en: 'Company', id: 'Company' },
-    contact: { en: 'Contact', id: 'Contact' },
+    services: { en: 'Services', id: 'Layanan' },
+    company: { en: 'Company', id: 'Perusahaan' },
+    contact: { en: 'Contact', id: 'Kontak' },
   },
-  // ID TODO: "Book audit" ID text is not in PRD 00. Using the approved "Jadwalkan audit" wording.
-  bookAudit: { en: 'Book audit', id: 'Jadwalkan audit' },
+  bookAudit: { en: 'Book a free audit', id: 'Jadwalkan audit gratis' },
   whatsapp: { en: 'WhatsApp', id: 'WhatsApp' },
-  email: { en: 'Email', id: 'Email' },
+  email: { en: 'Email', id: 'Email' }, // row stays hidden until SITE.email is set (00b header, Q6)
+  backToTop: { en: 'Back to top', id: 'Kembali ke atas' },
+  language: { en: 'Language', id: 'Bahasa' },
+  languages: [
+    { code: 'en', label: 'English' },
+    { code: 'id', label: 'Bahasa Indonesia' },
+  ],
   copyright: '© 2026 Newseed',
+};
+
+// ---------------------------------------------------------------------------
+// Services deck (TimelineFeatureDeck + MinimalistMotionStage), PRD 03 / 00b §C.
+// Stage keys match the PRODUCT_STAGES ids in MinimalistMotionStage.tsx.
+// ---------------------------------------------------------------------------
+const NOV_12 = { en: 'Thu, Nov 12', id: 'Kam, 12 Nov' };
+
+export const DECK = {
+  stages: {
+    scheduling: {
+      label: { en: 'Customer asks', id: 'Pelanggan bertanya' },
+      badge: { en: '01 Ask', id: '01 Tanya' },
+      tick: { en: 'Ask', id: 'Tanya' },
+    },
+    velie: {
+      label: { en: 'Lead captured', id: 'Prospek tercatat' },
+      badge: { en: '02 Capture', id: '02 Catat' },
+      tick: { en: 'Capture', id: 'Catat' },
+    },
+    notetaker: {
+      label: { en: 'Team notified', id: 'Tim diberi tahu' },
+      badge: { en: '03 Notify', id: '03 Kabari' },
+      tick: { en: 'Notify', id: 'Kabari' },
+    },
+    payments: {
+      label: { en: 'Quote sent', id: 'Penawaran terkirim' },
+      badge: { en: '04 Quote', id: '04 Penawaran' },
+      tick: { en: 'Quote', id: 'Penawaran' },
+    },
+  },
+
+  // Scene 1: booking. Target day is 12 (Thursday). Weekday headers come from HERO.calendar.
+  booking: {
+    month: HERO.calendar.month,
+    dayLine: NOV_12,
+    chip: { en: 'Thu · Nov 12 ✓', id: 'Kam · 12 Nov ✓' },
+    selectDate: { en: 'Select a date', id: 'Pilih tanggal' },
+    selectedSlot: { en: 'Selected slot', id: 'Jadwal dipilih' },
+    availableTimes: { en: 'Available times', id: 'Jadwal tersedia' },
+    cta: { en: 'Book trial', id: 'Daftar trial' },
+    slots: [
+      { time: '10:00', label: { en: 'Morning class', id: 'Kelas pagi' } },
+      { time: '13:00', label: { en: 'Recommended', id: 'Disarankan' } },
+      { time: '16:00', label: { en: 'Afternoon class', id: 'Kelas sore' } },
+    ],
+    done: {
+      title: { en: 'Trial class booked', id: 'Kelas percobaan terdaftar' },
+      channel: { en: 'WhatsApp', id: 'WhatsApp' },
+      confirm: { en: 'Confirmation sent ✓', id: 'Konfirmasi terkirim ✓' },
+      badge: { en: 'Booked', id: 'Terdaftar' },
+    },
+  },
+
+  // Scene 2: capture. The first 3 signal chips from HERO.chips (00 §3) sit on the floating cards.
+  capture: {
+    title: { en: 'Organizing the inbox', id: 'Merapikan inbox' },
+    line: { en: 'Turning chats into leads and tasks.', id: 'Mengubah chat menjadi prospek dan tugas.' },
+    chips: HERO.chips.slice(0, 3),
+    progress: [
+      { en: 'Leads', id: 'Prospek' },
+      { en: 'Tasks', id: 'Tugas' },
+      { en: 'Follow-up', id: 'Follow-up' },
+    ],
+    analyzing: { en: 'Analyzing and organizing...', id: 'Menganalisis dan merapikan...' },
+    done: { en: 'All caught up', id: 'Semua sudah tertangani' },
+    doneFooter: { en: '3 of 3 items handled', id: '3 dari 3 item tertangani' },
+    wait: { en: 'This may take a few moments.', id: 'Ini mungkin butuh beberapa saat.' },
+  },
+
+  // Scene 3: notify.
+  notify: {
+    title: { en: 'Call summarized', id: 'Panggilan dirangkum' },
+    line: {
+      en: "The voice agent's call is transcribed and sent to your team.",
+      id: 'Panggilan voice agent ditranskrip dan dikirim ke tim Anda.',
+    },
+  },
+
+  // Scene 4: quote. The amount counts up to `amount` (USD in both languages).
+  quote: {
+    amount: 360,
+    title: { en: 'Proposal ready', id: 'Proposal siap' },
+    line: {
+      en: 'Priced from the field request in under 2 minutes.',
+      id: 'Harga dihitung dari permintaan lapangan dalam kurang dari 2 menit.',
+    },
+    job: { en: 'Service visit', id: 'Kunjungan servis' },
+    date: NOV_12,
+    total: { en: 'TOTAL', id: 'TOTAL' },
+    cta: {
+      en: (amount: string) => `Send $${amount} quote →`,
+      id: (amount: string) => `Kirim penawaran $${amount} →`,
+    },
+    trust: { en: 'PDF · sent via Gmail', id: 'PDF · dikirim via Gmail' },
+    auto: { en: 'Auto', id: 'Auto' },
+    done: { en: 'Quote sent', id: 'Penawaran terkirim' },
+    doneCard: { en: 'Copy to CRM', id: 'Salinan ke CRM' },
+    sent: { en: 'Sent', id: 'Terkirim' },
+  },
+
+  // Agent card. The 3 modes are USE_CASES.tabs.
+  agent: {
+    title: { en: 'Meet your', id: 'Kenalan dengan' },
+    accent: { en: 'AI agent', id: 'AI agent' },
+    suffix: { en: '', id: 'Anda' },
+    chip: 'wa.me/6282124747385',
+    copy: { en: 'Copy', id: 'Salin' },
+    copied: { en: 'Copied!', id: 'Tersalin!' },
+    sub: {
+      en: 'on WhatsApp, answering, qualifying and handing off.',
+      id: 'di WhatsApp: menjawab, menyaring, dan meneruskan ke tim.',
+    },
+    handoffLead: { en: 'Human hand-off', id: 'Eskalasi ke manusia' },
+    handoffRest: {
+      en: ' – anything unusual goes to your team with the full chat.',
+      id: ' – yang tidak biasa diteruskan ke tim lengkap dengan riwayat chat.',
+    },
+  },
+
+  // Chart card. Totals shown big are computed from each set.
+  chart: {
+    title: { en: 'Hours saved', id: 'Jam dihemat' },
+    range: { en: 'This week', id: 'Minggu ini' },
+    days: {
+      en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      id: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+    },
+    sets: [
+      { id: 'chats', label: { en: 'Chats', id: 'Chat' }, values: [3.5, 5.0, 4.2, 6.1, 5.4, 4.0, 3.3], hours: true },
+      { id: 'leads', label: { en: 'Leads', id: 'Prospek' }, values: [14, 22, 17, 25, 21, 16, 13], hours: false },
+      { id: 'handoffs', label: { en: 'Hand-offs', id: 'Eskalasi' }, values: [1, 2, 1, 2, 1, 1, 1], hours: false },
+    ],
+    footerLead: { en: 'Example', id: 'Contoh' },
+    footerRest: { en: ' – illustrative numbers for a 6-person team.', id: ' – angka ilustrasi untuk tim 6 orang.' },
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Integrations section, PRD 03 / 00b §E.
+// ---------------------------------------------------------------------------
+export const INTEGRATIONS = {
+  heading: {
+    lead: { en: 'Connect Newseed to', id: 'Hubungkan Newseed ke' },
+    accent: { en: 'everything you use', id: 'semua tools Anda' },
+  },
+  sub: {
+    en: 'We build on your existing stack and automate the busywork in between.',
+    id: 'Kami membangun di atas tools yang sudah ada dan mengotomasi pekerjaan di antaranya.',
+  },
+  cta: { en: 'See tools we work with', id: 'Lihat tools yang kami pakai' },
+  modal: {
+    title: { en: 'Tools we build with', id: 'Tools yang kami gunakan' },
+    sub: { en: 'Plus anything with an API.', id: 'Plus tools apa pun yang punya API.' },
+    search: { en: 'Search tools...', id: 'Cari tools...' },
+    categories: [
+      { id: 'all', label: { en: 'All', id: 'Semua' } },
+      { id: 'messaging', label: { en: 'Messaging', id: 'Pesan' } },
+      { id: 'ai', label: { en: 'AI models', id: 'Model AI' } },
+      { id: 'data', label: { en: 'Data & CRM', id: 'Data & CRM' } },
+      { id: 'automation', label: { en: 'Automation', id: 'Otomasi' } },
+    ],
+    showing: {
+      en: (n: number) => `Showing ${n} tools`,
+      id: (n: number) => `Menampilkan ${n} tools`,
+    },
+    done: { en: 'Done', id: 'Selesai' },
+  },
+  // icon: file in public/logos/ (Simple Icons, CC0). null renders a letter circle.
+  items: [
+    { name: 'WhatsApp', category: 'messaging', icon: '/logos/whatsapp.svg', desc: { en: 'Answer customers where they already message you', id: 'Jawab pelanggan di tempat mereka biasa chat' } },
+    { name: 'Gmail', category: 'messaging', icon: '/logos/gmail.svg', desc: { en: 'Send quotes and follow-ups from your own inbox', id: 'Kirim penawaran dan follow-up dari inbox Anda sendiri' } },
+    { name: 'Slack', category: 'messaging', icon: '/logos/slack.svg', desc: { en: 'Post alerts and hand-offs to the channel your team uses', id: 'Kirim notifikasi dan eskalasi ke channel yang dipakai tim' } },
+    { name: 'OpenAI', category: 'ai', icon: '/logos/openai.svg', desc: { en: 'Models for classifying, drafting and summarising messages', id: 'Model untuk memilah, menyusun, dan merangkum pesan' } },
+    { name: 'Claude', category: 'ai', icon: '/logos/anthropic.svg', desc: { en: 'Long-context reasoning for policies, guides and replies', id: 'Penalaran konteks panjang untuk kebijakan, panduan, dan balasan' } },
+    { name: 'Gemini', category: 'ai', icon: '/logos/googlegemini.svg', desc: { en: 'Models that read documents, images and voice notes', id: 'Model yang membaca dokumen, gambar, dan voice note' } },
+    { name: 'Google Sheets', category: 'data', icon: '/logos/googlesheets.svg', desc: { en: 'Keep rows in sync between your sheets and systems', id: 'Jaga data di sheet tetap sinkron dengan sistem Anda' } },
+    { name: 'Notion', category: 'data', icon: '/logos/notion.svg', desc: { en: 'Read and write pages, databases and task lists', id: 'Baca dan tulis halaman, database, dan daftar tugas' } },
+    { name: 'HubSpot', category: 'data', icon: '/logos/hubspot.svg', desc: { en: 'Log leads, contacts and deal stages automatically', id: 'Catat prospek, kontak, dan tahap deal secara otomatis' } },
+    { name: 'Supabase', category: 'data', icon: '/logos/supabase.svg', desc: { en: 'Store flows, logs and records in your own Postgres', id: 'Simpan alur, log, dan data di Postgres milik Anda' } },
+    { name: 'Airtable', category: 'data', icon: '/logos/airtable.svg', desc: { en: 'Use bases as a simple CRM or request tracker', id: 'Pakai base sebagai CRM sederhana atau pelacak permintaan' } },
+    { name: 'n8n', category: 'automation', icon: '/logos/n8n.svg', desc: { en: 'Open-source workflows you can host and inspect yourself', id: 'Workflow open-source yang bisa Anda host dan periksa sendiri' } },
+    { name: 'Make', category: 'automation', icon: '/logos/make.svg', desc: { en: 'Visual scenarios for multi-step data and app flows', id: 'Skenario visual untuk alur data dan aplikasi multi-langkah' } },
+    { name: 'Zapier', category: 'automation', icon: '/logos/zapier.svg', desc: { en: 'Connect your apps with ready-made triggers and actions', id: 'Hubungkan aplikasi lewat trigger dan aksi siap pakai' } },
+    { name: 'Vapi', category: 'automation', icon: null, desc: { en: 'Voice agents that take and place phone calls', id: 'Voice agent untuk menerima dan melakukan panggilan telepon' } },
+  ],
 };

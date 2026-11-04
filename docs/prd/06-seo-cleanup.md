@@ -50,3 +50,18 @@ Move the old SaaS specs to `docs/archive/`: `PRD.md`, `LANDING_PAGE.md`, `landin
 - `/` and `/id` each have the right `<html lang>`, title and description after load.
 - View-source of `index.html` has valid hreflang tags and valid JSON-LD (paste it into the report).
 - No console errors on either route.
+
+## 6d. Follow-up after review (added by Claude, 2026-11-05)
+1. **Canonical and social tags per route.** Right now `/id` canonicalises to `/`, which contradicts hreflang and keeps `/id` out of the index. Fix it in `src/i18n.tsx`: in the same effect that sets the title and description, also set:
+   - `<link rel="canonical">` href
+   - `og:url`
+   - `og:title`
+   - `og:description`
+   - `twitter:title`
+   - `twitter:description`
+
+   Use `https://www.newseedglobal.com/` for EN and `https://www.newseedglobal.com/id` for ID, with titles and descriptions from `SITE.meta`. Add `SITE.meta.url` if needed. Update the existing tags in place with `querySelector`; don't create duplicates. Static `index.html` stays EN.
+2. **LiquidOrb `aria-label`.** It's user-facing (screen reader). Change only that one string to `"Newseed AI orb"`. This is the single allowed edit to `LiquidOrb.tsx`, and nothing else in the file may change.
+3. **`package.json`.** Change `"name": "elev"` to `"newseed"`.
+4. **`border-beam`.** Uninstall it after grepping `src` to confirm it's unused.
+5. **Out of scope:** `npm audit` reports high-severity issues in vite (dev server only) and source-map-js. Bumping vite is a separate decision for the user.

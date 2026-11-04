@@ -3,11 +3,6 @@ import { Menu, X } from 'lucide-react';
 import { NAV, SITE } from '../data/landingData';
 import { useLang } from '../i18n';
 
-interface NavbarProps {
-  onOpenDemo: () => void;
-  onOpenAuth: (mode: 'login' | 'signup') => void;
-}
-
 function LangSwitch() {
   const { lang, setLang } = useLang();
   const options = ['en', 'id'] as const;
@@ -38,7 +33,7 @@ function LangSwitch() {
   );
 }
 
-export default function Navbar(_props: NavbarProps) {
+export default function Navbar() {
   const { t } = useLang();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -130,15 +125,15 @@ export default function Navbar(_props: NavbarProps) {
               href="#hero"
               onClick={(e) => handleNavClick(e, '#hero')}
               className="flex items-center gap-2.5 group cursor-pointer select-none"
-              aria-label="elev home"
+              aria-label="Newseed home"
             >
               <img
                 src="/elev-infinity-logo.png"
-                alt="elev"
+                alt="Newseed"
                 className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
               />
               <span className="font-normal text-[22px] sm:text-[26px] tracking-[-0.03em] text-[#0A0D14] group-hover:text-blue-600 transition-colors duration-150">
-                elev
+                Newseed
               </span>
             </a>
 

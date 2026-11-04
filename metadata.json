@@ -1,6 +1,6 @@
 {
-  "name": "elev - Meeting Scheduling Software and AI Meeting Tools",
-  "description": "elev connects and simplifies all of the work around meetings, from scheduling, payments, and meeting prep to notetaking, contact management, and follow-up.",
+  "name": "Newseed - AI Automation & WhatsApp AI Agents for Growing Businesses",
+  "description": "Newseed builds AI agents and workflow automations that answer customers on WhatsApp, follow up every lead and keep your data in sync. Free 30-minute audit.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

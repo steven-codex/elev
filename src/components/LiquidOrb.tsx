@@ -404,7 +404,7 @@ export default function LiquidOrb({
   return (
     <div
       className={`relative w-full h-full flex items-center justify-center select-none bg-transparent ${className}`}
-      aria-label="Velie Liquid Glass Orb"
+      aria-label="Newseed AI orb"
     >
       {/* WebGPU Native Canvas */}
       {webGpuSupported ? (

@@ -41,12 +41,7 @@ const MARQUEE_PILLS = [...TOOLS.items, ...TOOLS.items].map((name) => ({
   icon: TOOL_ICONS[name] ?? <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />,
 }));
 
-interface MultiProductHeroProps {
-  onOpenAuth: (mode: 'signup' | 'login') => void;
-  onOpenDemo: () => void;
-}
-
-export default function MultiProductHero(_props: MultiProductHeroProps) {
+export default function MultiProductHero() {
   const { t } = useLang();
   const [taskChecked, setTaskChecked] = useState(true);
   const [activeProductTab, setActiveProductTab] = useState<'scheduling' | 'velie' | 'notetaker' | 'payments'>('velie');

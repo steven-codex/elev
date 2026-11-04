@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Check,
-  Lock,
   Play,
   Pause,
   RotateCcw,
@@ -15,17 +14,11 @@ import {
   CheckCircle2,
   User
 } from 'lucide-react';
-
-const TIME_SLOTS = [
-  { time: '10:00 AM', label: 'Morning slot' },
-  { time: '2:00 PM', label: 'Recommended' },
-  { time: '4:30 PM', label: 'Afternoon slot' }
-];
+import { useLang } from '../i18n';
+import { DECK, HERO } from '../data/landingData';
 
 interface ProductStage {
   id: 'scheduling' | 'velie' | 'notetaker' | 'payments';
-  label: string;
-  badge: string;
   duration: number; // in seconds
   icon3d: string;
   svgPath: string;
@@ -34,69 +27,63 @@ interface ProductStage {
 interface PaymentDriftTile {
   id: string;
   type: 'avatar' | 'empty';
-  avatar?: string;
+  initials?: string;
   opacity?: number;
 }
 
 const PAYMENT_LEFT_ROW_1: PaymentDriftTile[] = [
-  { id: 'pl1-1', type: 'avatar', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80' },
+  { id: 'pl1-1', type: 'avatar', initials: 'RA' },
   { id: 'pl1-2', type: 'empty', opacity: 0.35 }
 ];
 
 const PAYMENT_LEFT_ROW_2: PaymentDriftTile[] = [
   { id: 'pl2-1', type: 'empty', opacity: 0.25 },
-  { id: 'pl2-2', type: 'avatar', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80' }
+  { id: 'pl2-2', type: 'avatar', initials: 'BP' }
 ];
 
 const PAYMENT_LEFT_ROW_3: PaymentDriftTile[] = [
-  { id: 'pl3-1', type: 'avatar', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80' },
+  { id: 'pl3-1', type: 'avatar', initials: 'MS' },
   { id: 'pl3-2', type: 'empty', opacity: 0.35 }
 ];
 
 const PAYMENT_RIGHT_ROW_1: PaymentDriftTile[] = [
   { id: 'pr1-1', type: 'empty', opacity: 0.35 },
-  { id: 'pr1-2', type: 'avatar', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80' }
+  { id: 'pr1-2', type: 'avatar', initials: 'DK' }
 ];
 
 const PAYMENT_RIGHT_ROW_2: PaymentDriftTile[] = [
-  { id: 'pr2-1', type: 'avatar', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&auto=format&fit=crop&q=80' },
+  { id: 'pr2-1', type: 'avatar', initials: 'SL' },
   { id: 'pr2-2', type: 'empty', opacity: 0.25 }
 ];
 
 const PAYMENT_RIGHT_ROW_3: PaymentDriftTile[] = [
   { id: 'pr3-1', type: 'empty', opacity: 0.35 },
-  { id: 'pr3-2', type: 'avatar', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&auto=format&fit=crop&q=80' }
+  { id: 'pr3-2', type: 'avatar', initials: 'NY' }
 ];
+
+const AVATAR_TONES = ['bg-[#0055FF]', 'bg-[#1D4ED8]', 'bg-[#0EA5E9]', 'bg-[#6366F1]', 'bg-[#059669]', 'bg-[#8B5CF6]'];
 
 const PRODUCT_STAGES: ProductStage[] = [
   {
     id: 'scheduling',
-    label: 'Smart Booking',
-    badge: '01 Booking',
     duration: 4.0,
     icon3d: '/icon-scheduling-3d.png',
     svgPath: "M64 12C75.283 12 82 23.0983 82 34.3813V77.6175C82 88.9007 75.2832 100 64 100C39.6995 100 20 80.3005 20 56C20 31.6995 39.6995 12 64 12Z"
   },
   {
     id: 'velie',
-    label: 'AI Processing',
-    badge: '02 AI Processing',
     duration: 4.5,
     icon3d: '/icon-velie-3d.png',
     svgPath: "M44 12H58C71.255 12 82 22.745 82 36V76C82 89.255 71.255 100 58 100H44C30.745 100 20 89.255 20 76V36C20 22.745 30.745 12 44 12Z"
   },
   {
     id: 'notetaker',
-    label: 'Instant Recaps',
-    badge: '03 Recaps',
     duration: 4.0,
     icon3d: '/icon-notetaker-3d.png',
     svgPath: "M44 12H58C71.255 12 82 22.745 82 36V76C82 89.255 71.255 100 58 100H44C30.745 100 20 89.255 20 76V36C20 22.745 30.745 12 44 12Z"
   },
   {
     id: 'payments',
-    label: 'Upfront Pay',
-    badge: '04 Pay',
     duration: 4.0,
     icon3d: '/icon-payments-3d.png',
     svgPath: "M38 12C26.717 12 20 23.0983 20 34.3813V77.6175C20 88.9007 26.7168 100 38 100C62.3005 100 82 80.3005 82 56C82 31.6995 62.3005 12 38 12Z"
@@ -145,6 +132,7 @@ interface MinimalistMotionStageProps {
 }
 
 export default function MinimalistMotionStage({ showControls = false }: MinimalistMotionStageProps = {}) {
+  const { t: tr } = useLang();
   // Start at 0.0s (Smart Booking) so user sees the booking flow right away
   const [currentTime, setCurrentTime] = useState<number>(0.0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -153,8 +141,8 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
   const [isAudioSnippetPlaying, setIsAudioSnippetPlaying] = useState<boolean>(true);
 
   // Scene 01 Interactive overrides
-  const [selectedDate, setSelectedDate] = useState<number>(14);
-  const [selectedTime, setSelectedTime] = useState<string>('2:00 PM');
+  const [selectedDate, setSelectedDate] = useState<number>(12);
+  const [selectedTime, setSelectedTime] = useState<string>('13:00');
   const [manualDateSelected, setManualDateSelected] = useState<boolean | null>(null);
   const [manualDropdownOpen, setManualDropdownOpen] = useState<boolean | null>(null);
   const [manualBooked, setManualBooked] = useState<boolean>(false);
@@ -216,22 +204,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
       }
     };
 
-    const handleCustomSeek = (e: Event) => {
-      const customEvent = e as CustomEvent<{ stageId: ProductStage['id'] }>;
-      if (customEvent.detail?.stageId) {
-        handleTabClick(customEvent.detail.stageId);
-        const stageEl = document.getElementById('minimalist-motion-stage');
-        if (stageEl) {
-          stageEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }
-    };
-
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('elev:seek-stage', handleCustomSeek);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('elev:seek-stage', handleCustomSeek);
     };
   }, []);
 
@@ -323,7 +298,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   type="button"
                   onClick={() => handleTabClick(item.id)}
                   className="relative w-[62px] sm:w-[68px] h-[82px] sm:h-[88px] flex items-center justify-center transition-transform duration-150 cursor-pointer active:scale-[0.96] group select-none"
-                  title={item.label}
+                  title={tr(DECK.stages[item.id].label)}
                 >
                   {/* Figma Vector Active Pill Shape */}
                   {active && (
@@ -351,7 +326,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   {/* 3D Glassmorphic Icon */}
                   <img
                     src={item.icon3d}
-                    alt={item.label}
+                    alt={tr(DECK.stages[item.id].label)}
                     className={`relative z-10 w-11 h-11 sm:w-12 sm:h-12 object-contain transition-all duration-200 pointer-events-none ${
                       active
                         ? 'scale-110 drop-shadow-md opacity-100'
@@ -412,7 +387,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-1.5">
                             <CalendarIcon className="w-3.5 h-3.5 text-slate-500" />
-                            <span className="text-xs font-medium text-slate-800">October 2024</span>
+                            <span className="text-xs font-medium text-slate-800">{tr(DECK.booking.month)}</span>
                           </div>
                           <span
                             className={`text-[10px] font-medium px-2 py-0.5 rounded-full transition-[background-color,color,border-color] duration-200 ease-out select-none ${
@@ -421,20 +396,20 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                 : 'text-slate-400 bg-transparent border border-transparent'
                             }`}
                           >
-                            {isDateActive ? `Thu · Oct ${selectedDate} ✓` : 'Select a date'}
+                            {isDateActive ? tr(DECK.booking.chip) : tr(DECK.booking.selectDate)}
                           </span>
                         </div>
 
                         {/* Day headers */}
                         <div className="grid grid-cols-7 gap-1 text-[10px] font-medium text-slate-400 text-center mb-1">
-                          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-                            <span key={i}>{d}</span>
+                          {tr(HERO.calendar.weekdays).map((d, i) => (
+                            <span key={i}>{d.charAt(0)}</span>
                           ))}
                         </div>
 
                         {/* Day numbers grid */}
                         <div className="grid grid-cols-7 gap-1 text-xs text-center font-normal text-slate-700 items-center">
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((d) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((d) => (
                             <span key={d} className="py-1 text-slate-400 opacity-40 inline-block">
                               {d}
                             </span>
@@ -445,7 +420,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <motion.button
                               type="button"
                               onClick={() => {
-                                setSelectedDate(14);
+                                setSelectedDate(12);
                                 setManualDateSelected(true);
                                 setTimeout(() => setManualDropdownOpen(true), 250);
                               }}
@@ -455,13 +430,13 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                   ? 'bg-[#0055FF] text-white shadow-[0_2px_10px_rgba(0,85,255,0.35)] scale-100'
                                   : 'bg-transparent text-slate-700 hover:bg-slate-100 scale-100'
                               }`}
-                              title="Click to select October 14"
+                              title={tr(DECK.booking.selectDate)}
                             >
-                              14
+                              12
                             </motion.button>
                           </div>
 
-                          {[15, 16, 17, 18, 19, 20, 21].map((d) => (
+                          {[13, 14, 15, 16, 17, 18, 19, 20, 21].map((d) => (
                             <span key={d} className="py-1 text-slate-400 opacity-40 inline-block">
                               {d}
                             </span>
@@ -474,7 +449,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         <div className="w-full bg-[#F4F8FF] rounded-xl py-2 px-3.5 flex items-center justify-between text-xs font-normal text-[#0055FF] border border-blue-100/70">
                           <div className="flex items-center gap-1.5">
                             <Clock className="w-3.5 h-3.5 text-[#0055FF]" />
-                            <span className="font-medium text-xs">Selected Slot</span>
+                            <span className="font-medium text-xs">{tr(DECK.booking.selectedSlot)}</span>
                           </div>
 
                           {/* Dropdown Trigger Button */}
@@ -503,9 +478,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                               className="absolute right-0 top-full mt-1.5 w-52 bg-white/98 backdrop-blur-xl rounded-2xl border border-slate-200/90 shadow-[0_16px_36px_rgba(0,35,102,0.15)] p-1.5 z-30 flex flex-col gap-1 text-left"
                             >
                               <div className="px-2 py-0.5 text-[9px] font-mono text-slate-400 uppercase tracking-wider">
-                                Available Times
+                                {tr(DECK.booking.availableTimes)}
                               </div>
-                              {TIME_SLOTS.map((slot) => {
+                              {DECK.booking.slots.map((slot) => {
                                 const isSelected = selectedTime === slot.time;
                                 return (
                                   <button
@@ -523,7 +498,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                   >
                                     <div className="flex flex-col">
                                       <span className="leading-tight font-medium">{slot.time}</span>
-                                      <span className="text-[9px] text-slate-400">{slot.label}</span>
+                                      <span className="text-[9px] text-slate-400">{tr(slot.label)}</span>
                                     </div>
                                     {isSelected && (
                                       <Check className="w-3.5 h-3.5 text-[#0055FF] stroke-[2.5]" />
@@ -537,7 +512,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                       </div>
 
                       {/* 3D Icon */}
-                      <img src="/icon-scheduling-3d.png" alt="Scheduling" className="w-20 h-20 object-contain my-1" />
+                      <img src="/icon-scheduling-3d.png" alt="" className="w-20 h-20 object-contain my-1" />
 
                       {/* CTA Button "Book Now →" with Press Bounce (Flat, Zero Drop Shadow) */}
                       <motion.button
@@ -558,7 +533,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             : 'bg-slate-100 text-slate-400 border-slate-200/80'
                         }`}
                       >
-                        <span>Book Now</span>
+                        <span>{tr(DECK.booking.cta)}</span>
                         <span className="translate-x-0.5 font-normal">→</span>
                       </motion.button>
                       </motion.div>
@@ -613,7 +588,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             transition={{ duration: 0.68, delay: 0.12, ease: [0.34, 1.56, 0.64, 1] }}
                             className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight will-change-transform"
                           >
-                            Meeting scheduled
+                            {tr(DECK.booking.done.title)}
                           </motion.h3>
 
                           {/* Morphing Bouncy Slot Date & Time */}
@@ -623,7 +598,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             transition={{ duration: 0.72, delay: 0.22, ease: [0.34, 1.56, 0.64, 1] }}
                             className="text-base sm:text-lg font-medium text-[#64748B] tracking-tight block mt-1.5 sm:mt-2 will-change-transform"
                           >
-                            Thu, Oct {selectedDate} · {selectedTime}
+                            {tr(DECK.booking.dayLine)} · {selectedTime}
                           </motion.span>
 
                           {/* Google Calendar Ticket / Confirmation Card */}
@@ -641,23 +616,23 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           >
                             <div className="flex items-center gap-3.5">
                               <img
-                                src="/icon-scheduling-3d.png"
-                                alt="Google Calendar"
+                                src="/logos/whatsapp.svg"
+                                alt={tr(DECK.booking.done.channel)}
                                 className="w-9 h-9 object-contain shrink-0"
                               />
                               <div>
                                 <span className="text-sm sm:text-base font-medium text-[#0A0D14] block leading-tight tracking-tight">
-                                  Google Calendar
+                                  {tr(DECK.booking.done.channel)}
                                 </span>
                                 <span className="text-xs text-[#64748B] font-normal mt-0.5 block">
-                                  Invite sent ✓
+                                  {tr(DECK.booking.done.confirm)}
                                 </span>
                               </div>
                             </div>
 
                             <div className="px-3.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0]/80 text-[#059669] text-xs font-medium flex items-center gap-1.5 shadow-2xs">
                               <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                              <span>Invite Sent</span>
+                              <span>{tr(DECK.booking.done.badge)}</span>
                             </div>
                           </motion.div>
                         </div>
@@ -739,7 +714,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     >
                       <img
                         src="/icon-velie-3d.png"
-                        alt="elev AI Core"
+                        alt=""
                         className="w-11 h-11 object-contain drop-shadow-[0_4px_12px_rgba(34,197,94,0.25)]"
                       />
                     </motion.div>
@@ -761,7 +736,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           <FileText className="w-3.5 h-3.5 text-[#0055FF]" />
                         </div>
                         <div className="flex flex-col gap-1.5 text-left">
-                          <div className="w-20 sm:w-24 h-2 bg-[#E2E8F0] rounded-full" />
+                          <span className="text-[11px] sm:text-[12px] font-medium text-slate-700 whitespace-nowrap leading-none">{tr(DECK.capture.chips[0])}</span>
                           <div className="w-12 sm:w-15 h-2 bg-[#EEF2F6] rounded-full" />
                         </div>
                       </div>
@@ -781,7 +756,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[2.5]" />
                         </div>
                         <div className="flex flex-col gap-1.5 text-left">
-                          <div className="w-22 sm:w-26 h-2 bg-[#E2E8F0] rounded-full" />
+                          <span className="text-[11px] sm:text-[12px] font-medium text-slate-700 whitespace-nowrap leading-none">{tr(DECK.capture.chips[1])}</span>
                           <div className="w-14 sm:w-16 h-2 bg-[#EEF2F6] rounded-full" />
                         </div>
                       </div>
@@ -801,7 +776,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           <User className="w-3.5 h-3.5 text-[#8B5CF6]" />
                         </div>
                         <div className="flex flex-col gap-1.5 text-left">
-                          <div className="w-20 sm:w-24 h-2 bg-[#E2E8F0] rounded-full" />
+                          <span className="text-[11px] sm:text-[12px] font-medium text-slate-700 whitespace-nowrap leading-none">{tr(DECK.capture.chips[2])}</span>
                           <div className="w-12 sm:w-14 h-2 bg-[#EEF2F6] rounded-full" />
                         </div>
                       </div>
@@ -832,7 +807,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         className="absolute -inset-4 bg-gradient-to-r from-blue-400/20 via-sky-300/30 to-emerald-400/20 rounded-full blur-xl pointer-events-none"
                       />
                       <h3 className="text-[28px] sm:text-[32px] font-semibold text-[#0F172A] tracking-[-0.03em] leading-tight relative z-10">
-                        AI Processing
+                        {tr(DECK.capture.title)}
                       </h3>
                     </div>
 
@@ -847,19 +822,19 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#ECFDF5] text-[#059669] text-[13px] font-medium border border-[#A7F3D0]/80 shadow-2xs"
                         >
                           <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                          <span>All tasks organized & ready</span>
+                          <span>{tr(DECK.capture.done)}</span>
                         </motion.div>
                       ) : (
                         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDF5FF] text-[#0055FF] text-[13px] font-medium border border-[#DBEAFE]/80">
                           <span className="w-2.5 h-2.5 rounded-full bg-[#0055FF] shrink-0 animate-pulse" />
-                          <span>Analyzing and organizing...</span>
+                          <span>{tr(DECK.capture.analyzing)}</span>
                         </div>
                       )}
                     </div>
 
                     {/* Subtitle */}
                     <p className="text-[14px] text-[#64748B] mt-2 font-normal tracking-tight">
-                      Turning your conversation into useful insights.
+                      {tr(DECK.capture.line)}
                     </p>
 
                     {/* Progress Slider Track with Glowing Comet Bead (Synchronous Zero-Delay Motion) */}
@@ -890,21 +865,21 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             t >= 0.20 ? 'text-[#0F172A] font-semibold' : 'text-[#64748B] font-normal'
                           }`}
                         >
-                          Notes
+                          {tr(DECK.capture.progress[0])}
                         </span>
                         <span
                           className={`transition-colors duration-150 ${
                             t >= 0.50 ? 'text-[#0F172A] font-semibold' : 'text-[#64748B] font-normal'
                           }`}
                         >
-                          Tasks
+                          {tr(DECK.capture.progress[1])}
                         </span>
                         <span
                           className={`transition-colors duration-150 ${
                             t >= 0.85 ? 'text-[#0F172A] font-semibold' : 'text-[#64748B] font-normal'
                           }`}
                         >
-                          Follow-up
+                          {tr(DECK.capture.progress[2])}
                         </span>
                       </div>
                     </div>
@@ -918,11 +893,11 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F0FDF4] text-[#16A34A] text-xs font-medium border border-[#DCFCE7] mt-3"
                       >
                         <Check className="w-3 h-3 stroke-[2.5]" />
-                        <span>3 of 3 tasks successfully processed</span>
+                        <span>{tr(DECK.capture.doneFooter)}</span>
                       </motion.div>
                     ) : (
                       <p className="text-[12px] font-normal text-[#94A3B8] tracking-tight mt-5 pb-1">
-                        This may take a few moments.
+                        {tr(DECK.capture.wait)}
                       </p>
                     )}
                   </motion.div>
@@ -984,10 +959,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     {/* Header Typography */}
                     <div>
                       <h3 className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight">
-                        Recaps ready
+                        {tr(DECK.notify.title)}
                       </h3>
                       <p className="text-xs sm:text-[13px] text-[#64748B] mt-1 font-normal max-w-[310px] mx-auto">
-                        Your meeting has been transcribed and action items have been synced.
+                        {tr(DECK.notify.line)}
                       </p>
                     </div>
 
@@ -1117,7 +1092,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     )}
                   </div>
 
-                  {/* elev Notetaker 3D Icon at Bottom Center (Smoothly fades out and scales down when recaps ready centers) */}
+                  {/* Recap 3D Icon at Bottom Center (Smoothly fades out and scales down when recaps ready centers) */}
                   <motion.div
                     animate={{
                       y: isAllAbsorbed ? 14 : [-2, 2, -2],
@@ -1133,7 +1108,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   >
                     <img
                       src="/icon-notetaker-3d.png"
-                      alt="elev Notetaker"
+                      alt=""
                       className="w-11 h-11 object-contain drop-shadow-[0_4px_12px_rgba(99,102,241,0.2)]"
                     />
                   </motion.div>
@@ -1150,7 +1125,11 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
               // Smooth amount count up from $0 to $360.00
               const countP = Math.min(1, subProgress / 0.28);
               const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
-              const rawAmount = easeOutCubic(countP) * 360;
+              const rawAmount = easeOutCubic(countP) * DECK.quote.amount;
+              const finalAmount = DECK.quote.amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              });
               const displayAmount = rawAmount.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -1207,12 +1186,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                     }}
                                   >
                                     {tile.type === 'avatar' && (
-                                      <img
-                                        src={tile.avatar}
-                                        alt="User"
-                                        className="w-full h-full object-cover select-none pointer-events-none rounded-[16px] sm:rounded-[18px]"
-                                        loading="eager"
-                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        className={`w-full h-full rounded-full flex items-center justify-center text-[11px] sm:text-xs font-semibold text-white select-none ${AVATAR_TONES[tile.initials!.charCodeAt(0) % AVATAR_TONES.length]}`}
+                                      >
+                                        {tile.initials}
+                                      </span>
                                     )}
                                   </div>
                                 ))}
@@ -1235,12 +1214,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                     }}
                                   >
                                     {tile.type === 'avatar' && (
-                                      <img
-                                        src={tile.avatar}
-                                        alt="User"
-                                        className="w-full h-full object-cover select-none pointer-events-none rounded-[16px] sm:rounded-[18px]"
-                                        loading="eager"
-                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        className={`w-full h-full rounded-full flex items-center justify-center text-[11px] sm:text-xs font-semibold text-white select-none ${AVATAR_TONES[tile.initials!.charCodeAt(0) % AVATAR_TONES.length]}`}
+                                      >
+                                        {tile.initials}
+                                      </span>
                                     )}
                                   </div>
                                 ))}
@@ -1263,12 +1242,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                     }}
                                   >
                                     {tile.type === 'avatar' && (
-                                      <img
-                                        src={tile.avatar}
-                                        alt="User"
-                                        className="w-full h-full object-cover select-none pointer-events-none rounded-[16px] sm:rounded-[18px]"
-                                        loading="eager"
-                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        className={`w-full h-full rounded-full flex items-center justify-center text-[11px] sm:text-xs font-semibold text-white select-none ${AVATAR_TONES[tile.initials!.charCodeAt(0) % AVATAR_TONES.length]}`}
+                                      >
+                                        {tile.initials}
+                                      </span>
                                     )}
                                   </div>
                                 ))}
@@ -1276,7 +1255,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             </div>
                           </div>
 
-                          {/* Center Static Frosted Bento Geometry (Exact Reference Geometry from reference behind Meeting payment) */}
+                          {/* Center Static Frosted Bento Geometry (Exact Reference Geometry from reference behind the payment stage) */}
                           <div className="absolute inset-x-0 top-0 bottom-0 flex flex-col justify-between items-center py-1 pointer-events-none z-0">
                             <div className="flex gap-2.5 sm:gap-3">
                               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-[16px] sm:rounded-[18px] border border-slate-200/40 bg-slate-100/50 opacity-25" />
@@ -1318,12 +1297,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                     }}
                                   >
                                     {tile.type === 'avatar' && (
-                                      <img
-                                        src={tile.avatar}
-                                        alt="User"
-                                        className="w-full h-full object-cover select-none pointer-events-none rounded-[16px] sm:rounded-[18px]"
-                                        loading="eager"
-                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        className={`w-full h-full rounded-full flex items-center justify-center text-[11px] sm:text-xs font-semibold text-white select-none ${AVATAR_TONES[tile.initials!.charCodeAt(0) % AVATAR_TONES.length]}`}
+                                      >
+                                        {tile.initials}
+                                      </span>
                                     )}
                                   </div>
                                 ))}
@@ -1346,12 +1325,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                     }}
                                   >
                                     {tile.type === 'avatar' && (
-                                      <img
-                                        src={tile.avatar}
-                                        alt="User"
-                                        className="w-full h-full object-cover select-none pointer-events-none rounded-[16px] sm:rounded-[18px]"
-                                        loading="eager"
-                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        className={`w-full h-full rounded-full flex items-center justify-center text-[11px] sm:text-xs font-semibold text-white select-none ${AVATAR_TONES[tile.initials!.charCodeAt(0) % AVATAR_TONES.length]}`}
+                                      >
+                                        {tile.initials}
+                                      </span>
                                     )}
                                   </div>
                                 ))}
@@ -1374,12 +1353,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                     }}
                                   >
                                     {tile.type === 'avatar' && (
-                                      <img
-                                        src={tile.avatar}
-                                        alt="User"
-                                        className="w-full h-full object-cover select-none pointer-events-none rounded-[16px] sm:rounded-[18px]"
-                                        loading="eager"
-                                      />
+                                      <span
+                                        aria-hidden="true"
+                                        className={`w-full h-full rounded-full flex items-center justify-center text-[11px] sm:text-xs font-semibold text-white select-none ${AVATAR_TONES[tile.initials!.charCodeAt(0) % AVATAR_TONES.length]}`}
+                                      >
+                                        {tile.initials}
+                                      </span>
                                     )}
                                   </div>
                                 ))}
@@ -1396,22 +1375,22 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         <div className="relative z-10 px-5 py-1">
                           <div className="absolute inset-0 bg-white/75 backdrop-blur-[2px] rounded-2xl pointer-events-none -z-10" />
                           <h3 className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight">
-                            Meeting payment
+                            {tr(DECK.quote.title)}
                           </h3>
                           <p className="text-xs sm:text-[13px] text-[#64748B] mt-1 font-normal">
-                            Secure and powered by Stripe.
+                            {tr(DECK.quote.line)}
                           </p>
                         </div>
 
                         {/* Strategy Call Pill */}
                         <div className="relative z-10 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white/92 backdrop-blur-md border border-slate-100/90 shadow-2xs mt-3.5 mx-auto">
-                          <img src="/icon-scheduling-3d.png" alt="Strategy Call" className="w-7 h-7 object-contain shrink-0" />
+                          <img src="/icon-scheduling-3d.png" alt="" className="w-7 h-7 object-contain shrink-0" />
                           <div className="text-left">
                             <span className="text-xs sm:text-sm font-semibold text-[#0F172A] block leading-tight">
-                              Strategy Call
+                              {tr(DECK.quote.job)}
                             </span>
                             <span className="text-[11px] text-[#64748B] font-normal block">
-                              Thu, Oct 14 · 1 hour
+                              {tr(DECK.quote.date)}
                             </span>
                           </div>
                         </div>
@@ -1420,27 +1399,25 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                       {/* Amount Card with live counting animation */}
                       <div className="w-full bg-white rounded-3xl p-4 sm:p-5 border border-slate-100 shadow-2xs text-center relative z-10">
                         <span className="text-[10px] sm:text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest block mb-1">
-                          AMOUNT
+                          {tr(DECK.quote.total)}
                         </span>
                         <span className="text-4xl sm:text-[44px] font-semibold text-[#0F172A] tracking-tight block my-0.5 tabular-nums">
                           ${displayAmount}
                         </span>
                       </div>
 
-                      {/* Stripe Secure Banner Row */}
+                      {/* Delivery row: PDF sent via Gmail */}
                       <div className="w-full bg-[#F8FAFC] rounded-2xl p-2.5 sm:p-3 border border-slate-100 flex items-center justify-between text-xs relative z-10 shadow-2xs">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-7 h-7 rounded-xl bg-[#635BFF] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                            S
+                          <div className="w-7 h-7 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
+                            <img src="/logos/gmail.svg" alt="" className="w-3.5 h-3.5 object-contain" />
                           </div>
                           <div className="text-left">
-                            <span className="block font-medium text-[#0F172A] leading-tight text-xs">Powered by Stripe</span>
-                            <span className="text-[10px] text-[#64748B] font-normal">Secure payment processing</span>
+                            <span className="block font-medium text-[#0F172A] leading-tight text-xs">{tr(DECK.quote.trust)}</span>
                           </div>
                         </div>
-                        <div className="px-2.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0]/60 text-[#059669] text-[11px] font-medium flex items-center gap-1.5 shrink-0">
-                          <Lock className="w-3 h-3 stroke-[2.5]" />
-                          <span>Secure</span>
+                        <div className="px-2.5 py-1 rounded-full bg-[#EDF5FF] border border-[#DBEAFE]/80 text-[#0055FF] text-[11px] font-medium flex items-center gap-1.5 shrink-0">
+                          <span>{tr(DECK.quote.auto)}</span>
                         </div>
                       </div>
 
@@ -1454,7 +1431,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         }}
                         className="w-full py-3.5 px-4 rounded-2xl bg-[#0055FF] hover:bg-blue-600 text-white font-medium text-sm flex items-center justify-center gap-2 border border-[#0055FF] shadow-none active:scale-[0.96] transition-colors duration-150 cursor-pointer relative z-10"
                       >
-                        <span>Pay ${displayAmount}</span>
+                        <span>{tr(DECK.quote.cta)(displayAmount)}</span>
                         <span>→</span>
                       </motion.button>
                     </motion.div>
@@ -1509,7 +1486,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           transition={{ duration: 0.68, delay: 0.12, ease: [0.34, 1.56, 0.64, 1] }}
                           className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight will-change-transform"
                         >
-                          Payment complete
+                          {tr(DECK.quote.done)}
                         </motion.h3>
 
                         {/* Morphing Bouncy Amount */}
@@ -1519,7 +1496,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           transition={{ duration: 0.72, delay: 0.22, ease: [0.34, 1.56, 0.64, 1] }}
                           className="text-4xl sm:text-[46px] font-semibold text-[#0F172A] tracking-tight block mt-1.5 sm:mt-2 tabular-nums will-change-transform"
                         >
-                          $360.00
+                          ${finalAmount}
                         </motion.span>
 
                         {/* Invoice Confirmation Badge / Card: Smoothly Centered */}
@@ -1537,16 +1514,16 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         >
                           <div>
                             <span className="block text-sm font-medium text-slate-900 leading-tight">
-                              Invoice sent
+                              {tr(DECK.quote.doneCard)}
                             </span>
                             <span className="text-xs text-slate-500 font-normal mt-0.5 block">
-                              To your email
+                              {tr(DECK.quote.trust)}
                             </span>
                           </div>
 
                           <div className="px-3.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0]/80 text-[#059669] text-xs font-medium flex items-center gap-1.5 shadow-2xs">
                             <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                            <span>Paid</span>
+                            <span>{tr(DECK.quote.sent)}</span>
                           </div>
                         </motion.div>
                       </div>
@@ -1571,7 +1548,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
                   <span className="font-medium text-white/95 text-xs">
-                    {PRODUCT_STAGES[stageIndex].label}
+                    {tr(DECK.stages[PRODUCT_STAGES[stageIndex].id].label)}
                   </span>
                   <span className="text-[10px] font-mono text-white/60 px-1.5 py-0.5 rounded bg-white/10">
                     Step 0{stageIndex + 1}/04
@@ -1597,11 +1574,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                 />
                 {/* Visual Stage Ticks */}
                 <div className="w-full flex justify-between mt-1 text-[9px] font-mono text-white/40 select-none">
-                  <span>0s (Booking)</span>
-                  <span>4.0s (Velie)</span>
-                  <span>8.5s (Recaps)</span>
-                  <span>12.5s (Pay)</span>
-                  <span>16.5s</span>
+                  {PRODUCT_STAGES.map((stage) => (
+                    <span key={stage.id}>
+                      {getStartTimeForStage(stage.id).toFixed(1)}s ({tr(DECK.stages[stage.id].tick)})
+                    </span>
+                  ))}
+                  <span>{TOTAL_DURATION.toFixed(1)}s</span>
                 </div>
               </div>
 
@@ -1666,7 +1644,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           : 'text-white/60 hover:text-white'
                       }`}
                     >
-                      {stage.badge}
+                      {tr(DECK.stages[stage.id].badge)}
                     </button>
                   ))}
                 </div>

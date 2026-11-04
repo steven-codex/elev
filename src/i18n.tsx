@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { SITE } from './data/landingData';
 
 export type Lang = 'en' | 'id';
 export type L<T = string> = { en: T; id: T };
@@ -31,6 +32,19 @@ export function LangProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang;
+    const { title, description, ogLocale, url } = SITE.meta;
+    const setTag = (selector: string, value: string) =>
+      document.querySelector(selector)?.setAttribute(selector.startsWith('link') ? 'href' : 'content', value);
+
+    document.title = title[lang];
+    setTag('meta[name="description"]', description[lang]);
+    setTag('meta[property="og:locale"]', ogLocale[lang]);
+    setTag('link[rel="canonical"]', url[lang]);
+    setTag('meta[property="og:url"]', url[lang]);
+    setTag('meta[property="og:title"]', title[lang]);
+    setTag('meta[property="og:description"]', description[lang]);
+    setTag('meta[name="twitter:title"]', title[lang]);
+    setTag('meta[name="twitter:description"]', description[lang]);
   }, [lang]);
 
   const setLang = useCallback((next: Lang) => {
