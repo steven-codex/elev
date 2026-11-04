@@ -281,12 +281,12 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-normal text-white">newseed Motion UI Showcase</span>
+                <span className="text-sm font-normal text-white">elev Motion UI Showcase</span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 font-normal uppercase tracking-wider">
                   Live Product Engine
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Watch the actual newseed components execute in sequence</p>
+              <p className="text-xs text-slate-400">Watch the actual elev components execute in sequence</p>
             </div>
           </div>
 
@@ -356,7 +356,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                   <span className="absolute -inset-2 rounded-full border-2 border-cyan-400 animate-ping" />
                 )}
                 <span className="ml-2 text-[10px] font-normal px-2 py-0.5 rounded-full bg-slate-900/90 text-cyan-300 border border-slate-700 shadow-md">
-                  newseed cursor
+                  elev cursor
                 </span>
               </div>
             </motion.div>
@@ -544,7 +544,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                       type="text"
                       readOnly
                       value={typedPrompt}
-                      placeholder="Type a command or CC velie@newseedglobal.com..."
+                      placeholder="Type a command or CC velie@elevglobal.com..."
                       className="flex-1 bg-transparent border-none text-xs text-white px-3 focus:outline-hidden"
                     />
                     <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
@@ -573,7 +573,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                         <span>Intelligent Meeting Notetaker 2.0</span>
                       </div>
                       <h3 className="text-xl font-normal text-slate-900">Q3 Growth & Pipeline Review</h3>
-                      <p className="text-xs text-slate-500">4 participants • Recorded with newseed Notetaker</p>
+                      <p className="text-xs text-slate-500">4 participants • Recorded with elev Notetaker</p>
                     </div>
 
                     {/* Audio Player Controller */}
@@ -665,7 +665,7 @@ export default function MotionUiVideoModal({ isOpen, onClose }: MotionUiVideoMod
                     <div>
                       <div className="inline-flex items-center gap-1.5 text-xs font-normal text-emerald-600 mb-1">
                         <CreditCard className="w-3.5 h-3.5" />
-                        <span>newseed Pay • Integrated Checkout</span>
+                        <span>elev Pay • Integrated Checkout</span>
                       </div>
                       <h3 className="text-xl font-normal text-slate-900">Executive Consulting Package</h3>
                       <p className="text-xs text-slate-500">Collect payments automatically before meetings</p>

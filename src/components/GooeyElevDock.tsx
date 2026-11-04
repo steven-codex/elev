@@ -46,7 +46,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
               transition={{ type: 'spring', stiffness: 450, damping: 24 }}
               onClick={onOpenDemo}
               className="absolute w-12 h-12 rounded-full bg-[#0055FF] hover:bg-[#0047D6] text-white flex items-center justify-center shadow-lg cursor-pointer"
-              title="Interactive newseed Demo"
+              title="Interactive elev Demo"
             >
               <Play className="w-5 h-5 fill-white ml-0.5" />
             </motion.button>
@@ -82,7 +82,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
               transition={{ type: 'spring', stiffness: 450, damping: 24, delay: 0.06 }}
               onClick={onOpenDemo}
               className="absolute w-12 h-12 rounded-full bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center shadow-lg cursor-pointer"
-              title="Schedule with newseed"
+              title="Schedule with elev"
             >
               <Calendar className="w-5 h-5" />
             </motion.button>
@@ -100,19 +100,19 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
               transition={{ type: 'spring', stiffness: 450, damping: 24, delay: 0.09 }}
               onClick={handleShare}
               className="absolute w-11 h-11 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shadow-lg cursor-pointer"
-              title="Copy newseed link"
+              title="Copy elev link"
             >
               {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
             </motion.button>
           )}
         </AnimatePresence>
 
-        {/* Main Central Gooey Core Orb (newseed Brand Trigger) */}
+        {/* Main Central Gooey Core Orb (elev Brand Trigger) */}
         <motion.button
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.94 }}
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle newseed Gooey Menu"
+          aria-label="Toggle elev Gooey Menu"
           className="relative z-10 w-14 h-14 rounded-full bg-[#0B1222] text-white flex items-center justify-center shadow-2xl ring-2 ring-white/80 cursor-pointer overflow-hidden group"
         >
           {/* Animated liquid gradient sheen */}
@@ -125,7 +125,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
             ) : (
               <div className="flex flex-col items-center">
                 <span className="font-normal text-sm tracking-tight text-white">
-                  newseed
+                  elev
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-0.5 animate-pulse" />
               </div>
@@ -137,7 +137,7 @@ export default function GooeyElevDock({ onOpenDemo, onOpenAuth }: GooeyElevDockP
       {/* Floating Tooltip Label when closed */}
       {!isOpen && (
         <div className="absolute -top-7 right-0 pointer-events-none whitespace-nowrap bg-slate-900/90 text-white text-[10px] font-normal px-2 py-0.5 rounded-full shadow-xs border border-slate-700/80 backdrop-blur-xs">
-          newseed flow
+          elev flow
         </div>
       )}
     </div>

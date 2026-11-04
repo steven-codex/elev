@@ -26,19 +26,19 @@ export default function MeetVelieSection({ onOpenDemo }: MeetVelieSectionProps) 
   const items = [
     {
       title: 'Conversational scheduling',
-      description: 'Instead of managing scheduling links and calendars yourself, just add velie@newseedglobal.com to the email thread. Say what you need and let Velie take it from there.',
+      description: 'Instead of managing scheduling links and calendars yourself, just add velie@elevglobal.com to the email thread. Say what you need and let Velie take it from there.',
       icon: <AtSign className="w-5 h-5 text-[#0055FF]" />,
       tag: 'Autonomous Email CC'
     },
     {
       title: 'Precise coordination',
-      description: 'Velie runs on your newseed availability preferences, weighs conflicts and constraints, and always checks with you before making one-off updates.',
+      description: 'Velie runs on your elev availability preferences, weighs conflicts and constraints, and always checks with you before making one-off updates.',
       icon: <Calendar className="w-5 h-5 text-[#0055FF]" />,
       tag: 'Conflict Protection'
     },
     {
       title: '24/7 assistance with meeting tasks',
-      description: 'In newseed, ask Velie for help with scheduling, meeting prep, recalling conversation and contact details, and more.',
+      description: 'In elev, ask Velie for help with scheduling, meeting prep, recalling conversation and contact details, and more.',
       icon: <MessageSquare className="w-5 h-5 text-[#0055FF]" />,
       tag: 'Executive Copilot'
     }

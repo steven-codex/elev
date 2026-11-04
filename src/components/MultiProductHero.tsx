@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Check,
@@ -11,28 +11,49 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { Reveal, ImageReveal } from '../motion';
+import { useLang } from '../i18n';
+import { HERO, SERVICES, SITE, TOOLS } from '../data/landingData';
+
+// Dock tab id -> index in SERVICES.items (dock order and icons stay in the component).
+const TAB_SERVICE = { velie: 0, payments: 1, notetaker: 2, scheduling: 3 } as const;
+const CLIENT_BG = ['bg-slate-900', 'bg-[#0055FF]', 'bg-emerald-600'];
+const SYNC_BADGE_STYLES = [
+  'bg-emerald-50 text-emerald-700 border-emerald-200/80',
+  'bg-blue-50 text-[#0055FF] border-blue-200/80',
+  'bg-purple-50 text-purple-700 border-purple-200/80',
+];
+// Inline icons for the tools that have one. Any other tool gets a neutral dot.
+const TOOL_ICONS: Record<string, ReactNode> = {
+  HubSpot: (
+    <svg className="w-4 h-4 text-[#FF7A59]" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18.8 10.4V7.3L15.7 8.9v3.1l3.1-1.6zm-4.7 2.4V9.7L11 11.3v3.1l3.1-1.6zm-4.7 2.4V12.1L6.3 13.7v3.1l3.1-1.6zM22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2s10 4.5 10 10z" />
+    </svg>
+  ),
+  Notion: (
+    <svg className="w-4 h-4 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l11.082-.746c.326 0 .093-.326-.047-.42C16.894 2.622 15.682 2 13.91 2c-1.352 0-2.427.326-4.664.886l-4.79 1.322zm.326 3.03v12.72c0 .886.42 1.398 1.445 1.49l11.782.747c.885.047 1.444-.373 1.444-1.398V7.985c0-.84-.373-1.306-1.258-1.353l-12.062-.746c-.886-.047-1.351.42-1.351 1.352z" />
+    </svg>
+  ),
+};
+// The marquee loops by translating half its width, so the list is rendered twice.
+const MARQUEE_PILLS = [...TOOLS.items, ...TOOLS.items].map((name) => ({
+  name,
+  icon: TOOL_ICONS[name] ?? <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />,
+}));
 
 interface MultiProductHeroProps {
   onOpenAuth: (mode: 'signup' | 'login') => void;
   onOpenDemo: () => void;
 }
 
-export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProductHeroProps) {
+export default function MultiProductHero(_props: MultiProductHeroProps) {
+  const { t } = useLang();
   const [taskChecked, setTaskChecked] = useState(true);
-  const [bookingConfirmed, setBookingConfirmed] = useState(false);
-  const [workEmail, setWorkEmail] = useState('');
   const [activeProductTab, setActiveProductTab] = useState<'scheduling' | 'velie' | 'notetaker' | 'payments'>('velie');
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!workEmail) return;
-    onOpenAuth('signup');
-  };
-
-  const [selectedDate, setSelectedDate] = useState<number | null>(14);
+  const [selectedDate, setSelectedDate] = useState<number | null>(12);
   const [calendarExpanded, setCalendarExpanded] = useState<boolean>(false);
   const [slotBooked, setSlotBooked] = useState<boolean>(false);
-  const [cursorState, setCursorState] = useState({ x: 130, y: 160, clicking: false });
 
   // Expanding Calendar Animation Loop
   useEffect(() => {
@@ -42,26 +63,20 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
       setSelectedDate(null);
       setCalendarExpanded(false);
       setSlotBooked(false);
-      setCursorState({ x: 130, y: 190, clicking: false });
 
-      // Step 1: Cursor moves to date 14 and clicks
+      // Step 1: Cursor moves to date 12 and clicks
       t1 = setTimeout(() => {
-        setCursorState({ x: 125, y: 152, clicking: true });
-        setSelectedDate(14);
+        setSelectedDate(12);
 
         // Step 2: The EXACT SAME DIV expands to the right
         t2 = setTimeout(() => {
           setCalendarExpanded(true);
-          setCursorState({ x: 125, y: 152, clicking: false });
 
-          // Step 3: Cursor moves to '2:30 PM' slot and clicks
+          // Step 3: Cursor moves to the 14:00 slot and clicks
           t3 = setTimeout(() => {
-            setCursorState({ x: 385, y: 112, clicking: true });
-
             // Step 4: Confirm slot booked
             t4 = setTimeout(() => {
               setSlotBooked(true);
-              setCursorState({ x: 385, y: 112, clicking: false });
 
               // Step 5: Reset and shrink back to compact calendar
               t5 = setTimeout(() => {
@@ -101,28 +116,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
     return () => clearInterval(interval);
   }, []);
 
-  // Subtle booking confirmation pulse toggle
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBookingConfirmed((prev) => !prev);
-    }, 4500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleProgressChange = (p: number) => {
-    if (p < 0.32) {
-      setActiveProductTab('scheduling');
-    } else if (p < 0.52) {
-      setActiveProductTab('velie');
-    } else if (p < 0.72) {
-      setActiveProductTab('notetaker');
-    } else {
-      setActiveProductTab('payments');
-    }
-  };
+  const service = SERVICES.items[TAB_SERVICE[activeProductTab]];
 
   return (
-    <section id="hero" className="w-full bg-white pt-16 sm:pt-24 lg:pt-32 xl:pt-36 pb-20 sm:pb-32 px-4 sm:px-6 lg:px-8 font-sans antialiased relative">
+    <section id="hero" className="w-full bg-white pt-20 sm:pt-28 lg:pt-36 xl:pt-40 pb-28 sm:pb-36 lg:pb-40 px-4 sm:px-6 lg:px-8 font-sans antialiased relative">
       {/* Massive Background Fluid Wave Asset (Bleeding through header zone matching Frame 11) */}
       <div 
         className="absolute -top-24 sm:-top-36 lg:-top-52 xl:-top-60 left-1/2 -translate-x-1/2 w-full max-w-[2600px] pointer-events-none -z-0 overflow-visible flex flex-col items-center select-none"
@@ -155,62 +152,49 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto mb-24 sm:mb-32 lg:mb-40 xl:mb-44">
           <Reveal delay={0.05} y={20}>
             <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-normal tracking-tight text-[#0A0D14] leading-[1.08] text-balance">
-              Easy scheduling ahead <br className="hidden sm:inline" />
-              <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">One platform for all of meetings</span>
+              {t(HERO.h1Lead)} <br className="hidden sm:inline" />
+              <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">{t(HERO.h1Accent)}</span>
             </h1>
           </Reveal>
           
           <Reveal delay={0.16} y={16}>
             <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mt-6 leading-relaxed font-normal text-pretty mx-auto">
-              newseed connects and simplifies all of the work around meetings — from scheduling, payments, and meeting prep to notetaking, contact intelligence, and follow-up.
+              {t(HERO.sub)}
             </p>
           </Reveal>
 
-          {/* Email Sign-up Form */}
+          {/* Primary and secondary CTAs (replace the email form) */}
           <Reveal delay={0.26} y={16} className="w-full">
-            <form onSubmit={handleEmailSubmit} className="mt-9 sm:mt-11 flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg mx-auto">
-              <input
-                type="email"
-                value={workEmail}
-                onChange={(e) => setWorkEmail(e.target.value)}
-                placeholder="Enter your work email"
-                className="w-full sm:flex-1 h-13 px-6 rounded-full border border-[#E2E8F0] bg-white text-sm text-[#0A0D14] placeholder:text-slate-400 focus:outline-none focus:border-[#0055FF] focus:ring-4 focus:ring-[#0055FF]/10 shadow-2xs transition-[border-color,box-shadow] duration-150 ease-out font-normal"
-                required
-              />
-              <button
-                type="submit"
+            <div className="mt-9 sm:mt-11 flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg mx-auto">
+              <a
+                href={SITE.calendly}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto h-13 px-8 rounded-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 active:scale-[0.96] text-white text-sm font-normal whitespace-nowrap shadow-xs hover:shadow-md hover:shadow-blue-500/20 transition-[transform,box-shadow,filter] duration-150 ease-out cursor-pointer flex items-center justify-center gap-2 shrink-0"
               >
-                <span>Get started for free</span>
+                <span>{t(HERO.cta1)}</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
-            </form>
+              </a>
+              <a
+                href="#services"
+                className="w-full sm:w-auto h-13 px-8 rounded-full border border-[#E2E8F0] bg-white hover:bg-slate-50 text-[#0A0D14] text-sm font-normal whitespace-nowrap shadow-2xs active:scale-[0.96] transition-[transform,background-color] duration-150 ease-out cursor-pointer flex items-center justify-center gap-2 shrink-0"
+              >
+                <span>{t(HERO.cta2)}</span>
+              </a>
+            </div>
           </Reveal>
 
-          {/* Reassurance Micro-Copy */}
+          {/* Trust line (replaces the reassurance row) */}
           <Reveal delay={0.34} y={12}>
             <div className="flex flex-wrap items-center justify-center gap-3.5 mt-5 sm:mt-6 text-xs text-slate-500">
-              <span className="flex items-center gap-1.5 font-normal text-slate-700">
-                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
-                Create your free account
-              </span>
-              <span className="text-slate-300">•</span>
-              <span>No credit card required</span>
-              <span className="text-slate-300">•</span>
-              <button
-                type="button"
-                onClick={onOpenDemo}
-                className="text-[#0055FF] font-normal hover:underline active:scale-[0.96] transition-transform duration-150 ease-out cursor-pointer"
-              >
-                Talk to sales or view demo →
-              </button>
+              <span>{t(HERO.trust)}</span>
             </div>
           </Reveal>
         </div>
       </div>
 
       {/* Hero Interactive Stage Section */}
-      <ImageReveal delay={0.2} y={28} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
+      <ImageReveal delay={0.2} y={28} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="w-full relative rounded-[32px] sm:rounded-[36px] bg-[#1E60F2] bg-[url('/hero-fluid-wave-bg.png')] bg-cover bg-center overflow-hidden shadow-2xl group flex flex-col justify-center items-center p-6 sm:p-12 pt-8 sm:pt-12">
           
           {/* Subtle Ambient Vignette / Glass Depth */}
@@ -228,25 +212,25 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                   { 
                     id: 'scheduling', 
                     icon3d: '/icon-scheduling-3d.png', 
-                    label: 'Scheduling',
+                    label: t(HERO.dock.scheduling),
                     svgPath: "M64 12C75.283 12 82 23.0983 82 34.3813V77.6175C82 88.9007 75.2832 100 64 100C39.6995 100 20 80.3005 20 56C20 31.6995 39.6995 12 64 12Z"
                   },
                   { 
                     id: 'velie', 
                     icon3d: '/icon-velie-3d.png', 
-                    label: 'Velie AI',
+                    label: t(HERO.dock.velie),
                     svgPath: "M44 12H58C71.255 12 82 22.745 82 36V76C82 89.255 71.255 100 58 100H44C30.745 100 20 89.255 20 76V36C20 22.745 30.745 12 44 12Z"
                   },
                   { 
                     id: 'notetaker', 
                     icon3d: '/icon-notetaker-3d.png', 
-                    label: 'Notetaker',
+                    label: t(HERO.dock.notetaker),
                     svgPath: "M44 12H58C71.255 12 82 22.745 82 36V76C82 89.255 71.255 100 58 100H44C30.745 100 20 89.255 20 76V36C20 22.745 30.745 12 44 12Z"
                   },
                   { 
                     id: 'payments', 
                     icon3d: '/icon-payments-3d.png', 
-                    label: 'Payments',
+                    label: t(HERO.dock.payments),
                     svgPath: "M38 12C26.717 12 20 23.0983 20 34.3813V77.6175C20 88.9007 26.7168 100 38 100C62.3005 100 82 80.3005 82 56C82 31.6995 62.3005 12 38 12Z"
                   },
                 ].map((item) => {
@@ -335,34 +319,30 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                         activeProductTab === 'notetaker' ? '/icon-notetaker-3d.png' :
                         '/icon-payments-3d.png'
                       }
-                      alt={activeProductTab}
+                      alt={t(HERO.dock[activeProductTab])}
                       className="w-full h-full object-contain"
                     />
                   </div>
                   <span className="text-sm sm:text-base font-normal text-[#0A0D14] tracking-tight">
-                    {activeProductTab === 'velie' ? 'Velie AI' : activeProductTab === 'scheduling' ? 'Scheduling' : activeProductTab === 'notetaker' ? 'Notetaker' : 'Payments'}
+                    {t(HERO.dock[activeProductTab])}
                   </span>
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-normal text-[#0A0D14] tracking-tight leading-snug">
-                  {activeProductTab === 'scheduling' && "Book meetings with the world’s #1 scheduling tool"}
-                  {activeProductTab === 'velie' && "Introducing your 24/7 AI scheduling assistant"}
-                  {activeProductTab === 'notetaker' && "Actionable, shareable recaps for every meeting"}
-                  {activeProductTab === 'payments' && "Flexible, built-in payment tools for your business"}
+                  {t(service.title)}
                 </h2>
 
                 <p className="text-sm sm:text-base text-[#475569] mt-3 leading-relaxed font-normal">
-                  {activeProductTab === 'scheduling' && "Giving you complete control and total customization, newseed is the easiest and most powerful way to find time to connect."}
-                  {activeProductTab === 'velie' && "Add Velie to any email thread to coordinate scheduling on your behalf without switching tools or sacrificing control."}
-                  {activeProductTab === 'notetaker' && "Finish the day knowing every meeting was captured, next steps were tracked, and follow-ups were handled automatically."}
-                  {activeProductTab === 'payments' && "Charge upfront for meetings, sell consultation packages, and send invoices with payment features that make it easy to get paid."}
+                  {t(service.body)}
                 </p>
 
                 <a
-                  href={`#${activeProductTab}`}
+                  href={SITE.whatsapp(t(HERO.talkPrefill).replace('{service}', t(service.title)))}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-normal text-[#0055FF] hover:text-[#0047D6] active:scale-[0.97] transition-transform duration-150 mt-6 group cursor-pointer"
                 >
-                  <span>Learn more</span>
+                  <span>{t(HERO.talkAbout)}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
               </motion.div>
@@ -414,28 +394,21 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                         {/* Month Header */}
                         <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-100">
                           <span className="text-xs font-normal text-slate-400 select-none">‹</span>
-                          <span className="text-xs font-normal text-slate-800 tracking-wide font-sans tabular-nums">July 2026</span>
+                          <span className="text-xs font-normal text-slate-800 tracking-wide font-sans tabular-nums">{t(HERO.calendar.month)}</span>
                           <span className="text-xs font-normal text-slate-400 select-none">›</span>
                         </div>
 
                         {/* Days of week */}
                         <div className="grid grid-cols-7 gap-1 text-[10px] font-normal text-slate-400 text-center mb-1">
-                          <span>SUN</span>
-                          <span>MON</span>
-                          <span>TUE</span>
-                          <span>WED</span>
-                          <span>THU</span>
-                          <span>FRI</span>
-                          <span>SAT</span>
+                          {t(HERO.calendar.weekdays).map((day) => (
+                            <span key={day}>{day}</span>
+                          ))}
                         </div>
 
                         {/* Days Grid (1..31) */}
                         <div className="grid grid-cols-7 gap-1 text-center text-xs font-normal text-slate-700 tabular-nums">
-                          <span className="text-slate-200"></span>
-                          <span className="text-slate-200"></span>
-                          <span className="text-slate-200"></span>
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31].map((d) => {
-                            const isTarget = d === 14;
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30].map((d) => {
+                            const isTarget = d === 12;
                             const isSelected = selectedDate === d;
                             return (
                               <button
@@ -470,11 +443,11 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                             <div>
                               <div className="flex items-center justify-between gap-2 mb-3.5">
                                 <div>
-                                  <div className="text-xs font-normal text-slate-900 tracking-tight">Thursday</div>
-                                  <div className="text-[11px] font-normal text-slate-500 tabular-nums">July 14, 2026</div>
+                                  <div className="text-xs font-normal text-slate-900 tracking-tight">{t(HERO.calendar.day)}</div>
+                                  <div className="text-[11px] font-normal text-slate-500 tabular-nums">{t(HERO.calendar.date)}</div>
                                 </div>
                                 <span className="text-[10px] font-normal text-blue-600 bg-blue-50/90 px-2.5 py-0.5 rounded-full border border-blue-100/80 shrink-0 shadow-2xs tabular-nums">
-                                  2 slots open
+                                  {t(HERO.calendar.slotsOpen)}
                                 </span>
                               </div>
 
@@ -483,7 +456,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                                   type="button"
                                   className="w-full py-2.5 px-3 rounded-xl border border-blue-100 bg-blue-50/40 text-[#0055FF] text-xs font-normal text-center hover:bg-blue-100/70 hover:border-blue-200 active:scale-[0.97] transition-all duration-150 ease-out cursor-pointer flex items-center justify-center gap-1.5 tabular-nums"
                                 >
-                                  <span>12:30 PM</span>
+                                  <span>{HERO.calendar.slots[0]}</span>
                                 </button>
 
                                 <button
@@ -503,10 +476,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                                       className="flex items-center gap-1.5 font-normal"
                                     >
                                       <Check className="w-3.5 h-3.5 stroke-[3]" />
-                                      <span>Booked</span>
+                                      <span>{t(HERO.calendar.booked)}</span>
                                     </motion.div>
                                   ) : (
-                                    <span>2:30 PM</span>
+                                    <span>{HERO.calendar.slots[1]}</span>
                                   )}
                                 </button>
                               </div>
@@ -525,7 +498,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                                   </span>
-                                  <span className="tracking-tight font-normal text-slate-100">Calendar hold sent</span>
+                                  <span className="tracking-tight font-normal text-slate-100">{t(HERO.calendar.toast)}</span>
                                 </motion.div>
                               )}
                             </AnimatePresence>
@@ -535,7 +508,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                     </motion.div>
                   )}
 
-                  {/* Stage preview views for Velie, Notetaker & Payments tabs with fade effect */}
+                  {/* Stage preview views for AI agent, Data sync & Workflows tabs with fade effect */}
                   {activeProductTab === 'velie' && (
                     <LiveChatConversationAnimation />
                   )}
@@ -551,6 +524,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               </AnimatePresence>
             </div>
           </div>
+          <p className="relative z-10 mt-4 text-xs text-blue-100/90 text-center">{t(SITE.exampleCaption)}</p>
         </div>
       </div>
       </ImageReveal>
@@ -570,10 +544,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               {/* Header */}
               <div className="text-left">
                 <h3 className="text-lg sm:text-[1.25rem] font-normal text-[#0A0D14] tracking-tight leading-snug">
-                  Meeting automation <span className="font-normal text-[#94A3B8]">that</span>
+                  {t(HERO.bento.followUp.title)} <span className="font-normal text-[#94A3B8]" />
                 </h3>
                 <p className="text-lg sm:text-[1.25rem] font-normal text-[#94A3B8] tracking-tight leading-snug">
-                  clears the follow-up backlog
+                  {t(HERO.bento.followUp.sub)}
                 </p>
               </div>
 
@@ -589,7 +563,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                   </div>
                   <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-normal text-slate-600 shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-                    <span>newseedglobal.com/notetaker</span>
+                    <span>{HERO.bento.followUp.url}</span>
                   </div>
                   <span className="w-4" />
                 </div>
@@ -613,10 +587,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                     </motion.div>
                     <div>
                       <p className="font-normal text-slate-800 text-xs leading-tight">
-                        Sync action items to Notion & Slack
+                        {t(HERO.bento.followUp.tasks[0].text)}
                       </p>
                       <p className="text-emerald-600 font-normal text-[10px] mt-1 flex items-center gap-1">
-                        <span>Elena assigned • Due Friday</span>
+                        <span>{t(HERO.bento.followUp.tasks[0].meta)}</span>
                       </p>
                     </div>
                   </div>
@@ -628,10 +602,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                     </div>
                     <div>
                       <p className="font-normal text-slate-600 text-xs leading-tight">
-                        Send Google Meet recap with video timestamps
+                        {t(HERO.bento.followUp.tasks[1].text)}
                       </p>
                       <p className="text-blue-600 font-normal text-[10px] mt-1">
-                        Generated in 1.4s post-call
+                        {t(HERO.bento.followUp.tasks[1].meta)}
                       </p>
                     </div>
                   </div>
@@ -647,10 +621,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               {/* Header */}
               <div className="text-left mb-4">
                 <h3 className="text-lg sm:text-xl font-normal text-[#0A0D14] tracking-tight">
-                  VIP smart scheduling
+                  {t(HERO.bento.routing.title)}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed text-pretty">
-                  Intelligent routing, availability matching, and buffers to create the perfect meeting experience.
+                  {t(HERO.bento.routing.body)}
                 </p>
               </div>
 
@@ -658,9 +632,9 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               <div className="bg-[#F8FAFC] rounded-2xl p-4 border border-[#E2E8F0]/80 shadow-2xs space-y-3">
                 {/* Match Header */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-normal text-slate-600">Best match</span>
+                  <span className="text-xs font-normal text-slate-600">{t(HERO.bento.routing.match)}</span>
                   <span className="text-[11px] font-normal text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-200/60 tabular-nums">
-                    90% fit
+                    {t(HERO.bento.routing.fit)}
                   </span>
                 </div>
 
@@ -668,29 +642,27 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                 <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 text-white flex items-center justify-center font-normal text-xs shadow-2xs shrink-0 ring-2 ring-blue-100">
-                      SC
+                      DP
                     </div>
                     <div>
-                      <h4 className="text-xs font-normal text-slate-900 leading-tight">Sarah Chen</h4>
-                      <p className="text-[11px] text-slate-500 leading-tight">Account Executive</p>
+                      <h4 className="text-xs font-normal text-slate-900 leading-tight">{HERO.bento.routing.person}</h4>
+                      <p className="text-[11px] text-slate-500 leading-tight">{t(HERO.bento.routing.role)}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-1 text-xs font-normal text-blue-600 tabular-nums">
-                    <span className="text-[10px]">▲</span>
-                    <span>4.9</span>
                   </div>
                 </div>
 
                 {/* Optimal Time Section */}
                 <div className="bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs space-y-2">
-                  <span className="text-[11px] font-normal text-slate-700 block">Optimal time</span>
+                  <span className="text-[11px] font-normal text-slate-700 block">{t(HERO.bento.routing.replyIn)}</span>
                   
                   <div className="flex items-center justify-between text-xs font-normal text-slate-800">
                     <div className="flex items-center gap-2">
                       <div className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                         <Calendar className="w-3 h-3" />
                       </div>
-                      <span className="tabular-nums">10:00 AM – 10:30 AM</span>
+                      <span className="tabular-nums">{t(HERO.bento.routing.replyTime)}</span>
                     </div>
                   </div>
 
@@ -699,7 +671,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                       <div className="w-5 h-5 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                         <Clock className="w-3 h-3" />
                       </div>
-                      <span className="tabular-nums">10 min buffer before</span>
+                      <span className="tabular-nums">{t(HERO.bento.routing.history)}</span>
                     </div>
                   </div>
                 </div>
@@ -713,10 +685,10 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
               {/* Header */}
               <div className="text-left mb-4 relative z-10">
                 <h3 className="text-lg sm:text-xl font-normal text-[#0A0D14] tracking-tight">
-                  Connected meeting stack
+                  {t(HERO.bento.stack.title)}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed text-pretty">
-                  Synced data, notes, and actions flow to the tools your team already uses.
+                  {t(HERO.bento.stack.body)}
                 </p>
               </div>
 
@@ -730,104 +702,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                 {/* Track 1: Sliding Left */}
                 <div className="w-full overflow-hidden">
                   <div className="flex gap-2.5 w-max animate-marquee hover:[animation-play-state:paused] py-1">
-                    {[
-                      {
-                        name: 'Salesforce',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00A1E0]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'HubSpot',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#FF7A59]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.8 10.4V7.3L15.7 8.9v3.1l3.1-1.6zm-4.7 2.4V9.7L11 11.3v3.1l3.1-1.6zm-4.7 2.4V12.1L6.3 13.7v3.1l3.1-1.6zM22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2s10 4.5 10 10z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Slack',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#4A154B]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165c0-1.394 1.127-2.52 2.522-2.52h2.52v2.52zM6.313 15.165c0-1.394 1.127-2.52 2.52-2.52h2.52v2.52a2.528 2.528 0 0 1-2.52 2.523 2.528 2.528 0 0 1-2.52-2.523zM8.833 5.042a2.528 2.528 0 0 1-2.52-2.52A2.528 2.528 0 0 1 8.833 0c1.394 0 2.52 1.127 2.52 2.522v2.52H8.833zM8.833 6.313c1.394 0 2.52 1.127 2.52 2.52v2.52H8.833a2.528 2.528 0 0 1-2.52-2.52 2.528 2.528 0 0 1 2.52-2.52z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Notion',
-                        icon: (
-                          <svg className="w-4 h-4 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l11.082-.746c.326 0 .093-.326-.047-.42C16.894 2.622 15.682 2 13.91 2c-1.352 0-2.427.326-4.664.886l-4.79 1.322zm.326 3.03v12.72c0 .886.42 1.398 1.445 1.49l11.782.747c.885.047 1.444-.373 1.444-1.398V7.985c0-.84-.373-1.306-1.258-1.353l-12.062-.746c-.886-.047-1.351.42-1.351 1.352z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Zoom',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#2D8CFF]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.5 4.5A2.5 2.5 0 0 0 2 7v10a2.5 2.5 0 0 0 2.5 2.5h11a2.5 2.5 0 0 0 2.5-2.5v-3.2l3.5 2.6a1 1 0 0 0 1.6-.8V8.4a1 1 0 0 0-1.6-.8L18 10.2V7a2.5 2.5 0 0 0-2.5-2.5h-11z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Google Meet',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00875A]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Salesforce',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00A1E0]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'HubSpot',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#FF7A59]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.8 10.4V7.3L15.7 8.9v3.1l3.1-1.6zm-4.7 2.4V9.7L11 11.3v3.1l3.1-1.6zm-4.7 2.4V12.1L6.3 13.7v3.1l3.1-1.6zM22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2s10 4.5 10 10z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Slack',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#4A154B]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165c0-1.394 1.127-2.52 2.522-2.52h2.52v2.52zM6.313 15.165c0-1.394 1.127-2.52 2.52-2.52h2.52v2.52a2.528 2.528 0 0 1-2.52 2.523 2.528 2.528 0 0 1-2.52-2.523zM8.833 5.042a2.528 2.528 0 0 1-2.52-2.52A2.528 2.528 0 0 1 8.833 0c1.394 0 2.52 1.127 2.52 2.522v2.52H8.833zM8.833 6.313c1.394 0 2.52 1.127 2.52 2.52v2.52H8.833a2.528 2.528 0 0 1-2.52-2.52 2.528 2.528 0 0 1 2.52-2.52z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Notion',
-                        icon: (
-                          <svg className="w-4 h-4 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l11.082-.746c.326 0 .093-.326-.047-.42C16.894 2.622 15.682 2 13.91 2c-1.352 0-2.427.326-4.664.886l-4.79 1.322zm.326 3.03v12.72c0 .886.42 1.398 1.445 1.49l11.782.747c.885.047 1.444-.373 1.444-1.398V7.985c0-.84-.373-1.306-1.258-1.353l-12.062-.746c-.886-.047-1.351.42-1.351 1.352z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Zoom',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#2D8CFF]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.5 4.5A2.5 2.5 0 0 0 2 7v10a2.5 2.5 0 0 0 2.5 2.5h11a2.5 2.5 0 0 0 2.5-2.5v-3.2l3.5 2.6a1 1 0 0 0 1.6-.8V8.4a1 1 0 0 0-1.6-.8L18 10.2V7a2.5 2.5 0 0 0-2.5-2.5h-11z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Google Meet',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00875A]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
-                          </svg>
-                        )
-                      }
-                    ].map((pill, i) => (
+                    {MARQUEE_PILLS.map((pill, i) => (
                       <div
                         key={`${pill.name}-${i}`}
                         style={{ animationDelay: `${(i % 6) * 0.7}s` }}
@@ -847,104 +722,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                 {/* Track 2: Sliding Right */}
                 <div className="w-full overflow-hidden">
                   <div className="flex gap-2.5 w-max animate-marquee-reverse hover:[animation-play-state:paused] py-1">
-                    {[
-                      {
-                        name: 'Notion',
-                        icon: (
-                          <svg className="w-4 h-4 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l11.082-.746c.326 0 .093-.326-.047-.42C16.894 2.622 15.682 2 13.91 2c-1.352 0-2.427.326-4.664.886l-4.79 1.322zm.326 3.03v12.72c0 .886.42 1.398 1.445 1.49l11.782.747c.885.047 1.444-.373 1.444-1.398V7.985c0-.84-.373-1.306-1.258-1.353l-12.062-.746c-.886-.047-1.351.42-1.351 1.352z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Zoom',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#2D8CFF]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.5 4.5A2.5 2.5 0 0 0 2 7v10a2.5 2.5 0 0 0 2.5 2.5h11a2.5 2.5 0 0 0 2.5-2.5v-3.2l3.5 2.6a1 1 0 0 0 1.6-.8V8.4a1 1 0 0 0-1.6-.8L18 10.2V7a2.5 2.5 0 0 0-2.5-2.5h-11z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Google Meet',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00875A]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Salesforce',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00A1E0]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'HubSpot',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#FF7A59]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.8 10.4V7.3L15.7 8.9v3.1l3.1-1.6zm-4.7 2.4V9.7L11 11.3v3.1l3.1-1.6zm-4.7 2.4V12.1L6.3 13.7v3.1l3.1-1.6zM22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2s10 4.5 10 10z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Slack',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#4A154B]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165c0-1.394 1.127-2.52 2.522-2.52h2.52v2.52zM6.313 15.165c0-1.394 1.127-2.52 2.52-2.52h2.52v2.52a2.528 2.528 0 0 1-2.52 2.523 2.528 2.528 0 0 1-2.52-2.523zM8.833 5.042a2.528 2.528 0 0 1-2.52-2.52A2.528 2.528 0 0 1 8.833 0c1.394 0 2.52 1.127 2.52 2.522v2.52H8.833zM8.833 6.313c1.394 0 2.52 1.127 2.52 2.52v2.52H8.833a2.528 2.528 0 0 1-2.52-2.52 2.528 2.528 0 0 1 2.52-2.52z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Notion',
-                        icon: (
-                          <svg className="w-4 h-4 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l11.082-.746c.326 0 .093-.326-.047-.42C16.894 2.622 15.682 2 13.91 2c-1.352 0-2.427.326-4.664.886l-4.79 1.322zm.326 3.03v12.72c0 .886.42 1.398 1.445 1.49l11.782.747c.885.047 1.444-.373 1.444-1.398V7.985c0-.84-.373-1.306-1.258-1.353l-12.062-.746c-.886-.047-1.351.42-1.351 1.352z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Zoom',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#2D8CFF]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.5 4.5A2.5 2.5 0 0 0 2 7v10a2.5 2.5 0 0 0 2.5 2.5h11a2.5 2.5 0 0 0 2.5-2.5v-3.2l3.5 2.6a1 1 0 0 0 1.6-.8V8.4a1 1 0 0 0-1.6-.8L18 10.2V7a2.5 2.5 0 0 0-2.5-2.5h-11z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Google Meet',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00875A]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Salesforce',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#00A1E0]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'HubSpot',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#FF7A59]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.8 10.4V7.3L15.7 8.9v3.1l3.1-1.6zm-4.7 2.4V9.7L11 11.3v3.1l3.1-1.6zm-4.7 2.4V12.1L6.3 13.7v3.1l3.1-1.6zM22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2s10 4.5 10 10z" />
-                          </svg>
-                        )
-                      },
-                      {
-                        name: 'Slack',
-                        icon: (
-                          <svg className="w-4 h-4 text-[#4A154B]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165c0-1.394 1.127-2.52 2.522-2.52h2.52v2.52zM6.313 15.165c0-1.394 1.127-2.52 2.52-2.52h2.52v2.52a2.528 2.528 0 0 1-2.52 2.523 2.528 2.528 0 0 1-2.52-2.523zM8.833 5.042a2.528 2.528 0 0 1-2.52-2.52A2.528 2.528 0 0 1 8.833 0c1.394 0 2.52 1.127 2.52 2.522v2.52H8.833zM8.833 6.313c1.394 0 2.52 1.127 2.52 2.52v2.52H8.833a2.528 2.528 0 0 1-2.52-2.52 2.528 2.528 0 0 1 2.52-2.52z" />
-                          </svg>
-                        )
-                      }
-                    ].map((pill, i) => (
+                    {MARQUEE_PILLS.map((pill, i) => (
                       <div
                         key={`${pill.name}-r2-${i}`}
                         style={{ animationDelay: `${(i % 6) * 0.7}s` }}
@@ -969,7 +747,7 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
                   className="animate-gooey-border w-full py-2.5 px-4 bg-blue-50/80 hover:bg-blue-100/90 text-[#0055FF] text-xs font-normal border border-blue-200/80 flex items-center justify-center gap-1.5 shadow-[0_4px_16px_rgba(0,85,255,0.06)] transition-colors duration-200 cursor-pointer mt-1"
                 >
                   <span className="text-sm leading-none font-normal">+</span>
-                  <span className="tabular-nums font-normal">50+ more integrations</span>
+                  <span className="tabular-nums font-normal">{t(HERO.bento.stack.wide)}</span>
                 </motion.div>
 
               </div>
@@ -983,38 +761,18 @@ export default function MultiProductHero({ onOpenAuth, onOpenDemo }: MultiProduc
 }
 
 function LiveChatConversationAnimation() {
+  const { t } = useLang();
   const [currentConvoIndex, setCurrentConvoIndex] = useState(0);
   const [stageStep, setStageStep] = useState(0); // 0: empty, 1: left avatar+bubble, 2: right avatar+bubble
 
-  const conversations = [
-    {
-      id: 1,
-      clientName: "Alex R.",
-      clientAvatar: "A",
-      clientBg: "bg-slate-900",
-      clientText: "We have a $25k budget & need to launch Q4, can we meet?",
-      replyText: "Calendar hold sent for Thursday 2:30 PM!",
-      tag: "$25k Budget • Qualified"
-    },
-    {
-      id: 2,
-      clientName: "Sophia C.",
-      clientAvatar: "S",
-      clientBg: "bg-[#0055FF]",
-      clientText: "Looking for 50 seats demo for our team.",
-      replyText: "Matched with Senior AE & hold confirmed!",
-      tag: "50 Seats • High Intent"
-    },
-    {
-      id: 3,
-      clientName: "Marcus V.",
-      clientAvatar: "M",
-      clientBg: "bg-emerald-600",
-      clientText: "Your works are fire, let's work!",
-      replyText: "Sure! Calendar link & hold dispatched.",
-      tag: "VIP Lead • Instant Booking"
-    }
-  ];
+  const conversations = HERO.chats.map((chat, i) => ({
+    id: i + 1,
+    clientAvatar: chat.avatar,
+    clientBg: CLIENT_BG[i],
+    clientText: chat.client,
+    replyText: chat.reply,
+    tag: chat.tag,
+  }));
 
   useEffect(() => {
     let active = true;
@@ -1070,7 +828,7 @@ function LiveChatConversationAnimation() {
             {/* Tag Badge */}
             <div className="flex items-center justify-center">
               <span className="text-[9px] font-normal text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/60">
-                {current.tag}
+                {t(current.tag)}
               </span>
             </div>
 
@@ -1095,11 +853,11 @@ function LiveChatConversationAnimation() {
                 transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                 className="bg-slate-100 text-slate-800 text-xs font-normal px-3.5 py-2 rounded-2xl rounded-bl-xs border border-slate-200/60 max-w-[82%]"
               >
-                {current.clientText}
+                {t(current.clientText)}
               </motion.div>
             </div>
 
-            {/* Right Chat Message Row (Velie / newseed AI) */}
+            {/* Right Chat Message Row (AI agent) */}
             <div className="flex items-end gap-2.5 justify-end min-h-[40px]">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9, x: 8 }}
@@ -1111,7 +869,7 @@ function LiveChatConversationAnimation() {
                 transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                 className="bg-[#0055FF] text-white text-xs font-normal px-3.5 py-2 rounded-2xl rounded-br-xs shadow-xs max-w-[82%]"
               >
-                {current.replyText}
+                {t(current.replyText)}
               </motion.div>
 
               <motion.div
@@ -1120,7 +878,7 @@ function LiveChatConversationAnimation() {
                 transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                 className="w-7 h-7 rounded-full bg-[#0055FF] text-white font-normal text-[11px] flex items-center justify-center shrink-0 shadow-2xs"
               >
-                E
+                N
               </motion.div>
             </div>
           </motion.div>
@@ -1145,34 +903,10 @@ function LiveChatConversationAnimation() {
 }
 
 function LiveNotetakerSoundwaveAnimation() {
+  const { t } = useLang();
   const [deck, setDeck] = useState([0, 1, 2]);
 
-  const cards = [
-    {
-      id: 1,
-      title: "Follow-up Call",
-      text: "Calendar hold set for Thursday 2:30 PM",
-      subtext: "Auto-scheduled with AE team",
-      badge: "Hold Sent",
-      badgeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80"
-    },
-    {
-      id: 2,
-      title: "Key Action Item",
-      text: "Send revised contract & API docs to Sarah by EOD",
-      subtext: "Assigned to Elena • High priority",
-      badge: "Synced",
-      badgeStyle: "bg-blue-50 text-[#0055FF] border-blue-200/80"
-    },
-    {
-      id: 3,
-      title: "CRM Update",
-      text: "Synced deal terms & summary to Salesforce",
-      subtext: "Pushed to CRM in 1.2s",
-      badge: "Auto-Sync",
-      badgeStyle: "bg-purple-50 text-purple-700 border-purple-200/80"
-    }
-  ];
+  const cards = HERO.sync.events.map((card, i) => ({ id: i + 1, ...card, badgeStyle: SYNC_BADGE_STYLES[i] }));
 
   const handleShuffle = () => {
     setDeck((prev) => {
@@ -1215,11 +949,11 @@ function LiveNotetakerSoundwaveAnimation() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0055FF]"></span>
           </span>
           <h3 className="text-xs font-normal text-[#0A0D14] tracking-tight">
-            Live Meeting Transcript & Recap
+            {t(HERO.sync.header)}
           </h3>
         </div>
         <span className="text-[10px] font-normal text-[#0055FF] bg-blue-50/80 px-2.5 py-0.5 rounded-full border border-blue-100/80">
-          Auto-Sync
+          {t(HERO.sync.badge)}
         </span>
       </div>
 
@@ -1227,7 +961,7 @@ function LiveNotetakerSoundwaveAnimation() {
       <div className="mb-4 p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-normal text-slate-700">
-            Recording Audio...
+            {t(HERO.sync.status)}
           </span>
         </div>
 
@@ -1295,21 +1029,21 @@ function LiveNotetakerSoundwaveAnimation() {
                     ✓
                   </div>
                   <span className="text-xs font-normal text-[#0A0D14] tracking-tight">
-                    {card.title}
+                    {t(card.title)}
                   </span>
                 </div>
                 <span className={`text-[9px] font-normal px-2 py-0.5 rounded-full border ${card.badgeStyle}`}>
-                  {card.badge}
+                  {t(card.badge)}
                 </span>
               </div>
 
               <p className="text-xs text-slate-700 font-normal leading-snug">
-                {card.text}
+                {t(card.text)}
               </p>
 
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-normal">
-                <span>{card.subtext}</span>
-                <span className="text-[#0055FF] font-normal">Active Sync</span>
+                <span>{t(card.subtext)}</span>
+                <span className="text-[#0055FF] font-normal">{t(HERO.sync.active)}</span>
               </div>
             </motion.div>
           );
@@ -1352,6 +1086,7 @@ function useAnimatedCounter(targetValue: number, startTrigger: boolean, duration
 }
 
 function LivePaymentsConveyorAnimation() {
+  const { t } = useLang();
   const [activeScene, setActiveScene] = useState<
     'payment1' | 'consultation1' | 'toggle' | 'payment2' | 'consultation2'
   >('payment1');
@@ -1360,9 +1095,9 @@ function LivePaymentsConveyorAnimation() {
 
   // Animated counter hooks for nominal field and final consultation cards
   const isPaymentScene = activeScene === 'payment1' || activeScene === 'payment2';
-  const paymentCounter = useAnimatedCounter(100, isPaymentScene, 850);
-  const consult1Counter = useAnimatedCounter(100, activeScene === 'consultation1', 850);
-  const consult2Counter = useAnimatedCounter(100, priceMorphedInCard, 850);
+  const paymentCounter = useAnimatedCounter(18, isPaymentScene, 850);
+  const consult1Counter = useAnimatedCounter(2360, activeScene === 'consultation1', 850);
+  const consult2Counter = useAnimatedCounter(2360, priceMorphedInCard, 850);
 
   useEffect(() => {
     let active = true;
@@ -1441,7 +1176,7 @@ function LivePaymentsConveyorAnimation() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span className="text-xs font-normal text-[#0A0D14] tracking-tight">Payments & Upfront Billing</span>
+          <span className="text-xs font-normal text-[#0A0D14] tracking-tight">{t(HERO.quote.header)}</span>
         </div>
       </div>
 
@@ -1464,38 +1199,38 @@ function LivePaymentsConveyorAnimation() {
             <div className="space-y-4">
               <div>
                 <span className="text-[11px] font-normal text-slate-500 block mb-1.5">
-                  Amount to collect
+                  {t(HERO.quote.markup)}
                 </span>
 
                 {/* Nominal Input Box with Typing Cursor + Animated Counter */}
                 <div className="flex items-center gap-1.5 bg-slate-50 px-3.5 py-2.5 rounded-xl border border-blue-400/80 shadow-[0_0_12px_rgba(0,85,255,0.12)] ring-2 ring-blue-500/20 text-xs font-normal text-slate-900 transition-all duration-300">
-                  <span className="text-slate-400 font-normal">$</span>
+                  <span className="text-slate-400 font-normal" />
                   <span className="text-slate-900 font-normal text-base tabular-nums tracking-tight">
-                    {paymentCounter}
+                    {paymentCounter}%
                   </span>
-                  {paymentCounter < 100 && (
+                  {paymentCounter < 18 && (
                     <span className="w-0.5 h-4 bg-[#0055FF] animate-pulse inline-block -ml-0.5" />
                   )}
-                  {paymentCounter === 100 && (
+                  {paymentCounter === 18 && (
                     <motion.span
                       initial={{ scale: 0.7, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       className="text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200/80 ml-1.5"
                     >
-                      ✓ Saved
+                      {t(HERO.quote.priced)}
                     </motion.span>
                   )}
-                  <span className="text-[10px] font-normal text-slate-400 ml-auto">USD ▼</span>
+                  <span className="text-[10px] font-normal text-slate-400 ml-auto" />
                 </div>
               </div>
 
               <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                 <span className="text-[11px] font-normal text-slate-500">
-                  Payment processor
+                  {t(HERO.quote.output)}
                 </span>
                 <span className="text-xs font-normal text-slate-900 bg-slate-100/80 px-2.5 py-1 rounded-lg border border-slate-200/80 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  Stripe
+                  {t(HERO.quote.outputValue)}
                 </span>
               </div>
             </div>
@@ -1519,10 +1254,10 @@ function LivePaymentsConveyorAnimation() {
           >
             <div className="flex flex-col items-center">
               <div className="w-9 h-9 rounded-full bg-[#0A0D14] text-white font-normal text-xs flex items-center justify-center mb-2 shadow-xs">
-                D
+                C
               </div>
-              <p className="text-xs font-normal text-slate-700">Dominic Mills</p>
-              <h4 className="text-sm font-normal text-[#0A0D14] mt-0.5">Consultation</h4>
+              <p className="text-xs font-normal text-slate-700">{HERO.quote.client}</p>
+              <h4 className="text-sm font-normal text-[#0A0D14] mt-0.5">{t(HERO.quote.proposal)}</h4>
 
               {/* Solid Blue Focal Card with Bouncy Spring Finish & White Text */}
               <motion.div
@@ -1547,18 +1282,18 @@ function LivePaymentsConveyorAnimation() {
 
                 <div className="flex items-center justify-center relative z-10">
                   <span className="text-3xl font-normal text-white tracking-tight tabular-nums">
-                    ${consult1Counter}
+                    ${consult1Counter.toLocaleString('en-US')}
                   </span>
                 </div>
                 <p className="text-[10px] font-normal text-blue-100/90 mt-0.5 relative z-10">
-                  Powered by Stripe
+                  {t(HERO.quote.total)}
                 </p>
               </motion.div>
 
               <div className="flex items-center gap-2 text-[11px] font-normal text-slate-500 pt-2 border-t border-slate-100 w-full justify-center">
-                <span>45 min</span>
+                <span>{t(HERO.quote.generated)}</span>
                 <span>•</span>
-                <span className="text-[#0055FF] font-normal">Zoom</span>
+                <span className="text-[#0055FF] font-normal">{t(HERO.quote.channel)}</span>
               </div>
             </div>
           </motion.div>
@@ -1582,7 +1317,7 @@ function LivePaymentsConveyorAnimation() {
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-normal text-[#0A0D14]">Require payment to book</span>
+              <span className="text-xs font-normal text-[#0A0D14]">{t(HERO.quote.autoSend)}</span>
               <button
                 type="button"
                 onClick={() => setToggleOn((prev) => !prev)}
@@ -1613,9 +1348,9 @@ function LivePaymentsConveyorAnimation() {
                 >
                   <span className="font-normal text-emerald-600 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Payment Guard Active
+                    {t(HERO.quote.sent)}
                   </span>
-                  <span className="text-slate-400 font-mono text-[10px]">$100 USD</span>
+                  <span className="text-slate-400 font-mono text-[10px]">$2,360 USD</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1640,13 +1375,13 @@ function LivePaymentsConveyorAnimation() {
           >
             <motion.div layout className="flex flex-col items-center">
               <div className="w-9 h-9 rounded-full bg-[#0A0D14] text-white font-normal text-xs flex items-center justify-center mb-2 shadow-xs">
-                D
+                C
               </div>
               <motion.p layout className="text-xs font-normal text-slate-700">
-                Dominic Mills
+                {HERO.quote.client}
               </motion.p>
               <motion.h4 layout className="text-sm font-normal text-[#0A0D14] mt-0.5">
-                Consultation
+                {t(HERO.quote.proposal)}
               </motion.h4>
 
               {/* $0 -> $100 Morphing Counter Focal Point with Bouncy Spring Finish */}
@@ -1666,20 +1401,20 @@ function LivePaymentsConveyorAnimation() {
                   >
                     <div className="flex items-center justify-center">
                       <span className="text-3xl font-normal text-white tracking-tight tabular-nums">
-                        ${consult2Counter}
+                        ${consult2Counter.toLocaleString('en-US')}
                       </span>
                     </div>
                     <p className="text-[10px] font-normal text-blue-100/90 mt-0.5">
-                      Powered by Stripe
+                      {t(HERO.quote.total)}
                     </p>
                   </motion.div>
                 )}
               </AnimatePresence>
 
               <motion.div layout className="flex items-center gap-2 text-[11px] font-normal text-slate-500 pt-2 border-t border-slate-100 w-full justify-center mt-2">
-                <span>45 min</span>
+                <span>{t(HERO.quote.generated)}</span>
                 <span>•</span>
-                <span className="text-[#0055FF] font-normal">Zoom</span>
+                <span className="text-[#0055FF] font-normal">{t(HERO.quote.channel)}</span>
               </motion.div>
             </motion.div>
           </motion.div>

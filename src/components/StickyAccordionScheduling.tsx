@@ -142,7 +142,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
     {
       id: 'wherever',
       title: 'Scheduling whenever, wherever',
-      description: 'Access newseed from the mobile app or browser extension, or use it with your favorite AI tool, LinkedIn, or 150+ other integrations.',
+      description: 'Access elev from the mobile app or browser extension, or use it with your favorite AI tool, LinkedIn, or 150+ other integrations.',
       icon: <Smartphone className="w-5 h-5 text-blue-600" />,
       interactivePreview: (
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-3 text-xs">
@@ -293,7 +293,7 @@ export default function StickyAccordionScheduling({ onOpenDemo }: StickyAccordio
               {features[activeIndex].interactivePreview}
 
               <div className="mt-5 pt-4 border-t border-[#E2E8F0] flex items-center justify-between text-xs text-slate-500">
-                <span>Part of newseed Enterprise & Teams</span>
+                <span>Part of elev Enterprise & Teams</span>
                 <button
                   onClick={onOpenDemo}
                   className="font-normal text-blue-600 hover:underline cursor-pointer"

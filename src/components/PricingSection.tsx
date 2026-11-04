@@ -33,7 +33,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
   ];
 
   return (
-    <section id="pricing" className="py-24 lg:py-36 bg-white border-t border-[#E2E8F0] relative overflow-hidden text-slate-900">
+    <section id="pricing" className="py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0] relative overflow-hidden text-slate-900">
       {/* Ambient background glows */}
       <div 
         className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-[radial-gradient(ellipse_at_center,rgba(0,85,255,0.08)_0%,rgba(147,197,253,0.12)_45%,transparent_75%)] blur-3xl rounded-full" 
@@ -43,7 +43,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20 lg:mb-24">
           <Reveal y={24}>
             <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.15] tracking-tight text-balance">
               Simple, transparent <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">pricing for scale</span>
@@ -268,7 +268,7 @@ export default function PricingSection({ onOpenAuth, onOpenDemo }: PricingSectio
         </StaggerGroup>
 
         {/* Enterprise Security Reassurance Banner */}
-        <Reveal y={20} className="w-full">
+        <Reveal y={20} className="w-full mt-16 sm:mt-20 lg:mt-24">
           <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-xl border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-xs">
             <div className="flex items-center gap-3.5">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">

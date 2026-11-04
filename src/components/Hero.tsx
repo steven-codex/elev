@@ -48,7 +48,7 @@ export default function Hero({ onOpenAuth }: HeroProps) {
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-600 leading-relaxed font-normal max-w-xl">
-              newseed is your scheduling automation platform for eliminating the back-and-forth emails so you can get more done, close deals faster, and keep momentum high.
+              elev is your scheduling automation platform for eliminating the back-and-forth emails so you can get more done, close deals faster, and keep momentum high.
             </p>
 
             {/* Email Sign-up form */}

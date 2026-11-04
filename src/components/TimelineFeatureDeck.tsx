@@ -83,7 +83,7 @@ function EarningsPayoutsCard({ onOpenAuth }: { onOpenAuth: (mode: 'signup') => v
     <div 
       onMouseEnter={() => setIsCardHovered(true)}
       onMouseLeave={() => setIsCardHovered(false)}
-      className="bg-[#F8FAFD] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[360px]"
+      className="bg-[#F8FAFD] rounded-[32px] p-7 sm:p-8 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[380px]"
     >
       <div className="relative z-10">
         {/* Top Row: "Your earnings" & "This month ⌵" */}
@@ -261,12 +261,12 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
   ];
 
   return (
-    <section id="features" className="w-full py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
+    <section id="features" className="w-full py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div id="workflows" className="sr-only" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 sm:mb-20 lg:mb-24">
           <Reveal y={24}>
             <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.14] tracking-tight text-balance">
               Built for teams whose work <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">runs on meetings</span>
@@ -274,7 +274,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
           </Reveal>
           <Reveal delay={0.12} y={16}>
             <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed text-pretty">
-              newseed automates the workflow before, during, and after every session — so your team can focus on high-impact execution.
+              elev automates the workflow before, during, and after every session — so your team can focus on high-impact execution.
             </p>
           </Reveal>
         </div>
@@ -282,7 +282,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
         {/* ========================================================= */}
         {/* BENTO GRID SHOWCASE (TRANSPARENT GLASSY TEXTURE STAGE)   */}
         {/* ========================================================= */}
-        <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="w-full max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-8 items-stretch">
           
           {/* Main Bento Cell: Standalone Transparent Glassy Motion Stage (Span 8) */}
           <ImageReveal delay={0.1} y={28} className="lg:col-span-8 group flex flex-col">
@@ -290,10 +290,10 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
           </ImageReveal>
 
           {/* Right Side Column: Standalone Transparent Glassy Companion Cards (Span 4) */}
-          <ImageReveal delay={0.25} y={28} className="lg:col-span-4 flex flex-col gap-6 justify-between">
+          <ImageReveal delay={0.25} y={28} className="lg:col-span-4 flex flex-col gap-7 lg:gap-8 justify-between">
             
             {/* Side Card 1: Meet Velie AI Copilot */}
-            <div className="bg-[#F8FAFD] rounded-[32px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[360px]">
+            <div className="bg-[#F8FAFD] rounded-[32px] p-7 sm:p-8 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[380px]">
               
               <div className="relative z-10">
                 {/* Header Title with Tilted Interactive Email Badge */}
@@ -305,7 +305,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                   <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard.writeText('velie@newseedglobal.com');
+                      navigator.clipboard.writeText('velie@elevglobal.com');
                       setCopiedEmail(true);
                       setTimeout(() => setCopiedEmail(false), 2000);
                     }}
@@ -313,7 +313,7 @@ export default function TimelineFeatureDeck({ onOpenAuth }: TimelineFeatureDeckP
                     title="Click to copy email address"
                   >
                     <Mail className="w-3.5 h-3.5 text-[#0055FF] stroke-[2.2]" />
-                    <span className="font-mono text-[11px] font-medium tracking-tight">velie@newseedglobal.com</span>
+                    <span className="font-mono text-[11px] font-medium tracking-tight">velie@elevglobal.com</span>
                     <span className="text-[10px] font-sans font-medium text-blue-500/80 group-hover/copy:text-blue-600 transition-colors ml-0.5">
                       {copiedEmail ? 'Copied!' : 'Copy'}
                     </span>

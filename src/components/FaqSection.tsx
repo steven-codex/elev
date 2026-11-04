@@ -14,7 +14,7 @@ const FAQ_ITEMS: FaqCardItem[] = [
     id: 0,
     tag: 'Enterprise Security',
     badge: 'SOC 2 Type II',
-    question: 'How secure is newseed with enterprise calendar and client data?',
+    question: 'How secure is elev with enterprise calendar and client data?',
     fullAnswer:
       'SOC 2 Type II certified with end-to-end TLS 1.3 encryption. Your calendar data stays private and is never stored or monetized.',
     image: '/images/elev-team-collaboration-laptop.jpg',
@@ -28,7 +28,7 @@ const FAQ_ITEMS: FaqCardItem[] = [
     fullAnswer:
       'Automatically distributes inbound leads across available team reps by priority, territory, or availability to maximize pipeline velocity.',
     image: '/images/elev-pricing-laptop-showcase.jpg',
-    alt: 'newseed pricing plan displayed on laptop in office'
+    alt: 'elev pricing plan displayed on laptop in office'
   },
   {
     id: 2,
@@ -44,7 +44,7 @@ const FAQ_ITEMS: FaqCardItem[] = [
     id: 3,
     tag: 'Calendar Intelligence',
     badge: 'Real-Time Sync',
-    question: 'How does newseed prevent double bookings across multiple calendars?',
+    question: 'How does elev prevent double bookings across multiple calendars?',
     fullAnswer:
       'Real-time sync across Google Calendar and Outlook validates slot availability and locks bookings instantly to eliminate overlaps.',
     image: '/images/elev-workplace-sales-call.jpg',
@@ -105,14 +105,14 @@ export default function FaqSection() {
   return (
     <section
       id="faq"
-      className="py-24 sm:py-32 bg-white relative overflow-hidden"
+      className="py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0]/80 relative overflow-hidden"
     >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* ========================================================= */}
         {/* EDITORIAL HEADER WITH ETHEREAL RADIAL AMBIENT AURA        */}
         {/* ========================================================= */}
-        <Reveal y={24} duration={0.9} className="relative text-center mb-10 sm:mb-14 pt-4 sm:pt-6">
+        <Reveal y={24} duration={0.9} className="relative text-center mb-16 sm:mb-20 lg:mb-24 pt-4 sm:pt-6">
           {/* Giant Typographic FAQ Watermark SVG */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[46%] w-[720px] sm:w-[820px] max-w-[92vw] pointer-events-none -z-10 select-none flex items-center justify-center"
@@ -165,7 +165,7 @@ export default function FaqSection() {
             Everything you need to know
             <br />
             <span className="font-instrument italic font-normal text-[#2563EB] inline-block mt-1 sm:mt-2">
-              about newseed
+              about elev
             </span>
           </h2>
         </Reveal>
@@ -321,7 +321,7 @@ export default function FaqSection() {
 
         {/* Quick Navigator Pill Bar below Bento Frame & Support Help Box */}
         <Reveal delay={0.25} y={16}>
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mt-9 pt-2 px-4">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mt-14 sm:mt-18 pt-2 px-4">
             {FAQ_ITEMS.map((item) => (
               <button
                 key={item.id}
@@ -342,7 +342,7 @@ export default function FaqSection() {
           </div>
 
           {/* Support Help box */}
-          <div className="mt-12 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+          <div className="mt-14 sm:mt-16 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
             <HelpCircle className="w-4 h-4 text-blue-600" />
             <span>Have a question not listed here?</span>
             <a href="#demo" className="font-medium text-blue-600 hover:underline">

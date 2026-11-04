@@ -96,7 +96,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
   ];
 
   return (
-    <section className="relative z-10 w-full min-h-[920px] lg:min-h-[980px] bg-transparent border-t border-[#E2E8F0] overflow-hidden select-none py-10 lg:py-14 flex flex-col items-center justify-between">
+    <section className="relative z-10 w-full min-h-[1040px] lg:min-h-[1140px] bg-transparent border-t border-[#E2E8F0] overflow-hidden select-none pt-28 sm:pt-36 lg:pt-44 pb-24 sm:pb-32 lg:pb-36 flex flex-col items-center justify-between">
       
       {/* ====================================================================
           BACKGROUND: Perimeter Frame Tile Pattern with Soft Fade Mask & 40% Opacity
@@ -164,7 +164,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 ------------------------------------------------------------ */}
             
             {/* Conduit 1: Top-Left Notetaker (Purple) -> (255, 75) to (405, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 255 75 L 375 75 Q 405 75, 405 105 L 405 370"
@@ -186,7 +186,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             </g>
 
             {/* Conduit 2: Bottom-Left Velie (Green) -> (155, 220) to (255, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 155 220 L 225 220 Q 255 220, 255 250 L 255 370"
@@ -208,7 +208,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             </g>
 
             {/* Conduit 3: Top-Right Scheduling (Blue) -> (745, 75) to (595, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 745 75 L 625 75 Q 595 75, 595 105 L 595 370"
@@ -230,7 +230,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
             </g>
 
             {/* Conduit 4: Bottom-Right Payments (Cyan) -> (845, 220) to (745, 370) */}
-            <g className="conduit-group">
+            <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
                 d="M 845 220 L 775 220 Q 745 220, 745 250 L 745 370"
@@ -255,45 +255,46 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
 
             {/* ------------------------------------------------------------
                 EMBEDDED INTERACTIVE CARDS VIA FOREIGNOBJECT (100% Pinned)
+                Zero-Jitter Hit-Testing with Buffered Bounding Box & GPU Acceleration
                 ------------------------------------------------------------ */}
 
-            {/* Card 1: Top-Left Notetaker (Purple) -> x=145..255, y=20..130 */}
-            <foreignObject x="145" y="20" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('notetaker')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(168,85,247,0.22),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(168,85,247,0.35)] active:scale-[0.96]">
+            {/* Card 1: Top-Left Notetaker (Purple) -> Center at (200, 75), Card 110x110 at x=145..255, y=20..130 */}
+            <foreignObject x="130" y="5" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('notetaker')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(168,85,247,0.22),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(168,85,247,0.35)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-notetaker-3d.png" 
                     alt="AI Notetaker" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-3 transition-transform" 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-3 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
               </div>
             </foreignObject>
 
-            {/* Card 2: Bottom-Left Velie (Green) -> x=45..155, y=165..275 */}
-            <foreignObject x="45" y="165" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('velie')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(132,204,22,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(132,204,22,0.38)] active:scale-[0.96]">
+            {/* Card 2: Bottom-Left Velie (Green) -> Center at (100, 220), Card 110x110 at x=45..155, y=165..275 */}
+            <foreignObject x="30" y="150" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('velie')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(132,204,22,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(132,204,22,0.38)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-velie-3d.png" 
                     alt="Velie AI" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-6 transition-transform" 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-6 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
               </div>
             </foreignObject>
 
             {/* Centerpiece: Velie Liquid Glass Orb (Enlarged 270px, Exact Velie Section Card Palette & Aura) */}
-            <foreignObject x="365" y="13" width="270" height="270" className="overflow-visible">
-              <div className="w-full h-full relative flex items-center justify-center group/orb cursor-pointer">
+            <foreignObject x="365" y="13" width="270" height="270" className="overflow-visible pointer-events-none">
+              <div className="w-full h-full relative flex items-center justify-center group/orb cursor-pointer pointer-events-auto">
                 {/* Soft Radial Ambient Aura (Identical to Velie Card in TimelineFeatureDeck) */}
                 <div 
                   className={`absolute inset-0 rounded-full transition-all duration-500 pointer-events-none ${
@@ -308,7 +309,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 <div className="absolute bottom-2 w-40 h-6 bg-blue-500/10 blur-xl rounded-full pointer-events-none" />
 
                 {/* Liquid Glass Orb Canvas / WebGPU Caustics */}
-                <div className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-[0.96]">
+                <div className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 ease-out hover:scale-105 active:scale-[0.96] will-change-transform transform-gpu">
                   <LiquidOrb
                     state="thinking"
                     interactive={true}
@@ -318,35 +319,35 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
               </div>
             </foreignObject>
 
-            {/* Card 3: Top-Right Scheduling (Blue) -> x=745..855, y=20..130 */}
-            <foreignObject x="745" y="20" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('scheduling')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(56,189,248,0.26),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(56,189,248,0.4)] active:scale-[0.96]">
+            {/* Card 3: Top-Right Scheduling (Blue) -> Center at (800, 75), Card 110x110 at x=745..855, y=20..130 */}
+            <foreignObject x="730" y="5" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('scheduling')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(56,189,248,0.26),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(56,189,248,0.4)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-scheduling-3d.png" 
                     alt="Scheduling" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-3 transition-transform" 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-3 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
               </div>
             </foreignObject>
 
-            {/* Card 4: Bottom-Right Payments (Cyan) -> x=845..955, y=165..275 */}
-            <foreignObject x="845" y="165" width="110" height="110" className="overflow-visible">
-              <div 
-                onMouseEnter={() => setActiveFeature('payments')}
-                onMouseLeave={() => setActiveFeature(null)}
-                className="w-full h-full cursor-pointer group"
-              >
-                <div className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(6,182,212,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-300 group-hover:scale-105 group-hover:shadow-[0_20px_45px_-6px_rgba(6,182,212,0.38)] active:scale-[0.96]">
+            {/* Card 4: Bottom-Right Payments (Cyan) -> Center at (900, 220), Card 110x110 at x=845..955, y=165..275 */}
+            <foreignObject x="830" y="150" width="140" height="140" className="overflow-visible pointer-events-none">
+              <div className="w-full h-full flex items-center justify-center pointer-events-none">
+                <div 
+                  onMouseEnter={() => setActiveFeature('payments')}
+                  onMouseLeave={() => setActiveFeature(null)}
+                  className="w-[110px] h-[110px] rounded-[24px] bg-white border border-slate-200/80 shadow-[0_14px_36px_-6px_rgba(6,182,212,0.24),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 transition-[transform,box-shadow,border-color] duration-250 ease-out hover:scale-105 hover:shadow-[0_20px_45px_-6px_rgba(6,182,212,0.38)] active:scale-[0.96] cursor-pointer will-change-transform transform-gpu select-none group pointer-events-auto"
+                >
                   <img 
                     src="/icon-payments-3d.png" 
                     alt="Payments" 
-                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-6 transition-transform" 
+                    className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-6 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
               </div>
@@ -366,7 +367,7 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
           start="top 95%"
           end="center 55%"
           scrub={1.2}
-          className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-7"
+          className="relative w-full max-w-[1360px] w-[95vw] lg:w-[88vw] z-20 pt-8 sm:pt-12 mt-12 sm:mt-16 lg:mt-20"
         >
           
           {/* STACKED GLASS LAYER 2 (Backmost stacked card sheet) */}
@@ -384,16 +385,16 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                   ================================================================ */}
               <aside className="md:col-span-3 border-r border-slate-100 bg-[#FAFBFD] p-4 sm:p-5 flex flex-col justify-between select-none">
                 <div>
-                  {/* Brand Header: newseed Infinity Logo + Sidebar Control */}
+                  {/* Brand Header: elev Infinity Logo + Sidebar Control */}
                   <div className="flex items-center justify-between px-2 mb-7">
                     <div className="flex items-center gap-3">
                       <img 
                         src="/elev-infinity-logo.png" 
-                        alt="newseed" 
+                        alt="elev" 
                         className="h-8.5 sm:h-9.5 w-auto object-contain" 
                       />
                       <span className="text-2xl font-normal text-[#0A0D14] tracking-tight">
-                        newseed
+                        elev
                       </span>
                     </div>
                     {/* Sidebar Collapsible / Info Button */}
@@ -489,12 +490,12 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                       <div className="flex items-center gap-2 pl-1 cursor-pointer group">
                         <img
                           src="/elev-infinity-logo.png"
-                          alt="newseed"
+                          alt="elev"
                           className="w-8 h-8 rounded-full object-contain p-1 bg-slate-50 border border-slate-200 group-hover:border-blue-400 transition-colors"
                         />
                         <div className="text-left hidden sm:block">
                           <p className="text-xs font-normal text-[#0A0D14] leading-none group-hover:text-[#0055FF] transition-colors">
-                            newseed
+                            elev
                           </p>
                           <p className="text-[10px] text-slate-400 mt-0.5 leading-none">
                             Workspace
@@ -808,20 +809,20 @@ export default function ConnectedAppShellShowcase({ onOpenAuth }: ConnectedAppSh
                 ==================================================================== */}
             {/* Progressive Optical Fade Mask Scrim across bottom of dashboard shell */}
             <div 
-              className="absolute inset-x-0 bottom-0 h-[340px] sm:h-[380px] pointer-events-none z-30 backdrop-blur-[1px]"
+              className="absolute inset-x-0 bottom-0 h-[360px] sm:h-[420px] pointer-events-none z-30 backdrop-blur-[1px]"
               style={{
                 background: 'linear-gradient(to top, #ffffff 0%, #ffffff 32%, rgba(255, 255, 255, 0.98) 48%, rgba(255, 255, 255, 0.92) 64%, rgba(255, 255, 255, 0.75) 78%, rgba(255, 255, 255, 0.42) 90%, rgba(255, 255, 255, 0) 100%)'
               }}
             />
 
             {/* Centered Brandmark, Headline, Subtitle, and Pill CTA Overlay (Lowered to avoid covering cards) */}
-            <div className="absolute inset-x-0 bottom-4 sm:bottom-6 z-40 flex flex-col items-center justify-end px-4 text-center pointer-events-auto">
+            <div className="absolute inset-x-0 bottom-6 sm:bottom-8 lg:bottom-10 z-40 flex flex-col items-center justify-end px-4 text-center pointer-events-auto">
               
-              {/* newseed Brandmark Infinity Ribbon - Direct Floating, No Fill / No Border Card */}
+              {/* elev Brandmark Infinity Ribbon - Direct Floating, No Fill / No Border Card */}
               <div className="mb-3.5 sm:mb-4 flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-[0.96]">
                 <img 
                   src="/elev-infinity-logo.png" 
-                  alt="newseed Logo" 
+                  alt="elev Logo" 
                   className="h-12 sm:h-14 md:h-16 w-auto object-contain pointer-events-none drop-shadow-[0_8px_20px_rgba(0,85,255,0.22)]" 
                 />
               </div>

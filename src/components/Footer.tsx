@@ -27,10 +27,10 @@ export default function Footer({ onOpenDemo, onOpenAuth }: FooterProps) {
   };
 
   return (
-    <footer className="w-full bg-transparent py-10 sm:py-14 px-4 relative z-10">
+    <footer className="w-full bg-transparent pt-16 sm:pt-20 lg:pt-24 pb-20 sm:pb-28 lg:pb-32 px-4 relative z-10">
       {/* FLOATING ROUNDED CARD CONTAINER (Reference Match: media_1789474288000.png) */}
       <ImageReveal delay={0.1} y={28} className="w-full flex justify-center">
-        <div className="max-w-[1360px] w-[95vw] lg:w-[88vw] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#0A0D18] border border-slate-800/80 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.4)] p-8 sm:p-12 lg:p-14 text-white">
+        <div className="max-w-[1360px] w-[95vw] lg:w-[88vw] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#0A0D18] border border-slate-800/80 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.4)] p-9 sm:p-14 lg:p-16 text-white">
         
         {/* TOP ROW: BRAND, HEADLINE & BADGES */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 pb-12">
@@ -40,11 +40,11 @@ export default function Footer({ onOpenDemo, onOpenAuth }: FooterProps) {
             <div className="flex items-center gap-3.5 sm:gap-4">
               <img 
                 src="/elev-infinity-logo.png" 
-                alt="newseed" 
+                alt="elev" 
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain" 
               />
               <span className="text-3xl sm:text-4xl lg:text-5xl font-normal text-white tracking-tight">
-                newseed
+                elev
               </span>
             </div>
 
@@ -62,7 +62,7 @@ export default function Footer({ onOpenDemo, onOpenAuth }: FooterProps) {
         </div>
 
         {/* MIDDLE ROW: REAL CONTENT-ALIGNED LINKS GRID */}
-        <div className="pt-10 pb-12 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-2xl">
+        <div className="pt-12 pb-14 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 max-w-2xl">
           {/* Col 1: PRODUCT */}
           <div>
             <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
@@ -185,7 +185,7 @@ export default function Footer({ onOpenDemo, onOpenAuth }: FooterProps) {
         <div className="pt-8 border-t border-slate-800/80 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 text-xs text-slate-400">
           {/* Left copyright & legal links */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-slate-400 font-normal">© Copyright newseed 2026</span>
+            <span className="text-slate-400 font-normal">© Copyright elev 2026</span>
             <span className="text-slate-700">|</span>
             <a href="#privacy" className="hover:text-slate-200 transition-colors">Privacy Policy</a>
             <a href="#terms" className="hover:text-slate-200 transition-colors">Terms of Service</a>

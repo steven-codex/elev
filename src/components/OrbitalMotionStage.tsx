@@ -221,7 +221,7 @@ export default function OrbitalMotionStage() {
                   {/* Footer Automation Tag */}
                   <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center gap-1 text-[9px] font-normal text-emerald-700">
                     <Check className="w-3 h-3 stroke-[2.5]" />
-                    <span>Automated by newseed</span>
+                    <span>Automated by elev</span>
                   </div>
                 </div>
               </div>
@@ -238,7 +238,7 @@ export default function OrbitalMotionStage() {
       <div className="center-card absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-24 h-24 sm:w-28 sm:h-28 rounded-[28px] bg-white border border-slate-200/95 shadow-[0_18px_44px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.03)] flex items-center justify-center p-3.5 pointer-events-auto select-none">
         <img
           src="/elev-infinity-logo.png"
-          alt="newseed icon"
+          alt="elev icon"
           className="w-full h-full object-contain select-none pointer-events-none drop-shadow-xs"
           loading="eager"
           draggable={false}

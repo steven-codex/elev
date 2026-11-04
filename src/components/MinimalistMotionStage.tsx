@@ -229,11 +229,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('elev:seek-stage', handleCustomSeek);
-    window.addEventListener('newseed:seek-stage', handleCustomSeek);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('elev:seek-stage', handleCustomSeek);
-      window.removeEventListener('newseed:seek-stage', handleCustomSeek);
     };
   }, []);
 
@@ -416,19 +414,15 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <CalendarIcon className="w-3.5 h-3.5 text-slate-500" />
                             <span className="text-xs font-medium text-slate-800">October 2024</span>
                           </div>
-                          <motion.span
-                            key={isDateActive ? 'active-date' : 'idle-date'}
-                            initial={{ opacity: 0, y: -2 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className={`text-[10px] font-medium px-2 py-0.5 rounded-full transition-colors ${
+                          <span
+                            className={`text-[10px] font-medium px-2 py-0.5 rounded-full transition-[background-color,color,border-color] duration-200 ease-out select-none ${
                               isDateActive
-                                ? 'bg-blue-50 text-[#0055FF] border border-blue-200/60'
-                                : 'text-slate-400'
+                                ? 'bg-blue-50 text-[#0055FF] border border-blue-200/60 shadow-xs'
+                                : 'text-slate-400 bg-transparent border border-transparent'
                             }`}
                           >
                             {isDateActive ? `Thu · Oct ${selectedDate} ✓` : 'Select a date'}
-                          </motion.span>
+                          </span>
                         </div>
 
                         {/* Day headers */}
@@ -446,43 +440,21 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             </span>
                           ))}
 
-                          {/* Date 14 with Bounce In Animation */}
+                          {/* Date 14: Clean Apple/Linear Style Active Selection (No infinite blinking or unmounting flicker) */}
                           <div className="flex items-center justify-center relative">
-                            {isDateActive && (
-                              <motion.div
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: [1, 1.4, 1.2], opacity: [0.6, 0.2, 0] }}
-                                transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
-                                className="absolute inset-0 rounded-full bg-[#0055FF]/30 pointer-events-none"
-                              />
-                            )}
                             <motion.button
-                              key={isDateActive ? 'date-14-selected' : 'date-14-idle'}
                               type="button"
                               onClick={() => {
                                 setSelectedDate(14);
                                 setManualDateSelected(true);
                                 setTimeout(() => setManualDropdownOpen(true), 250);
                               }}
-                              initial={isDateActive ? { scale: 0.8 } : false}
-                              animate={
+                              whileTap={{ scale: 0.94 }}
+                              className={`relative z-10 w-7 h-7 rounded-full flex items-center justify-center font-medium text-xs cursor-pointer select-none transition-[background-color,color,box-shadow,transform] duration-200 ease-out ${
                                 isDateActive
-                                  ? {
-                                      scale: [0.8, 1.36, 0.92, 1.08, 1],
-                                      backgroundColor: '#0055FF',
-                                      color: '#FFFFFF'
-                                    }
-                                  : {
-                                      scale: 1,
-                                      backgroundColor: '#FFFFFF',
-                                      color: '#0F172A'
-                                    }
-                              }
-                              transition={{
-                                duration: 0.5,
-                                ease: [0.175, 0.885, 0.32, 1.275]
-                              }}
-                              className="relative z-10 w-7 h-7 rounded-full flex items-center justify-center font-medium text-xs cursor-pointer active:scale-90 transition-colors shadow-none"
+                                  ? 'bg-[#0055FF] text-white shadow-[0_2px_10px_rgba(0,85,255,0.35)] scale-100'
+                                  : 'bg-transparent text-slate-700 hover:bg-slate-100 scale-100'
+                              }`}
                               title="Click to select October 14"
                             >
                               14
@@ -767,7 +739,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     >
                       <img
                         src="/icon-velie-3d.png"
-                        alt="newseed AI Core"
+                        alt="elev AI Core"
                         className="w-11 h-11 object-contain drop-shadow-[0_4px_12px_rgba(34,197,94,0.25)]"
                       />
                     </motion.div>
@@ -1145,7 +1117,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     )}
                   </div>
 
-                  {/* newseed Notetaker 3D Icon at Bottom Center (Smoothly fades out and scales down when recaps ready centers) */}
+                  {/* elev Notetaker 3D Icon at Bottom Center (Smoothly fades out and scales down when recaps ready centers) */}
                   <motion.div
                     animate={{
                       y: isAllAbsorbed ? 14 : [-2, 2, -2],
@@ -1161,7 +1133,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   >
                     <img
                       src="/icon-notetaker-3d.png"
-                      alt="newseed Notetaker"
+                      alt="elev Notetaker"
                       className="w-11 h-11 object-contain drop-shadow-[0_4px_12px_rgba(99,102,241,0.2)]"
                     />
                   </motion.div>

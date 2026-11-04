@@ -24,7 +24,7 @@ export default function WorkflowTabs({ onOpenDemo }: WorkflowTabsProps) {
             Scheduling built for every high-stakes workflow
           </h2>
           <p className="mt-3.5 text-base sm:text-lg text-slate-600">
-            Whether closing enterprise deals, screening engineering talent, or onboarding new accounts, newseed coordinates your team without the email ping-pong.
+            Whether closing enterprise deals, screening engineering talent, or onboarding new accounts, elev coordinates your team without the email ping-pong.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export default function WorkflowTabs({ onOpenDemo }: WorkflowTabsProps) {
                   onClick={onOpenDemo}
                   className="inline-flex items-center gap-2 text-sm font-normal text-blue-600 hover:text-blue-700 transition-colors cursor-pointer group"
                 >
-                  <span>Learn how {activeTab.name} teams use newseed</span>
+                  <span>Learn how {activeTab.name} teams use elev</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
