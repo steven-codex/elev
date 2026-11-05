@@ -1,12 +1,9 @@
-import { useState, useMemo, useRef, useId } from 'react';
-import { motion } from 'motion/react';
+import { useState, useMemo, useRef, useId, useEffect, useCallback, useSyncExternalStore, type CSSProperties } from 'react';
+import { animate, motion, motionValue, useTransform, type MotionValue } from 'motion/react';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { Reveal, useInView } from '../motion';
+import { LoopReplayButton, Reveal, useLoopPlayback } from '../motion';
 import { useLang } from '../i18n';
 import { INTEGRATIONS, SITE } from '../data/landingData';
-
-// Logo files live in public/logos/ (Simple Icons, CC0).
-const itemIcon = (name: string) => INTEGRATIONS.items.find((item) => item.name === name)?.icon ?? '';
 
 export default function IntegrationsSection() {
   const { t } = useLang();
@@ -227,47 +224,6 @@ export default function IntegrationsSection() {
   );
 }
 
-function IntegrationPill({
-  name,
-  icon,
-  inView,
-  floatOffset = 2.5,
-  floatDuration = 5,
-  floatDelay = 0
-}: {
-  name: string;
-  icon: string;
-  inView: boolean;
-  floatOffset?: number;
-  floatDuration?: number;
-  floatDelay?: number;
-}) {
-  return (
-    <motion.div
-      animate={inView ? { y: [-floatOffset, floatOffset, -floatOffset] } : { y: 0 }}
-      transition={{
-        duration: floatDuration,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay: floatDelay
-      }}
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.96 }}
-      className="bg-white border border-slate-100/90 shadow-[0_10px_25px_rgba(0,30,80,0.06),0_2px_6px_rgba(0,0,0,0.02)] hover:shadow-[0_16px_36px_rgba(0,30,80,0.12)] px-4 sm:px-5 py-2.5 sm:py-3 rounded-[20px] sm:rounded-[22px] flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none transition-shadow shrink-0"
-    >
-      <img
-        src={icon}
-        alt={name}
-        className="w-5 h-5 sm:w-5.5 sm:h-5.5 object-contain shrink-0"
-        onError={(e) => {
-          (e.target as HTMLElement).style.display = 'none';
-        }}
-      />
-      <span className="text-xs sm:text-sm font-normal text-ink tracking-tight whitespace-nowrap">{name}</span>
-    </motion.div>
-  );
-}
-
 function AcousticRippleAnimation({ inView }: { inView: boolean }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10 overflow-visible">
@@ -314,11 +270,192 @@ function AcousticRippleAnimation({ inView }: { inView: boolean }) {
   );
 }
 
-function FluidIntegrationsStage() {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(stageRef);
+type Arc = { cx: number; bow: number; span: number };
+
+// Percentages of the stage box. Slot 0 is the centre (nearest the hub), slots +-2 are the edges.
+const ARC_WIDE: Arc = { cx: 68, bow: 3.5, span: 19 };
+const ARC_NARROW: Arc = { cx: 58, bow: 3.5, span: 19 };
+
+// The single curve: the SVG path and every pill position both come from here.
+const arcPoint = (slot: number, arc: Arc) => ({ x: arc.cx + arc.bow * slot * slot, y: 50 + arc.span * slot });
+
+const arcPath = (arc: Arc) => {
+  const points: string[] = [];
+  for (let i = -30; i <= 30; i += 1) {
+    const { x, y } = arcPoint(i / 10, arc);
+    points.push(`${x.toFixed(2)} ${y.toFixed(2)}`);
+  }
+  return `M${points.join(' L')}`;
+};
+
+const TOOLS = INTEGRATIONS.stage.tools;
+const RING = TOOLS.length;
+// Slots beyond +-HIDDEN_SLOT are off the stage. Pills only wrap from there, so the wrap is never visible.
+const HIDDEN_SLOT = 4;
+const STEP_MS = 2200;
+const SPRING = { type: 'spring' as const, duration: 0.7, bounce: 0 };
+const ARC_FADE = 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)';
+const WIDE_QUERY = '(min-width: 1024px)';
+
+// Offset of a tool from the active one, in -3..4. Positive slots sit below the active pill.
+const ringSlot = (index: number, active: number) => {
+  const d = (((index - active) % RING) + RING) % RING;
+  return d > RING / 2 ? d - RING : d;
+};
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+
+const logoMask = (src: string): CSSProperties => ({
+  maskImage: `url(${src})`,
+  WebkitMaskImage: `url(${src})`,
+  maskSize: 'contain',
+  WebkitMaskSize: 'contain',
+  maskRepeat: 'no-repeat',
+  WebkitMaskRepeat: 'no-repeat',
+  maskPosition: 'center',
+  WebkitMaskPosition: 'center',
+});
+
+function useIsWide() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mql = window.matchMedia(WIDE_QUERY);
+      mql.addEventListener('change', onChange);
+      return () => mql.removeEventListener('change', onChange);
+    },
+    () => window.matchMedia(WIDE_QUERY).matches,
+    () => true,
+  );
+}
+
+function ToolPill({
+  tool,
+  slot,
+  rel,
+  arc,
+  onSelect,
+}: {
+  tool: (typeof TOOLS)[number];
+  slot: MotionValue<number>;
+  rel: number;
+  arc: Arc;
+  onSelect: () => void;
+}) {
+  const { t } = useLang();
+  const active = rel === 0;
+  const edge = Math.abs(rel) === 2;
+  const near = Math.abs(rel) === 1;
+  const left = useTransform(slot, (s) => `${arcPoint(s, arc).x}%`);
+  const top = useTransform(slot, (s) => `${arcPoint(s, arc).y}%`);
+  const opacity = useTransform(slot, (s) => clamp01(1 - (Math.abs(s) - 1) * 0.6));
+  const scale = useTransform(slot, (s) => 1 + 0.06 * clamp01(1 - Math.abs(s)));
+
   return (
-    <div ref={stageRef} className="relative w-full h-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex flex-col justify-between pt-10 sm:pt-12 pb-8 sm:pb-10 pr-4 sm:pr-8 lg:pr-10 pl-2">
+    <motion.div
+      className="absolute w-max max-w-[min(11.5rem,52%)] -translate-x-1/2 -translate-y-1/2"
+      style={{ left, top, opacity, scale }}
+      inert={Math.abs(rel) > 2}
+      aria-hidden={edge || undefined}
+    >
+      <button
+        type="button"
+        tabIndex={edge ? -1 : undefined}
+        aria-pressed={active}
+        aria-label={`${tool.name}, ${t(tool.sub)}`}
+        onClick={onSelect}
+        className={`flex w-full cursor-pointer select-none items-center gap-2 rounded-[20px] px-3 py-2.5 text-left sm:gap-2.5 sm:px-3.5 transition-[background-color,box-shadow] duration-300 ease-[var(--ease-out)] enabled:active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:rounded-[22px] ${
+          active
+            ? 'bg-white shadow-[0_1px_2px_rgba(0,20,60,0.06),0_14px_30px_rgba(0,30,80,0.14)]'
+            : near
+              ? 'bg-white/80 shadow-[0_6px_16px_rgba(0,30,80,0.05)] ring-1 ring-white/80 backdrop-blur-md'
+              : 'bg-white/55 shadow-[0_6px_16px_rgba(0,30,80,0.05)] ring-1 ring-white/80 backdrop-blur-md'
+        }`}
+      >
+        <span
+          aria-hidden="true"
+          className={`h-5 w-5 shrink-0 transition-[background-color] duration-300 ${active ? '' : 'bg-ink-tertiary'}`}
+          style={{ ...logoMask(tool.logo), backgroundColor: active ? tool.color : undefined }}
+        />
+        <span className="min-w-0">
+          <span className={`block whitespace-nowrap text-body-sm transition-[color] duration-300 ${active ? 'font-medium text-ink' : 'text-ink-secondary'}`}>
+            {tool.name}
+          </span>
+          <span className={`block text-caption text-pretty transition-[color] duration-300 ${active || near ? 'text-ink-secondary' : 'text-ink-tertiary'}`}>
+            {t(tool.sub)}
+          </span>
+        </span>
+      </button>
+    </motion.div>
+  );
+}
+
+function FluidIntegrationsStage() {
+  const { t } = useLang();
+  const stageRef = useRef<HTMLDivElement>(null);
+  const playback = useLoopPlayback(stageRef);
+  const arc = useIsWide() ? ARC_WIDE : ARC_NARROW;
+  const arcD = useMemo(() => arcPath(arc), [arc]);
+  const [active, setActive] = useState(0);
+  const activeRef = useRef(0);
+  const stepCount = useRef(0);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [slots] = useState(() => TOOLS.map((_, i) => motionValue(ringSlot(i, 0))));
+  const paused = hovered || focused;
+
+  // Moves every pill `steps` slots along the curve. A pill only wraps while it is off-stage.
+  const moveBy = useCallback(
+    (steps: number) => {
+      if (steps === 0) return;
+      slots.forEach((slot) => {
+        let from = slot.get();
+        let to = from - steps;
+        if (to > HIDDEN_SLOT) {
+          from -= RING;
+          to -= RING;
+        } else if (to < -HIDDEN_SLOT) {
+          from += RING;
+          to += RING;
+        }
+        if (playback.reduced) {
+          slot.set(to);
+          return;
+        }
+        slot.set(from);
+        animate(slot, to, SPRING);
+      });
+      const next = (((activeRef.current + steps) % RING) + RING) % RING;
+      activeRef.current = next;
+      setActive(next);
+    },
+    [slots, playback.reduced],
+  );
+
+  useEffect(() => {
+    if (!playback.enabled || paused) return;
+    const timer = window.setInterval(() => {
+      moveBy(1);
+      stepCount.current += 1;
+      if (stepCount.current % RING === 0 && !playback.endCycle()) window.clearInterval(timer);
+    }, STEP_MS);
+    return () => window.clearInterval(timer);
+  }, [playback.enabled, paused, moveBy, playback.endCycle]);
+
+  return (
+    <div
+      ref={stageRef}
+      role="group"
+      aria-label={t(INTEGRATIONS.stage.aria)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={(e) => {
+        if (e.target instanceof HTMLElement && e.target.matches(':focus-visible')) setFocused(true);
+      }}
+      onBlur={() => setFocused(false)}
+      className="relative h-[440px] w-full lg:h-full lg:min-h-[560px]"
+    >
+      <style>{`@keyframes integrationsArcFlow { to { stroke-dashoffset: -10; } }`}</style>
+
       {/* Background Fluid Wave Artwork Flush to Bottom-Right Corner & Clipped by Parent Card */}
       <div
         className="absolute right-0 bottom-0 w-full h-[76%] sm:h-[80%] rounded-bl-[140px] sm:rounded-bl-[180px] overflow-hidden pointer-events-none"
@@ -337,101 +474,68 @@ function FluidIntegrationsStage() {
         />
       </div>
 
-      {/* Row 1: Top Row (Sitting on Pristine White Field above Wave) */}
-      <div className="relative z-10 w-full flex items-center justify-center gap-3 sm:gap-5 lg:gap-6">
-        <IntegrationPill
-          inView={inView}
-          name="WhatsApp"
-          icon={itemIcon('WhatsApp')}
-          floatOffset={2.5}
-          floatDuration={4.8}
-          floatDelay={0}
-        />
-        <IntegrationPill
-          inView={inView}
-          name="n8n"
-          icon={itemIcon('n8n')}
-          floatOffset={3}
-          floatDuration={5.2}
-          floatDelay={0.5}
-        />
-        <IntegrationPill
-          inView={inView}
-          name="Google Sheets"
-          icon={itemIcon('Google Sheets')}
-          floatOffset={2.5}
-          floatDuration={4.4}
-          floatDelay={1.2}
-        />
-      </div>
+      {/* Hub link: runs from the hub to the centre slot, under the active pill */}
+      <span aria-hidden="true" className="system-flow-x absolute left-0 top-1/2 h-px" style={{ width: `${arc.cx}%` }} />
 
-      {/* Row 2: Middle Row (OpenAI, Newseed 3D Infinity with Radar Animation, HubSpot) */}
-      <div className="relative z-10 w-full flex items-center justify-between px-1 sm:px-3 lg:px-4">
-        <IntegrationPill
-          inView={inView}
-          name="OpenAI"
-          icon={itemIcon('OpenAI')}
-          floatOffset={3}
-          floatDuration={5.6}
-          floatDelay={0.8}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        style={{ maskImage: ARC_FADE, WebkitMaskImage: ARC_FADE }}
+      >
+        <path
+          d={arcD}
+          fill="none"
+          stroke="#CBD5E1"
+          strokeWidth={1.25}
+          strokeDasharray="4 6"
+          vectorEffect="non-scaling-stroke"
+          style={{
+            animation: 'integrationsArcFlow 1.2s linear infinite',
+            animationPlayState: playback.inView ? 'running' : 'paused'
+          }}
         />
+      </svg>
 
-        {/* Center 3D Infinity Logo with Animated Radar System */}
-        <div className="relative shrink-0 flex items-center justify-center p-2">
-          {/* Acoustic Ripple Animation Layer */}
-          <AcousticRippleAnimation inView={inView} />
+      {TOOLS.map((tool, i) => {
+        const rel = ringSlot(i, active);
+        return (
+          <ToolPill
+            key={tool.name}
+            tool={tool}
+            slot={slots[i]}
+            rel={rel}
+            arc={arc}
+            onSelect={() => moveBy(ringSlot(i, activeRef.current))}
+          />
+        );
+      })}
 
-          {/* 3D Infinity Mark */}
+      {/* Hub: from xl one white pill holds the text and the logo circle (8px padding = concentric radius). Below xl it is the logo circle alone. */}
+      <div className="absolute left-2 top-1/2 z-10 flex -translate-y-1/2 items-center gap-2.5 sm:left-4 xl:left-3 xl:gap-3 xl:rounded-full xl:bg-white xl:py-2 xl:pl-5 xl:pr-2 xl:shadow-[0_0_0_1px_rgba(15,23,42,0.04),0_10px_25px_rgba(0,30,80,0.06),0_2px_6px_rgba(0,0,0,0.02)]">
+        <div className="sr-only text-right xl:not-sr-only">
+          <p className="text-body-sm font-medium text-ink">{t(INTEGRATIONS.stage.hub.title)}</p>
+          <p className="text-caption text-ink-tertiary">{t(INTEGRATIONS.stage.hub.sub)}</p>
+        </div>
+
+        <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white/80 shadow-[0_12px_30px_rgba(0,30,80,0.08)] ring-1 ring-white lg:h-[88px] lg:w-[88px]">
+          <AcousticRippleAnimation inView={playback.inView} />
           <motion.div
-            animate={inView ? { y: [0, -4, 0] } : { y: 0 }}
+            animate={playback.inView ? { y: [0, -4, 0] } : { y: 0 }}
             transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative z-10 flex items-center justify-center group cursor-pointer will-change-transform transform-gpu"
+            className="relative z-10 flex items-center justify-center will-change-transform transform-gpu"
           >
             <img
               src="/elev-infinity-logo.png"
-              alt="Newseed"
-              className="w-24 sm:w-28 md:w-32 lg:w-36 h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(0,85,255,0.25)] group-hover:scale-105 transition-transform duration-300 pointer-events-none select-none"
+              alt=""
+              className="h-auto w-11 object-contain filter drop-shadow-[0_12px_24px_rgba(0,85,255,0.25)] pointer-events-none select-none lg:w-14"
             />
           </motion.div>
         </div>
-
-        <IntegrationPill
-          inView={inView}
-          name="HubSpot"
-          icon={itemIcon('HubSpot')}
-          floatOffset={2.5}
-          floatDuration={4.9}
-          floatDelay={1.5}
-        />
       </div>
 
-      {/* Row 3: Bottom Row (Claude, Make, Notion) */}
-      <div className="relative z-10 w-full flex items-center justify-center gap-3 sm:gap-5 lg:gap-6">
-        <IntegrationPill
-          inView={inView}
-          name="Claude"
-          icon={itemIcon('Claude')}
-          floatOffset={3}
-          floatDuration={5.1}
-          floatDelay={0.3}
-        />
-        <IntegrationPill
-          inView={inView}
-          name="Make"
-          icon={itemIcon('Make')}
-          floatOffset={2.5}
-          floatDuration={4.6}
-          floatDelay={1.0}
-        />
-        <IntegrationPill
-          inView={inView}
-          name="Notion"
-          icon={itemIcon('Notion')}
-          floatOffset={3}
-          floatDuration={5.4}
-          floatDelay={0.7}
-        />
-      </div>
+      {playback.finished && <LoopReplayButton onClick={playback.replay} className="absolute bottom-3 right-3 z-20" />}
     </div>
   );
 }
