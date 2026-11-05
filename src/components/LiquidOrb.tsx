@@ -55,6 +55,8 @@ export default function LiquidOrb({
     }
 
     let animationFrame = 0;
+    // Reduced motion: paint one static frame and stop the RAF loop (shader untouched).
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let device: GPUDevice | null = null;
     let ribbonTarget: GPUTexture | null = null;
     let stopped = false;
@@ -376,7 +378,7 @@ export default function LiquidOrb({
             pass.end();
 
             device.queue.submit([encoder.finish()]);
-            animationFrame = requestAnimationFrame(renderFrame);
+            if (!reducedMotion) animationFrame = requestAnimationFrame(renderFrame);
           } catch (err) {
             console.warn('Render frame error:', err);
             setWebGpuSupported(false);

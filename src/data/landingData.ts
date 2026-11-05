@@ -37,6 +37,24 @@ export const SITE = {
     id: 'Halo Newseed, saya ingin diskusi otomasi untuk bisnis saya.',
   },
   langSwitch: { en: 'EN · ID', id: 'EN · ID' },
+  // Accessible names, titles and control labels (EN / ID).
+  a11y: {
+    playAgain: { en: 'Play again', id: 'Putar lagi' },
+    homeLink: { en: 'Newseed home', id: 'Beranda Newseed' },
+    language: { en: 'Language', id: 'Bahasa' },
+    menuToggle: { en: 'Toggle navigation menu', id: 'Buka atau tutup menu navigasi' },
+    showItem: { en: 'Show item', id: 'Tampilkan item' },
+    play: { en: 'Play (Space)', id: 'Putar (Spasi)' },
+    pause: { en: 'Pause (Space)', id: 'Jeda (Spasi)' },
+    prevStage: { en: 'Previous stage', id: 'Tahap sebelumnya' },
+    nextStage: { en: 'Next stage', id: 'Tahap berikutnya' },
+    reset: { en: 'Reset to 0:00', id: 'Atur ulang ke 0:00' },
+    speed: { en: 'Playback speed (0.25x slow-mo, 0.5x, 1x, 2x)', id: 'Kecepatan putar (0,25x slow-mo, 0,5x, 1x, 2x)' },
+    loop: { en: 'Toggle continuous looping', id: 'Aktifkan atau nonaktifkan pengulangan' },
+    scrubber: { en: 'Scene timeline', id: 'Linimasa adegan' },
+    closeDialog: { en: 'Close', id: 'Tutup' },
+    caseStudies: { en: 'Case studies', id: 'Studi kasus' },
+  },
   meta: {
     title: {
       en: 'AI Automation & WhatsApp AI Agents for Growing Businesses | Newseed',
@@ -546,6 +564,7 @@ export const ROI = {
     perMonth: { en: 'About {x} per month', id: 'Sekitar {x} per bulan' },
   },
   cta: { en: 'Talk through these numbers', id: 'Bahas angka ini bersama kami' },
+  howWeCalculate: { en: 'How we calculate', id: 'Cara menghitung' },
   // {cost} and {people} are filled in at click time.
   waPrefill: {
     en: 'Hi Newseed, the ROI calculator shows about {cost}/year in savings for my team of {people}. I\'d like to talk it through.',

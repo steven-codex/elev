@@ -1,10 +1,14 @@
-import { useState } from 'react';
-import { ArrowRight, Clock, DollarSign } from 'lucide-react';
+import { useState, type CSSProperties } from 'react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { useLang } from '../i18n';
 import { ROI, SITE } from '../data/landingData';
 
 // Share of repetitive work assumed automatable (00 §9). Fixed by the formula, not a user input.
 const AUTOMATABLE_SHARE = 0.6;
+
+// Feeds `.roi-range`, which paints the accent fill up to the thumb.
+const sliderFill = (value: number, min: number, max: number) =>
+  ({ '--roi-fill': `${((value - min) / (max - min)) * 100}%` }) as CSSProperties;
 
 export default function RoiCalculator() {
   const { lang, t } = useLang();
@@ -37,23 +41,23 @@ export default function RoiCalculator() {
     .replace('{people}', String(people));
 
   return (
-    <section id="roi" className="py-24 lg:py-32 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
+    <section id="roi" className="py-16 sm:py-24 lg:py-24 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
           {/* Left Column: Sliders */}
           <div className="lg:col-span-6 space-y-6">
-            <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.08] tracking-tight text-balance">
+            <h2 className="text-h2 lg:text-h2-lg text-ink font-medium text-balance">
               {t(ROI.heading)}
             </h2>
 
             {/* Slider 1: People */}
             <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-sm">
-                <label htmlFor="roi-people" className="font-normal text-slate-700">
+                <label htmlFor="roi-people" className="font-medium text-ink-secondary">
                   {t(ROI.inputs.people.label)}
                 </label>
-                <span className="font-normal text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
+                <span className="font-normal text-accent text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
                   {people}
                 </span>
               </div>
@@ -63,10 +67,12 @@ export default function RoiCalculator() {
                 min={ROI.inputs.people.min}
                 max={ROI.inputs.people.max}
                 value={people}
+                aria-valuetext={String(people)}
                 onChange={(e) => setPeople(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
+                style={sliderFill(people, ROI.inputs.people.min, ROI.inputs.people.max)}
+                className="roi-range"
               />
-              <div className="flex justify-between text-[11px] text-slate-400 font-mono tabular-nums">
+              <div className="flex justify-between text-[11px] text-ink-tertiary font-mono tabular-nums">
                 <span>{ROI.inputs.people.min}</span>
                 <span>{ROI.inputs.people.max}</span>
               </div>
@@ -75,10 +81,10 @@ export default function RoiCalculator() {
             {/* Slider 2: Hours per person per week */}
             <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-sm">
-                <label htmlFor="roi-hours" className="font-normal text-slate-700">
+                <label htmlFor="roi-hours" className="font-medium text-ink-secondary">
                   {t(ROI.inputs.hours.label)}
                 </label>
-                <span className="font-normal text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
+                <span className="font-normal text-accent text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
                   {hours}
                 </span>
               </div>
@@ -88,10 +94,12 @@ export default function RoiCalculator() {
                 min={ROI.inputs.hours.min}
                 max={ROI.inputs.hours.max}
                 value={hours}
+                aria-valuetext={String(hours)}
                 onChange={(e) => setHours(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
+                style={sliderFill(hours, ROI.inputs.hours.min, ROI.inputs.hours.max)}
+                className="roi-range"
               />
-              <div className="flex justify-between text-[11px] text-slate-400 font-mono tabular-nums">
+              <div className="flex justify-between text-[11px] text-ink-tertiary font-mono tabular-nums">
                 <span>{ROI.inputs.hours.min}</span>
                 <span>{ROI.inputs.hours.max}</span>
               </div>
@@ -100,10 +108,10 @@ export default function RoiCalculator() {
             {/* Slider 3: Average monthly salary */}
             <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E2E8F0] space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-sm">
-                <label htmlFor="roi-salary" className="font-normal text-slate-700">
+                <label htmlFor="roi-salary" className="font-medium text-ink-secondary">
                   {t(ROI.inputs.salary.label)}
                 </label>
-                <span className="font-normal text-[#0055FF] text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
+                <span className="font-normal text-accent text-sm bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 tabular-nums">
                   {money.format(salary)}
                 </span>
               </div>
@@ -114,10 +122,12 @@ export default function RoiCalculator() {
                 max={salaryRange.max}
                 step={salaryRange.step}
                 value={salary}
+                aria-valuetext={money.format(salary)}
                 onChange={(e) => setSalary(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0055FF]"
+                style={sliderFill(salary, salaryRange.min, salaryRange.max)}
+                className="roi-range"
               />
-              <div className="flex justify-between text-[11px] text-slate-400 font-mono tabular-nums">
+              <div className="flex justify-between text-[11px] text-ink-tertiary font-mono tabular-nums">
                 <span>{money.format(salaryRange.min)}</span>
                 <span>{money.format(salaryRange.max)}</span>
               </div>
@@ -126,47 +136,49 @@ export default function RoiCalculator() {
 
           {/* Right Column: Calculated Results Display */}
           <div className="lg:col-span-6 bg-[#F8FAFC] rounded-2xl p-8 sm:p-10 border border-[#E2E8F0] shadow-sm relative">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
-              <div className="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-2xs">
-                <div className="flex items-center gap-2 text-slate-500 text-xs mb-2">
-                  <Clock className="w-4 h-4 text-[#0055FF]" />
-                  <span>{t(ROI.outputs.hours)}</span>
-                </div>
-                <div className="text-3xl sm:text-4xl font-normal text-[#0A0D14] tracking-tight tabular-nums">
+            {/* Yearly savings leads as the one large number */}
+            <div className="text-caption text-ink-tertiary">{t(ROI.outputs.savings)}</div>
+            <div className="mt-2 text-display font-semibold text-ink tabular-nums break-words">
+              {money.format(costPerYear)}
+            </div>
+
+            {/* Secondary row: hours freed and the monthly equivalent */}
+            <div className="mt-8 grid grid-cols-2 gap-5 pt-6 border-t border-[#E2E8F0]">
+              <div>
+                <div className="text-caption text-ink-tertiary">{t(ROI.outputs.hours)}</div>
+                <div className="mt-1.5 text-h3 font-semibold text-ink tabular-nums">
                   {hoursPerYear.toLocaleString(locale)}
                 </div>
               </div>
+              <p className="self-end text-body-sm text-ink-secondary tabular-nums">
+                {t(ROI.outputs.perMonth).replace('{x}', money.format(costPerMonth))}
+              </p>
+            </div>
 
-              <div className="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-2xs">
-                <div className="flex items-center gap-2 text-slate-500 text-xs mb-2">
-                  <DollarSign className="w-4 h-4 text-emerald-600" />
-                  <span>{t(ROI.outputs.savings)}</span>
-                </div>
-                <div className="text-3xl sm:text-4xl font-normal text-emerald-600 tracking-tight tabular-nums">
-                  {money.format(costPerYear)}
-                </div>
-                <p className="text-[11px] text-slate-500 mt-1 tabular-nums">
-                  {t(ROI.outputs.perMonth).replace('{x}', money.format(costPerMonth))}
-                </p>
+            {/* Formula and assumption, collapsed behind a disclosure */}
+            <details className="group mt-6 text-caption text-ink-tertiary">
+              <summary className="flex items-center justify-between gap-3 cursor-pointer list-none select-none rounded-md text-ink-secondary hover:text-ink [&::-webkit-details-marker]:hidden">
+                <span>{t(ROI.howWeCalculate)}</span>
+                <ChevronDown className="w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" />
+              </summary>
+              <div className="mt-3 space-y-1.5 leading-relaxed font-mono break-words">
+                <p>{ROI.formula.hours}</p>
+                <p>{ROI.formula.cost}</p>
+                <p className="font-sans">{t(ROI.assumption)}</p>
               </div>
-            </div>
+            </details>
 
-            {/* Formula and assumption, small grey text */}
-            <div className="space-y-1.5 mb-6 text-[11px] leading-relaxed text-slate-500 font-mono break-words">
-              <p>{ROI.formula.hours}</p>
-              <p>{ROI.formula.cost}</p>
-              <p className="font-sans">{t(ROI.assumption)}</p>
+            <div className="mt-8">
+              <a
+                href={SITE.whatsapp(prefill)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-gradient-to-r from-[#2F6BEA] to-[#0055FF] hover:brightness-105 active:scale-[0.96] text-white font-medium text-sm py-3.5 px-6 rounded-full shadow-xs hover:shadow-md hover:shadow-blue-500/20 transition-[transform,box-shadow,filter] duration-150 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>{t(ROI.cta)}</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
-
-            <a
-              href={SITE.whatsapp(prefill)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 active:scale-[0.96] text-white font-normal text-sm py-3.5 px-6 rounded-full shadow-xs hover:shadow-md hover:shadow-blue-500/20 transition-[transform,box-shadow,filter] duration-150 flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>{t(ROI.cta)}</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
           </div>
 
         </div>

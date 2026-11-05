@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react';
 import Navbar from './components/Navbar';
 import MultiProductHero from './components/MultiProductHero';
 import LogoTicker from './components/LogoTicker';
@@ -13,7 +14,8 @@ import GooeySvgDefs from './components/GooeySvgDefs';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-950 relative overflow-x-clip">
+    <MotionConfig reducedMotion="user">
+    <div className="min-h-screen bg-white text-ink flex flex-col font-sans selection:bg-blue-100 selection:text-blue-950 relative overflow-x-clip">
         {/* Global SVG Filter Definitions */}
         <GooeySvgDefs />
 
@@ -23,29 +25,14 @@ export default function App() {
         {/* Section order: Hero, LogoTicker, Services, Case studies, Integrations, ROI, Engagement, FAQ, App shell + Footer */}
         <main className="flex-1">
           <MultiProductHero />
-
-          {/* SECTION 02: Enterprise Social Proof & Logo Ticker */}
           <LogoTicker />
-
-          {/* SECTION 03: Meeting Lifecycle Deck (01 Before, 02 During, 03 After, 04 Revenue) */}
           <TimelineFeatureDeck />
-
-          {/* SECTION 03b: Case studies (#work) + interactive demos */}
           <CustomerStoriesCarousel />
-
-          {/* SECTION 04: Integrations & Ecosystem (150+ Native Integrations & Tech Stack) */}
           <IntegrationsSection />
-
-          {/* SECTION 04b: ROI estimator (#roi) */}
           <RoiCalculator />
-
-          {/* SECTION 05: Engagement (#engagement) */}
           <PricingSection />
-
-          {/* SECTION 06: Expandable FAQ Accordion */}
           <FaqSection />
 
-          {/* SECTION 07 & FOOTER: Connected App Shell & Footer Unified Fluid Horizon */}
           <div className="relative w-full overflow-hidden bg-white">
             {/* Massive Background Fluid Wave Asset (Bleeding from bottom of Footer upwards into App Shell) */}
             <div 
@@ -71,7 +58,6 @@ export default function App() {
               />
             </div>
 
-            {/* SECTION 07: Connected App Shell & Feature Ecosystem */}
             <ConnectedAppShellShowcase />
 
             {/* Global Footer */}
@@ -80,5 +66,6 @@ export default function App() {
         </main>
 
       </div>
+    </MotionConfig>
   );
 }

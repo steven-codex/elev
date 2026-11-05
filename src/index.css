@@ -1,31 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-weight-thin: 500;
-  --font-weight-extralight: 500;
-  --font-weight-light: 500;
-  --font-weight-normal: 500;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 500;
-  --font-weight-bold: 500;
-  --font-weight-extrabold: 500;
-  --font-weight-black: 500;
+
+  /* ── Color roles (text) ── */
+  --color-ink: #0A0D14;
+  --color-ink-secondary: #475569;
+  --color-ink-tertiary: #64748B;
+  --color-ink-inverse: #FFFFFF;
+
+  /* ── Color: Accent (one accent, Electric Blue) ── */
+  --color-accent: #0055FF;
+  --color-accent-hover: #0047D6;
+
+  /* ── Motion ── */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-1: 150ms;
+  --dur-2: 200ms;
+  --dur-3: 250ms;
+
+  /* ── Type scale (8 roles). Mobile value is the base; `lg:` swaps to the desktop size. ── */
+  --text-display: 2.5rem;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.025em;
+  --text-display-lg: 4rem;
+  --text-display-lg--line-height: 1;
+  --text-display-lg--letter-spacing: -0.025em;
+
+  --text-h2: 2rem;
+  --text-h2--line-height: 1.05;
+  --text-h2--letter-spacing: -0.022em;
+  --text-h2-lg: 3rem;
+  --text-h2-lg--line-height: 1.05;
+  --text-h2-lg--letter-spacing: -0.022em;
+
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.012em;
+
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 1.6;
+  --text-lead--letter-spacing: 0em;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-body--letter-spacing: 0em;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.55;
+  --text-body-sm--letter-spacing: 0em;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0em;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.05em;
 }
 
 @layer base {
   :root {
-    /* ── Easing ── */
-    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    /* ── Easing (spring stays here; out and in-out live in @theme) ── */
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-    /* ── Color: Ink ── */
-    --color-ink: #0A0D14;
-    --color-ink-secondary: #475569;
-    --color-ink-tertiary: #94A3B8;
 
     /* ── Color: Surface ── */
     --color-surface: #FFFFFF;
@@ -36,9 +75,7 @@
     --color-border: #E2E8F0;
     --color-border-subtle: #F1F5F9;
 
-    /* ── Color: Accent (Electric Blue) ── */
-    --color-accent: #0055FF;
-    --color-accent-hover: #0047D6;
+    /* ── Color: Accent surfaces (Electric Blue) ── */
     --color-accent-surface: #EFF6FF;
     --color-accent-border: #BFDBFE;
     --color-accent-text: #1D4ED8;
@@ -71,42 +108,26 @@
     font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
+  /* Body is Geist 400 with neutral tracking. Hierarchy comes from weight contrast (headings 500, numbers 600). */
   body {
     font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.015em;
+    font-weight: 400;
+    letter-spacing: 0;
     color: var(--color-ink);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-weight: 500;
-    letter-spacing: -0.02em;
   }
 
-  p, span, a, label, button, input, textarea, select {
-    font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 500;
-  }
-
-  b, strong {
+  /* Controls and links are medium so they read as actions, not body copy. */
+  a, button, label, input, textarea, select {
     font-weight: 500;
   }
 }
 
-/* ── Universal Typography Overrides: Geist Medium 500 ── */
-.font-thin,
-.font-extralight,
-.font-light,
-.font-normal,
-.font-medium,
-.font-semibold,
-.font-bold,
-.font-extrabold,
-.font-black {
-  font-weight: 500 !important;
-}
-
+/* Gradient italic accents (Instrument Serif). Weight is pinned to the face's only weight. */
 .font-editorial,
 .font-instrument,
 .font-serif {
@@ -430,12 +451,14 @@ html {
   transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 250ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.hover-lift:hover {
-  transform: translateY(-3px);
+@media (hover: hover) {
+  .hover-lift:hover {
+    transform: translateY(-3px);
+  }
 }
 
 .hover-lift:active {
-  transform: translateY(-1px) scale(0.98);
+  transform: translateY(-1px) scale(0.96);
 }
 
 .press-tactile {
@@ -446,23 +469,93 @@ html {
   transform: scale(0.96);
 }
 
-/* Accessibility: Respect Reduced Motion */
+/* Accessibility: Respect Reduced Motion
+   Motion is replaced by a short opacity/colour crossfade. Decorative loops stop, and each
+   scene shows its final informative frame (handled in the components via usePrefersReducedMotion). */
 @media (prefers-reduced-motion: reduce) {
-  html:focus-within {
+  html {
     scroll-behavior: auto;
   }
-  
+
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition-property: opacity, color, background-color, border-color, fill, stroke, box-shadow !important;
+    transition-duration: 150ms !important;
+    transition-timing-function: var(--ease-out) !important;
     scroll-behavior: auto !important;
   }
 }
 
+/* Keyboard focus: one visible ring for every interactive element (mouse clicks do not trigger :focus-visible on buttons). */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
 
+/* Loops pause while their section is off-screen (set by the components with useInView). */
+[data-motion-paused],
+[data-motion-paused] *,
+[data-motion-paused] *::before,
+[data-motion-paused] *::after {
+  animation-play-state: paused !important;
+}
 
+/* CSS loops that stop on their own after LOOP_CYCLES iterations. */
+.loop-limited {
+  animation-iteration-count: 3 !important;
+}
 
+/* ROI range slider: accent fill up to --roi-fill (set inline), 20px thumb with a 2px accent edge so forced-colors keeps it. */
+.roi-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, var(--color-accent) var(--roi-fill, 50%), #E2E8F0 var(--roi-fill, 50%));
+  cursor: pointer;
+}
 
+.roi-range::-webkit-slider-runnable-track {
+  height: 8px;
+  background: transparent;
+}
+
+.roi-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  margin-top: -6px;
+  border-radius: 9999px;
+  border: 2px solid var(--color-accent);
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(10, 13, 20, 0.16);
+  transition: transform 150ms var(--ease-out);
+}
+
+.roi-range:active::-webkit-slider-thumb {
+  transform: scale(1.08);
+}
+
+.roi-range::-moz-range-track {
+  height: 8px;
+  background: transparent;
+}
+
+.roi-range::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  border: 2px solid var(--color-accent);
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(10, 13, 20, 0.16);
+}
+
+.roi-range:focus-visible {
+  outline-offset: 4px;
+}

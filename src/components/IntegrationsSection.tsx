@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useMemo, useRef, useId } from 'react';
+import { motion } from 'motion/react';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { Reveal } from '../motion';
+import { Reveal, useInView } from '../motion';
 import { useLang } from '../i18n';
-import { INTEGRATIONS } from '../data/landingData';
+import { INTEGRATIONS, SITE } from '../data/landingData';
 
 // Logo files live in public/logos/ (Simple Icons, CC0).
 const itemIcon = (name: string) => INTEGRATIONS.items.find((item) => item.name === name)?.icon ?? '';
@@ -11,6 +11,18 @@ const itemIcon = (name: string) => INTEGRATIONS.items.find((item) => item.name =
 export default function IntegrationsSection() {
   const { t } = useLang();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const ctaRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  // Native modal: showModal() gives focus trapping, inert page, Escape to close and focus return.
+  const openDialog = () => {
+    dialogRef.current?.showModal();
+    setIsModalOpen(true);
+  };
+  const closeDialog = () => {
+    dialogRef.current?.close();
+    ctaRef.current?.focus();
+  };
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -24,11 +36,11 @@ export default function IntegrationsSection() {
   }, [activeCategory, searchQuery, t]);
 
   return (
-    <section id="integrations" className="py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0]">
+    <section id="integrations" className="py-16 sm:py-24 lg:py-24 bg-white border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Main Pristine White Hero Card Container */}
-        <div className="relative w-full bg-white text-slate-900 rounded-[36px] sm:rounded-[44px] border border-slate-200/80 shadow-[0_16px_50px_rgba(0,0,0,0.04)] overflow-hidden">
+        <div className="relative w-full bg-white text-ink rounded-[36px] sm:rounded-[44px] border border-slate-200/80 shadow-[0_16px_50px_rgba(0,0,0,0.04)] overflow-hidden">
 
           {/* Ambient Soft Glow */}
           <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[160px] pointer-events-none" />
@@ -36,9 +48,9 @@ export default function IntegrationsSection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[520px] lg:min-h-[580px] items-center relative z-10">
 
             {/* Left Column: Text & CTA */}
-            <div className="lg:col-span-5 p-8 sm:p-12 lg:p-16 lg:pr-6 space-y-7 sm:space-y-8 text-left relative z-10">
+            <div className="lg:col-span-6 p-8 sm:p-12 lg:p-16 lg:pr-4 space-y-7 sm:space-y-8 text-left relative z-10">
               <Reveal y={24}>
-                <h2 className="text-3xl sm:text-4xl lg:text-[3.1rem] font-normal text-[#0A0D14] tracking-tight leading-[1.08] text-balance">
+                <h2 className="text-h2 xl:text-h2-lg font-medium text-ink text-balance">
                   {t(INTEGRATIONS.heading.lead)} <br />
                   <span className="font-instrument italic font-normal text-[#5A95FF] bg-gradient-to-r from-[#4A8DFF] via-[#60A5FA] to-[#93C5FD] bg-clip-text text-transparent">
                     {t(INTEGRATIONS.heading.accent)}
@@ -47,7 +59,7 @@ export default function IntegrationsSection() {
               </Reveal>
 
               <Reveal delay={0.12} y={16}>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-normal max-w-sm text-pretty">
+                <p className="text-body text-ink-secondary max-w-[62ch] text-pretty">
                   {t(INTEGRATIONS.sub)}
                 </p>
               </Reveal>
@@ -55,9 +67,10 @@ export default function IntegrationsSection() {
               <Reveal delay={0.22} y={16}>
                 <div className="pt-2">
                   <button
+                    ref={ctaRef}
                     type="button"
-                    onClick={() => setIsModalOpen(true)}
-                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#80B5FF] to-[#3B82F6] hover:from-[#6BA3FF] hover:to-[#2563EB] text-white font-normal text-xs sm:text-sm shadow-[0_8px_22px_rgba(59,130,246,0.28)] hover:shadow-[0_12px_28px_rgba(59,130,246,0.38)] active:scale-[0.97] transition-[filter,box-shadow,transform] duration-160 cursor-pointer"
+                    onClick={openDialog}
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#2F6BEA] to-[#0055FF] hover:brightness-105 text-white font-medium text-xs sm:text-sm shadow-[0_8px_22px_rgba(59,130,246,0.28)] hover:shadow-[0_12px_28px_rgba(59,130,246,0.38)] enabled:active:scale-[0.96] transition-[filter,box-shadow,transform] duration-160 cursor-pointer"
                   >
                     <span>{t(INTEGRATIONS.cta)}</span>
                     <ArrowRight className="w-4 h-4 text-white" />
@@ -68,7 +81,7 @@ export default function IntegrationsSection() {
             </div>
 
             {/* Right Column: Fluid Wave Background Stage with Fade Mask & Corner Clipping */}
-            <div className="lg:col-span-7 h-full flex flex-col justify-end relative self-stretch">
+            <div className="lg:col-span-6 h-full flex flex-col justify-end relative self-stretch">
               <FluidIntegrationsStage />
             </div>
 
@@ -80,26 +93,41 @@ export default function IntegrationsSection() {
       {/* ========================================================= */}
       {/* INTERACTIVE TOOLS EXPLORER MODAL                          */}
       {/* ========================================================= */}
-      <AnimatePresence>
+      <dialog
+        ref={dialogRef}
+        aria-labelledby={titleId}
+        onClose={() => {
+          // close fires async; the dialog may have been reopened before it runs, so check the live state.
+          const isOpen = dialogRef.current?.open ?? false;
+          setIsModalOpen(isOpen);
+          if (!isOpen) ctaRef.current?.focus();
+        }}
+        onClick={(e) => {
+          // A click on the backdrop (the dialog's own padding area) closes it.
+          if (e.target === e.currentTarget) closeDialog();
+        }}
+        className="hidden open:flex fixed inset-0 m-0 h-full w-full max-h-none max-w-none p-4 sm:p-6 items-center justify-center bg-transparent backdrop:bg-slate-950/80 backdrop:backdrop-blur-xl"
+      >
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-xl">
-
+          <>
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-              className="w-full max-w-4xl max-h-[85vh] bg-white rounded-3xl border border-slate-200 shadow-2xl flex flex-col overflow-hidden text-slate-900"
+              className="w-full max-w-5xl max-h-[85vh] bg-white rounded-3xl border border-slate-200 shadow-2xl flex flex-col overflow-hidden text-ink"
             >
               {/* Modal Header */}
-              <div className="p-6 pb-4 border-b border-slate-100 flex items-center justify-between">
+              <div className="p-6 pb-4 border-b border-slate-100 flex items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-xl font-normal text-[#0A0D14] tracking-tight">{t(INTEGRATIONS.modal.title)}</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">{t(INTEGRATIONS.modal.sub)}</p>
+                  <h3 id={titleId} className="text-h3 font-medium text-ink">{t(INTEGRATIONS.modal.title)}</h3>
+                  <p className="text-caption text-ink-tertiary mt-0.5">{t(INTEGRATIONS.modal.sub)}</p>
                 </div>
                 <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer active:scale-95"
+                  type="button"
+                  autoFocus
+                  onClick={closeDialog}
+                  aria-label={t(SITE.a11y.closeDialog)}
+                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-ink-tertiary flex items-center justify-center transition-colors cursor-pointer enabled:active:scale-[0.96]"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -108,64 +136,69 @@ export default function IntegrationsSection() {
               {/* Search & Category Filter */}
               <div className="p-5 py-3.5 bg-slate-50/70 border-b border-slate-100 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
                 <div className="relative flex-1 max-w-md">
-                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Search className="w-4 h-4 text-ink-tertiary absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={t(INTEGRATIONS.modal.search)}
-                    className="w-full pl-10 pr-4 py-2 text-xs rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0055FF] bg-white shadow-2xs transition-[border-color,box-shadow]"
+                    className="w-full pl-10 pr-4 py-2 text-base sm:text-xs rounded-full border border-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-white shadow-2xs transition-[border-color,box-shadow]"
                   />
                 </div>
 
-                <div className="flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-0.5">
-                  {INTEGRATIONS.modal.categories.map(cat => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setActiveCategory(cat.id)}
-                      className={`text-xs font-normal px-3.5 py-1.5 rounded-full transition-[background-color,border-color,color,transform] duration-200 cursor-pointer active:scale-[0.96] whitespace-nowrap ${
-                        activeCategory === cat.id
-                          ? 'bg-[#0055FF] text-white shadow-xs'
-                          : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-                      }`}
-                    >
-                      {t(cat.label)}
-                    </button>
-                  ))}
+                {/* Segmented category filter: aria-pressed carries the selected state */}
+                <div role="group" aria-label={t(INTEGRATIONS.modal.title)} className="flex items-center gap-0.5 p-1 rounded-full bg-slate-100 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                  {INTEGRATIONS.modal.categories.map(cat => {
+                    const active = activeCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() => setActiveCategory(cat.id)}
+                        className={`text-xs font-medium px-3.5 py-1.5 rounded-full transition-[color,background-color,box-shadow,transform] duration-200 cursor-pointer enabled:active:scale-[0.96] whitespace-nowrap ${
+                          active
+                            ? 'bg-white text-ink shadow-[0_1px_3px_rgba(0,0,0,0.08),0_0_0_1px_rgba(10,13,20,0.06)]'
+                            : 'text-ink-tertiary hover:text-ink'
+                        }`}
+                      >
+                        {t(cat.label)}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Tools Grid */}
-              <div className="p-6 overflow-y-auto flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+              {/* Tools list: one row per tool, 2 columns from md, 1 column below */}
+              <div className="p-6 overflow-y-auto overscroll-contain flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
                 {filtered.map((item) => (
                   <div
                     key={item.name}
-                    className="p-4 rounded-2xl border border-slate-200/80 bg-white hover:border-blue-400 transition-[border-color,box-shadow] duration-200 shadow-2xs flex flex-col justify-between"
+                    className="flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200/80 bg-white hover:border-blue-400 transition-[border-color,box-shadow] duration-200 shadow-2xs min-w-0"
                   >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/60 p-1.5 flex items-center justify-center">
-                          {item.icon ? (
-                            <img
-                              src={item.icon}
-                              alt={item.name}
-                              className="w-5 h-5 object-contain"
-                              onError={(e) => {
-                                (e.target as HTMLElement).style.display = 'none';
-                              }}
-                            />
-                          ) : (
-                            <span
-                              aria-hidden="true"
-                              className="w-5 h-5 rounded-full bg-[#0055FF] text-white text-[10px] font-semibold flex items-center justify-center"
-                            >
-                              {item.name.charAt(0)}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <h4 className="font-normal text-xs text-slate-900 mb-1">{item.name}</h4>
-                      <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                    <div className="w-9 h-9 shrink-0 rounded-xl bg-slate-50 border border-slate-200/60 p-1.5 flex items-center justify-center">
+                      {item.icon ? (
+                        <img
+                          src={item.icon}
+                          alt={item.name}
+                          className="w-5 h-5 object-contain"
+                          onError={(e) => {
+                            (e.target as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <span
+                          aria-hidden="true"
+                          className="w-5 h-5 rounded-full bg-[#0055FF] text-white text-[10px] font-semibold flex items-center justify-center"
+                        >
+                          {item.name.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-medium text-sm text-ink">{item.name}</h4>
+                      <p className="text-body-sm text-ink-tertiary line-clamp-2">
                         {t(item.desc)}
                       </p>
                     </div>
@@ -174,20 +207,21 @@ export default function IntegrationsSection() {
               </div>
 
               {/* Modal Footer */}
-              <div className="p-4 px-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <div className="p-4 px-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-ink-tertiary">
                 <span>{t(INTEGRATIONS.modal.showing)(filtered.length)}</span>
                 <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white font-normal transition-all duration-200 shadow-xs hover:shadow-blue-500/20 cursor-pointer active:scale-95"
+                  type="button"
+                  onClick={closeDialog}
+                  className="px-5 py-2 rounded-xl bg-accent hover:brightness-105 text-white font-medium transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 shadow-xs hover:shadow-blue-500/20 cursor-pointer enabled:active:scale-[0.96]"
                 >
                   {t(INTEGRATIONS.modal.done)}
                 </button>
               </div>
 
             </motion.div>
-          </div>
+          </>
         )}
-      </AnimatePresence>
+      </dialog>
 
     </section>
   );
@@ -196,19 +230,21 @@ export default function IntegrationsSection() {
 function IntegrationPill({
   name,
   icon,
+  inView,
   floatOffset = 2.5,
   floatDuration = 5,
   floatDelay = 0
 }: {
   name: string;
   icon: string;
+  inView: boolean;
   floatOffset?: number;
   floatDuration?: number;
   floatDelay?: number;
 }) {
   return (
     <motion.div
-      animate={{ y: [-floatOffset, floatOffset, -floatOffset] }}
+      animate={inView ? { y: [-floatOffset, floatOffset, -floatOffset] } : { y: 0 }}
       transition={{
         duration: floatDuration,
         repeat: Infinity,
@@ -227,12 +263,12 @@ function IntegrationPill({
           (e.target as HTMLElement).style.display = 'none';
         }}
       />
-      <span className="text-xs sm:text-sm font-normal text-[#0A0D14] tracking-tight whitespace-nowrap">{name}</span>
+      <span className="text-xs sm:text-sm font-normal text-ink tracking-tight whitespace-nowrap">{name}</span>
     </motion.div>
   );
 }
 
-function AcousticRippleAnimation() {
+function AcousticRippleAnimation({ inView }: { inView: boolean }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10 overflow-visible">
       <style>{`
@@ -256,7 +292,7 @@ function AcousticRippleAnimation() {
 
       {/* Ambient Central Luminous Breathing Glow */}
       <motion.div
-        animate={{ scale: [1, 1.14, 1], opacity: [0.3, 0.5, 0.3] }}
+        animate={inView ? { scale: [1, 1.14, 1], opacity: [0.3, 0.5, 0.3] } : { scale: 1, opacity: 0.3 }}
         transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute w-44 h-44 rounded-full bg-gradient-to-tr from-white/60 via-cyan-200/25 to-blue-200/20 blur-2xl pointer-events-none"
       />
@@ -269,6 +305,7 @@ function AcousticRippleAnimation() {
       <div
         style={{
           animation: 'etherealAcousticPulse 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite',
+          animationPlayState: inView ? 'running' : 'paused',
           willChange: 'transform, opacity'
         }}
         className="absolute w-[170px] h-[170px] rounded-full border border-white/35 shadow-[0_0_14px_rgba(255,255,255,0.22)] pointer-events-none"
@@ -278,8 +315,10 @@ function AcousticRippleAnimation() {
 }
 
 function FluidIntegrationsStage() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(stageRef);
   return (
-    <div className="relative w-full h-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex flex-col justify-between pt-10 sm:pt-12 pb-8 sm:pb-10 pr-4 sm:pr-8 lg:pr-10 pl-2">
+    <div ref={stageRef} className="relative w-full h-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex flex-col justify-between pt-10 sm:pt-12 pb-8 sm:pb-10 pr-4 sm:pr-8 lg:pr-10 pl-2">
       {/* Background Fluid Wave Artwork Flush to Bottom-Right Corner & Clipped by Parent Card */}
       <div
         className="absolute right-0 bottom-0 w-full h-[76%] sm:h-[80%] rounded-bl-[140px] sm:rounded-bl-[180px] overflow-hidden pointer-events-none"
@@ -301,6 +340,7 @@ function FluidIntegrationsStage() {
       {/* Row 1: Top Row (Sitting on Pristine White Field above Wave) */}
       <div className="relative z-10 w-full flex items-center justify-center gap-3 sm:gap-5 lg:gap-6">
         <IntegrationPill
+          inView={inView}
           name="WhatsApp"
           icon={itemIcon('WhatsApp')}
           floatOffset={2.5}
@@ -308,6 +348,7 @@ function FluidIntegrationsStage() {
           floatDelay={0}
         />
         <IntegrationPill
+          inView={inView}
           name="n8n"
           icon={itemIcon('n8n')}
           floatOffset={3}
@@ -315,6 +356,7 @@ function FluidIntegrationsStage() {
           floatDelay={0.5}
         />
         <IntegrationPill
+          inView={inView}
           name="Google Sheets"
           icon={itemIcon('Google Sheets')}
           floatOffset={2.5}
@@ -326,6 +368,7 @@ function FluidIntegrationsStage() {
       {/* Row 2: Middle Row (OpenAI, Newseed 3D Infinity with Radar Animation, HubSpot) */}
       <div className="relative z-10 w-full flex items-center justify-between px-1 sm:px-3 lg:px-4">
         <IntegrationPill
+          inView={inView}
           name="OpenAI"
           icon={itemIcon('OpenAI')}
           floatOffset={3}
@@ -336,11 +379,11 @@ function FluidIntegrationsStage() {
         {/* Center 3D Infinity Logo with Animated Radar System */}
         <div className="relative shrink-0 flex items-center justify-center p-2">
           {/* Acoustic Ripple Animation Layer */}
-          <AcousticRippleAnimation />
+          <AcousticRippleAnimation inView={inView} />
 
           {/* 3D Infinity Mark */}
           <motion.div
-            animate={{ y: [0, -4, 0] }}
+            animate={inView ? { y: [0, -4, 0] } : { y: 0 }}
             transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
             className="relative z-10 flex items-center justify-center group cursor-pointer will-change-transform transform-gpu"
           >
@@ -353,6 +396,7 @@ function FluidIntegrationsStage() {
         </div>
 
         <IntegrationPill
+          inView={inView}
           name="HubSpot"
           icon={itemIcon('HubSpot')}
           floatOffset={2.5}
@@ -364,6 +408,7 @@ function FluidIntegrationsStage() {
       {/* Row 3: Bottom Row (Claude, Make, Notion) */}
       <div className="relative z-10 w-full flex items-center justify-center gap-3 sm:gap-5 lg:gap-6">
         <IntegrationPill
+          inView={inView}
           name="Claude"
           icon={itemIcon('Claude')}
           floatOffset={3}
@@ -371,6 +416,7 @@ function FluidIntegrationsStage() {
           floatDelay={0.3}
         />
         <IntegrationPill
+          inView={inView}
           name="Make"
           icon={itemIcon('Make')}
           floatOffset={2.5}
@@ -378,6 +424,7 @@ function FluidIntegrationsStage() {
           floatDelay={1.0}
         />
         <IntegrationPill
+          inView={inView}
           name="Notion"
           icon={itemIcon('Notion')}
           floatOffset={3}

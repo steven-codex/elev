@@ -1,41 +1,67 @@
-import { Reveal, StaggerGroup } from '../motion';
+import { useRef } from 'react';
+import { Reveal, useInView, usePrefersReducedMotion } from '../motion';
 import { useLang } from '../i18n';
-import { TOOLS } from '../data/landingData';
+import { INTEGRATIONS, TOOLS } from '../data/landingData';
+
+// Logo files come from the integrations list (public/logos). A tool with no file shows its name only.
+const LOGO_BY_NAME = Object.fromEntries(INTEGRATIONS.items.map((item) => [item.name, item.icon]));
 
 export default function LogoTicker() {
   const { t } = useLang();
+  const reduced = usePrefersReducedMotion();
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(marqueeRef);
+
+  const renderItems = () =>
+    TOOLS.items.map((name) => {
+      const logo = LOGO_BY_NAME[name];
+      return (
+        <li key={name} className="group flex shrink-0 items-center gap-2.5">
+          {logo && (
+            <img
+              src={logo}
+              alt=""
+              width={24}
+              height={24}
+              loading="lazy"
+              className="h-6 w-6 object-contain grayscale opacity-60 transition-[filter,opacity] duration-200 ease-out group-hover:grayscale-0 group-hover:opacity-100"
+            />
+          )}
+          <span className="whitespace-nowrap text-body-sm font-medium text-ink-tertiary transition-colors duration-200 group-hover:text-ink-secondary">
+            {name}
+          </span>
+        </li>
+      );
+    });
 
   return (
-    <section className="py-20 sm:py-24 lg:py-28 border-y border-slate-100/90 bg-white relative">
+    <section className="py-16 sm:py-24 lg:py-24 border-y border-slate-100/90 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal y={16}>
-          <div>
-            <p className="text-center text-xs sm:text-sm font-normal text-slate-500 uppercase tracking-wider mb-3">
-              {t(TOOLS.heading)}
-            </p>
-            <p className="text-center text-sm sm:text-base font-normal text-slate-500 mb-10 sm:mb-12">
-              {t(TOOLS.sub)}
-            </p>
-          </div>
+          <h2 className="text-center text-label font-medium text-ink-tertiary uppercase mb-10 sm:mb-12">
+            {t(TOOLS.heading)}
+          </h2>
         </Reveal>
-
-        <StaggerGroup
-          stagger={0.06}
-          className="flex flex-wrap items-center justify-center gap-10 sm:gap-14 lg:gap-20 text-slate-400 opacity-80 hover:opacity-100 transition-opacity"
-        >
-          {TOOLS.logos.map((name) => (
-            <div
-              key={name}
-              className="hover:text-slate-700 transition-colors cursor-default hover-lift"
-              title={name}
-            >
-              <span className="inline-flex h-6 items-center text-lg font-semibold tracking-tight whitespace-nowrap">
-                {name}
-              </span>
-            </div>
-          ))}
-        </StaggerGroup>
       </div>
+
+      {reduced ? (
+        // Reduced motion: a static wrapped list instead of a marquee.
+        <ul className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-10 gap-y-6 px-4 sm:px-6 lg:px-8">
+          {renderItems()}
+        </ul>
+      ) : (
+        // Edge-faded marquee. Two identical copies make the -50% loop seamless. Paused off-screen by data-motion-paused.
+        <div
+          ref={marqueeRef}
+          data-motion-paused={!inView || undefined}
+          className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)] [-webkit-mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]"
+        >
+          <div className="flex w-max animate-[marquee_40s_linear_infinite]">
+            <ul className="flex shrink-0 items-center gap-14 pr-14">{renderItems()}</ul>
+            <ul aria-hidden="true" className="flex shrink-0 items-center gap-14 pr-14">{renderItems()}</ul>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

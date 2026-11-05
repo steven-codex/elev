@@ -7,7 +7,7 @@ import { FOOTER, NAV, SERVICES, SITE } from '../data/landingData';
 
 export default function Footer() {
   const { lang, setLang, t } = useLang();
-  // Email row stays hidden until SITE.email is provided (00b header, Q6).
+  // Email row stays hidden until SITE.email is provided.
   const showEmail = !SITE.email.startsWith('[CONFIRM]');
   const whatsappHref = SITE.whatsapp(t(SITE.waPrefillDefault));
   const companyLinks = NAV.items.filter((item) => item.href !== '#services');
@@ -28,7 +28,7 @@ export default function Footer() {
     }
   };
 
-  const linkClass = 'hover:text-white transition-colors cursor-pointer';
+  const linkClass = 'text-body-sm text-ink-inverse/70 hover:text-ink-inverse transition-colors cursor-pointer';
 
   return (
     <footer className="w-full bg-transparent pt-16 sm:pt-20 lg:pt-24 pb-20 sm:pb-28 lg:pb-32 px-4 relative z-10">
@@ -45,12 +45,12 @@ export default function Footer() {
                   alt={SITE.brand}
                   className="h-10 sm:h-12 md:h-14 w-auto object-contain"
                 />
-                <span className="text-3xl sm:text-4xl lg:text-5xl font-normal text-white tracking-tight">
+                <span className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight">
                   {SITE.brand}
                 </span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] text-white font-normal tracking-tight leading-[1.12]">
+              <h2 className="text-h2 lg:text-h2-lg text-white font-medium text-balance">
                 {t(FOOTER.heading.lead)} <br />
                 <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">
                   {t(FOOTER.heading.accent)}
@@ -67,10 +67,10 @@ export default function Footer() {
           <div className="pt-12 pb-14 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 max-w-2xl">
             {/* Col 1: SERVICES */}
             <div>
-              <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
+              <h4 className="text-label font-medium uppercase text-ink-inverse/60 mb-4">
                 {t(FOOTER.headings.services)}
               </h4>
-              <ul className="space-y-2.5 text-xs text-slate-300">
+              <ul className="space-y-2.5 text-body-sm">
                 {SERVICES.items.map((service) => (
                   <li key={service.title.en}>
                     <a href="#services" onClick={(e) => handleNavClick(e, '#services')} className={linkClass}>
@@ -83,10 +83,10 @@ export default function Footer() {
 
             {/* Col 2: COMPANY */}
             <div>
-              <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
+              <h4 className="text-label font-medium uppercase text-ink-inverse/60 mb-4">
                 {t(FOOTER.headings.company)}
               </h4>
-              <ul className="space-y-2.5 text-xs text-slate-300">
+              <ul className="space-y-2.5 text-body-sm">
                 {companyLinks.map((link) => (
                   <li key={link.href}>
                     <a href={link.href} onClick={(e) => handleNavClick(e, link.href)} className={linkClass}>
@@ -99,10 +99,10 @@ export default function Footer() {
 
             {/* Col 3: CONTACT */}
             <div>
-              <h4 className="text-xs font-normal uppercase tracking-wider text-slate-400 mb-4">
+              <h4 className="text-label font-medium uppercase text-ink-inverse/60 mb-4">
                 {t(FOOTER.headings.contact)}
               </h4>
-              <ul className="space-y-2.5 text-xs text-slate-300">
+              <ul className="space-y-2.5 text-body-sm">
                 <li>
                   <a href={SITE.calendly} target="_blank" rel="noopener noreferrer" className={linkClass}>
                     {t(FOOTER.bookAudit)}
@@ -130,16 +130,17 @@ export default function Footer() {
           </div>
 
           {/* BOTTOM ROW: COPYRIGHT & LANGUAGE */}
-          <div className="pt-8 border-t border-slate-800/80 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 text-xs text-slate-400">
-            <span className="text-slate-400 font-normal">{FOOTER.copyright}</span>
+          <div className="pt-8 border-t border-slate-800/80 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 text-caption">
+            <span className="text-ink-inverse/60">{FOOTER.copyright}</span>
 
-            <div className="flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors">
-              <Globe className="w-3.5 h-3.5 text-slate-400" />
+            {/* Language select styled as a pill, matching the Navbar switch */}
+            <div className="flex items-center gap-1.5 pl-3 pr-2 rounded-full bg-white/5 hover:bg-white/10 transition-[background-color] duration-150">
+              <Globe className="w-3.5 h-3.5 text-ink-inverse/60" />
               <select
                 value={lang}
                 onChange={(e) => setLang(e.target.value as Lang)}
                 aria-label={t(FOOTER.language)}
-                className="bg-transparent border-0 text-slate-300 font-normal focus:outline-none cursor-pointer text-xs pr-1"
+                className="bg-transparent border-0 text-ink-inverse/90 font-medium cursor-pointer text-base sm:text-body-sm py-2"
               >
                 {FOOTER.languages.map((option) => (
                   <option key={option.code} value={option.code} className="bg-[#0A0D18] text-white">
@@ -147,7 +148,7 @@ export default function Footer() {
                   </option>
                 ))}
               </select>
-              <ChevronDown className="w-3 h-3 text-slate-400" />
+              <ChevronDown className="w-3 h-3 text-ink-inverse/60" />
             </div>
           </div>
 
