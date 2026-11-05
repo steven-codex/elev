@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Mail,
@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import MinimalistMotionStage from './MinimalistMotionStage';
 import LiquidOrb from './LiquidOrb';
-import { Reveal, ImageReveal } from '../motion';
+import { Reveal, ImageReveal, LoopReplayButton, useLoopPlayback } from '../motion';
 import { useLang } from '../i18n';
 import { DECK, SERVICES, USE_CASES } from '../data/landingData';
 
@@ -20,19 +20,19 @@ const AGENT_MODES = [
   {
     orbState: 'idle' as const,
     icon: (active: boolean) => (
-      <Mail className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-[#0055FF]' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+      <Mail className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-accent' : 'text-ink-tertiary group-hover/tab:text-ink-secondary'}`} />
     )
   },
   {
     orbState: 'thinking' as const,
     icon: (active: boolean) => (
-      <Calendar className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-emerald-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+      <Calendar className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-emerald-500' : 'text-ink-tertiary group-hover/tab:text-ink-secondary'}`} />
     )
   },
   {
     orbState: 'thinking' as const,
     icon: (active: boolean) => (
-      <Shield className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-violet-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+      <Shield className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-violet-500' : 'text-ink-tertiary group-hover/tab:text-ink-secondary'}`} />
     )
   }
 ];
@@ -40,13 +40,13 @@ const AGENT_MODES = [
 // Chart tabs map 1:1 to DECK.chart.sets (Chats, Leads, Hand-offs).
 const CHART_TAB_ICONS = [
   (active: boolean) => (
-    <MessageSquare className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-amber-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+    <MessageSquare className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-amber-500' : 'text-ink-tertiary group-hover/tab:text-ink-secondary'}`} />
   ),
   (active: boolean) => (
-    <CheckCircle2 className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-emerald-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+    <CheckCircle2 className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-emerald-500' : 'text-ink-tertiary group-hover/tab:text-ink-secondary'}`} />
   ),
   (active: boolean) => (
-    <Users className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-rose-500' : 'text-slate-400 group-hover/tab:text-slate-600'}`} />
+    <Users className={`w-3.5 h-3.5 transition-colors duration-150 stroke-[2.2] shrink-0 ${active ? 'text-rose-500' : 'text-ink-tertiary group-hover/tab:text-ink-secondary'}`} />
   )
 ];
 
@@ -56,6 +56,8 @@ function HoursSavedCard() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isCardHovered, setIsCardHovered] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const playback = useLoopPlayback(cardRef);
 
   const sets = DECK.chart.sets;
   const locale = lang === 'id' ? 'id-ID' : 'en-US';
@@ -70,26 +72,31 @@ function HoursSavedCard() {
   const bigValue = formatValue(total, current.hours);
 
   // Active auto-cycle showcase when user is idle (pauses on interaction or hover)
+  // One cycle = one pass through every set. Stops after LOOP_CYCLES; "Play again" restarts it.
   useEffect(() => {
-    if (isCardHovered || hasInteracted) return;
+    if (isCardHovered || hasInteracted || !playback.enabled) return;
+    let ticks = 0;
     const timer = setInterval(() => {
+      ticks += 1;
       setActiveIndex((prev) => (prev + 1) % sets.length);
+      if (ticks % sets.length === 0 && !playback.endCycle()) clearInterval(timer);
     }, 3200);
 
     return () => clearInterval(timer);
-  }, [isCardHovered, hasInteracted, sets.length]);
+  }, [isCardHovered, hasInteracted, sets.length, playback.enabled, playback.endCycle]);
 
   return (
     <div
       onMouseEnter={() => setIsCardHovered(true)}
       onMouseLeave={() => setIsCardHovered(false)}
-      className="bg-[#F8FAFD] rounded-[32px] p-7 sm:p-8 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[380px]"
+      ref={cardRef}
+      className="relative bg-[#F8FAFD] rounded-[32px] p-7 sm:p-8 border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_12px_36px_rgba(0,85,255,0.08)] hover:border-blue-200 transition-[box-shadow,border-color] duration-300 flex-1 relative overflow-hidden group min-h-[380px]"
     >
       <div className="relative z-10">
         {/* Top Row: card title & range */}
         <div className="flex items-start justify-between">
           <div>
-            <span className="text-[13px] sm:text-[14px] font-normal text-slate-400">
+            <span className="text-[13px] sm:text-[14px] font-normal text-ink-tertiary">
               {t(DECK.chart.title)}
             </span>
 
@@ -102,7 +109,7 @@ function HoursSavedCard() {
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -5, filter: 'blur(2px)' }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-3xl sm:text-[2.6rem] font-bold text-[#0A0D14] tracking-tight tabular-nums leading-none whitespace-nowrap"
+                  className="text-h3 font-semibold text-ink tabular-nums leading-none whitespace-nowrap"
                 >
                   {bigValue}
                 </motion.div>
@@ -112,10 +119,10 @@ function HoursSavedCard() {
 
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-xs font-normal text-slate-600 hover:text-slate-900 hover:border-slate-300 active:scale-[0.97] transition-[border-color,color,transform] duration-150 cursor-pointer select-none"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-xs font-medium text-ink-secondary hover:text-ink hover:border-slate-300 enabled:active:scale-[0.96] transition-[border-color,color,transform] duration-150 cursor-pointer select-none"
           >
             <span>{t(DECK.chart.range)}</span>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronDown className="w-3.5 h-3.5 text-ink-tertiary" />
           </button>
         </div>
 
@@ -131,15 +138,17 @@ function HoursSavedCard() {
                   setHasInteracted(true);
                   setActiveIndex(index);
                 }}
-                className={`group/tab relative flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl text-xs transition-[color,transform] duration-150 cursor-pointer active:scale-[0.97] select-none z-10 ${
-                  active ? 'text-[#0A0D14] font-medium' : 'text-slate-500 hover:text-slate-800'
-                }`}
+                aria-pressed={active}
+                className={`group/tab relative z-10 flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl text-xs border border-transparent transition-[color,transform] duration-150 cursor-pointer enabled:active:scale-[0.96] select-none ${
+                          active ? 'text-ink font-medium' : 'text-ink-tertiary hover:text-ink'
+                        }`}
               >
+                {/* Sliding selected pill: shared layoutId keeps the spring between tabs */}
                 {active && (
                   <motion.div
                     layoutId="activePayoutTabPill"
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/70 -z-10"
+                    className="absolute inset-0 -z-10 rounded-xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08),0_0_0_1px_rgba(10,13,20,0.06)]"
                   />
                 )}
                 {CHART_TAB_ICONS[index](active)}
@@ -188,7 +197,7 @@ function HoursSavedCard() {
                       damping: 24,
                       delay: index * 0.035
                     }}
-                    className="w-full rounded-full relative overflow-hidden transition-all duration-300 group-hover/bar:shadow-[0_4px_16px_rgba(0,85,255,0.4)]"
+                    className="w-full rounded-full relative overflow-hidden transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 group-hover/bar:shadow-[0_4px_16px_rgba(0,85,255,0.4)]"
                     style={{
                       background: isHovered
                         ? 'linear-gradient(180deg, #60A5FA 0%, #2563EB 50%, #0055FF 100%)'
@@ -202,7 +211,7 @@ function HoursSavedCard() {
                 </div>
 
                 {/* Day of Week Label */}
-                <span className="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-2 transition-colors duration-150 group-hover/bar:text-[#0055FF] group-hover/bar:font-medium select-none">
+                <span className="text-[10px] sm:text-[11px] font-mono text-ink-tertiary mt-2 transition-colors duration-150 group-hover/bar:text-accent group-hover/bar:font-medium select-none">
                   {t(DECK.chart.days)[index]}
                 </span>
               </div>
@@ -213,11 +222,13 @@ function HoursSavedCard() {
       </div>
 
       {/* Bottom Footer Description with Faint Divider */}
-      <div className="relative z-10 pt-4 border-t border-slate-200/60 mt-auto">
-        <p className="text-[13.5px] sm:text-[14px] leading-relaxed text-slate-500 text-pretty">
-          <strong className="font-semibold text-[#0A0D14]">{t(DECK.chart.footerLead)}</strong>
+      {/* Play again sits beside the note, so it never covers the chart. */}
+      <div className="relative z-10 pt-4 border-t border-slate-200/60 mt-auto flex min-h-8 items-end justify-between gap-4">
+        <p className="text-body-sm text-ink-tertiary max-w-[62ch] text-pretty">
+          <strong className="font-semibold text-ink">{t(DECK.chart.footerLead)}</strong>
           <span>{t(DECK.chart.footerRest)}</span>
         </p>
+        {playback.finished && <LoopReplayButton onClick={playback.replay} className="shrink-0" />}
       </div>
 
     </div>
@@ -233,19 +244,19 @@ export default function TimelineFeatureDeck() {
   const heading = SERVICES.heading;
 
   return (
-    <section id="services" className="w-full py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
+    <section id="services" className="w-full py-16 sm:py-24 lg:py-24 bg-white border-t border-[#E2E8F0] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 sm:mb-20 lg:mb-24">
           <Reveal y={24}>
-            <h2 className="text-3xl sm:text-4xl lg:text-[3.25rem] text-[#0A0D14] font-normal leading-[1.14] tracking-tight text-balance">
+            <h2 className="text-h2 lg:text-h2-lg text-ink font-medium text-balance">
               {t(heading.lead)}{' '}
               <span className="font-instrument italic font-normal bg-gradient-to-r from-[#418AC1] to-[#506DFD] bg-clip-text text-transparent inline-block pr-1">{t(heading.accent)}</span>
             </h2>
           </Reveal>
           <Reveal delay={0.12} y={16}>
-            <p className="text-base sm:text-lg text-slate-600 mt-4 max-w-2xl leading-relaxed text-pretty">
+            <p className="text-lead text-ink-secondary mt-4 max-w-[62ch] text-pretty">
               {t(SERVICES.sub)}
             </p>
           </Reveal>
@@ -270,9 +281,9 @@ export default function TimelineFeatureDeck() {
               <div className="relative z-10">
                 {/* Header Title with Tilted Copy Chip */}
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  <h3 className="text-2xl sm:text-[1.75rem] font-bold text-[#0A0D14] tracking-tight">
+                  <h3 className="text-h3 font-medium text-ink">
                     {t(DECK.agent.title)}{' '}
-                    <span className="font-editorial italic font-normal text-[#0055FF]">{t(DECK.agent.accent)}</span>
+                    <span className="font-editorial italic font-normal text-accent">{t(DECK.agent.accent)}</span>
                     {t(DECK.agent.suffix) ? ` ${t(DECK.agent.suffix)}` : ''}
                   </h3>
 
@@ -283,18 +294,18 @@ export default function TimelineFeatureDeck() {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#F0F5FF] hover:bg-[#E5EFFF] border border-[#BFDBFE] text-[#0055FF] shadow-[0_1px_4px_rgba(0,85,255,0.08)] rotate-[6deg] hover:rotate-0 active:scale-[0.95] transition-[transform,background-color,border-color,box-shadow] duration-200 cursor-pointer select-none group/copy"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#F0F5FF] hover:bg-[#E5EFFF] border border-[#BFDBFE] text-accent shadow-[0_1px_4px_rgba(0,85,255,0.08)] rotate-[6deg] hover:rotate-0 enabled:active:scale-[0.96] transition-[transform,background-color,border-color,box-shadow] duration-200 cursor-pointer select-none group/copy"
                   >
-                    <Mail className="w-3.5 h-3.5 text-[#0055FF] stroke-[2.2]" />
+                    <Mail className="w-3.5 h-3.5 text-accent stroke-[2.2]" />
                     <span className="font-mono text-[11px] font-medium tracking-tight">{DECK.agent.chip}</span>
-                    <span className="text-[10px] font-sans font-medium text-blue-500/80 group-hover/copy:text-blue-600 transition-colors ml-0.5">
+                    <span className="text-[10px] font-sans font-medium text-blue-500/80 group-hover/copy:text-accent transition-colors ml-0.5">
                       {copied ? t(DECK.agent.copied) : t(DECK.agent.copy)}
                     </span>
                   </button>
                 </div>
 
                 {/* Subtitle */}
-                <p className="text-xs sm:text-[13.5px] text-slate-500 leading-relaxed mt-2 text-pretty">
+                <p className="text-xs sm:text-[13.5px] text-ink-tertiary leading-relaxed mt-2 text-pretty">
                   {t(DECK.agent.sub)}
                 </p>
 
@@ -307,19 +318,21 @@ export default function TimelineFeatureDeck() {
                       <button
                         key={index}
                         type="button"
+                        aria-pressed={active}
                         onClick={() => {
                           setActiveMode(index);
                           setOrbState(mode.orbState);
                         }}
-                        className={`group/tab relative flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl text-xs transition-[color,transform] duration-150 cursor-pointer active:scale-[0.97] select-none z-10 ${
-                          active ? 'text-[#0A0D14] font-medium' : 'text-slate-500 hover:text-slate-800'
+                        className={`group/tab relative z-10 flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl text-xs border border-transparent transition-[color,transform] duration-150 cursor-pointer enabled:active:scale-[0.96] select-none ${
+                          active ? 'text-ink font-medium' : 'text-ink-tertiary hover:text-ink'
                         }`}
                       >
+                        {/* Sliding selected pill: shared layoutId keeps the spring between tabs */}
                         {active && (
                           <motion.div
                             layoutId="activeVelieModePill"
                             transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                            className="absolute inset-0 bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-slate-200/70 -z-10"
+                            className="absolute inset-0 -z-10 rounded-xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08),0_0_0_1px_rgba(10,13,20,0.06)]"
                           />
                         )}
                         {mode.icon(active)}
@@ -331,7 +344,7 @@ export default function TimelineFeatureDeck() {
               </div>
 
               {/* Interactive Liquid Glass Orb Showcase Stage with Soft Atmospheric Aura */}
-              <div className="relative w-full h-[180px] sm:h-[195px] my-3 flex items-center justify-center group/orb transition-all duration-300">
+              <div className="relative w-full h-[180px] sm:h-[195px] my-3 flex items-center justify-center group/orb transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                 {/* Soft Radial Ambient Aura & Grounding Shadow */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.12)_0%,rgba(99,102,241,0.05)_45%,transparent_70%)] pointer-events-none" />
                 <div className="absolute bottom-2 w-32 h-6 bg-blue-500/10 blur-xl rounded-full pointer-events-none" />
@@ -346,14 +359,14 @@ export default function TimelineFeatureDeck() {
               </div>
 
               {/* Active use case line */}
-              <p className="relative z-10 text-xs sm:text-[13.5px] text-slate-500 leading-relaxed text-pretty text-center -mt-1">
+              <p className="relative z-10 min-h-[2.75rem] text-body-sm text-ink-secondary text-pretty text-center -mt-1">
                 {t(USE_CASES.tabs[activeMode].line)}
               </p>
 
               {/* Bottom Footer Description with Faint Divider */}
               <div className="relative z-10 pt-4 border-t border-slate-200/60 mt-auto">
-                <p className="text-[13.5px] sm:text-[14px] leading-relaxed text-slate-500 text-pretty">
-                  <strong className="font-semibold text-[#0A0D14]">{t(DECK.agent.handoffLead)}</strong>
+                <p className="text-body-sm text-ink-tertiary max-w-[62ch] text-pretty">
+                  <strong className="font-semibold text-ink">{t(DECK.agent.handoffLead)}</strong>
                   <span>{t(DECK.agent.handoffRest)}</span>
                 </p>
               </div>

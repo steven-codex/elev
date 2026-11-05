@@ -2,27 +2,28 @@ import { Fragment, useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { NAV, SITE } from '../data/landingData';
 import { useLang } from '../i18n';
+import { usePrefersReducedMotion } from '../motion';
 
 function LangSwitch() {
-  const { lang, setLang } = useLang();
+  const { lang, setLang, t } = useLang();
   const options = ['en', 'id'] as const;
   return (
     <div
+      className="flex items-center gap-0.5 text-[15px] font-normal text-ink-secondary"
       role="group"
-      aria-label="Language"
-      className="flex items-center gap-0.5 text-[15px] font-normal text-slate-700"
+      aria-label={t(SITE.a11y.language)}
     >
       {options.map((code, i) => (
         <Fragment key={code}>
-          {i > 0 && <span aria-hidden="true" className="text-slate-400">·</span>}
+          {i > 0 && <span aria-hidden="true" className="text-ink-tertiary">·</span>}
           <button
             type="button"
             aria-pressed={lang === code}
             onClick={() => setLang(code)}
-            className={`px-2 py-2 rounded-full active:scale-[0.96] transition-[color,background-color,transform] duration-150 cursor-pointer select-none ${
+            className={`px-2 py-2 rounded-full enabled:active:scale-[0.96] transition-[color,background-color,transform] duration-150 cursor-pointer select-none ${
               lang === code
-                ? 'font-semibold text-[#0A0D14] bg-slate-100/60'
-                : 'hover:text-[#0A0D14] hover:bg-slate-100/60'
+                ? 'font-semibold text-ink bg-slate-100/60'
+                : 'hover:text-ink hover:bg-slate-100/60'
             }`}
           >
             {code.toUpperCase()}
@@ -35,6 +36,7 @@ function LangSwitch() {
 
 export default function Navbar() {
   const { t } = useLang();
+  const reducedMotion = usePrefersReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -46,7 +48,7 @@ export default function Navbar() {
     setMobileMenuOpen(false);
 
     if (!href || href === '#' || href === '#hero' || href === '#top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
       window.history.pushState(null, '', ' ');
       return;
     }
@@ -54,10 +56,20 @@ export default function Navbar() {
     const targetEl = document.querySelector(href);
     if (targetEl) {
       const targetTop = targetEl.getBoundingClientRect().top + window.scrollY - 76;
-      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      window.scrollTo({ top: targetTop, behavior: reducedMotion ? 'auto' : 'smooth' });
       window.history.pushState(null, '', href);
     }
   };
+
+  // Escape closes the mobile drawer.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     let rafId: number;
@@ -97,6 +109,7 @@ export default function Navbar() {
 
   return (
     <header
+      inert={!showNav}
       className={`sticky top-3 sm:top-4 z-50 w-full px-3 sm:px-6 transition-[opacity,transform] duration-200 ease-out ${
         showNav
           ? 'opacity-100 translate-y-0 pointer-events-none'
@@ -125,26 +138,26 @@ export default function Navbar() {
               href="#hero"
               onClick={(e) => handleNavClick(e, '#hero')}
               className="flex items-center gap-2.5 group cursor-pointer select-none"
-              aria-label="Newseed home"
+              aria-label={t(SITE.a11y.homeLink)}
             >
               <img
                 src="/elev-infinity-logo.png"
                 alt="Newseed"
                 className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
               />
-              <span className="font-normal text-[22px] sm:text-[26px] tracking-[-0.03em] text-[#0A0D14] group-hover:text-blue-600 transition-colors duration-150">
+              <span className="max-[359px]:sr-only font-semibold text-[22px] sm:text-[26px] tracking-[-0.03em] text-ink group-hover:text-accent transition-colors duration-150">
                 Newseed
               </span>
             </a>
 
             {/* Desktop Direct Links */}
-            <nav className="hidden lg:flex items-center gap-6 sm:gap-7 lg:gap-8 text-[15px] font-normal text-slate-700">
+            <nav className="hidden lg:flex items-center gap-6 sm:gap-7 lg:gap-8 text-[15px] font-normal text-ink-secondary">
               {NAV.items.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="py-2 hover:text-[#0A0D14] transition-colors duration-150 cursor-pointer select-none"
+                  className="py-2 hover:text-ink transition-colors duration-150 cursor-pointer select-none"
                 >
                   {t(item.label)}
                 </a>
@@ -162,7 +175,7 @@ export default function Navbar() {
               href={SITE.calendly}
               target="_blank"
               rel="noopener noreferrer"
-              className="whitespace-nowrap bg-[#0A0D14] hover:bg-[#1E2330] text-white font-normal text-sm sm:text-[15px] px-6 sm:px-7 py-2.5 sm:py-3 rounded-full active:scale-[0.96] transition-[background-color,transform] duration-150 cursor-pointer select-none"
+              className="whitespace-nowrap bg-[#0A0D14] hover:bg-[#1E2330] text-white font-medium text-sm sm:text-[15px] px-6 sm:px-7 py-2.5 sm:py-3 rounded-full active:scale-[0.96] transition-[background-color,transform] duration-150 cursor-pointer select-none"
             >
               {t(NAV.cta)}
             </a>
@@ -174,9 +187,12 @@ export default function Navbar() {
           <div className="flex lg:hidden items-center gap-2.5">
             <LangSwitch />
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 rounded-full text-slate-700 hover:bg-slate-100 min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer active:scale-[0.96] transition-colors"
-              aria-label="Toggle navigation menu"
+              className="p-1.5 rounded-full text-ink-secondary hover:bg-slate-100 min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer enabled:active:scale-[0.96] transition-colors"
+              aria-label={t(SITE.a11y.menuToggle)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -186,7 +202,7 @@ export default function Navbar() {
 
       {/* Mobile Floating Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden max-w-[1190px] mx-auto mt-2 pointer-events-auto">
+        <div id="mobile-nav-menu" className="lg:hidden max-w-[1190px] mx-auto mt-2 pointer-events-auto">
           <div className="bg-white/98 backdrop-blur-xl rounded-[16px] border border-slate-200/90 p-4 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150">
             <div className="space-y-1">
               {NAV.items.map((item) => (
@@ -194,7 +210,7 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="block px-3.5 py-2.5 rounded-xl text-sm font-normal text-slate-800 hover:text-black hover:bg-slate-50 active:scale-[0.98] transition-[background-color,transform] duration-150 cursor-pointer"
+                  className="block px-3.5 py-2.5 rounded-xl text-sm font-medium text-ink hover:text-black hover:bg-slate-50 active:scale-[0.96] transition-[background-color,transform] duration-150 cursor-pointer"
                 >
                   {t(item.label)}
                 </a>
@@ -207,7 +223,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-2.5 text-center text-xs sm:text-sm font-normal bg-[#0A0D14] text-white rounded-full shadow-xs hover:bg-[#1E2330] cursor-pointer active:scale-[0.96] transition-[background-color,transform]"
+                className="w-full py-2.5 text-center text-xs sm:text-sm font-medium bg-[#0A0D14] text-white rounded-full shadow-xs hover:bg-[#1E2330] cursor-pointer active:scale-[0.96] transition-[background-color,transform]"
               >
                 {t(NAV.cta)}
               </a>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { useLang } from '../i18n';
 import { DEMO_ENRICH } from '../data/landingData';
@@ -14,6 +14,24 @@ export default function DemoEnrich() {
   const [started, setStarted] = useState(false);
   const [filled, setFilled] = useState(0); // number of rows filled, 0..total
   const done = filled >= total;
+
+  // Right-edge fade shows while the table has more columns to scroll to.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [moreRight, setMoreRight] = useState(false);
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const update = () => setMoreRight(scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 2);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(scroller);
+    if (scroller.firstElementChild) observer.observe(scroller.firstElementChild);
+    scroller.addEventListener('scroll', update, { passive: true });
+    return () => {
+      observer.disconnect();
+      scroller.removeEventListener('scroll', update);
+    };
+  }, []);
 
   // One row per tick. Cleanup clears the pending tick on reset, unmount or language change.
   useEffect(() => {
@@ -36,22 +54,23 @@ export default function DemoEnrich() {
   };
 
   return (
-    <div className="w-full bg-white border border-slate-200/90 shadow-[0_12px_32px_rgba(0,0,0,0.05)] rounded-2xl p-5 sm:p-6 text-left font-sans">
+    <div className="w-full flex flex-1 flex-col bg-white border border-slate-200/90 shadow-[0_12px_32px_rgba(0,0,0,0.05)] rounded-2xl p-5 sm:p-6 text-left font-sans">
       <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-100">
-        <span className="text-xs font-normal text-slate-500 tabular-nums" aria-live="polite">
+        <span className="text-xs font-normal text-ink-tertiary tabular-nums" aria-live="polite">
           {filled}/{total} {t(DEMO_ENRICH.counter)}
         </span>
         <button
           type="button"
           onClick={onButton}
           disabled={started && !done}
-          className="py-2 px-4 rounded-full bg-gradient-to-r from-[#418AC1] to-[#506DFD] hover:brightness-105 text-white font-normal text-xs tracking-tight shadow-[0_8px_24px_rgba(0,85,255,0.24)] transition-[filter,box-shadow,transform,opacity] duration-160 active:scale-[0.96] cursor-pointer disabled:opacity-60 disabled:cursor-default disabled:active:scale-100"
+          className="py-2 px-4 rounded-full bg-accent hover:brightness-105 text-white font-medium text-xs tracking-tight shadow-[0_8px_24px_rgba(0,85,255,0.24)] transition-[filter,box-shadow,transform,opacity] duration-160 enabled:active:scale-[0.96] cursor-pointer disabled:opacity-60 disabled:cursor-default disabled:active:scale-100"
         >
           {t(done ? DEMO_ENRICH.reset : DEMO_ENRICH.button)}
         </button>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="relative flex-1">
+        <div ref={scrollRef} className="h-full overflow-x-auto">
         <table className="w-full min-w-[520px] text-left border-separate border-spacing-0">
           <thead>
             <tr>
@@ -59,7 +78,7 @@ export default function DemoEnrich() {
                 <th
                   key={i}
                   scope="col"
-                  className="px-3 py-2.5 text-[10px] font-normal uppercase tracking-wider text-slate-500 border-b border-slate-200 whitespace-nowrap"
+                  className={`px-3 py-2.5 text-[10px] font-normal uppercase tracking-wider text-ink-tertiary border-b border-slate-200 whitespace-nowrap bg-white ${i === 0 ? 'sticky left-0 z-20' : ''}`}
                 >
                   {t(col)}
                 </th>
@@ -74,12 +93,12 @@ export default function DemoEnrich() {
                 <tr key={row.company}>
                   <th
                     scope="row"
-                    className="px-3 py-3.5 text-sm font-normal text-slate-900 whitespace-nowrap border-b border-slate-100"
+                    className="sticky left-0 z-10 bg-white px-3 py-3.5 text-sm font-normal text-ink whitespace-nowrap border-b border-slate-100"
                   >
                     {row.company}
                   </th>
                   {cells.map((value, c) => (
-                    <td key={c} className="px-3 py-3.5 text-xs text-slate-700 whitespace-nowrap border-b border-slate-100">
+                    <td key={c} className="px-3 py-3.5 text-xs text-ink-secondary whitespace-nowrap border-b border-slate-100">
                       {on ? (
                         <motion.span
                           initial={{ opacity: 0, y: 4 }}
@@ -103,6 +122,10 @@ export default function DemoEnrich() {
             })}
           </tbody>
         </table>
+        </div>
+        {moreRight && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white to-transparent" />
+        )}
       </div>
     </div>
   );

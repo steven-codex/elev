@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Check,
@@ -15,7 +15,8 @@ import {
   User
 } from 'lucide-react';
 import { useLang } from '../i18n';
-import { DECK, HERO } from '../data/landingData';
+import { DECK, HERO, SITE } from '../data/landingData';
+import { LoopReplayButton, useLoopPlayback } from '../motion';
 
 interface ProductStage {
   id: 'scheduling' | 'velie' | 'notetaker' | 'payments';
@@ -133,9 +134,12 @@ interface MinimalistMotionStageProps {
 
 export default function MinimalistMotionStage({ showControls = false }: MinimalistMotionStageProps = {}) {
   const { t: tr } = useLang();
-  // Start at 0.0s (Smart Booking) so user sees the booking flow right away
-  const [currentTime, setCurrentTime] = useState<number>(0.0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const playback = useLoopPlayback(stageRef);
+  // Starts at 0.0s (Smart Booking) so the booking flow shows right away. Reduced motion: no autoplay,
+  // and the first stage is shown in its completed state.
+  const [currentTime, setCurrentTime] = useState<number>(playback.reduced ? PRODUCT_STAGES[0].duration - 0.01 : 0.0);
+  const [isPlaying, setIsPlaying] = useState<boolean>(!playback.reduced);
   const [speed, setSpeed] = useState<number>(1);
   const [isLooping, setIsLooping] = useState<boolean>(true);
   const [isAudioSnippetPlaying, setIsAudioSnippetPlaying] = useState<boolean>(true);
@@ -154,13 +158,16 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
   // Derive active tab and subProgress directly from current timeline time
   const { stageId: activeTab, stageIndex, stageProgress: subProgress } = getStageFromTime(currentTime);
 
+  // Auto-advance only while playing, on screen, and before the loop has finished its cycles.
+  const running = isPlaying && playback.inView && !playback.finished;
+
   // High-precision smooth animation loop with playback speed and pause support
   useEffect(() => {
     const loop = (now: number) => {
       const delta = (now - lastTimeRef.current) / 1000;
       lastTimeRef.current = now;
 
-      if (isPlaying) {
+      if (running) {
         setCurrentTime((prev) => {
           const next = prev + delta * speed;
           if (next >= TOTAL_DURATION) {
@@ -184,12 +191,27 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
     return () => {
       if (animFrame.current) cancelAnimationFrame(animFrame.current);
     };
-  }, [isPlaying, speed, isLooping]);
+  }, [running, speed, isLooping]);
+
+  // Wrapping from the end back to 0 is one finished cycle. After LOOP_CYCLES, stop on the last frame.
+  const prevTimeRef = useRef<number>(currentTime);
+  useLayoutEffect(() => {
+    const prev = prevTimeRef.current;
+    prevTimeRef.current = currentTime;
+    if (isLooping && isPlaying && prev > TOTAL_DURATION - 0.5 && currentTime < 0.5) {
+      if (!playback.endCycle()) {
+        setIsPlaying(false);
+        setCurrentTime(TOTAL_DURATION);
+      }
+    }
+  }, [currentTime]);
 
   // Keyboard controls: Space to play/pause, Left/Right arrow to seek
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
+      // Let focused controls keep their own keys (Space on a button, arrows on a slider or tab).
+      const target = e.target as HTMLElement | null;
+      if (target?.closest?.('input, textarea, select, button, a, [role="tab"], [role="switch"], [contenteditable="true"], dialog')) {
         return;
       }
       if (e.code === 'Space') {
@@ -276,10 +298,22 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
   return (
     <div
       id="minimalist-motion-stage"
+      ref={stageRef}
+      data-motion-paused={!playback.inView || undefined}
       className={`w-full h-full relative rounded-[32px] sm:rounded-[36px] bg-[#1E60F2] bg-[url('/hero-fluid-wave-bg.png')] bg-cover bg-center overflow-hidden shadow-2xl flex flex-col items-center ${
         showControls ? 'justify-between min-h-[740px]' : 'justify-center min-h-[660px]'
       } p-6 sm:p-8 pt-8 sm:pt-10`}
     >
+      {playback.finished && (
+        <LoopReplayButton
+          onClick={() => {
+            playback.replay();
+            handleReset();
+          }}
+          className="absolute bottom-3 right-3 z-30"
+        />
+      )}
+
       {/* Subtle Ambient Vignette / Glass Depth */}
       <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay pointer-events-none z-0" />
 
@@ -297,7 +331,8 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   key={item.id}
                   type="button"
                   onClick={() => handleTabClick(item.id)}
-                  className="relative w-[62px] sm:w-[68px] h-[82px] sm:h-[88px] flex items-center justify-center transition-transform duration-150 cursor-pointer active:scale-[0.96] group select-none"
+                  aria-pressed={active}
+                  className="relative w-[62px] sm:w-[68px] h-[82px] sm:h-[88px] flex items-center justify-center transition-transform duration-150 cursor-pointer enabled:active:scale-[0.96] group select-none"
                   title={tr(DECK.stages[item.id].label)}
                 >
                   {/* Figma Vector Active Pill Shape */}
@@ -327,7 +362,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   <img
                     src={item.icon3d}
                     alt={tr(DECK.stages[item.id].label)}
-                    className={`relative z-10 w-11 h-11 sm:w-12 sm:h-12 object-contain transition-all duration-200 pointer-events-none ${
+                    className={`relative z-10 w-11 h-11 sm:w-12 sm:h-12 object-contain transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 pointer-events-none ${
                       active
                         ? 'scale-110 drop-shadow-md opacity-100'
                         : 'opacity-60 group-hover:opacity-100 group-hover:scale-105'
@@ -386,14 +421,14 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                       <div className="w-full bg-[#FAFBFD] rounded-2xl p-3 border border-slate-100 relative z-10">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-1.5">
-                            <CalendarIcon className="w-3.5 h-3.5 text-slate-500" />
-                            <span className="text-xs font-medium text-slate-800">{tr(DECK.booking.month)}</span>
+                            <CalendarIcon className="w-3.5 h-3.5 text-ink-tertiary" />
+                            <span className="text-xs font-medium text-ink">{tr(DECK.booking.month)}</span>
                           </div>
                           <span
                             className={`text-[10px] font-medium px-2 py-0.5 rounded-full transition-[background-color,color,border-color] duration-200 ease-out select-none ${
                               isDateActive
-                                ? 'bg-blue-50 text-[#0055FF] border border-blue-200/60 shadow-xs'
-                                : 'text-slate-400 bg-transparent border border-transparent'
+                                ? 'bg-blue-50 text-accent border border-blue-200/60 shadow-xs'
+                                : 'text-ink-tertiary bg-transparent border border-transparent'
                             }`}
                           >
                             {isDateActive ? tr(DECK.booking.chip) : tr(DECK.booking.selectDate)}
@@ -401,16 +436,16 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         </div>
 
                         {/* Day headers */}
-                        <div className="grid grid-cols-7 gap-1 text-[10px] font-medium text-slate-400 text-center mb-1">
+                        <div className="grid grid-cols-7 gap-1 text-[10px] font-medium text-ink-tertiary text-center mb-1">
                           {tr(HERO.calendar.weekdays).map((d, i) => (
                             <span key={i}>{d.charAt(0)}</span>
                           ))}
                         </div>
 
                         {/* Day numbers grid */}
-                        <div className="grid grid-cols-7 gap-1 text-xs text-center font-normal text-slate-700 items-center">
+                        <div className="grid grid-cols-7 gap-1 text-xs text-center font-normal text-ink-secondary items-center">
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((d) => (
-                            <span key={d} className="py-1 text-slate-400 opacity-40 inline-block">
+                            <span key={d} className="py-1 text-ink-tertiary opacity-40 inline-block">
                               {d}
                             </span>
                           ))}
@@ -424,11 +459,11 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                 setManualDateSelected(true);
                                 setTimeout(() => setManualDropdownOpen(true), 250);
                               }}
-                              whileTap={{ scale: 0.94 }}
+                              whileTap={{ scale: 0.96 }}
                               className={`relative z-10 w-7 h-7 rounded-full flex items-center justify-center font-medium text-xs cursor-pointer select-none transition-[background-color,color,box-shadow,transform] duration-200 ease-out ${
                                 isDateActive
                                   ? 'bg-[#0055FF] text-white shadow-[0_2px_10px_rgba(0,85,255,0.35)] scale-100'
-                                  : 'bg-transparent text-slate-700 hover:bg-slate-100 scale-100'
+                                  : 'bg-transparent text-ink-secondary hover:bg-slate-100 scale-100'
                               }`}
                               title={tr(DECK.booking.selectDate)}
                             >
@@ -437,7 +472,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           </div>
 
                           {[13, 14, 15, 16, 17, 18, 19, 20, 21].map((d) => (
-                            <span key={d} className="py-1 text-slate-400 opacity-40 inline-block">
+                            <span key={d} className="py-1 text-ink-tertiary opacity-40 inline-block">
                               {d}
                             </span>
                           ))}
@@ -446,9 +481,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
 
                       {/* Clean Time Slot Dropdown Container */}
                       <div className="relative w-full z-20">
-                        <div className="w-full bg-[#F4F8FF] rounded-xl py-2 px-3.5 flex items-center justify-between text-xs font-normal text-[#0055FF] border border-blue-100/70">
+                        <div className="w-full bg-[#F4F8FF] rounded-xl py-2 px-3.5 flex items-center justify-between text-xs font-normal text-accent border border-blue-100/70">
                           <div className="flex items-center gap-1.5">
-                            <Clock className="w-3.5 h-3.5 text-[#0055FF]" />
+                            <Clock className="w-3.5 h-3.5 text-accent" />
                             <span className="font-medium text-xs">{tr(DECK.booking.selectedSlot)}</span>
                           </div>
 
@@ -456,12 +491,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           <button
                             type="button"
                             onClick={() => setManualDropdownOpen((prev) => !prev)}
-                            className="flex items-center gap-1.5 bg-white hover:bg-slate-50 active:scale-95 px-3 py-1 rounded-lg border border-slate-200/90 text-[#0F172A] font-medium text-xs transition-all cursor-pointer shadow-none"
+                            className="flex items-center gap-1.5 bg-white hover:bg-slate-50 enabled:active:scale-[0.96] px-3 py-1 rounded-lg border border-slate-200/90 text-ink font-medium text-xs transition-[color,background-color,border-color,box-shadow,transform,opacity] cursor-pointer shadow-none"
                           >
                             <span>{selectedTime}</span>
                             <ChevronDown
-                              className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${
-                                isDropdownActive ? 'rotate-180 text-[#0055FF]' : ''
+                              className={`w-3.5 h-3.5 text-ink-tertiary transition-transform duration-200 ${
+                                isDropdownActive ? 'rotate-180 text-accent' : ''
                               }`}
                             />
                           </button>
@@ -477,7 +512,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                               className="absolute right-0 top-full mt-1.5 w-52 bg-white/98 backdrop-blur-xl rounded-2xl border border-slate-200/90 shadow-[0_16px_36px_rgba(0,35,102,0.15)] p-1.5 z-30 flex flex-col gap-1 text-left"
                             >
-                              <div className="px-2 py-0.5 text-[9px] font-mono text-slate-400 uppercase tracking-wider">
+                              <div className="px-2 py-0.5 text-[10px] font-mono text-ink-tertiary uppercase tracking-wider">
                                 {tr(DECK.booking.availableTimes)}
                               </div>
                               {DECK.booking.slots.map((slot) => {
@@ -492,16 +527,16 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                     }}
                                     className={`w-full px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between transition-colors cursor-pointer shadow-none ${
                                       isSelected
-                                        ? 'bg-[#EFF6FF] text-[#0055FF] font-medium'
-                                        : 'hover:bg-slate-50 text-slate-700 font-normal'
+                                        ? 'bg-[#EFF6FF] text-accent font-medium'
+                                        : 'hover:bg-slate-50 text-ink-secondary font-normal'
                                     }`}
                                   >
                                     <div className="flex flex-col">
                                       <span className="leading-tight font-medium">{slot.time}</span>
-                                      <span className="text-[9px] text-slate-400">{tr(slot.label)}</span>
+                                      <span className="text-[10px] text-ink-tertiary">{tr(slot.label)}</span>
                                     </div>
                                     {isSelected && (
-                                      <Check className="w-3.5 h-3.5 text-[#0055FF] stroke-[2.5]" />
+                                      <Check className="w-3.5 h-3.5 text-accent stroke-[2.5]" />
                                     )}
                                   </button>
                                 );
@@ -530,7 +565,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         className={`w-full py-3 px-4 rounded-2xl font-medium text-sm flex items-center justify-center gap-2 active:scale-[0.96] transition-colors duration-150 cursor-pointer border shadow-none ${
                           isDateActive
                             ? 'bg-[#0055FF] text-white hover:bg-blue-600 border-[#0055FF]'
-                            : 'bg-slate-100 text-slate-400 border-slate-200/80'
+                            : 'bg-slate-100 text-ink-tertiary border-slate-200/80'
                         }`}
                       >
                         <span>{tr(DECK.booking.cta)}</span>
@@ -586,7 +621,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             initial={{ opacity: 0, y: 18, scale: 0.85, filter: "blur(8px)", letterSpacing: "0.06em" }}
                             animate={{ opacity: 1, y: 0, scale: [0.85, 1.08, 0.97, 1], filter: "blur(0px)", letterSpacing: "-0.025em" }}
                             transition={{ duration: 0.68, delay: 0.12, ease: [0.34, 1.56, 0.64, 1] }}
-                            className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight will-change-transform"
+                            className="text-2xl sm:text-[28px] font-semibold text-ink tracking-tight will-change-transform"
                           >
                             {tr(DECK.booking.done.title)}
                           </motion.h3>
@@ -596,7 +631,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             initial={{ opacity: 0, y: 22, scale: 0.8, filter: "blur(10px)" }}
                             animate={{ opacity: 1, y: 0, scale: [0.8, 1.14, 0.95, 1.02, 1], filter: "blur(0px)" }}
                             transition={{ duration: 0.72, delay: 0.22, ease: [0.34, 1.56, 0.64, 1] }}
-                            className="text-base sm:text-lg font-medium text-[#64748B] tracking-tight block mt-1.5 sm:mt-2 will-change-transform"
+                            className="text-base sm:text-lg font-medium text-ink-tertiary tracking-tight block mt-1.5 sm:mt-2 will-change-transform"
                           >
                             {tr(DECK.booking.dayLine)} · {selectedTime}
                           </motion.span>
@@ -621,10 +656,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                                 className="w-9 h-9 object-contain shrink-0"
                               />
                               <div>
-                                <span className="text-sm sm:text-base font-medium text-[#0A0D14] block leading-tight tracking-tight">
+                                <span className="text-sm sm:text-base font-medium text-ink block leading-tight tracking-tight">
                                   {tr(DECK.booking.done.channel)}
                                 </span>
-                                <span className="text-xs text-[#64748B] font-normal mt-0.5 block">
+                                <span className="text-xs text-ink-tertiary font-normal mt-0.5 block">
                                   {tr(DECK.booking.done.confirm)}
                                 </span>
                               </div>
@@ -709,7 +744,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-emerald-400/25 to-lime-300/25 blur-lg pointer-events-none" />
                     <motion.div
                       animate={{ y: [-2, 2, -2], scale: isFinished ? [1.05, 1.1, 1.05] : [1, 1.03, 1] }}
-                      transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut' }}
+                      transition={{ duration: 3.8, repeat: playback.inView ? Infinity : 0, ease: 'easeInOut' }}
                       className="relative z-10 w-12 h-12 flex items-center justify-center"
                     >
                       <img
@@ -732,11 +767,11 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         }}
                         className="absolute z-20 w-[210px] sm:w-[230px] bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 shadow-[0_10px_24px_rgba(0,35,102,0.06),0_1px_3px_rgba(0,0,0,0.02)] border border-slate-100/90 flex items-center gap-3 will-change-transform"
                       >
-                        <div className="w-7 h-7 rounded-xl bg-[#EFF6FF] text-[#0055FF] flex items-center justify-center shrink-0">
-                          <FileText className="w-3.5 h-3.5 text-[#0055FF]" />
+                        <div className="w-7 h-7 rounded-xl bg-[#EFF6FF] text-accent flex items-center justify-center shrink-0">
+                          <FileText className="w-3.5 h-3.5 text-accent" />
                         </div>
                         <div className="flex flex-col gap-1.5 text-left">
-                          <span className="text-[11px] sm:text-[12px] font-medium text-slate-700 whitespace-nowrap leading-none">{tr(DECK.capture.chips[0])}</span>
+                          <span className="text-[11px] sm:text-[12px] font-medium text-ink-secondary whitespace-nowrap leading-none">{tr(DECK.capture.chips[0])}</span>
                           <div className="w-12 sm:w-15 h-2 bg-[#EEF2F6] rounded-full" />
                         </div>
                       </div>
@@ -756,7 +791,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[2.5]" />
                         </div>
                         <div className="flex flex-col gap-1.5 text-left">
-                          <span className="text-[11px] sm:text-[12px] font-medium text-slate-700 whitespace-nowrap leading-none">{tr(DECK.capture.chips[1])}</span>
+                          <span className="text-[11px] sm:text-[12px] font-medium text-ink-secondary whitespace-nowrap leading-none">{tr(DECK.capture.chips[1])}</span>
                           <div className="w-14 sm:w-16 h-2 bg-[#EEF2F6] rounded-full" />
                         </div>
                       </div>
@@ -776,7 +811,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           <User className="w-3.5 h-3.5 text-[#8B5CF6]" />
                         </div>
                         <div className="flex flex-col gap-1.5 text-left">
-                          <span className="text-[11px] sm:text-[12px] font-medium text-slate-700 whitespace-nowrap leading-none">{tr(DECK.capture.chips[2])}</span>
+                          <span className="text-[11px] sm:text-[12px] font-medium text-ink-secondary whitespace-nowrap leading-none">{tr(DECK.capture.chips[2])}</span>
                           <div className="w-12 sm:w-14 h-2 bg-[#EEF2F6] rounded-full" />
                         </div>
                       </div>
@@ -806,7 +841,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         transition={{ duration: 0.2 }}
                         className="absolute -inset-4 bg-gradient-to-r from-blue-400/20 via-sky-300/30 to-emerald-400/20 rounded-full blur-xl pointer-events-none"
                       />
-                      <h3 className="text-[28px] sm:text-[32px] font-semibold text-[#0F172A] tracking-[-0.03em] leading-tight relative z-10">
+                      <h3 className="text-[28px] sm:text-[32px] font-medium text-ink tracking-[-0.03em] leading-tight relative z-10">
                         {tr(DECK.capture.title)}
                       </h3>
                     </div>
@@ -825,7 +860,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           <span>{tr(DECK.capture.done)}</span>
                         </motion.div>
                       ) : (
-                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDF5FF] text-[#0055FF] text-[13px] font-medium border border-[#DBEAFE]/80">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDF5FF] text-accent text-[13px] font-medium border border-[#DBEAFE]/80">
                           <span className="w-2.5 h-2.5 rounded-full bg-[#0055FF] shrink-0 animate-pulse" />
                           <span>{tr(DECK.capture.analyzing)}</span>
                         </div>
@@ -833,7 +868,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     </div>
 
                     {/* Subtitle */}
-                    <p className="text-[14px] text-[#64748B] mt-2 font-normal tracking-tight">
+                    <p className="text-[14px] text-ink-tertiary mt-2 font-normal tracking-tight">
                       {tr(DECK.capture.line)}
                     </p>
 
@@ -862,21 +897,21 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                       <div className="w-full flex justify-between items-center text-[13px] sm:text-[14px] pt-3 px-2 select-none">
                         <span
                           className={`transition-colors duration-150 ${
-                            t >= 0.20 ? 'text-[#0F172A] font-semibold' : 'text-[#64748B] font-normal'
+                            t >= 0.20 ? 'text-ink font-semibold' : 'text-ink-tertiary font-normal'
                           }`}
                         >
                           {tr(DECK.capture.progress[0])}
                         </span>
                         <span
                           className={`transition-colors duration-150 ${
-                            t >= 0.50 ? 'text-[#0F172A] font-semibold' : 'text-[#64748B] font-normal'
+                            t >= 0.50 ? 'text-ink font-semibold' : 'text-ink-tertiary font-normal'
                           }`}
                         >
                           {tr(DECK.capture.progress[1])}
                         </span>
                         <span
                           className={`transition-colors duration-150 ${
-                            t >= 0.85 ? 'text-[#0F172A] font-semibold' : 'text-[#64748B] font-normal'
+                            t >= 0.85 ? 'text-ink font-semibold' : 'text-ink-tertiary font-normal'
                           }`}
                         >
                           {tr(DECK.capture.progress[2])}
@@ -896,7 +931,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         <span>{tr(DECK.capture.doneFooter)}</span>
                       </motion.div>
                     ) : (
-                      <p className="text-[12px] font-normal text-[#94A3B8] tracking-tight mt-5 pb-1">
+                      <p className="text-[12px] font-normal text-ink-tertiary tracking-tight mt-5 pb-1">
                         {tr(DECK.capture.wait)}
                       </p>
                     )}
@@ -958,10 +993,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
 
                     {/* Header Typography */}
                     <div>
-                      <h3 className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight">
+                      <h3 className="text-2xl sm:text-[28px] font-medium text-ink tracking-tight">
                         {tr(DECK.notify.title)}
                       </h3>
-                      <p className="text-xs sm:text-[13px] text-[#64748B] mt-1 font-normal max-w-[310px] mx-auto">
+                      <p className="text-xs sm:text-[13px] text-ink-tertiary mt-1 font-normal max-w-[310px] mx-auto">
                         {tr(DECK.notify.line)}
                       </p>
                     </div>
@@ -971,7 +1006,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                       <button
                         type="button"
                         onClick={() => setIsAudioSnippetPlaying((prev) => !prev)}
-                        className="w-8 h-8 rounded-full bg-[#EDF2F7] hover:bg-[#E2E8F0] text-[#0F172A] flex items-center justify-center shrink-0 cursor-pointer active:scale-95 transition-all shadow-none"
+                        className="w-8 h-8 rounded-full bg-[#EDF2F7] hover:bg-[#E2E8F0] text-ink flex items-center justify-center shrink-0 cursor-pointer enabled:active:scale-[0.96] transition-[color,background-color,border-color,box-shadow,transform,opacity] shadow-none"
                       >
                         {isAudioSnippetPlaying ? (
                           <Pause className="w-3.5 h-3.5 fill-current" />
@@ -1020,7 +1055,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         })}
                       </div>
 
-                      <span className="text-xs font-mono font-normal text-[#64748B] shrink-0 tabular-nums">02:45</span>
+                      <span className="text-xs font-mono font-normal text-ink-tertiary shrink-0 tabular-nums">02:45</span>
                     </div>
                   </motion.div>
 
@@ -1102,7 +1137,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                     transition={
                       isAllAbsorbed
                         ? { duration: 0.35, ease: [0.23, 1, 0.32, 1] }
-                        : { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }
+                        : { duration: 3.5, repeat: playback.inView ? Infinity : 0, ease: 'easeInOut' }
                     }
                     className="shrink-0 flex items-center justify-center mt-1 pointer-events-none"
                   >
@@ -1174,7 +1209,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <div className="flex overflow-hidden w-full select-none">
                               <motion.div
                                 animate={{ x: ['0%', '-33.333%'] }}
-                                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                                transition={{ duration: 20, repeat: playback.inView ? Infinity : 0, ease: 'linear' }}
                                 className="flex items-center gap-2.5 sm:gap-3 shrink-0 will-change-transform"
                               >
                                 {[...PAYMENT_LEFT_ROW_1, ...PAYMENT_LEFT_ROW_1, ...PAYMENT_LEFT_ROW_1].map((tile, idx) => (
@@ -1202,7 +1237,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <div className="flex overflow-hidden w-full select-none">
                               <motion.div
                                 animate={{ x: ['0%', '-33.333%'] }}
-                                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                                transition={{ duration: 20, repeat: playback.inView ? Infinity : 0, ease: 'linear' }}
                                 className="flex items-center gap-2.5 sm:gap-3 shrink-0 will-change-transform"
                               >
                                 {[...PAYMENT_LEFT_ROW_2, ...PAYMENT_LEFT_ROW_2, ...PAYMENT_LEFT_ROW_2].map((tile, idx) => (
@@ -1230,7 +1265,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <div className="flex overflow-hidden w-full select-none">
                               <motion.div
                                 animate={{ x: ['0%', '-33.333%'] }}
-                                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                                transition={{ duration: 20, repeat: playback.inView ? Infinity : 0, ease: 'linear' }}
                                 className="flex items-center gap-2.5 sm:gap-3 shrink-0 will-change-transform"
                               >
                                 {[...PAYMENT_LEFT_ROW_3, ...PAYMENT_LEFT_ROW_3, ...PAYMENT_LEFT_ROW_3].map((tile, idx) => (
@@ -1285,7 +1320,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <div className="flex overflow-hidden w-full select-none">
                               <motion.div
                                 animate={{ x: ['-33.333%', '0%'] }}
-                                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                                transition={{ duration: 20, repeat: playback.inView ? Infinity : 0, ease: 'linear' }}
                                 className="flex items-center gap-2.5 sm:gap-3 shrink-0 will-change-transform"
                               >
                                 {[...PAYMENT_RIGHT_ROW_1, ...PAYMENT_RIGHT_ROW_1, ...PAYMENT_RIGHT_ROW_1].map((tile, idx) => (
@@ -1313,7 +1348,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <div className="flex overflow-hidden w-full select-none">
                               <motion.div
                                 animate={{ x: ['-33.333%', '0%'] }}
-                                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                                transition={{ duration: 20, repeat: playback.inView ? Infinity : 0, ease: 'linear' }}
                                 className="flex items-center gap-2.5 sm:gap-3 shrink-0 will-change-transform"
                               >
                                 {[...PAYMENT_RIGHT_ROW_2, ...PAYMENT_RIGHT_ROW_2, ...PAYMENT_RIGHT_ROW_2].map((tile, idx) => (
@@ -1341,7 +1376,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <div className="flex overflow-hidden w-full select-none">
                               <motion.div
                                 animate={{ x: ['-33.333%', '0%'] }}
-                                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                                transition={{ duration: 20, repeat: playback.inView ? Infinity : 0, ease: 'linear' }}
                                 className="flex items-center gap-2.5 sm:gap-3 shrink-0 will-change-transform"
                               >
                                 {[...PAYMENT_RIGHT_ROW_3, ...PAYMENT_RIGHT_ROW_3, ...PAYMENT_RIGHT_ROW_3].map((tile, idx) => (
@@ -1374,10 +1409,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         {/* Foreground Header Typography with gentle legibility halo */}
                         <div className="relative z-10 px-5 py-1">
                           <div className="absolute inset-0 bg-white/75 backdrop-blur-[2px] rounded-2xl pointer-events-none -z-10" />
-                          <h3 className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight">
+                          <h3 className="text-2xl sm:text-[28px] font-medium text-ink tracking-tight">
                             {tr(DECK.quote.title)}
                           </h3>
-                          <p className="text-xs sm:text-[13px] text-[#64748B] mt-1 font-normal">
+                          <p className="text-xs sm:text-[13px] text-ink-tertiary mt-1 font-normal">
                             {tr(DECK.quote.line)}
                           </p>
                         </div>
@@ -1386,10 +1421,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                         <div className="relative z-10 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white/92 backdrop-blur-md border border-slate-100/90 shadow-2xs mt-3.5 mx-auto">
                           <img src="/icon-scheduling-3d.png" alt="" className="w-7 h-7 object-contain shrink-0" />
                           <div className="text-left">
-                            <span className="text-xs sm:text-sm font-semibold text-[#0F172A] block leading-tight">
+                            <span className="text-xs sm:text-sm font-semibold text-ink block leading-tight">
                               {tr(DECK.quote.job)}
                             </span>
-                            <span className="text-[11px] text-[#64748B] font-normal block">
+                            <span className="text-[11px] text-ink-tertiary font-normal block">
                               {tr(DECK.quote.date)}
                             </span>
                           </div>
@@ -1398,10 +1433,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
 
                       {/* Amount Card with live counting animation */}
                       <div className="w-full bg-white rounded-3xl p-4 sm:p-5 border border-slate-100 shadow-2xs text-center relative z-10">
-                        <span className="text-[10px] sm:text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest block mb-1">
+                        <span className="text-[10px] sm:text-[11px] font-semibold text-ink-tertiary uppercase tracking-widest block mb-1">
                           {tr(DECK.quote.total)}
                         </span>
-                        <span className="text-4xl sm:text-[44px] font-semibold text-[#0F172A] tracking-tight block my-0.5 tabular-nums">
+                        <span className="text-4xl sm:text-[44px] font-semibold text-ink tracking-tight block my-0.5 tabular-nums">
                           ${displayAmount}
                         </span>
                       </div>
@@ -1413,10 +1448,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                             <img src="/logos/gmail.svg" alt="" className="w-3.5 h-3.5 object-contain" />
                           </div>
                           <div className="text-left">
-                            <span className="block font-medium text-[#0F172A] leading-tight text-xs">{tr(DECK.quote.trust)}</span>
+                            <span className="block font-medium text-ink leading-tight text-xs">{tr(DECK.quote.trust)}</span>
                           </div>
                         </div>
-                        <div className="px-2.5 py-1 rounded-full bg-[#EDF5FF] border border-[#DBEAFE]/80 text-[#0055FF] text-[11px] font-medium flex items-center gap-1.5 shrink-0">
+                        <div className="px-2.5 py-1 rounded-full bg-[#EDF5FF] border border-[#DBEAFE]/80 text-accent text-[11px] font-medium flex items-center gap-1.5 shrink-0">
                           <span>{tr(DECK.quote.auto)}</span>
                         </div>
                       </div>
@@ -1484,7 +1519,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           initial={{ opacity: 0, y: 18, scale: 0.85, filter: "blur(8px)", letterSpacing: "0.06em" }}
                           animate={{ opacity: 1, y: 0, scale: [0.85, 1.08, 0.97, 1], filter: "blur(0px)", letterSpacing: "-0.025em" }}
                           transition={{ duration: 0.68, delay: 0.12, ease: [0.34, 1.56, 0.64, 1] }}
-                          className="text-2xl sm:text-[28px] font-semibold text-[#0F172A] tracking-tight will-change-transform"
+                          className="text-2xl sm:text-[28px] font-semibold text-ink tracking-tight will-change-transform"
                         >
                           {tr(DECK.quote.done)}
                         </motion.h3>
@@ -1494,7 +1529,7 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           initial={{ opacity: 0, y: 22, scale: 0.8, filter: "blur(10px)" }}
                           animate={{ opacity: 1, y: 0, scale: [0.8, 1.14, 0.95, 1.02, 1], filter: "blur(0px)" }}
                           transition={{ duration: 0.72, delay: 0.22, ease: [0.34, 1.56, 0.64, 1] }}
-                          className="text-4xl sm:text-[46px] font-semibold text-[#0F172A] tracking-tight block mt-1.5 sm:mt-2 tabular-nums will-change-transform"
+                          className="text-4xl sm:text-[46px] font-semibold text-ink tracking-tight block mt-1.5 sm:mt-2 tabular-nums will-change-transform"
                         >
                           ${finalAmount}
                         </motion.span>
@@ -1513,10 +1548,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                           className="w-full bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex items-center justify-between text-left relative z-10 mt-5 sm:mt-6 will-change-transform"
                         >
                           <div>
-                            <span className="block text-sm font-medium text-slate-900 leading-tight">
+                            <span className="block text-sm font-medium text-ink leading-tight">
                               {tr(DECK.quote.doneCard)}
                             </span>
-                            <span className="text-xs text-slate-500 font-normal mt-0.5 block">
+                            <span className="text-xs text-ink-tertiary font-normal mt-0.5 block">
                               {tr(DECK.quote.trust)}
                             </span>
                           </div>
@@ -1570,10 +1605,12 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   step={0.02}
                   value={currentTime}
                   onChange={(e) => handleSeek(parseFloat(e.target.value))}
-                  className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-blue-400 focus:outline-none"
+                  aria-label={tr(SITE.a11y.scrubber)}
+                  aria-valuetext={formatTime(currentTime)}
+                  className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-blue-400"
                 />
                 {/* Visual Stage Ticks */}
-                <div className="w-full flex justify-between mt-1 text-[9px] font-mono text-white/40 select-none">
+                <div className="w-full flex justify-between mt-1 text-[10px] font-mono text-white/40 select-none">
                   {PRODUCT_STAGES.map((stage) => (
                     <span key={stage.id}>
                       {getStartTimeForStage(stage.id).toFixed(1)}s ({tr(DECK.stages[stage.id].tick)})
@@ -1590,8 +1627,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   <button
                     type="button"
                     onClick={togglePlay}
-                    className="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center hover:bg-blue-50 active:scale-[0.92] transition-transform shadow-md cursor-pointer"
-                    title={isPlaying ? "Pause (Space)" : "Play (Space)"}
+                    className="w-8 h-8 rounded-full bg-white text-ink flex items-center justify-center hover:bg-blue-50 enabled:active:scale-[0.96] transition-transform shadow-md cursor-pointer"
+                    title={isPlaying ? tr(SITE.a11y.pause) : tr(SITE.a11y.play)}
+                    aria-label={isPlaying ? tr(SITE.a11y.pause) : tr(SITE.a11y.play)}
                   >
                     {isPlaying ? (
                       <Pause className="w-3.5 h-3.5 fill-current" />
@@ -1604,8 +1642,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   <button
                     type="button"
                     onClick={handlePrevScene}
-                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
-                    title="Previous Stage"
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 enabled:active:scale-[0.96] text-white flex items-center justify-center transition-colors cursor-pointer"
+                    title={tr(SITE.a11y.prevStage)}
+                    aria-label={tr(SITE.a11y.prevStage)}
                   >
                     <SkipBack className="w-3 h-3" />
                   </button>
@@ -1614,8 +1653,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   <button
                     type="button"
                     onClick={handleNextScene}
-                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
-                    title="Next Stage"
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 enabled:active:scale-[0.96] text-white flex items-center justify-center transition-colors cursor-pointer"
+                    title={tr(SITE.a11y.nextStage)}
+                    aria-label={tr(SITE.a11y.nextStage)}
                   >
                     <SkipForward className="w-3 h-3" />
                   </button>
@@ -1624,8 +1664,9 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-[0.92] text-white flex items-center justify-center transition-colors cursor-pointer"
-                    title="Reset to 0:00"
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 enabled:active:scale-[0.96] text-white flex items-center justify-center transition-colors cursor-pointer"
+                    title={tr(SITE.a11y.reset)}
+                    aria-label={tr(SITE.a11y.reset)}
                   >
                     <RotateCcw className="w-3 h-3" />
                   </button>
@@ -1638,7 +1679,8 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                       key={stage.id}
                       type="button"
                       onClick={() => handleTabClick(stage.id)}
-                      className={`px-2 py-0.5 rounded transition-all cursor-pointer font-medium ${
+                      aria-pressed={activeTab === stage.id}
+                      className={`relative after:absolute after:-inset-1.5 after:content-[''] px-2 py-0.5 rounded transition-[color,background-color,border-color,box-shadow,transform,opacity] cursor-pointer font-medium ${
                         activeTab === stage.id
                           ? 'bg-blue-500 text-white shadow-xs'
                           : 'text-white/60 hover:text-white'
@@ -1655,10 +1697,10 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   <button
                     type="button"
                     onClick={cycleSpeed}
-                    className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-medium transition-colors cursor-pointer ${
+                    className={`relative after:absolute after:-inset-1.5 after:content-[''] px-2 py-0.5 rounded-md text-[11px] font-mono font-medium transition-colors cursor-pointer ${
                       speed !== 1 ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' : 'bg-white/10 text-white hover:bg-white/20'
                     }`}
-                    title="Playback speed (0.25x slow-mo, 0.5x, 1x, 2x)"
+                    title={tr(SITE.a11y.speed)}
                   >
                     {speed}x
                   </button>
@@ -1667,10 +1709,11 @@ export default function MinimalistMotionStage({ showControls = false }: Minimali
                   <button
                     type="button"
                     onClick={() => setIsLooping(!isLooping)}
-                    className={`px-2 py-0.5 rounded-md text-[10px] font-medium transition-colors cursor-pointer ${
+                    aria-pressed={isLooping}
+                    className={`relative after:absolute after:-inset-1.5 after:content-[''] px-2 py-0.5 rounded-md text-[10px] font-medium transition-colors cursor-pointer ${
                       isLooping ? 'bg-blue-500/30 text-blue-300 border border-blue-400/40' : 'bg-white/5 text-white/40'
                     }`}
-                    title="Toggle continuous looping"
+                    title={tr(SITE.a11y.loop)}
                   >
                     Loop
                   </button>

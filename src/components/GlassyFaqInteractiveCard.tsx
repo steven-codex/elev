@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useId, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SITE } from '../data/landingData';
 
@@ -21,7 +21,7 @@ interface GlassyFaqInteractiveCardProps {
 
 /**
  * Emil Kowalski-grade Interactive Frosted Glass FAQ Capsule/Card:
- * - Step 1: Collapsed pill at the bottom with Elev infinity logo.
+ * - Step 1: Collapsed pill at the bottom with the brand logo.
  * - Step 2 (On hover): Smoothly expands upward with staggered word blur reveal for the question.
  * - Step 3: Gracefully transitions to the answer with staggered blur reveal.
  * - Long text handling: Contained height with smooth automatic scrolling without visible scrollbars.
@@ -36,6 +36,7 @@ export default function GlassyFaqInteractiveCard({
   // Step: 1 (Collapsed pill), 2 (Question), 3 (Answer)
   const [internalStep, setInternalStep] = useState<1 | 2 | 3>(1);
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const panelId = useId();
 
   // Active step priority: forceStep (demo preview) > internalStep
   const effectiveStep: 1 | 2 | 3 = forceStep !== null && forceStep !== undefined 
@@ -155,6 +156,17 @@ export default function GlassyFaqInteractiveCard({
     onCardHoverChange?.(false);
   };
 
+  // Keyboard focus runs the same sequence as hover: active card, question, then answer.
+  const handleFocus = () => {
+    setIsHovered(true);
+    onCardHoverChange?.(true);
+  };
+
+  const handleBlur = () => {
+    setIsHovered(false);
+    onCardHoverChange?.(false);
+  };
+
   const handleCardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     // Manual step toggle on tap/click for mobile and power users
@@ -193,8 +205,13 @@ export default function GlassyFaqInteractiveCard({
         - Contour Bevel + Sub-pixel perimeter rim
         ========================================================================
       */}
-      <motion.div
+      <motion.button
+        type="button"
         layout
+        aria-expanded={isExpanded}
+        aria-controls={isExpanded ? panelId : undefined}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         transition={{
           type: 'spring',
           stiffness: 190,
@@ -202,7 +219,7 @@ export default function GlassyFaqInteractiveCard({
           mass: 0.9
         }}
         onClick={handleCardClick}
-        whileTap={{ scale: 0.98 }}
+        whileTap={{ scale: 0.96 }}
         style={{
           borderRadius: isExpanded ? 24 : 9999,
           background: 'rgba(255, 255, 255, 0.22)',
@@ -218,7 +235,7 @@ export default function GlassyFaqInteractiveCard({
       >
 
         {/* 
-          PERSISTENT ELEV LOGO (Never unmounts, zero flicker/glitch):
+          PERSISTENT BRAND LOGO (Never unmounts, zero flicker/glitch):
           Glides seamlessly between center in Step 1 and top header in Step 2/3
         */}
         <motion.div
@@ -244,6 +261,7 @@ export default function GlassyFaqInteractiveCard({
         <AnimatePresence>
           {isExpanded && (
             <motion.div
+              id={panelId}
               key="expanded-content-body"
               initial={{ opacity: 0, filter: 'blur(6px)', y: 6 }}
               animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
@@ -274,7 +292,7 @@ export default function GlassyFaqInteractiveCard({
                     transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
                     className="w-full text-center px-1"
                   >
-                    <p className="text-[13px] sm:text-[14px] font-medium text-white leading-[1.38] tracking-[-0.01em]">
+                    <span className="block text-[13px] sm:text-[14px] font-medium text-white leading-[1.38] tracking-[-0.01em]">
                       {questionWords.map((word, i) => (
                         <motion.span
                           key={i}
@@ -290,7 +308,7 @@ export default function GlassyFaqInteractiveCard({
                           {word}
                         </motion.span>
                       ))}
-                    </p>
+                    </span>
                   </motion.div>
                 ) : (
                   /* --------------------------------------------------------- */
@@ -359,7 +377,7 @@ export default function GlassyFaqInteractiveCard({
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </motion.button>
     </div>
   );
 }

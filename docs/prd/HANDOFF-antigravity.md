@@ -92,3 +92,7 @@ The README has the full list. In short:
 - Optionally provide a real Newseed logo and OG image.
 - `npm audit`: high-severity issues in vite and source-map-js (dev server only). Fixing them needs a vite upgrade; that's a separate decision.
 - Nothing after `a8c61e6` is committed yet.
+
+## UI polish (branch `ui-polish`, 2026-11-06)
+UI-A foundation, UI-B system and UI-C sections (C0–C10) are built and reviewed. PRDs, audit, research and decisions are in `docs/prd/ui/`. The motion-parity rule was relaxed by decision Q2, but no animation may be removed.
+Not verified: the CSS reduced-motion block under a real OS setting, the LiquidOrb static frame (needs WebGPU), and a full keyboard-only walk of the page.

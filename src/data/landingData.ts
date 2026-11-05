@@ -37,6 +37,24 @@ export const SITE = {
     id: 'Halo Newseed, saya ingin diskusi otomasi untuk bisnis saya.',
   },
   langSwitch: { en: 'EN · ID', id: 'EN · ID' },
+  // Accessible names, titles and control labels (EN / ID).
+  a11y: {
+    playAgain: { en: 'Play again', id: 'Putar lagi' },
+    homeLink: { en: 'Newseed home', id: 'Beranda Newseed' },
+    language: { en: 'Language', id: 'Bahasa' },
+    menuToggle: { en: 'Toggle navigation menu', id: 'Buka atau tutup menu navigasi' },
+    showItem: { en: 'Show item', id: 'Tampilkan item' },
+    play: { en: 'Play (Space)', id: 'Putar (Spasi)' },
+    pause: { en: 'Pause (Space)', id: 'Jeda (Spasi)' },
+    prevStage: { en: 'Previous stage', id: 'Tahap sebelumnya' },
+    nextStage: { en: 'Next stage', id: 'Tahap berikutnya' },
+    reset: { en: 'Reset to 0:00', id: 'Atur ulang ke 0:00' },
+    speed: { en: 'Playback speed (0.25x slow-mo, 0.5x, 1x, 2x)', id: 'Kecepatan putar (0,25x slow-mo, 0,5x, 1x, 2x)' },
+    loop: { en: 'Toggle continuous looping', id: 'Aktifkan atau nonaktifkan pengulangan' },
+    scrubber: { en: 'Scene timeline', id: 'Linimasa adegan' },
+    closeDialog: { en: 'Close', id: 'Tutup' },
+    caseStudies: { en: 'Case studies', id: 'Studi kasus' },
+  },
   meta: {
     title: {
       en: 'AI Automation & WhatsApp AI Agents for Growing Businesses | Newseed',
@@ -546,6 +564,7 @@ export const ROI = {
     perMonth: { en: 'About {x} per month', id: 'Sekitar {x} per bulan' },
   },
   cta: { en: 'Talk through these numbers', id: 'Bahas angka ini bersama kami' },
+  howWeCalculate: { en: 'How we calculate', id: 'Cara menghitung' },
   // {cost} and {people} are filled in at click time.
   waPrefill: {
     en: 'Hi Newseed, the ROI calculator shows about {cost}/year in savings for my team of {people}. I\'d like to talk it through.',
@@ -955,4 +974,79 @@ export const INTEGRATIONS = {
     { name: 'Zapier', category: 'automation', icon: '/logos/zapier.svg', desc: { en: 'Connect your apps with ready-made triggers and actions', id: 'Hubungkan aplikasi lewat trigger dan aksi siap pakai' } },
     { name: 'Vapi', category: 'automation', icon: null, desc: { en: 'Voice agents that take and place phone calls', id: 'Voice agent untuk menerima dan melakukan panggilan telepon' } },
   ],
+};
+
+// Architecture diagram (UI-D). Logos live in public/logos/.
+export const SYSTEM = {
+  heading: {
+    lead: { en: 'Inside a Newseed system.', id: 'Di dalam sistem Newseed.' },
+    accent: { en: 'Wired into how you already work.', id: 'Terhubung dengan cara kerja Anda.' },
+  },
+  sub: {
+    en: 'Your tools feed one engine. Your team stays in charge of what it does.',
+    id: 'Tools Anda terhubung ke satu mesin. Tim Anda tetap memegang kendali.',
+  },
+  panel1: {
+    title: { en: 'Your tools', id: 'Tools Anda' },
+    more: { en: 'Any tool with an API', id: 'Tools apa pun dengan API' },
+    node1: { en: 'Triggers', id: 'Pemicu' },
+    node2: {
+      label: { en: 'Auto-sync', id: 'Auto-sync' },
+      title: { en: 'Automation flows', id: 'Alur otomasi' },
+    },
+    node3: { en: 'Your data', id: 'Data Anda' },
+    tools: [
+      { name: 'WhatsApp', icon: '/logos/whatsapp.svg' },
+      { name: 'Gmail', icon: '/logos/gmail.svg' },
+      { name: 'Google Sheets', icon: '/logos/googlesheets.svg' },
+      { name: 'HubSpot', icon: '/logos/hubspot.svg' },
+      { name: 'Notion', icon: '/logos/notion.svg' },
+      { name: 'n8n', icon: '/logos/n8n.svg' },
+    ],
+  },
+  core: {
+    brand: { en: 'Newseed', id: 'Newseed' },
+    title: { en: 'Core system', id: 'Sistem inti' },
+    caption: {
+      en: 'Runs on your own accounts. You keep every workflow.',
+      id: 'Berjalan di akun milik Anda. Semua workflow tetap milik Anda.',
+    },
+    rows: [
+      { title: { en: 'AI agent', id: 'AI agent' }, sub: { en: 'Answers, qualifies, books', id: 'Menjawab, menyaring, menjadwalkan' } },
+      { title: { en: 'Workflow engine', id: 'Mesin workflow' }, sub: { en: 'Steps, schedules, retries', id: 'Langkah, jadwal, pengulangan' } },
+      { title: { en: 'Knowledge base', id: 'Knowledge base' }, sub: { en: 'Your guides, prices, policies', id: 'Panduan, harga, kebijakan Anda' } },
+      { title: { en: 'Guardrails', id: 'Guardrails' }, sub: { en: 'Rules and human hand-off', id: 'Aturan dan eskalasi ke manusia' } },
+      { title: { en: 'Monitoring', id: 'Pemantauan' }, sub: { en: 'Logs and error alerts', id: 'Log dan notifikasi error' } },
+    ],
+  },
+  link: {
+    top: { en: 'Logged · Reviewed · Under NDA', id: 'Tercatat · Ditinjau · Di bawah NDA' },
+    bottom: { en: 'Improves with every run', id: 'Makin baik di setiap proses' },
+  },
+  panel3: {
+    title: { en: 'Your team', id: 'Tim Anda' },
+    owner: { en: 'You / Owner', id: 'Anda / Owner' },
+    active: { en: 'Active', id: 'Aktif' },
+    nodes: [
+      {
+        name: { en: 'Sales', id: 'Sales' },
+        sub: { en: 'Leads', id: 'Prospek' },
+        caption: { en: 'Following up new leads', id: 'Menindaklanjuti prospek baru' },
+      },
+      {
+        name: { en: 'Ops', id: 'Operasional' },
+        sub: { en: 'Orders', id: 'Pesanan' },
+        caption: { en: "Syncing today's orders", id: 'Menyinkronkan pesanan hari ini' },
+      },
+      {
+        name: { en: 'Support', id: 'Support' },
+        sub: { en: 'Chats', id: 'Chat' },
+        caption: { en: 'Handing a case to your team', id: 'Meneruskan kasus ke tim Anda' },
+      },
+    ],
+  },
+  example: {
+    en: 'Example flow. Built around your tools and process.',
+    id: 'Contoh alur. Disesuaikan dengan tools dan proses Anda.',
+  },
 };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { HelpCircle } from 'lucide-react';
-import { Reveal, ImageReveal } from '../motion';
+import { Reveal, ImageReveal, usePrefersReducedMotion } from '../motion';
 import { useLang } from '../i18n';
 import { FAQ, SITE } from '../data/landingData';
 import GlassyFaqInteractiveCard, { type FaqCardItem } from './GlassyFaqInteractiveCard';
@@ -64,6 +64,7 @@ export default function FaqSection() {
   const { t } = useLang();
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
+  const reduced = usePrefersReducedMotion();
 
   const FAQ_ITEMS: FaqCardItem[] = FAQ.items.map((item, i) => ({
     id: i,
@@ -79,7 +80,7 @@ export default function FaqSection() {
   return (
     <section
       id="faq"
-      className="py-28 sm:py-36 lg:py-44 bg-white border-t border-[#E2E8F0]/80 relative overflow-hidden"
+      className="py-16 sm:py-24 lg:py-24 bg-white border-t border-[#E2E8F0]/80 relative overflow-hidden"
     >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -135,10 +136,10 @@ export default function FaqSection() {
             aria-hidden="true"
           />
 
-          <h2 className="relative z-10 text-3xl sm:text-5xl lg:text-[3.75rem] text-[#0A0D14] font-medium tracking-tight leading-[1.12]">
+          <h2 className="relative z-10 text-h2 lg:text-h2-lg text-ink font-medium text-balance">
             {t(FAQ.heading.lead)}
             <br />
-            <span className="font-instrument italic font-normal text-[#2563EB] inline-block mt-1 sm:mt-2">
+            <span className="font-instrument italic font-normal text-accent inline-block mt-1 sm:mt-2">
               {t(FAQ.heading.accent)}
             </span>
           </h2>
@@ -174,7 +175,7 @@ export default function FaqSection() {
                 d={FAQ_FRAME_PATHS[activeIndex]}
                 initial={{ d: FAQ_FRAME_PATHS[0] }}
                 animate={{ d: FAQ_FRAME_PATHS[activeIndex] }}
-                transition={{
+                transition={reduced ? { duration: 0 } : {
                   type: 'spring',
                   stiffness: 220,
                   damping: 24,
@@ -208,7 +209,7 @@ export default function FaqSection() {
                     width: coords.width,
                     height: coords.height
                   }}
-                  transition={{
+                  transition={reduced ? { duration: 0 } : {
                     type: 'spring',
                     stiffness: 240,
                     damping: 25,
@@ -221,13 +222,13 @@ export default function FaqSection() {
                   onMouseLeave={() => {
                     setHoveredCardId(null);
                   }}
-                  className="absolute group rounded-[28px] sm:rounded-[32px] border-[2.5px] border-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] overflow-hidden cursor-pointer active:scale-[0.99] flex flex-col justify-end"
+                  className="absolute group rounded-[28px] sm:rounded-[32px] border-[2.5px] border-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] overflow-hidden outline outline-1 -outline-offset-1 outline-black/10 cursor-pointer active:scale-[0.96] flex flex-col justify-end"
                 >
                   {/* Background Image with Cinematic Hover Zoom */}
                   <img
                     src={item.image}
                     alt={item.alt}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-200 ease-out pointer-events-none"
                   />
 
                   {/* Natural Light Overlay matching crystal glass reference */}
@@ -252,12 +253,12 @@ export default function FaqSection() {
           </div>
 
           {/* MOBILE / SMALL SCREENS (< lg): Clean Responsive Vertical Stack */}
-          <div className="block lg:hidden w-full max-w-[640px] mx-auto rounded-[36px] bg-white p-5 sm:p-6 border border-blue-200/50 shadow-[0_20px_45px_rgba(0,85,255,0.06)] space-y-4">
+          <div className="block lg:hidden w-full max-w-[640px] mx-auto rounded-[48px] sm:rounded-[52px] bg-white p-5 sm:p-6 border border-blue-200/50 shadow-[0_20px_45px_rgba(0,85,255,0.06)] space-y-4">
             <div className="flex items-center justify-between px-2 pt-1 pb-1">
-              <span className="text-2xl sm:text-3xl font-bold tracking-widest text-[#93C5FD]">
+              <span className="text-2xl sm:text-3xl font-bold tracking-widest text-accent">
                 FAQ
               </span>
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-ink-tertiary font-medium">
                 {t(FAQ.mobileHint)}
               </span>
             </div>
@@ -271,7 +272,7 @@ export default function FaqSection() {
                     setHoveredCardId((prev) => (prev === item.id ? null : item.id));
                     setActiveIndex(item.id);
                   }}
-                  className="relative rounded-[28px] border-2 border-white shadow-md overflow-hidden cursor-pointer min-h-[300px] sm:min-h-[340px] flex flex-col justify-end p-2"
+                  className="relative rounded-[28px] border-2 border-white shadow-md overflow-hidden outline outline-1 -outline-offset-1 outline-black/10 cursor-pointer min-h-[300px] sm:min-h-[340px] flex flex-col justify-end p-2"
                 >
                   <img
                     src={item.image}
@@ -301,14 +302,15 @@ export default function FaqSection() {
               <button
                 key={item.id}
                 type="button"
+                aria-pressed={activeIndex === item.id}
                 onClick={() => {
                   setActiveIndex(item.id);
                   setHoveredCardId(item.id);
                 }}
-                className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13px] font-medium tracking-tight transition-[background-color,border-color,color,box-shadow,transform] duration-200 cursor-pointer active:scale-[0.96] ${
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13px] font-medium tracking-tight transition-[background-color,border-color,color,box-shadow,transform] duration-200 cursor-pointer enabled:active:scale-[0.96] ${
                   activeIndex === item.id
-                    ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-600/30'
-                    : 'bg-slate-100/90 text-slate-700 hover:bg-slate-200/80 hover:text-slate-900 border border-slate-200/70'
+                    ? 'bg-accent text-white shadow-sm ring-2 ring-accent/30'
+                    : 'bg-slate-100/90 text-ink-secondary hover:bg-slate-200/80 hover:text-ink border border-slate-200/70'
                 }`}
               >
                 0{item.id + 1} {item.tag}
@@ -317,10 +319,10 @@ export default function FaqSection() {
           </div>
 
           {/* Support Help box */}
-          <div className="mt-14 sm:mt-16 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
-            <HelpCircle className="w-4 h-4 text-blue-600" />
+          <div className="mt-14 sm:mt-16 text-center text-xs text-ink-tertiary flex items-center justify-center gap-2">
+            <HelpCircle className="w-4 h-4 text-accent" />
             <span>{t(FAQ.help.lead)}</span>
-            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-600 hover:underline">
+            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="font-medium text-accent hover:underline">
               {t(FAQ.help.link)}
             </a>
           </div>

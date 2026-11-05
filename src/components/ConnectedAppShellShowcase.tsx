@@ -22,7 +22,7 @@ import { APP_SHELL, FINAL_CTA, PROCESS, SITE } from '../data/landingData';
 type FeatureKey = 'notetaker' | 'velie' | 'scheduling' | 'payments' | null;
 type NavKey = keyof typeof APP_SHELL.nav;
 
-// Ecosystem nodes map to process steps 01-04 in node order (00b §A4).
+// Ecosystem nodes map to process steps 01-04 in node order.
 const STEP_BY_NODE: Record<Exclude<FeatureKey, null>, number> = {
   notetaker: 0,
   velie: 1,
@@ -39,7 +39,7 @@ const NAV_ITEMS: { key: NavKey; icon: LucideIcon }[] = [
 ];
 
 const METRIC_STYLES: { icon: LucideIcon; tone: string; hover: string }[] = [
-  { icon: MessageSquare, tone: 'bg-blue-50 text-blue-600', hover: 'hover:border-blue-200' },
+  { icon: MessageSquare, tone: 'bg-blue-50 text-accent', hover: 'hover:border-blue-200' },
   { icon: Users, tone: 'bg-emerald-50 text-emerald-600', hover: 'hover:border-emerald-200' },
   { icon: Clock, tone: 'bg-purple-50 text-purple-600', hover: 'hover:border-purple-200' },
   { icon: CheckSquare, tone: 'bg-amber-50 text-amber-600', hover: 'hover:border-amber-200' }
@@ -62,7 +62,7 @@ export default function ConnectedAppShellShowcase() {
   const days = t(APP_SHELL.days);
 
   return (
-    <section id="process" className="relative z-10 w-full min-h-[1040px] lg:min-h-[1140px] bg-transparent border-t border-[#E2E8F0] overflow-hidden select-none pt-28 sm:pt-36 lg:pt-44 pb-24 sm:pb-32 lg:pb-36 flex flex-col items-center justify-between">
+    <section id="process" className="relative z-10 w-full min-h-[1040px] lg:min-h-[1140px] bg-transparent border-t border-[#E2E8F0] overflow-hidden select-none pt-16 sm:pt-24 lg:pt-24 pb-16 sm:pb-24 lg:pb-24 flex flex-col items-center justify-between">
       
       {/* ====================================================================
           BACKGROUND: Perimeter Frame Tile Pattern with Soft Fade Mask & 40% Opacity
@@ -90,8 +90,8 @@ export default function ConnectedAppShellShowcase() {
 
       <div className="relative z-10 w-full max-w-[1540px] px-4 sm:px-6 lg:px-8 flex flex-col items-center">
 
-        {/* Process heading (00 §6) above the ecosystem diagram */}
-        <h2 className="mb-2 sm:mb-4 text-2xl sm:text-3xl lg:text-[32px] font-normal text-[#0A0D14] tracking-tight leading-snug text-balance text-center max-w-xl">
+        {/* Process heading above the ecosystem diagram */}
+        <h2 className="mb-2 sm:mb-4 text-h2 lg:text-h2-lg font-medium text-ink text-balance text-center max-w-xl">
           {t(PROCESS.heading)}
         </h2>
 
@@ -156,7 +156,7 @@ export default function ConnectedAppShellShowcase() {
               />
             </g>
 
-            {/* Conduit 2: Bottom-Left Velie (Green) -> (155, 220) to (255, 370) */}
+            {/* Conduit 2: bottom-left node (green) -> (155, 220) to (255, 370) */}
             <g className="conduit-group pointer-events-none">
               {/* Base Static Hairline Path */}
               <path
@@ -243,13 +243,14 @@ export default function ConnectedAppShellShowcase() {
                     className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-3 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
-                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
-                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[0].num}</span>{t(PROCESS.steps[0].title)}
+                <span className="pointer-events-none absolute left-1/2 top-[130px] hidden lg:flex -translate-x-1/2 flex-col items-center whitespace-nowrap text-center">
+                  <span className="text-label font-medium uppercase text-accent tabular-nums">{PROCESS.steps[0].num}</span>
+                  <span className="mt-0.5 text-caption text-ink-secondary">{t(PROCESS.steps[0].title)}</span>
                 </span>
               </div>
             </foreignObject>
 
-            {/* Card 2: Bottom-Left Velie (Green) -> Center at (100, 220), Card 110x110 at x=45..155, y=165..275 */}
+            {/* Card 2: bottom-left node (green) -> Center at (100, 220), Card 110x110 at x=45..155, y=165..275 */}
             <foreignObject x="30" y="150" width="140" height="140" className="overflow-visible pointer-events-none">
               <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
                 <div 
@@ -263,18 +264,19 @@ export default function ConnectedAppShellShowcase() {
                     className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:rotate-6 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
-                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
-                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[1].num}</span>{t(PROCESS.steps[1].title)}
+                <span className="pointer-events-none absolute left-1/2 top-[130px] hidden lg:flex -translate-x-1/2 flex-col items-center whitespace-nowrap text-center">
+                  <span className="text-label font-medium uppercase text-accent tabular-nums">{PROCESS.steps[1].num}</span>
+                  <span className="mt-0.5 text-caption text-ink-secondary">{t(PROCESS.steps[1].title)}</span>
                 </span>
               </div>
             </foreignObject>
 
-            {/* Centerpiece: Velie Liquid Glass Orb (Enlarged 270px, Exact Velie Section Card Palette & Aura) */}
+            {/* Centerpiece: liquid glass orb (270px) */}
             <foreignObject x="365" y="13" width="270" height="270" className="overflow-visible pointer-events-none">
               <div className="w-full h-full relative flex items-center justify-center group/orb cursor-pointer pointer-events-auto">
-                {/* Soft Radial Ambient Aura (Identical to Velie Card in TimelineFeatureDeck) */}
+                {/* Soft radial ambient aura */}
                 <div 
-                  className={`absolute inset-0 rounded-full transition-all duration-500 pointer-events-none ${
+                  className={`absolute inset-0 rounded-full transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-500 pointer-events-none ${
                     activeFeature 
                       ? 'bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.18)_0%,rgba(99,102,241,0.08)_45%,transparent_70%)] scale-110'
                       : 'bg-[radial-gradient(circle_at_center,rgba(0,85,255,0.12)_0%,rgba(99,102,241,0.05)_45%,transparent_70%)] scale-100'
@@ -282,7 +284,7 @@ export default function ConnectedAppShellShowcase() {
                   aria-hidden="true" 
                 />
 
-                {/* Soft Grounding Ambient Shadow (Identical to Velie Card) */}
+                {/* Soft grounding ambient shadow */}
                 <div className="absolute bottom-2 w-40 h-6 bg-blue-500/10 blur-xl rounded-full pointer-events-none" />
 
                 {/* Liquid Glass Orb Canvas / WebGPU Caustics */}
@@ -310,8 +312,9 @@ export default function ConnectedAppShellShowcase() {
                     className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-3 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
-                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
-                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[2].num}</span>{t(PROCESS.steps[2].title)}
+                <span className="pointer-events-none absolute left-1/2 top-[130px] hidden lg:flex -translate-x-1/2 flex-col items-center whitespace-nowrap text-center">
+                  <span className="text-label font-medium uppercase text-accent tabular-nums">{PROCESS.steps[2].num}</span>
+                  <span className="mt-0.5 text-caption text-ink-secondary">{t(PROCESS.steps[2].title)}</span>
                 </span>
               </div>
             </foreignObject>
@@ -330,8 +333,9 @@ export default function ConnectedAppShellShowcase() {
                     className="w-[60px] h-[60px] object-contain pointer-events-none group-hover:-rotate-6 transition-transform duration-250 ease-out will-change-transform transform-gpu" 
                   />
                 </div>
-                <span className="pointer-events-none absolute left-1/2 top-[130px] -translate-x-1/2 whitespace-nowrap text-[11px] font-normal tracking-tight text-slate-500">
-                  <span className="mr-1 text-[#0055FF] tabular-nums">{PROCESS.steps[3].num}</span>{t(PROCESS.steps[3].title)}
+                <span className="pointer-events-none absolute left-1/2 top-[130px] hidden lg:flex -translate-x-1/2 flex-col items-center whitespace-nowrap text-center">
+                  <span className="text-label font-medium uppercase text-accent tabular-nums">{PROCESS.steps[3].num}</span>
+                  <span className="mt-0.5 text-caption text-ink-secondary">{t(PROCESS.steps[3].title)}</span>
                 </span>
               </div>
             </foreignObject>
@@ -339,15 +343,28 @@ export default function ConnectedAppShellShowcase() {
           </svg>
         </Reveal>
 
-        {/* Hover caption: the active step's line (00 §6) */}
-        <div className="mt-2 min-h-[52px] max-w-xl px-4 text-center" aria-live="polite">
+        {/* Below lg the SVG labels are hidden, so the 4 steps are listed here as text */}
+        <ol role="list" className="lg:hidden select-text w-full max-w-xl mt-6 px-4 space-y-4 list-none">
+          {PROCESS.steps.map((step) => (
+            <li key={step.num} className="grid grid-cols-[2.5rem_1fr] gap-x-3">
+              <span className="text-label font-medium uppercase text-accent tabular-nums pt-0.5">{step.num}</span>
+              <div className="min-w-0">
+                <span className="block text-body-sm font-medium text-ink">{t(step.title)}</span>
+                <p className="text-caption text-ink-tertiary text-pretty">{t(step.body)}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        {/* Hover caption: the active step's line, fixed height so nothing below moves. Desktop only, the mobile list covers it. */}
+        <div className="hidden lg:block mt-2 h-20 max-w-xl px-4 text-center" aria-live="polite">
           {activeStep && (
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed text-pretty">{t(activeStep.body)}</p>
+            <p className="text-body text-ink-secondary max-w-[62ch] text-pretty">{t(activeStep.body)}</p>
           )}
         </div>
 
         {/* ====================================================================
-            THE ELEV DASHBOARD APP SHELL (gpt-taste Ultra-Clean Design Engineering)
+            DASHBOARD APP SHELL
             ==================================================================== */}
         <PerspectiveScrollTilt
           initialRotateX={20}
@@ -375,7 +392,7 @@ export default function ConnectedAppShellShowcase() {
                   ================================================================ */}
               <aside className="md:col-span-3 border-r border-slate-100 bg-[#FAFBFD] p-4 sm:p-5 flex flex-col justify-between select-none">
                 <div>
-                  {/* Brand Header: elev Infinity Logo + Sidebar Control */}
+                  {/* Brand header: logo and sidebar control */}
                   <div className="flex items-center justify-between px-2 mb-7">
                     <div className="flex items-center gap-3">
                       <img 
@@ -383,14 +400,14 @@ export default function ConnectedAppShellShowcase() {
                         alt={SITE.brand} 
                         className="h-8.5 sm:h-9.5 w-auto object-contain" 
                       />
-                      <span className="text-2xl font-normal text-[#0A0D14] tracking-tight">
+                      <span className="text-2xl font-normal text-ink tracking-tight">
                         {SITE.brand}
                       </span>
                     </div>
                     {/* Sidebar Collapsible / Info Button */}
                     <button 
                       aria-label={t(APP_SHELL.a11y.sidebar)}
-                      className="w-8 h-8 rounded-lg border border-slate-200/70 text-slate-400 hover:text-slate-700 hover:bg-white active:scale-[0.94] flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+                      className="w-8 h-8 rounded-lg border border-slate-200/70 text-ink-tertiary hover:text-ink-secondary hover:bg-white enabled:active:scale-[0.96] flex items-center justify-center transition-[color,background-color,border-color,box-shadow,transform,opacity] cursor-pointer shadow-2xs"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6">
                         <rect x="2" y="2" width="12" height="12" rx="2" />
@@ -408,13 +425,13 @@ export default function ConnectedAppShellShowcase() {
                         <button
                           key={item.key}
                           onClick={() => setActiveNav(item.key)}
-                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-normal transition-all text-left cursor-pointer active:scale-[0.98] ${
+                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-[color,background-color,border-color,box-shadow,transform,opacity] text-left cursor-pointer enabled:active:scale-[0.96] ${
                             isActive
-                              ? 'bg-[#EEF4FF] text-[#0055FF] shadow-2xs'
-                              : 'text-slate-500 hover:text-[#0A0D14] hover:bg-slate-100/70'
+                              ? 'bg-[#EEF4FF] text-accent shadow-2xs'
+                              : 'text-ink-tertiary hover:text-ink hover:bg-slate-100/70'
                           }`}
                         >
-                          <Icon className={`w-4 h-4 ${isActive ? 'text-[#0055FF]' : 'text-slate-400'}`} />
+                          <Icon className={`w-4 h-4 ${isActive ? 'text-accent' : 'text-ink-tertiary'}`} />
                           <span>{t(APP_SHELL.nav[item.key])}</span>
                         </button>
                       );
@@ -424,21 +441,21 @@ export default function ConnectedAppShellShowcase() {
 
                 {/* Bottom Upgrade to Pro Aurora Glass Card */}
                 <div className="mt-6 pt-4 border-t border-slate-100">
-                  <div className="relative overflow-hidden bg-gradient-to-br from-[#EEF4FF] via-[#F3EEFF] to-[#FAF5FF] border border-blue-100/80 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer hover:shadow-md active:scale-[0.98] transition-all group">
+                  <div className="relative overflow-hidden bg-gradient-to-br from-[#EEF4FF] via-[#F3EEFF] to-[#FAF5FF] border border-blue-100/80 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer hover:shadow-md active:scale-[0.96] transition-[color,background-color,border-color,box-shadow,transform,opacity] group">
                     <div className="flex items-center gap-3 relative z-10">
                       <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs text-xs font-normal">
                         ★
                       </div>
                       <div className="text-left">
-                        <p className="text-xs font-normal text-[#0A0D14] group-hover:text-[#0055FF] transition-colors">
+                        <p className="text-xs font-normal text-ink group-hover:text-accent transition-colors">
                           {t(APP_SHELL.upsell.title)}
                         </p>
-                        <p className="text-[10px] text-slate-500">
+                        <p className="text-[10px] text-ink-tertiary">
                           {t(APP_SHELL.upsell.sub)}
                         </p>
                       </div>
                     </div>
-                    <div className="w-6 h-6 rounded-full bg-white text-slate-700 flex items-center justify-center shadow-2xs group-hover:translate-x-0.5 transition-transform text-xs relative z-10">
+                    <div className="w-6 h-6 rounded-full bg-white text-ink-secondary flex items-center justify-center shadow-2xs group-hover:translate-x-0.5 transition-transform text-xs relative z-10">
                       →
                     </div>
                   </div>
@@ -454,13 +471,13 @@ export default function ConnectedAppShellShowcase() {
                   <header className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
                     {/* Search Field */}
                     <div className="relative flex-1 max-w-md">
-                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-tertiary" />
                       <input
                         type="text"
                         placeholder={t(APP_SHELL.search)}
-                        className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-full pl-9 pr-14 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                        className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-full pl-9 pr-14 py-2 text-base sm:text-xs text-ink placeholder:text-ink-tertiary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/25 focus-visible:border-accent transition-[color,background-color,border-color,box-shadow,transform,opacity]"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-normal text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-normal text-ink-tertiary bg-white px-1.5 py-0.5 rounded border border-slate-200">
                         ⌘K
                       </span>
                     </div>
@@ -470,7 +487,7 @@ export default function ConnectedAppShellShowcase() {
                       {/* Bell with notification indicator */}
                       <button 
                         aria-label={t(APP_SHELL.a11y.notifications)}
-                        className="relative w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 active:scale-[0.94] transition-all cursor-pointer border border-slate-200/60"
+                        className="relative w-8 h-8 rounded-full flex items-center justify-center text-ink-secondary hover:bg-slate-100 enabled:active:scale-[0.96] transition-[color,background-color,border-color,box-shadow,transform,opacity] cursor-pointer border border-slate-200/60"
                       >
                         <Bell className="w-4 h-4" />
                         <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-500 ring-2 ring-white" />
@@ -484,22 +501,22 @@ export default function ConnectedAppShellShowcase() {
                           className="w-8 h-8 rounded-full object-contain p-1 bg-slate-50 border border-slate-200 group-hover:border-blue-400 transition-colors"
                         />
                         <div className="text-left hidden sm:block">
-                          <p className="text-xs font-normal text-[#0A0D14] leading-none group-hover:text-[#0055FF] transition-colors">
+                          <p className="text-xs font-normal text-ink leading-none group-hover:text-accent transition-colors">
                             {t(APP_SHELL.workspaceName)}
                           </p>
-                          <p className="text-[10px] text-slate-400 mt-0.5 leading-none">
+                          <p className="text-[10px] text-ink-tertiary mt-0.5 leading-none">
                             {t(APP_SHELL.workspaceLabel)}
                           </p>
                         </div>
-                        <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                        <ChevronDown className="w-3.5 h-3.5 text-ink-tertiary" />
                       </div>
 
-                      {/* New Meeting Primary CTA Button */}
+                      {/* Primary CTA button */}
                       <a
                         href={SITE.calendly}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-[#0B1222] hover:bg-slate-800 text-white text-xs font-normal px-4 py-2 rounded-full flex items-center gap-1.5 shadow-2xs hover:shadow-md active:scale-[0.96] transition-[background-color,box-shadow,transform] cursor-pointer shrink-0"
+                        className="bg-[#0B1222] hover:bg-slate-800 text-white text-xs font-medium px-4 py-2 rounded-full flex items-center gap-1.5 shadow-2xs hover:shadow-md active:scale-[0.96] transition-[background-color,box-shadow,transform] cursor-pointer shrink-0"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span>{t(APP_SHELL.newWorkflow)}</span>
@@ -509,16 +526,16 @@ export default function ConnectedAppShellShowcase() {
 
                   {/* Greeting Header Banner with Subtitle */}
                   <div className="pt-5 pb-4">
-                    <h2 className="text-xl sm:text-2xl font-normal text-[#0A0D14] tracking-tight">
+                    <h2 className="text-xl font-medium text-ink">
                       {t(APP_SHELL.greeting)}
                     </h2>
-                    <p className="text-xs text-slate-400 mt-1 font-normal">
+                    <p className="text-xs text-ink-tertiary mt-1 font-normal">
                       {t(APP_SHELL.greetingSub)}
                     </p>
                   </div>
 
                   {/* ============================================================
-                      4 TOP METRIC CARDS (Example numbers, 00b §H)
+                      4 TOP METRIC CARDS (example numbers)
                       ============================================================ */}
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 my-3 grid-flow-dense">
                     {APP_SHELL.metrics.map((m, i) => {
@@ -526,41 +543,41 @@ export default function ConnectedAppShellShowcase() {
                       return (
                         <div
                           key={m.value + i}
-                          className={`p-4 rounded-2xl bg-white border border-slate-200/70 shadow-2xs ${hover} hover:shadow-sm transition-all duration-300`}
+                          className={`p-4 rounded-2xl bg-white border border-slate-200/70 shadow-2xs ${hover} hover:shadow-sm transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200`}
                         >
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <div className={`w-6 h-6 rounded-lg ${tone} flex items-center justify-center`}>
                                 <Icon className="w-3.5 h-3.5" />
                               </div>
-                              <span className="text-xs font-normal text-slate-600">
+                              <span className="text-xs font-normal text-ink-secondary">
                                 {t(m.label)}
                               </span>
                             </div>
                           </div>
                           <div className="flex items-baseline gap-2 mt-1">
-                            <span className="text-2xl font-normal text-[#0A0D14] tabular-nums">{m.value}</span>
+                            <span className="text-2xl font-semibold text-ink tabular-nums">{m.value}</span>
                             {m.delta && (
                               <span className="inline-flex items-center text-[10px] font-normal text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/50">
                                 {m.delta}
                               </span>
                             )}
                           </div>
-                          <p className="text-[11px] text-slate-400 mt-1 font-normal">{t(m.note)}</p>
+                          <p className="text-[11px] text-ink-tertiary mt-1 font-normal">{t(m.note)}</p>
                         </div>
                       );
                     })}
                   </div>
 
                   {/* ============================================================
-                      2-COLUMN WORKSPACE (Today's Meetings & Meeting Activity Wave Chart)
+                      2-COLUMN WORKSPACE (recent runs and automation activity)
                       ============================================================ */}
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-4">
                     
                     {/* Left Column: Recent runs (Col-span-6) */}
                     <div className="lg:col-span-6 border border-slate-200/70 rounded-2xl p-5 bg-white shadow-2xs hover:shadow-xs transition-shadow">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-normal text-[#0A0D14]">
+                        <h3 className="text-sm font-medium text-ink">
                           {t(APP_SHELL.runs.heading)}
                         </h3>
                       </div>
@@ -573,16 +590,16 @@ export default function ConnectedAppShellShowcase() {
                         {APP_SHELL.runs.items.map((run, i) => (
                           <div
                             key={run.time}
-                            className="relative flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50/80 border border-transparent hover:border-slate-100 transition-all group"
+                            className="relative grid grid-cols-[10px_4rem_minmax(0,1fr)_auto] items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50/80 border border-transparent hover:border-slate-100 transition-[color,background-color,border-color,box-shadow,transform,opacity] group"
                           >
-                            <div className="flex items-center gap-3">
+                            <div className="contents">
                               {/* Timeline Dot */}
                               <span className={`w-2.5 h-2.5 rounded-full ${RUN_DOTS[i]} shrink-0 z-10 ring-4 ring-white`} />
-                              <span className="text-xs font-normal text-slate-500 shrink-0 w-16">
+                              <span className="text-xs font-normal text-ink-tertiary tabular-nums">
                                 {run.time}
                               </span>
                               <div>
-                                <p className="text-xs font-normal text-[#0A0D14] leading-tight">
+                                <p className="text-xs font-normal text-ink leading-tight">
                                   {t(run.label)}
                                 </p>
                                 <div className="flex items-center gap-2 mt-1">
@@ -591,13 +608,13 @@ export default function ConnectedAppShellShowcase() {
                                     {run.initials.map((ini) => (
                                       <span
                                         key={ini}
-                                        className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[7px] font-normal text-slate-600 ring-1 ring-white"
+                                        className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[10px] font-normal text-ink-secondary ring-1 ring-white"
                                       >
                                         {ini}
                                       </span>
                                     ))}
                                   </div>
-                                  <span className="text-[10px] font-normal text-slate-500 bg-slate-50 border border-slate-200/70 px-2 py-0.5 rounded-full">
+                                  <span className="text-[10px] font-normal text-ink-tertiary bg-slate-50 border border-slate-200/70 px-2 py-0.5 rounded-full">
                                     {run.tool}
                                   </span>
                                 </div>
@@ -606,10 +623,10 @@ export default function ConnectedAppShellShowcase() {
 
                             <button
                               onClick={() => handleOpen(i)}
-                              className={`text-xs font-normal px-4 py-1.5 rounded-full transition-all cursor-pointer active:scale-[0.94] ${
+                              className={`text-xs font-medium px-4 py-1.5 rounded-full transition-[color,background-color,border-color,box-shadow,transform,opacity] cursor-pointer enabled:active:scale-[0.96] ${
                                 openedRun === i
                                   ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                                  : 'bg-[#EEF4FF] text-[#0055FF] hover:bg-blue-100'
+                                  : 'bg-[#EEF4FF] text-accent hover:bg-blue-100'
                               }`}
                             >
                               {openedRun === i ? t(APP_SHELL.runs.opened) : t(APP_SHELL.runs.view)}
@@ -619,16 +636,16 @@ export default function ConnectedAppShellShowcase() {
                       </div>
                     </div>
 
-                    {/* Right Column: Meeting Activity (Calm, Smooth Continuous Wave Chart) (Col-span-6) */}
+                    {/* Right Column: automation activity wave chart (col-span-6) */}
                     <div className="lg:col-span-6 border border-slate-200/70 rounded-2xl p-5 bg-white flex flex-col justify-between shadow-2xs hover:shadow-xs transition-shadow">
                       <div>
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-sm font-normal text-[#0A0D14]">
+                          <h3 className="text-sm font-medium text-ink">
                             {t(APP_SHELL.activity.title)}
                           </h3>
-                          <div className="flex items-center gap-1 text-[11px] font-normal text-slate-600 bg-slate-50 border border-slate-200/70 px-2.5 py-1 rounded-lg cursor-pointer hover:bg-slate-100 active:scale-95 transition-all">
+                          <div className="flex items-center gap-1 text-[11px] font-medium text-ink-secondary bg-slate-50 border border-slate-200/70 px-2.5 py-1 rounded-lg cursor-pointer hover:bg-slate-100 active:scale-[0.96] transition-[color,background-color,border-color,box-shadow,transform,opacity]">
                             <span>{t(APP_SHELL.activity.range)}</span>
-                            <ChevronDown className="w-3 h-3 text-slate-400" />
+                            <ChevronDown className="w-3 h-3 text-ink-tertiary" />
                           </div>
                         </div>
 
@@ -681,9 +698,9 @@ export default function ConnectedAppShellShowcase() {
                           </svg>
 
                           {/* Days Axis */}
-                          <div className="flex items-center justify-between text-[10px] font-normal text-slate-400 pt-1 border-t border-slate-100">
+                          <div className="flex items-center justify-between text-[10px] font-normal text-ink-tertiary pt-1 border-t border-slate-100">
                             {days.map((d, i) => (
-                              <span key={d} className={i === 3 ? 'font-normal text-[#0A0D14]' : undefined}>{d}</span>
+                              <span key={d} className={i === 3 ? 'font-normal text-ink' : undefined}>{d}</span>
                             ))}
                           </div>
                         </div>
@@ -700,9 +717,9 @@ export default function ConnectedAppShellShowcase() {
                             </svg>
                           </div>
                           <div>
-                            <p className="text-[10px] text-slate-400 leading-none">{t(APP_SHELL.activity.success)}</p>
+                            <p className="text-[10px] text-ink-tertiary leading-none">{t(APP_SHELL.activity.success)}</p>
                             <div className="flex items-center gap-1 mt-1">
-                              <span className="text-sm font-normal text-[#0A0D14]">98%</span>
+                              <span className="text-sm font-normal text-ink">98%</span>
                             </div>
                           </div>
                         </div>
@@ -713,9 +730,9 @@ export default function ConnectedAppShellShowcase() {
                             <Clock className="w-4 h-4" />
                           </div>
                           <div>
-                            <p className="text-[10px] text-slate-400 leading-none">{t(APP_SHELL.activity.avgRun)}</p>
+                            <p className="text-[10px] text-ink-tertiary leading-none">{t(APP_SHELL.activity.avgRun)}</p>
                             <div className="flex items-center gap-1 mt-1">
-                              <span className="text-sm font-normal text-[#0A0D14]">{APP_SHELL.activity.runTime}</span>
+                              <span className="text-sm font-normal text-ink">{APP_SHELL.activity.runTime}</span>
                             </div>
                           </div>
                         </div>
@@ -740,7 +757,7 @@ export default function ConnectedAppShellShowcase() {
               }}
             />
 
-            {/* Final CTA block: heading, agenda, time zones, Calendly button, trust line */}
+            {/* Final CTA: heading, agenda, time zones, booking button, trust line */}
             <div className="absolute inset-x-0 bottom-6 sm:bottom-8 lg:bottom-10 z-40 flex flex-col items-center justify-end px-4 text-center pointer-events-auto">
 
               {/* Newseed mark (infinity logo, no fill or border) */}
@@ -752,24 +769,24 @@ export default function ConnectedAppShellShowcase() {
                 />
               </div>
 
-              <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-normal text-[#0A0D14] tracking-tight leading-snug text-balance max-w-xl">
+              <h2 className="text-display font-medium text-ink text-balance max-w-xl">
                 {t(FINAL_CTA.heading)}
               </h2>
 
-              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1 sm:mt-1.5 max-w-md leading-relaxed text-balance">
+              <p className="text-body-sm text-ink-tertiary mt-1 sm:mt-1.5 max-w-[62ch] text-pretty">
                 {t(FINAL_CTA.sub)}
               </p>
 
               <ol className="mt-3 w-full max-w-md space-y-1.5 text-left">
                 {FINAL_CTA.agenda.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-slate-600 font-normal leading-snug">
-                    <span className="text-[#0055FF] tabular-nums shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-ink-secondary font-normal leading-snug">
+                    <span className="text-accent tabular-nums shrink-0">{String(i + 1).padStart(2, '0')}</span>
                     <span>{t(item)}</span>
                   </li>
                 ))}
               </ol>
 
-              <p className="mt-2.5 text-[11px] sm:text-xs text-slate-400 font-normal">
+              <p className="mt-2.5 text-[11px] sm:text-xs text-ink-tertiary font-normal">
                 {FINAL_CTA.timeZones.join(' · ')}
               </p>
 
@@ -777,13 +794,13 @@ export default function ConnectedAppShellShowcase() {
                 href={SITE.calendly}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 sm:mt-3.5 bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs sm:text-sm font-normal px-7 sm:px-8 py-3 sm:py-3.5 rounded-full flex items-center gap-2 shadow-[0_8px_24px_-4px_rgba(0,85,255,0.38)] active:scale-[0.96] transition-[background-color,box-shadow,transform] cursor-pointer border border-blue-400/30"
+                className="mt-3 sm:mt-3.5 bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs sm:text-sm font-medium px-7 sm:px-8 py-3 sm:py-3.5 rounded-full flex items-center gap-2 shadow-[0_8px_24px_-4px_rgba(0,85,255,0.38)] active:scale-[0.96] transition-[background-color,box-shadow,transform] cursor-pointer border border-blue-400/30"
               >
                 <span>{t(SITE.cta.primary)}</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.2]" />
               </a>
 
-              <p className="mt-2 text-[11px] text-slate-400 font-normal">
+              <p className="mt-2 text-[11px] text-ink-tertiary font-normal">
                 {t(FINAL_CTA.trust)}
               </p>
 
