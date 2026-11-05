@@ -553,11 +553,11 @@ export default function MultiProductHero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <div className="flex flex-col gap-5 sm:gap-6">
 
-          {/* Asymmetric 12-column bento: follow-up (7) and routing (5) on row one, tool stack full width below. */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6">
-            
-            {/* Card 1: follow-up backlog (span 7) */}
-            <div className="group rounded-2xl bg-white border border-[#E2E8F0] p-7 sm:p-8 overflow-hidden flex flex-col justify-between min-h-[360px] md:col-span-7 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300">
+          {/* Bottom row: 3 equal-width cards (33.3% each), stacked on mobile. */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+
+            {/* Card 1: follow-up backlog */}
+            <div className="group rounded-2xl bg-white border border-[#E2E8F0] p-7 sm:p-8 overflow-hidden flex flex-col justify-between min-h-[360px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300">
               
               {/* Header */}
               <div className="text-left">
@@ -633,8 +633,8 @@ export default function MultiProductHero() {
               </div>
             </div>
 
-            {/* Card 2: smart routing (span 5), accent surface so it reads apart from the white cards */}
-            <div className="group rounded-2xl bg-[var(--color-accent-surface)] border border-blue-100/80 p-6 sm:p-7 overflow-hidden flex flex-col justify-between min-h-[360px] md:col-span-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300">
+            {/* Card 2: smart routing */}
+            <div className="group rounded-2xl bg-white border border-[#E2E8F0] p-6 sm:p-7 overflow-hidden flex flex-col justify-between min-h-[360px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300">
               
               {/* Header */}
               <div className="text-left mb-4">
@@ -697,8 +697,8 @@ export default function MultiProductHero() {
               </div>
             </div>
 
-            {/* Card 3: connected tool stack (full width). Tracks bleed to the card edges. */}
-            <div className="group rounded-2xl bg-white border border-[#E2E8F0] p-6 sm:p-7 overflow-hidden flex flex-col justify-between md:col-span-12 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300 relative">
+            {/* Card 3: connected tool stack. Tracks bleed to the card edges. */}
+            <div className="group rounded-2xl bg-white border border-[#E2E8F0] p-6 sm:p-7 overflow-hidden flex flex-col justify-between min-h-[360px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300 relative">
               
               {/* Header */}
               <div className="text-left mb-4 relative z-10">

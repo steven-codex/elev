@@ -192,6 +192,29 @@
   animation: float-subtle 4s ease-in-out infinite;
 }
 
+/* System diagram connectors: a 8px dash tile drifts one tile per cycle, so it loops seamlessly. */
+@keyframes system-flow-x {
+  to { background-position: 8px 0; }
+}
+
+@keyframes system-flow-y {
+  to { background-position: 0 8px; }
+}
+
+.system-flow-x {
+  background-image: linear-gradient(to right, #CBD5E1 4px, transparent 4px);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  animation: system-flow-x 2s linear infinite;
+}
+
+.system-flow-y {
+  background-image: linear-gradient(to bottom, #CBD5E1 4px, transparent 4px);
+  background-size: 1px 8px;
+  background-repeat: repeat-y;
+  animation: system-flow-y 2s linear infinite;
+}
+
 /* ── Architectural Conduit Transferring Light Beams (Linear/Vercel Stream) ── */
 @keyframes transferBeamLong {
   0% {

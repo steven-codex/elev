@@ -145,7 +145,7 @@ export default function Navbar() {
                 alt="Newseed"
                 className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
               />
-              <span className="font-semibold text-[22px] sm:text-[26px] tracking-[-0.03em] text-ink group-hover:text-accent transition-colors duration-150">
+              <span className="max-[359px]:sr-only font-semibold text-[22px] sm:text-[26px] tracking-[-0.03em] text-ink group-hover:text-accent transition-colors duration-150">
                 Newseed
               </span>
             </a>

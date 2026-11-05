@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import MultiProductHero from './components/MultiProductHero';
 import LogoTicker from './components/LogoTicker';
 import TimelineFeatureDeck from './components/TimelineFeatureDeck';
+import SystemDiagram from './components/SystemDiagram';
 import CustomerStoriesCarousel from './components/CustomerStoriesCarousel';
 import IntegrationsSection from './components/IntegrationsSection';
 import RoiCalculator from './components/RoiCalculator';
@@ -27,6 +28,7 @@ export default function App() {
           <MultiProductHero />
           <LogoTicker />
           <TimelineFeatureDeck />
+          <SystemDiagram />
           <CustomerStoriesCarousel />
           <IntegrationsSection />
           <RoiCalculator />

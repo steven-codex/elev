@@ -100,3 +100,6 @@ The process diagram is an SVG with a 1000-unit viewBox. At 390px its node labels
 
 ## C10. Dialog close race (added after review)
 The native `close` event fires asynchronously. If the dialog is reopened before it fires, `onClose` sets `isModalOpen` to false while the dialog is open, leaving it empty. In `IntegrationsSection.tsx` `onClose`, use `setIsModalOpen(dialogRef.current?.open ?? false)`, and only return focus to the CTA when the dialog is really closed.
+
+## C11. Hero bento back to 3 columns (user request, overrides C1)
+The user prefers the original layout. Restore the hero bento to 3 equal columns as on `main`: same grid classes, card treatment (white cards, no accent-surface routing card) and marquee placement inside the third card. Keep what UI-A/B added: copy from data, type and colour tokens, named transitions, press scale, hit areas, `loop-limited`, and loop and reduced-motion handling.
