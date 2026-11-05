@@ -974,6 +974,24 @@ export const INTEGRATIONS = {
     { name: 'Zapier', category: 'automation', icon: '/logos/zapier.svg', desc: { en: 'Connect your apps with ready-made triggers and actions', id: 'Hubungkan aplikasi lewat trigger dan aksi siap pakai' } },
     { name: 'Vapi', category: 'automation', icon: null, desc: { en: 'Voice agents that take and place phone calls', id: 'Voice agent untuk menerima dan melakukan panggilan telepon' } },
   ],
+  // Tool carousel on the right of the card (UI-E). Logos: public/logos/, single-colour and masked.
+  stage: {
+    aria: { en: 'Tools Newseed connects', id: 'Tools yang dihubungkan Newseed' },
+    hub: {
+      title: { en: 'Newseed', id: 'Newseed' },
+      sub: { en: 'Your automation hub', id: 'Pusat otomasi Anda' },
+    },
+    tools: [
+      { name: 'WhatsApp', logo: '/logos/whatsapp.svg', color: '#25D366', sub: { en: 'Customer chats', id: 'Chat pelanggan' } },
+      { name: 'n8n', logo: '/logos/n8n.svg', color: '#EA4B71', sub: { en: 'Workflows', id: 'Workflow' } },
+      { name: 'Google Sheets', logo: '/logos/googlesheets.svg', color: '#34A853', sub: { en: 'Live data sync', id: 'Sinkron data langsung' } },
+      { name: 'OpenAI', logo: '/logos/openai.svg', color: '#0A0D14', sub: { en: 'AI models', id: 'Model AI' } },
+      { name: 'HubSpot', logo: '/logos/hubspot.svg', color: '#FF7A59', sub: { en: 'CRM and leads', id: 'CRM dan prospek' } },
+      { name: 'Claude', logo: '/logos/anthropic.svg', color: '#D97757', sub: { en: 'AI reasoning', id: 'Penalaran AI' } },
+      { name: 'Make', logo: '/logos/make.svg', color: '#6D00CC', sub: { en: 'Scenarios', id: 'Skenario' } },
+      { name: 'Notion', logo: '/logos/notion.svg', color: '#0A0D14', sub: { en: 'Knowledge base', id: 'Knowledge base' } },
+    ],
+  },
 };
 
 // Architecture diagram (UI-D). Logos live in public/logos/.
